@@ -4,6 +4,10 @@ version = "0.1.0"
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
+[lib]
+name = "main"
+crate-type = ["cdylib"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

@@ -1,0 +1,8 @@
+/home/alexis/Desktop/game/android-project/app/jni/CMakeLists.txt
+/home/alexis/Desktop/game/android-project/app/jni/SDL/CMakeLists.txt
+/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/CheckCPUArchitecture.cmake
+/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/macros.cmake
+/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/sdlchecks.cmake
+/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake_uninstall.cmake.in
+/home/alexis/Desktop/game/android-project/app/jni/SDL/include/SDL_config.h.cmake
+/home/alexis/Desktop/game/android-project/app/jni/SDL/include/SDL_revision.h.cmake

@@ -1,0 +1,158 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3 Replace com.test.game with the identifier of your game below, e.g.
+4     com.gamemaker.game
+5-->
+6<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+7    package="org.libsdl.app"
+8    android:installLocation="auto"
+9    android:versionCode="1"
+10    android:versionName="1.0" >
+11
+12    <uses-sdk
+13        android:minSdkVersion="16"
+13-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+14        android:targetSdkVersion="31" />
+14-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+15
+16    <!-- OpenGL ES 2.0 -->
+17    <uses-feature android:glEsVersion="0x00020000" />
+17-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:11:5-54
+17-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:11:19-51
+18
+19    <!-- Touchscreen support -->
+20    <uses-feature
+20-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:14:5-16:36
+21        android:name="android.hardware.touchscreen"
+21-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:15:9-52
+22        android:required="false" />
+22-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:16:9-33
+23
+24    <!-- Game controller support -->
+25    <uses-feature
+25-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:19:5-21:36
+26        android:name="android.hardware.bluetooth"
+26-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:20:9-50
+27        android:required="false" />
+27-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:21:9-33
+28    <uses-feature
+28-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:22:5-24:36
+29        android:name="android.hardware.gamepad"
+29-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:23:9-48
+30        android:required="false" />
+30-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:24:9-33
+31    <uses-feature
+31-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:25:5-27:36
+32        android:name="android.hardware.usb.host"
+32-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:26:9-49
+33        android:required="false" />
+33-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:27:9-33
+34
+35    <!-- External mouse input events -->
+36    <uses-feature
+36-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:30:5-32:36
+37        android:name="android.hardware.type.pc"
+37-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:31:9-48
+38        android:required="false" />
+38-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:32:9-33
+39
+40    <!-- Audio recording support -->
+41    <!-- if you want to capture audio, uncomment this. -->
+42    <!--
+43         <uses-feature
+44        android:name="android.hardware.microphone"
+45        android:required="false" />
+46    -->
+47
+48
+49    <!-- Allow downloading to the external storage on Android 5.1 and older -->
+50    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="22" /> -->
+51
+52
+53    <!-- Allow access to Bluetooth devices -->
+54    <!-- Currently this is just for Steam Controller support and requires setting SDL_HINT_JOYSTICK_HIDAPI_STEAM -->
+55    <!-- <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> -->
+56    <!-- <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> -->
+57
+58
+59    <!-- Allow access to the vibrator -->
+60    <uses-permission android:name="android.permission.VIBRATE" />
+60-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:49:5-66
+60-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:49:22-63
+61
+62    <!-- if you want to capture audio, uncomment this. -->
+63    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
+64    <!--
+65 Create a Java class extending SDLActivity and place it in a
+66         directory under app/src/main/java matching the package, e.g. app/src/main/java/com/gamemaker/game/MyGame.java
+67 
+68         then replace "SDLActivity" with the name of your class (e.g. "MyGame")
+69         in the XML below.
+70
+71         An example Java class can be found in README-android.md
+72    -->
+73    <application
+73-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:62:5-97:19
+74        android:allowBackup="true"
+74-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:64:9-35
+75        android:debuggable="true"
+76        android:hardwareAccelerated="true"
+76-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:66:9-43
+77        android:icon="@mipmap/ic_launcher"
+77-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:63:9-43
+78        android:label="@string/app_name"
+78-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:62:18-50
+79        android:testOnly="true"
+80        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+80-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:65:9-67
+81
+82        <!--
+83        Example of setting SDL hints from AndroidManifest.xml:
+84        <meta-data android:name="SDL_ENV.SDL_ACCELEROMETER_AS_JOYSTICK" android:value="0"/>
+85        -->
+86
+87        <activity
+87-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:72:9-96:20
+88            android:name="org.libsdl.app.SDLActivity"
+88-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:72:19-45
+89            android:alwaysRetainTaskState="true"
+89-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:74:13-49
+90            android:configChanges="layoutDirection|locale|orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+90-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:76:13-156
+91            android:exported="true"
+91-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:78:13-36
+92            android:label="@string/app_name"
+92-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:73:13-45
+93            android:launchMode="singleInstance"
+93-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:75:13-48
+94            android:preferMinimalPostProcessing="true" >
+94-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:77:13-55
+95            <intent-filter>
+95-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:80:13-83:29
+96                <action android:name="android.intent.action.MAIN" />
+96-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:81:17-69
+96-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:81:25-66
+97
+98                <category android:name="android.intent.category.LAUNCHER" />
+98-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:82:17-77
+98-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:82:27-74
+99            </intent-filter>
+100            <!-- Let Android know that we can handle some USB devices and should receive this event -->
+101            <intent-filter>
+101-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:85:13-87:29
+102                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+102-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:86:17-90
+102-->/home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:86:25-87
+103            </intent-filter>
+104            <!-- Drop file event -->
+105            <!--
+106            <intent-filter>
+107                <action android:name="android.intent.action.VIEW" />
+108                <category android:name="android.intent.category.DEFAULT" />
+109                <data android:mimeType="*/*" />
+110            </intent-filter>
+111            -->
+112        </activity>
+113    </application>
+114
+115</manifest>

@@ -1,0 +1,3136 @@
+The target system is: Android - 21 - aarch64
+The host system is: Linux - 5.10.0-12-amd64 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang 
+Build flags: 
+Id flags: -c;--target=aarch64-none-linux-android21 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is Clang, found in "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/3.22.1-g37088a8/CompilerIdC/CMakeCCompilerId.o"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ 
+Build flags: 
+Id flags: -c;--target=aarch64-none-linux-android21 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+
+The CXX compiler identification is Clang, found in "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/3.22.1-g37088a8/CompilerIdCXX/CMakeCXXCompilerId.o"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c5966 && [1/2] Building C object CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o
+Android (7714059, based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)
+Target: aarch64-none-linux-android21
+Thread model: posix
+InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Candidate multilib: .;@m64
+Selected multilib: .;@m64
+ (in-process)
+ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" -cc1 -triple aarch64-none-linux-android21 -emit-obj --mrelax-relocations -mnoexecstack -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu generic -target-feature +neon -target-abi aapcs -mllvm -aarch64-fix-cortex-a53-835769=1 -fallow-half-arguments-and-returns -fno-split-dwarf-inlining -debug-info-kind=limited -dwarf-version=4 -debugger-tuning=gdb -v -ffunction-sections -fdata-sections -resource-dir /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8 -dependency-file CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -D NDEBUG -isysroot /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -O2 -Wformat -fdebug-compilation-dir /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp -ferror-limit 19 -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fexceptions -vectorize-loops -vectorize-slp -o CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -x c /home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CMakeCCompilerABI.c
+clang -cc1 version 12.0.8 based upon LLVM 12.0.8git default target x86_64-unknown-linux-gnu
+ignoring nonexistent directory "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
+End of search list.
+[2/2] Linking C executable cmTC_c5966
+Android (7714059, based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)
+Target: aarch64-none-linux-android21
+Thread model: posix
+InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Candidate multilib: .;@m64
+Selected multilib: .;@m64
+ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld" --sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -pie -z noexecstack -EL --fix-cortex-a53-843419 --warn-shared-textrel -z now -z relro -z max-page-size=4096 --hash-style=both --enable-new-dtags --eh-frame-hdr -m aarch64linux -dynamic-linker /system/bin/linker64 -o cmTC_c5966 /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --fatal-warnings --no-undefined --gc-sections CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -latomic -lm /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  end of search list found
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  implicit include dirs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c5966 && [1/2] Building C object CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o]
+  ignore line: [Android (7714059  based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)]
+  ignore line: [Target: aarch64-none-linux-android21]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  ignore line: [ (in-process)]
+  ignore line: [ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang" -cc1 -triple aarch64-none-linux-android21 -emit-obj --mrelax-relocations -mnoexecstack -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu generic -target-feature +neon -target-abi aapcs -mllvm -aarch64-fix-cortex-a53-835769=1 -fallow-half-arguments-and-returns -fno-split-dwarf-inlining -debug-info-kind=limited -dwarf-version=4 -debugger-tuning=gdb -v -ffunction-sections -fdata-sections -resource-dir /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8 -dependency-file CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -D NDEBUG -isysroot /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -O2 -Wformat -fdebug-compilation-dir /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp -ferror-limit 19 -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fexceptions -vectorize-loops -vectorize-slp -o CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -x c /home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CMakeCCompilerABI.c]
+  ignore line: [clang -cc1 version 12.0.8 based upon LLVM 12.0.8git default target x86_64-unknown-linux-gnu]
+  ignore line: [ignoring nonexistent directory "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking C executable cmTC_c5966]
+  ignore line: [Android (7714059  based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)]
+  ignore line: [Target: aarch64-none-linux-android21]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  link line: [ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld" --sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -pie -z noexecstack -EL --fix-cortex-a53-843419 --warn-shared-textrel -z now -z relro -z max-page-size=4096 --hash-style=both --enable-new-dtags --eh-frame-hdr -m aarch64linux -dynamic-linker /system/bin/linker64 -o cmTC_c5966 /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --fatal-warnings --no-undefined --gc-sections CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o -latomic -lm /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld] ==> ignore
+    arg [--sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=4096] ==> ignore
+    arg [--hash-style=both] ==> ignore
+    arg [--enable-new-dtags] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_c5966] ==> ignore
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o] ==> obj [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [CMakeFiles/cmTC_c5966.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-latomic] ==> lib [atomic]
+    arg [-lm] ==> lib [m]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o] ==> obj [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+  remove lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+  implicit libs: [atomic;m;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit objs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+  implicit dirs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_08174 && [1/2] Building CXX object CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o
+Android (7714059, based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)
+Target: aarch64-none-linux-android21
+Thread model: posix
+InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Candidate multilib: .;@m64
+Selected multilib: .;@m64
+ (in-process)
+ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++" -cc1 -triple aarch64-none-linux-android21 -emit-obj --mrelax-relocations -mnoexecstack -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu generic -target-feature +neon -target-abi aapcs -mllvm -aarch64-fix-cortex-a53-835769=1 -fallow-half-arguments-and-returns -fno-split-dwarf-inlining -debug-info-kind=limited -dwarf-version=4 -debugger-tuning=gdb -v -ffunction-sections -fdata-sections -resource-dir /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8 -dependency-file CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -D NDEBUG -isysroot /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1 -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -O2 -Wformat -fdeprecated-macro -fdebug-compilation-dir /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp -ferror-limit 19 -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -vectorize-loops -vectorize-slp -o CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -x c++ /home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp
+clang -cc1 version 12.0.8 based upon LLVM 12.0.8git default target x86_64-unknown-linux-gnu
+ignoring nonexistent directory "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android
+ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
+End of search list.
+[2/2] Linking CXX executable cmTC_08174
+Android (7714059, based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)
+Target: aarch64-none-linux-android21
+Thread model: posix
+InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin
+Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x
+Candidate multilib: .;@m64
+Selected multilib: .;@m64
+ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld" --sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -pie -z noexecstack -EL --fix-cortex-a53-843419 --warn-shared-textrel -z now -z relro -z max-page-size=4096 --hash-style=both --enable-new-dtags --eh-frame-hdr -m aarch64linux -dynamic-linker /system/bin/linker64 -o cmTC_08174 /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --fatal-warnings --no-undefined --gc-sections CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -latomic -lm -Bstatic -lc++ -Bdynamic -lm /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+    add: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  end of search list found
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+  collapse include dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  implicit include dirs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(ld\.lld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_08174 && [1/2] Building CXX object CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [Android (7714059  based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)]
+  ignore line: [Target: aarch64-none-linux-android21]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  ignore line: [ (in-process)]
+  ignore line: [ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++" -cc1 -triple aarch64-none-linux-android21 -emit-obj --mrelax-relocations -mnoexecstack -disable-free -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=non-leaf -fno-rounding-math -mconstructor-aliases -munwind-tables -target-cpu generic -target-feature +neon -target-abi aapcs -mllvm -aarch64-fix-cortex-a53-835769=1 -fallow-half-arguments-and-returns -fno-split-dwarf-inlining -debug-info-kind=limited -dwarf-version=4 -debugger-tuning=gdb -v -ffunction-sections -fdata-sections -resource-dir /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8 -dependency-file CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D ANDROID -D _FORTIFY_SOURCE=2 -D NDEBUG -isysroot /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1 -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include -internal-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include -internal-externc-isystem /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -O2 -Wformat -fdeprecated-macro -fdebug-compilation-dir /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp -ferror-limit 19 -stack-protector 2 -fno-signed-char -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -vectorize-loops -vectorize-slp -o CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -x c++ /home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [clang -cc1 version 12.0.8 based upon LLVM 12.0.8git default target x86_64-unknown-linux-gnu]
+  ignore line: [ignoring nonexistent directory "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/local/include]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/include]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/aarch64-linux-android]
+  ignore line: [ /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [[2/2] Linking CXX executable cmTC_08174]
+  ignore line: [Android (7714059  based on r416183c1) clang version 12.0.8 (https://android.googlesource.com/toolchain/llvm-project c935d99d7cf2016289302412d708641d52d2f7ee)]
+  ignore line: [Target: aarch64-none-linux-android21]
+  ignore line: [Thread model: posix]
+  ignore line: [InstalledDir: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin]
+  ignore line: [Found candidate GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Selected GCC installation: /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+  ignore line: [Candidate multilib: .]
+  ignore line: [@m64]
+  ignore line: [Selected multilib: .]
+  ignore line: [@m64]
+  link line: [ "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld" --sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot -pie -z noexecstack -EL --fix-cortex-a53-843419 --warn-shared-textrel -z now -z relro -z max-page-size=4096 --hash-style=both --enable-new-dtags --eh-frame-hdr -m aarch64linux -dynamic-linker /system/bin/linker64 -o cmTC_08174 /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21 -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android -L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib --build-id=sha1 --no-rosegment --fatal-warnings --no-undefined --gc-sections CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o -latomic -lm -Bstatic -lc++ -Bdynamic -lm /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl -lc /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a -l:libunwind.a -ldl /home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/ld] ==> ignore
+    arg [--sysroot=/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot] ==> ignore
+    arg [-pie] ==> ignore
+    arg [-znoexecstack] ==> ignore
+    arg [-EL] ==> ignore
+    arg [--fix-cortex-a53-843419] ==> ignore
+    arg [--warn-shared-textrel] ==> ignore
+    arg [-znow] ==> ignore
+    arg [-zrelro] ==> ignore
+    arg [-zmax-page-size=4096] ==> ignore
+    arg [--hash-style=both] ==> ignore
+    arg [--enable-new-dtags] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-m] ==> ignore
+    arg [aarch64linux] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/system/bin/linker64] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_08174] ==> ignore
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o] ==> obj [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android]
+    arg [-L/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+    arg [--build-id=sha1] ==> ignore
+    arg [--no-rosegment] ==> ignore
+    arg [--fatal-warnings] ==> ignore
+    arg [--no-undefined] ==> ignore
+    arg [--gc-sections] ==> ignore
+    arg [CMakeFiles/cmTC_08174.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-latomic] ==> lib [atomic]
+    arg [-lm] ==> lib [m]
+    arg [-Bstatic] ==> search static
+    arg [-lc++] ==> lib [c++]
+    arg [-Bdynamic] ==> search dynamic
+    arg [-lm] ==> lib [m]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [-lc] ==> lib [c]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a] ==> lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+    arg [-l:libunwind.a] ==> lib [-l:libunwind.a]
+    arg [-ldl] ==> lib [dl]
+    arg [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o] ==> obj [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+  remove lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  remove lib [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/libclang_rt.builtins-aarch64-android.a]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/../lib/gcc/aarch64-linux-android/4.9.x] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android]
+  collapse library dir [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib] ==> [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+  implicit libs: [atomic;m;c++;m;-l:libunwind.a;dl;c;-l:libunwind.a;dl]
+  implicit objs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtbegin_dynamic.o;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/crtend_android.o]
+  implicit dirs: [/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/12.0.8/lib/linux/aarch64;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/aarch64-linux-android/4.9.x;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android;/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib]
+  implicit fwks: []
+
+
+Performing C SOURCE FILE Test HAVE_GCC_WALL succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d7332 && [1/2] Building C object CMakeFiles/cmTC_d7332.dir/src.c.o
+[2/2] Linking C executable cmTC_d7332
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_NO_STRICT_ALIASING succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_6c08f && [1/2] Building C object CMakeFiles/cmTC_6c08f.dir/src.c.o
+[2/2] Linking C executable cmTC_6c08f
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_WDECLARATION_AFTER_STATEMENT succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_640d4 && [1/2] Building C object CMakeFiles/cmTC_640d4.dir/src.c.o
+[2/2] Linking C executable cmTC_640d4
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_ATOMICS succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_bc4d8 && [1/2] Building C object CMakeFiles/cmTC_bc4d8.dir/src.c.o
+[2/2] Linking C executable cmTC_bc4d8
+
+
+Source file was:
+int main(int argc, char **argv) {
+        int a;
+        void *x, *y, *z;
+        __sync_lock_test_and_set(&a, 4);
+        __sync_lock_test_and_set(&x, y);
+        __sync_fetch_and_add(&a, 1);
+        __sync_bool_compare_and_swap(&a, 5, 10);
+        __sync_bool_compare_and_swap(&x, y, z);
+        return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_FVISIBILITY succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_dda67 && [1/2] Building C object CMakeFiles/cmTC_dda67.dir/src.c.o
+[2/2] Linking C executable cmTC_dda67
+
+
+Source file was:
+
+      #if !defined(__GNUC__) || __GNUC__ < 4
+      #error SDL only uses visibility attributes in GCC 4 or newer
+      #endif
+      int main(int argc, char **argv) { return 0; }
+Performing C SOURCE FILE Test HAVE_GCC_WSHADOW succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_8ffaa && [1/2] Building C object CMakeFiles/cmTC_8ffaa.dir/src.c.o
+[2/2] Linking C executable cmTC_8ffaa
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test HAVE_NO_UNDEFINED succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c03d5 && [1/2] Building C object CMakeFiles/cmTC_c03d5.dir/src.c.o
+clang: warning: -Wl,--no-undefined: 'linker' input unused [-Wunused-command-line-argument]
+[2/2] Linking C executable cmTC_c03d5
+
+
+Source file was:
+int main(void) { return 0; }
+Determining if the include file ctype.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0c6b0 && [1/2] Building C object CMakeFiles/cmTC_0c6b0.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_0c6b0
+
+
+
+Determining if the include file float.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_eea95 && [1/2] Building C object CMakeFiles/cmTC_eea95.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_eea95
+
+
+
+Determining if the include file iconv.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_413c7 && [1/2] Building C object CMakeFiles/cmTC_413c7.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_413c7
+
+
+
+Determining if the include file inttypes.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_16b77 && [1/2] Building C object CMakeFiles/cmTC_16b77.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_16b77
+
+
+
+Determining if the include file limits.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_44338 && [1/2] Building C object CMakeFiles/cmTC_44338.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_44338
+
+
+
+Determining if the include file malloc.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_18628 && [1/2] Building C object CMakeFiles/cmTC_18628.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_18628
+
+
+
+Determining if the include file math.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_f00bd && [1/2] Building C object CMakeFiles/cmTC_f00bd.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_f00bd
+
+
+
+Determining if the include file memory.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_5db9a && [1/2] Building C object CMakeFiles/cmTC_5db9a.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_5db9a
+
+
+
+Determining if the include file signal.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_1a70a && [1/2] Building C object CMakeFiles/cmTC_1a70a.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_1a70a
+
+
+
+Determining if the include file stdarg.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e283f && [1/2] Building C object CMakeFiles/cmTC_e283f.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_e283f
+
+
+
+Determining if the include file stddef.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c374a && [1/2] Building C object CMakeFiles/cmTC_c374a.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_c374a
+
+
+
+Determining if the include file stdint.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4c55a && [1/2] Building C object CMakeFiles/cmTC_4c55a.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_4c55a
+
+
+
+Determining if the include file stdio.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_7638e && [1/2] Building C object CMakeFiles/cmTC_7638e.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_7638e
+
+
+
+Determining if the include file stdlib.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_bfc21 && [1/2] Building C object CMakeFiles/cmTC_bfc21.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_bfc21
+
+
+
+Determining if the include file string.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_acf96 && [1/2] Building C object CMakeFiles/cmTC_acf96.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_acf96
+
+
+
+Determining if the include file strings.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_f90d8 && [1/2] Building C object CMakeFiles/cmTC_f90d8.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_f90d8
+
+
+
+Determining if the include file sys/types.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e7bcc && [1/2] Building C object CMakeFiles/cmTC_e7bcc.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_e7bcc
+
+
+
+Determining if the include file wchar.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_b20c6 && [1/2] Building C object CMakeFiles/cmTC_b20c6.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_b20c6
+
+
+
+Determining if the include file linux/input.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_1cc46 && [1/2] Building C object CMakeFiles/cmTC_1cc46.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_1cc46
+
+
+
+Determining if files stddef.h;stdarg.h;stdlib.h;string.h;stdio.h;wchar.h;float.h exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_fede7 && [1/2] Building C object CMakeFiles/cmTC_fede7.dir/STDC_HEADERS.c.o
+[2/2] Linking C executable cmTC_fede7
+
+
+
+Determining if the M_PI exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_5e2a5 && [1/2] Building C object CMakeFiles/cmTC_5e2a5.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_5e2a5
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef M_PI
+  return ((int*)(&M_PI))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C SOURCE FILE Test HAVE_MPROTECT succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_7e88e && [1/2] Building C object CMakeFiles/cmTC_7e88e.dir/src.c.o
+[2/2] Linking C executable cmTC_7e88e
+
+
+Source file was:
+#include <sys/types.h>
+                             #include <sys/mman.h>
+                             int main(void) { return 0; }
+Determining if the strtod exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d2fda && [1/2] Building C object CMakeFiles/cmTC_d2fda.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_d2fda
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtod
+  return ((int*)(&strtod))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the malloc exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0d85c && [1/2] Building C object CMakeFiles/cmTC_0d85c.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_0d85c
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef malloc
+  return ((int*)(&malloc))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the calloc exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_910d9 && [1/2] Building C object CMakeFiles/cmTC_910d9.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_910d9
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef calloc
+  return ((int*)(&calloc))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the realloc exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_628e4 && [1/2] Building C object CMakeFiles/cmTC_628e4.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_628e4
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef realloc
+  return ((int*)(&realloc))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the free exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_a2f6d && [1/2] Building C object CMakeFiles/cmTC_a2f6d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_a2f6d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef free
+  return ((int*)(&free))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the getenv exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e99af && [1/2] Building C object CMakeFiles/cmTC_e99af.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_e99af
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef getenv
+  return ((int*)(&getenv))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the setenv exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_07598 && [1/2] Building C object CMakeFiles/cmTC_07598.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_07598
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef setenv
+  return ((int*)(&setenv))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the putenv exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4f513 && [1/2] Building C object CMakeFiles/cmTC_4f513.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_4f513
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef putenv
+  return ((int*)(&putenv))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the unsetenv exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_86a17 && [1/2] Building C object CMakeFiles/cmTC_86a17.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_86a17
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef unsetenv
+  return ((int*)(&unsetenv))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the bsearch exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_da093 && [1/2] Building C object CMakeFiles/cmTC_da093.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_da093
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef bsearch
+  return ((int*)(&bsearch))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the qsort exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e6347 && [1/2] Building C object CMakeFiles/cmTC_e6347.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_e6347
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef qsort
+  return ((int*)(&qsort))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the abs exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_3fcd1 && [1/2] Building C object CMakeFiles/cmTC_3fcd1.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_3fcd1
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef abs
+  return ((int*)(&abs))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the bcopy exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_46933 && [1/2] Building C object CMakeFiles/cmTC_46933.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_46933
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef bcopy
+  return ((int*)(&bcopy))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the memset exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_cae40 && [1/2] Building C object CMakeFiles/cmTC_cae40.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_cae40
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memset
+  return ((int*)(&memset))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the memcpy exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_9603d && [1/2] Building C object CMakeFiles/cmTC_9603d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_9603d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memcpy
+  return ((int*)(&memcpy))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the memmove exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4cd6e && [1/2] Building C object CMakeFiles/cmTC_4cd6e.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_4cd6e
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memmove
+  return ((int*)(&memmove))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the memcmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_1d2aa && [1/2] Building C object CMakeFiles/cmTC_1d2aa.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_1d2aa
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef memcmp
+  return ((int*)(&memcmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strlen exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_62ec7 && [1/2] Building C object CMakeFiles/cmTC_62ec7.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_62ec7
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strlen
+  return ((int*)(&strlen))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strlcpy exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_320bc && [1/2] Building C object CMakeFiles/cmTC_320bc.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_320bc
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strlcpy
+  return ((int*)(&strlcpy))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strlcat exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4c406 && [1/2] Building C object CMakeFiles/cmTC_4c406.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_4c406
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strlcat
+  return ((int*)(&strlcat))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strchr exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_dabf4 && [1/2] Building C object CMakeFiles/cmTC_dabf4.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_dabf4
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strchr
+  return ((int*)(&strchr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strrchr exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_086ab && [1/2] Building C object CMakeFiles/cmTC_086ab.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_086ab
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strrchr
+  return ((int*)(&strrchr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strstr exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d7da4 && [1/2] Building C object CMakeFiles/cmTC_d7da4.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_d7da4
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strstr
+  return ((int*)(&strstr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strtok_r exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_3009e && [1/2] Building C object CMakeFiles/cmTC_3009e.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_3009e
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtok_r
+  return ((int*)(&strtok_r))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strtol exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_57931 && [1/2] Building C object CMakeFiles/cmTC_57931.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_57931
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtol
+  return ((int*)(&strtol))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strtoul exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_77b95 && [1/2] Building C object CMakeFiles/cmTC_77b95.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_77b95
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtoul
+  return ((int*)(&strtoul))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strtoll exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_eadae && [1/2] Building C object CMakeFiles/cmTC_eadae.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_eadae
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtoll
+  return ((int*)(&strtoll))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strtoull exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_cda2a && [1/2] Building C object CMakeFiles/cmTC_cda2a.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_cda2a
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strtoull
+  return ((int*)(&strtoull))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the atoi exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_85cf2 && [1/2] Building C object CMakeFiles/cmTC_85cf2.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_85cf2
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atoi
+  return ((int*)(&atoi))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the atof exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0a647 && [1/2] Building C object CMakeFiles/cmTC_0a647.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_0a647
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atof
+  return ((int*)(&atof))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strcmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_90a32 && [1/2] Building C object CMakeFiles/cmTC_90a32.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_90a32
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strcmp
+  return ((int*)(&strcmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strncmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_ff169 && [1/2] Building C object CMakeFiles/cmTC_ff169.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_ff169
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strncmp
+  return ((int*)(&strncmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strcasecmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_5aa93 && [1/2] Building C object CMakeFiles/cmTC_5aa93.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_5aa93
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strcasecmp
+  return ((int*)(&strcasecmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strncasecmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_6349f && [1/2] Building C object CMakeFiles/cmTC_6349f.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_6349f
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strncasecmp
+  return ((int*)(&strncasecmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the strcasestr exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_a5a2b && [1/2] Building C object CMakeFiles/cmTC_a5a2b.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_a5a2b
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef strcasestr
+  return ((int*)(&strcasestr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcscmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_9a84d && [1/2] Building C object CMakeFiles/cmTC_9a84d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_9a84d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcscmp
+  return ((int*)(&wcscmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcsdup exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0a8e8 && [1/2] Building C object CMakeFiles/cmTC_0a8e8.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_0a8e8
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcsdup
+  return ((int*)(&wcsdup))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcslcat exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c65a8 && [1/2] Building C object CMakeFiles/cmTC_c65a8.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c65a8
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcslcat
+  return ((int*)(&wcslcat))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcslcpy exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_790be && [1/2] Building C object CMakeFiles/cmTC_790be.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_790be
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcslcpy
+  return ((int*)(&wcslcpy))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcslen exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_f0f9c && [1/2] Building C object CMakeFiles/cmTC_f0f9c.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_f0f9c
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcslen
+  return ((int*)(&wcslen))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcsncmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_07cbc && [1/2] Building C object CMakeFiles/cmTC_07cbc.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_07cbc
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcsncmp
+  return ((int*)(&wcsncmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcsstr exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_25b49 && [1/2] Building C object CMakeFiles/cmTC_25b49.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_25b49
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcsstr
+  return ((int*)(&wcsstr))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcscasecmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_29183 && [1/2] Building C object CMakeFiles/cmTC_29183.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_29183
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcscasecmp
+  return ((int*)(&wcscasecmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the wcsncasecmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c7e81 && [1/2] Building C object CMakeFiles/cmTC_c7e81.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c7e81
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef wcsncasecmp
+  return ((int*)(&wcsncasecmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sscanf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_dfd19 && [1/2] Building C object CMakeFiles/cmTC_dfd19.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_dfd19
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sscanf
+  return ((int*)(&sscanf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the vsscanf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_724d6 && [1/2] Building C object CMakeFiles/cmTC_724d6.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_724d6
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef vsscanf
+  return ((int*)(&vsscanf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the vsnprintf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_24ac5 && [1/2] Building C object CMakeFiles/cmTC_24ac5.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_24ac5
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef vsnprintf
+  return ((int*)(&vsnprintf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fseeko exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_93095 && [1/2] Building C object CMakeFiles/cmTC_93095.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_93095
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fseeko
+  return ((int*)(&fseeko))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the _Exit exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_66e52 && [1/2] Building C object CMakeFiles/cmTC_66e52.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_66e52
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stddef.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <float.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _Exit
+  return ((int*)(&_Exit))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sigaction exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c77e2 && [1/2] Building C object CMakeFiles/cmTC_c77e2.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c77e2
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <signal.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sigaction
+  return ((int*)(&sigaction))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the setjmp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_28591 && [1/2] Building C object CMakeFiles/cmTC_28591.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_28591
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <setjmp.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef setjmp
+  return ((int*)(&setjmp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the nanosleep exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c37b0 && [1/2] Building C object CMakeFiles/cmTC_c37b0.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c37b0
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <time.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef nanosleep
+  return ((int*)(&nanosleep))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sysconf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_ef989 && [1/2] Building C object CMakeFiles/cmTC_ef989.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_ef989
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <unistd.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sysconf
+  return ((int*)(&sysconf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the getauxval exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_cc237 && [1/2] Building C object CMakeFiles/cmTC_cc237.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_cc237
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <sys/auxv.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef getauxval
+  return ((int*)(&getauxval))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the poll exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_281f4 && [1/2] Building C object CMakeFiles/cmTC_281f4.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_281f4
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <poll.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef poll
+  return ((int*)(&poll))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the function pow exists in the m passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_128a8 && [1/2] Building C object CMakeFiles/cmTC_128a8.dir/CheckFunctionExists.c.o
+/home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: warning: incompatible redeclaration of library function 'pow' [-Wincompatible-library-redeclaration]
+  CHECK_FUNCTION_EXISTS(void);
+  ^
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pow
+                              ^
+/home/alexis/Android/Sdk/cmake/3.22.1/share/cmake-3.22/Modules/CheckFunctionExists.c:7:3: note: 'pow' is a builtin with type 'double (double, double)'
+<command line>:3:31: note: expanded from here
+#define CHECK_FUNCTION_EXISTS pow
+                              ^
+1 warning generated.
+[2/2] Linking C executable cmTC_128a8
+
+
+
+Determining if the atan exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_64ceb && [1/2] Building C object CMakeFiles/cmTC_64ceb.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_64ceb
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atan
+  return ((int*)(&atan))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the atan2 exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_06534 && [1/2] Building C object CMakeFiles/cmTC_06534.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_06534
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atan2
+  return ((int*)(&atan2))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the atanf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_cc37c && [1/2] Building C object CMakeFiles/cmTC_cc37c.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_cc37c
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atanf
+  return ((int*)(&atanf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the atan2f exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4c8f0 && [1/2] Building C object CMakeFiles/cmTC_4c8f0.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_4c8f0
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef atan2f
+  return ((int*)(&atan2f))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the ceil exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_72811 && [1/2] Building C object CMakeFiles/cmTC_72811.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_72811
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef ceil
+  return ((int*)(&ceil))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the ceilf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_f5379 && [1/2] Building C object CMakeFiles/cmTC_f5379.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_f5379
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef ceilf
+  return ((int*)(&ceilf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the copysign exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_b0bed && [1/2] Building C object CMakeFiles/cmTC_b0bed.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_b0bed
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef copysign
+  return ((int*)(&copysign))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the copysignf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_81ede && [1/2] Building C object CMakeFiles/cmTC_81ede.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_81ede
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef copysignf
+  return ((int*)(&copysignf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the cos exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_9fbbb && [1/2] Building C object CMakeFiles/cmTC_9fbbb.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_9fbbb
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef cos
+  return ((int*)(&cos))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the cosf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_dc4f0 && [1/2] Building C object CMakeFiles/cmTC_dc4f0.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_dc4f0
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef cosf
+  return ((int*)(&cosf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the exp exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c6dde && [1/2] Building C object CMakeFiles/cmTC_c6dde.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c6dde
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef exp
+  return ((int*)(&exp))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the expf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_cad09 && [1/2] Building C object CMakeFiles/cmTC_cad09.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_cad09
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef expf
+  return ((int*)(&expf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fabs exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d600e && [1/2] Building C object CMakeFiles/cmTC_d600e.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_d600e
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fabs
+  return ((int*)(&fabs))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fabsf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_b083a && [1/2] Building C object CMakeFiles/cmTC_b083a.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_b083a
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fabsf
+  return ((int*)(&fabsf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the floor exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_108cd && [1/2] Building C object CMakeFiles/cmTC_108cd.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_108cd
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef floor
+  return ((int*)(&floor))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the floorf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_717aa && [1/2] Building C object CMakeFiles/cmTC_717aa.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_717aa
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef floorf
+  return ((int*)(&floorf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fmod exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_bccab && [1/2] Building C object CMakeFiles/cmTC_bccab.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_bccab
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fmod
+  return ((int*)(&fmod))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the fmodf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_b1038 && [1/2] Building C object CMakeFiles/cmTC_b1038.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_b1038
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef fmodf
+  return ((int*)(&fmodf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the log exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_09331 && [1/2] Building C object CMakeFiles/cmTC_09331.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_09331
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef log
+  return ((int*)(&log))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the logf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_85695 && [1/2] Building C object CMakeFiles/cmTC_85695.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_85695
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef logf
+  return ((int*)(&logf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the log10 exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_fa57d && [1/2] Building C object CMakeFiles/cmTC_fa57d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_fa57d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef log10
+  return ((int*)(&log10))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the log10f exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_1e011 && [1/2] Building C object CMakeFiles/cmTC_1e011.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_1e011
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef log10f
+  return ((int*)(&log10f))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the lround exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_fca17 && [1/2] Building C object CMakeFiles/cmTC_fca17.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_fca17
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef lround
+  return ((int*)(&lround))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the lroundf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0222b && [1/2] Building C object CMakeFiles/cmTC_0222b.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_0222b
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef lroundf
+  return ((int*)(&lroundf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the pow exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_3ad2e && [1/2] Building C object CMakeFiles/cmTC_3ad2e.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_3ad2e
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pow
+  return ((int*)(&pow))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the powf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_5bb16 && [1/2] Building C object CMakeFiles/cmTC_5bb16.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_5bb16
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef powf
+  return ((int*)(&powf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the round exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d081d && [1/2] Building C object CMakeFiles/cmTC_d081d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_d081d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef round
+  return ((int*)(&round))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the roundf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_95dad && [1/2] Building C object CMakeFiles/cmTC_95dad.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_95dad
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef roundf
+  return ((int*)(&roundf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the scalbn exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_a65e9 && [1/2] Building C object CMakeFiles/cmTC_a65e9.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_a65e9
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef scalbn
+  return ((int*)(&scalbn))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the scalbnf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_42ff3 && [1/2] Building C object CMakeFiles/cmTC_42ff3.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_42ff3
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef scalbnf
+  return ((int*)(&scalbnf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sin exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_253be && [1/2] Building C object CMakeFiles/cmTC_253be.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_253be
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sin
+  return ((int*)(&sin))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sinf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_0f210 && [1/2] Building C object CMakeFiles/cmTC_0f210.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_0f210
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sinf
+  return ((int*)(&sinf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sqrt exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e15a5 && [1/2] Building C object CMakeFiles/cmTC_e15a5.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_e15a5
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sqrt
+  return ((int*)(&sqrt))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the sqrtf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_ee822 && [1/2] Building C object CMakeFiles/cmTC_ee822.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_ee822
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef sqrtf
+  return ((int*)(&sqrtf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the tan exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_2258d && [1/2] Building C object CMakeFiles/cmTC_2258d.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_2258d
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef tan
+  return ((int*)(&tan))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the tanf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_32b2a && [1/2] Building C object CMakeFiles/cmTC_32b2a.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_32b2a
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef tanf
+  return ((int*)(&tanf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the acos exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_c7fb1 && [1/2] Building C object CMakeFiles/cmTC_c7fb1.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_c7fb1
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef acos
+  return ((int*)(&acos))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the acosf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_6760a && [1/2] Building C object CMakeFiles/cmTC_6760a.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_6760a
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef acosf
+  return ((int*)(&acosf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the asin exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_21391 && [1/2] Building C object CMakeFiles/cmTC_21391.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_21391
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef asin
+  return ((int*)(&asin))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the asinf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_6b241 && [1/2] Building C object CMakeFiles/cmTC_6b241.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_6b241
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef asinf
+  return ((int*)(&asinf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the trunc exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_2d1c4 && [1/2] Building C object CMakeFiles/cmTC_2d1c4.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_2d1c4
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef trunc
+  return ((int*)(&trunc))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the truncf exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_7d2de && [1/2] Building C object CMakeFiles/cmTC_7d2de.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_7d2de
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <math.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef truncf
+  return ((int*)(&truncf))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the include file alloca.h exists passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_8b936 && [1/2] Building C object CMakeFiles/cmTC_8b936.dir/CheckIncludeFile.c.o
+[2/2] Linking C executable cmTC_8b936
+
+
+
+Determining if the alloca exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_17482 && [1/2] Building C object CMakeFiles/cmTC_17482.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_17482
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <alloca.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef alloca
+  return ((int*)(&alloca))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Determining if the alloca exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_74851 && [1/2] Building C object CMakeFiles/cmTC_74851.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_74851
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef alloca
+  return ((int*)(&alloca))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C SOURCE FILE Test HAVE_SA_SIGACTION succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_9276b && [1/2] Building C object CMakeFiles/cmTC_9276b.dir/src.c.o
+[2/2] Linking C executable cmTC_9276b
+
+
+Source file was:
+
+#include <signal.h>
+
+int main()
+{
+  (void)sizeof(((struct sigaction *)0)->sa_sigaction);
+  return 0;
+}
+
+Determining if the dlopen exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_81d5a && [1/2] Building C object CMakeFiles/cmTC_81d5a.dir/CheckSymbolExists.c.o
+[2/2] Linking C executable cmTC_81d5a
+
+
+File /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <dlfcn.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef dlopen
+  return ((int*)(&dlopen))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+Performing C SOURCE FILE Test HAVE_O_CLOEXEC succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_d6481 && [1/2] Building C object CMakeFiles/cmTC_d6481.dir/src.c.o
+[2/2] Linking C executable cmTC_d6481
+
+
+Source file was:
+
+    #include <fcntl.h>
+    int flag = O_CLOEXEC;
+    int main(int argc, char **argv) { return 0; }
+Performing C SOURCE FILE Test VULKAN_PASSED_ANDROID_CHECKS succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_805c8 && [1/2] Building C object CMakeFiles/cmTC_805c8.dir/src.c.o
+[2/2] Linking C executable cmTC_805c8
+
+
+Source file was:
+
+      #if defined(__ARM_ARCH) && __ARM_ARCH < 7
+      #error Vulkan doesn't work on this configuration
+      #endif
+      int main(int argc, char **argv) { return 0; }
+      
+Performing C SOURCE FILE Test HAVE_PTHREADS succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_85bb5 && [1/2] Building C object CMakeFiles/cmTC_85bb5.dir/src.c.o
+[2/2] Linking C executable cmTC_85bb5
+
+
+Source file was:
+
+      #include <pthread.h>
+      int main(int argc, char** argv) {
+        pthread_attr_t type;
+        pthread_attr_init(&type);
+        return 0;
+      }
+Performing C SOURCE FILE Test HAVE_RECURSIVE_MUTEXES succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_da303 && [1/2] Building C object CMakeFiles/cmTC_da303.dir/src.c.o
+[2/2] Linking C executable cmTC_da303
+
+
+Source file was:
+
+        #include <pthread.h>
+        int main(int argc, char **argv) {
+          pthread_mutexattr_t attr;
+          pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+          return 0;
+        }
+Performing C SOURCE FILE Test HAVE_PTHREADS_SEM succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_980e5 && [1/2] Building C object CMakeFiles/cmTC_980e5.dir/src.c.o
+[2/2] Linking C executable cmTC_980e5
+
+
+Source file was:
+#include <pthread.h>
+                                 #include <semaphore.h>
+                                 int main(int argc, char **argv) { return 0; }
+Performing C SOURCE FILE Test HAVE_SEM_TIMEDWAIT succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_e800b && [1/2] Building C object CMakeFiles/cmTC_e800b.dir/src.c.o
+[2/2] Linking C executable cmTC_e800b
+
+
+Source file was:
+
+              #include <pthread.h>
+              #include <semaphore.h>
+              int main(int argc, char **argv) {
+                  sem_timedwait(NULL, NULL);
+                  return 0;
+              }
+Determining if files pthread.h exist passed with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_4a6ff && [1/2] Building C object CMakeFiles/cmTC_4a6ff.dir/HAVE_PTHREAD_H.c.o
+[2/2] Linking C executable cmTC_4a6ff
+
+
+
+Performing C SOURCE FILE Test HAVE_PTHREAD_SETNAME_NP succeeded with the following output:
+Change Dir: /home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja cmTC_10afb && [1/2] Building C object CMakeFiles/cmTC_10afb.dir/src.c.o
+[2/2] Linking C executable cmTC_10afb
+
+
+Source file was:
+
+            #include <pthread.h>
+            int main(int argc, char **argv) {
+              #ifdef __APPLE__
+              pthread_setname_np("");
+              #else
+              pthread_setname_np(pthread_self(),"");
+              #endif
+              return 0;
+            }

@@ -1,0 +1,1 @@
+/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v/obj/arm64-v8a

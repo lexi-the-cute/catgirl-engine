@@ -1,0 +1,169 @@
+{
+  "abi": "ARM64_V8A",
+  "info": {
+    "abi": "ARM64_V8A",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
+  },
+  "cxxBuildFolder": "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a",
+  "soFolder": "/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v/obj/arm64-v8a",
+  "soRepublishFolder": "/home/alexis/Desktop/game/android-project/app/build/intermediates/cmake/debug/obj/arm64-v8a",
+  "abiPlatformVersion": 16,
+  "cmake": {
+    "effectiveConfiguration": {
+      "inheritEnvironments": [],
+      "variables": []
+    }
+  },
+  "variant": {
+    "buildSystemArgumentList": [
+      "-DANDROID_APP_PLATFORM\u003dandroid-16",
+      "-DANDROID_STL\u003dc++_static"
+    ],
+    "cFlagsList": [],
+    "cppFlagsList": [],
+    "variantName": "debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARM64_V8A"
+    ],
+    "buildTargetSet": [],
+    "implicitBuildTargetSet": [],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "module": {
+      "cxxFolder": "/home/alexis/Desktop/game/android-project/app/.cxx",
+      "intermediatesBaseFolder": "/home/alexis/Desktop/game/android-project/app/build/intermediates",
+      "intermediatesFolder": "/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx",
+      "gradleModulePathName": ":app",
+      "moduleRootFolder": "/home/alexis/Desktop/game/android-project/app",
+      "moduleBuildFile": "/home/alexis/Desktop/game/android-project/app/build.gradle",
+      "makeFile": "/home/alexis/Desktop/game/android-project/app/jni/CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "ndkFolder": "/home/alexis/Android/Sdk/ndk/23.1.7779620",
+      "ndkVersion": "23.1.7779620",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "LIBCXX_STATIC",
+      "ndkMetaPlatforms": {
+        "min": 16,
+        "max": 31,
+        "aliases": {
+          "20": 19,
+          "25": 24,
+          "J": 16,
+          "J-MR1": 17,
+          "J-MR2": 18,
+          "K": 19,
+          "L": 21,
+          "L-MR1": 22,
+          "M": 23,
+          "N": 24,
+          "N-MR1": 24,
+          "O": 26,
+          "O-MR1": 27,
+          "P": 28,
+          "Q": 29,
+          "R": 30,
+          "S": 31
+        }
+      },
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 32,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "cmakeToolchainFile": "/home/alexis/Android/Sdk/ndk/23.1.7779620/build/cmake/android.toolchain.cmake",
+      "cmake": {
+        "isValidCmakeAvailable": true,
+        "cmakeExe": "/home/alexis/Android/Sdk/cmake/3.22.1/bin/cmake",
+        "minimumCmakeVersion": "3.22.1"
+      },
+      "stlSharedObjectMap": {
+        "LIBCXX_SHARED": {
+          "ARMEABI_V7A": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/libc++_shared.so",
+          "ARM64_V8A": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so",
+          "X86": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/i686-linux-android/libc++_shared.so",
+          "X86_64": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/x86_64-linux-android/libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "SYSTEM": {}
+      },
+      "project": {
+        "rootBuildGradleFolder": "/home/alexis/Desktop/game/android-project",
+        "sdkFolder": "/home/alexis/Android/Sdk",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "ideBuildTargetAbi": "arm64-v8a,armeabi-v7a,armeabi",
+        "isCmakeBuildCohabitationEnabled": false,
+        "isPrefabEnabled": false
+      },
+      "outputOptions": [],
+      "ninjaExe": "/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja"
+    },
+    "prefabClassPaths": [],
+    "prefabPackages": [],
+    "prefabPackageConfigurations": [],
+    "stlType": "c++_static",
+    "optimizationTag": "Debug"
+  },
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "prefabFolder": "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/prefab/arm64-v8a",
+  "isActiveAbi": true,
+  "fullConfigurationHash": "3973o25v63rq3r4ug32366k6w4s673k406n1x4o5j2r4s214h6a1c2y54v",
+  "fullConfigurationHashKey": "# Values used to calculate the hash in this folder name.\n# Should not depend on the absolute path of the project itself.\n#   - AGP: 7.4.2.\n#   - $NDK is the path to NDK 23.1.7779620.\n#   - $PROJECT is the path to the parent folder of the root Gradle build file.\n#   - $ABI is the ABI to be built with. The specific value doesn\u0027t contribute to the value of the hash.\n#   - $HASH is the hash value computed from this text.\n#   - $CMAKE is the path to CMake 3.22.1.\n#   - $NINJA is the path to Ninja.\n-H$PROJECT/app/jni\n-DCMAKE_SYSTEM_NAME\u003dAndroid\n-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON\n-DCMAKE_SYSTEM_VERSION\u003d16\n-DANDROID_PLATFORM\u003dandroid-16\n-DANDROID_ABI\u003d$ABI\n-DCMAKE_ANDROID_ARCH_ABI\u003d$ABI\n-DANDROID_NDK\u003d$NDK\n-DCMAKE_ANDROID_NDK\u003d$NDK\n-DCMAKE_TOOLCHAIN_FILE\u003d$NDK/build/cmake/android.toolchain.cmake\n-DCMAKE_MAKE_PROGRAM\u003d$NINJA\n-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d$PROJECT/app/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d$PROJECT/app/build/intermediates/cxx/Debug/$HASH/obj/$ABI\n-DCMAKE_BUILD_TYPE\u003dDebug\n-B$PROJECT/app/.cxx/Debug/$HASH/$ABI\n-GNinja\n-DANDROID_APP_PLATFORM\u003dandroid-16\n-DANDROID_STL\u003dc++_static",
+  "configurationArguments": [
+    "-H/home/alexis/Desktop/game/android-project/app/jni",
+    "-DCMAKE_SYSTEM_NAME\u003dAndroid",
+    "-DCMAKE_EXPORT_COMPILE_COMMANDS\u003dON",
+    "-DCMAKE_SYSTEM_VERSION\u003d16",
+    "-DANDROID_PLATFORM\u003dandroid-16",
+    "-DANDROID_ABI\u003darm64-v8a",
+    "-DCMAKE_ANDROID_ARCH_ABI\u003darm64-v8a",
+    "-DANDROID_NDK\u003d/home/alexis/Android/Sdk/ndk/23.1.7779620",
+    "-DCMAKE_ANDROID_NDK\u003d/home/alexis/Android/Sdk/ndk/23.1.7779620",
+    "-DCMAKE_TOOLCHAIN_FILE\u003d/home/alexis/Android/Sdk/ndk/23.1.7779620/build/cmake/android.toolchain.cmake",
+    "-DCMAKE_MAKE_PROGRAM\u003d/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja",
+    "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY\u003d/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v/obj/arm64-v8a",
+    "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY\u003d/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v/obj/arm64-v8a",
+    "-DCMAKE_BUILD_TYPE\u003dDebug",
+    "-B/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a",
+    "-GNinja",
+    "-DANDROID_APP_PLATFORM\u003dandroid-16",
+    "-DANDROID_STL\u003dc++_static"
+  ],
+  "intermediatesParentFolder": "/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v"
+}

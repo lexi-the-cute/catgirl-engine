@@ -1,0 +1,121 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+	package
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:1-99:12
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+	android:versionName
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:7:5-30
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:5:11-69
+	android:versionCode
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:6:5-28
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+	android:installLocation
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:8:5-35
+uses-feature#0x00020000
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:11:5-54
+	android:glEsVersion
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:11:19-51
+uses-feature#android.hardware.touchscreen
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:14:5-16:36
+	android:required
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:16:9-33
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:15:9-52
+uses-feature#android.hardware.bluetooth
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:19:5-21:36
+	android:required
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:21:9-33
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:20:9-50
+uses-feature#android.hardware.gamepad
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:22:5-24:36
+	android:required
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:24:9-33
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:23:9-48
+uses-feature#android.hardware.usb.host
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:25:5-27:36
+	android:required
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:27:9-33
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:26:9-49
+uses-feature#android.hardware.type.pc
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:30:5-32:36
+	android:required
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:32:9-33
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:31:9-48
+uses-permission#android.permission.VIBRATE
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:49:5-66
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:49:22-63
+application
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:62:5-97:19
+	android:label
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:62:18-50
+	android:hardwareAccelerated
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:66:9-43
+	android:icon
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:63:9-43
+	android:allowBackup
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:64:9-35
+	android:theme
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:65:9-67
+activity#org.libsdl.app.SDLActivity
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:72:9-96:20
+	android:label
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:73:13-45
+	android:launchMode
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:75:13-48
+	android:exported
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:78:13-36
+	android:configChanges
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:76:13-156
+	android:alwaysRetainTaskState
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:74:13-49
+	android:preferMinimalPostProcessing
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:77:13-55
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:72:19-45
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:80:13-83:29
+action#android.intent.action.MAIN
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:81:17-69
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:81:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:82:17-77
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:82:27-74
+intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:85:13-87:29
+action#android.hardware.usb.action.USB_DEVICE_ATTACHED
+ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:86:17-90
+	android:name
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml:86:25-87
+uses-sdk
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		ADDED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml
+		INJECTED from /home/alexis/Desktop/game/android-project/app/src/main/AndroidManifest.xml

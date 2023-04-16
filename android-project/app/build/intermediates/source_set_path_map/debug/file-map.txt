@@ -1,0 +1,8 @@
+org.libsdl.app-pngs-0 /home/alexis/Desktop/game/android-project/app/build/generated/res/pngs/debug
+org.libsdl.app-resValues-1 /home/alexis/Desktop/game/android-project/app/build/generated/res/resValues/debug
+org.libsdl.app-rs-2 /home/alexis/Desktop/game/android-project/app/build/generated/res/rs/debug
+org.libsdl.app-mergeDebugResources-3 /home/alexis/Desktop/game/android-project/app/build/intermediates/incremental/debug/mergeDebugResources/merged.dir
+org.libsdl.app-mergeDebugResources-4 /home/alexis/Desktop/game/android-project/app/build/intermediates/incremental/debug/mergeDebugResources/stripped.dir
+org.libsdl.app-merged_res-5 /home/alexis/Desktop/game/android-project/app/build/intermediates/merged_res/debug
+org.libsdl.app-debug-6 /home/alexis/Desktop/game/android-project/app/src/debug/res
+org.libsdl.app-main-7 /home/alexis/Desktop/game/android-project/app/src/main/res

@@ -1,0 +1,75 @@
+{
+  "buildFiles": [
+    "/home/alexis/Desktop/game/android-project/app/jni/CMakeLists.txt",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/CMakeLists.txt",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/CheckCPUArchitecture.cmake",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/macros.cmake",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake/sdlchecks.cmake",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/cmake_uninstall.cmake.in",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/include/SDL_config.h.cmake",
+    "/home/alexis/Desktop/game/android-project/app/jni/SDL/include/SDL_revision.h.cmake"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/home/alexis/Android/Sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "SDL2::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "SDL2",
+      "output": "/home/alexis/Desktop/game/android-project/app/build/intermediates/cxx/Debug/3973o25v/obj/arm64-v8a/libSDL2.so",
+      "runtimeFiles": []
+    },
+    "SDL2-static::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "SDL2-static",
+      "output": "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/SDL/libSDL2.a"
+    },
+    "SDL2_test::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "SDL2_test",
+      "output": "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/SDL/libSDL2_test.a"
+    },
+    "SDL2main::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "SDL2main",
+      "output": "/home/alexis/Desktop/game/android-project/app/.cxx/Debug/3973o25v/arm64-v8a/SDL/libSDL2main.a"
+    },
+    "sdl_headers_copy::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "sdl_headers_copy"
+    },
+    "uninstall::@e7c329919722962a2ad4": {
+      "toolchain": "toolchain",
+      "abi": "arm64-v8a",
+      "artifactName": "uninstall"
+    }
+  },
+  "toolchains": {
+    "toolchain": {
+      "cCompilerExecutable": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang.lld",
+      "cppCompilerExecutable": "/home/alexis/Android/Sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++.lld"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}
