@@ -1,0 +1,13 @@
+[package]
+name = "game"
+version = "0.1.0"
+authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+sdl2 = "0.35.2"  # You can use * to tell Rust to pick a version
+specs = "0.18.0"
+rand = "0.8.5"
+rayon = "1.7.0"
