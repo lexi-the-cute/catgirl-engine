@@ -8,5 +8,6 @@
         "**/.cxx/**": true,
         "**/.idea/**": true,
         "**/.jniLibs/**": true,
-    }
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/android/app/jni"
 }
