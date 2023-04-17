@@ -1,3 +1,6 @@
+# TODO: Check if submodules were initialized and initialize them here before build if not
+# TODO: Setup local.properties
+
 ./clean.sh
 
 cargo build
