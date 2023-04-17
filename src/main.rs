@@ -1,6 +1,7 @@
 // https://sunjay.dev/learn-game-dev/opening-a-window.html
 
 use std::thread;
+use std::thread::JoinHandle;
 // use std::sync::mpsc;
 
 mod physics;
@@ -17,8 +18,8 @@ fn main() {
      * The client can either run standalone (multiplayer)
      *   or run both at the same time (singleplayer).
     */
-    let _handle = thread::spawn(|| physics::start());
-    let _handle = thread::spawn(|| render::start());
+    let _handle: JoinHandle<()> = thread::spawn(|| physics::start());
+    let _handle: JoinHandle<Result<(), String>> = thread::spawn(|| render::start());
 
-    _handle.join().unwrap();
+    _handle.join().unwrap().map_err(|err: String| println!("{:?}", err)).ok();
 }

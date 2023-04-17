@@ -1,28 +1,32 @@
 use std::thread;
 use std::time::Duration;
 
+use sdl2::render::Canvas;
+use sdl2::video::Window;
+use sdl2::{VideoSubsystem, Sdl, EventPump};
 use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::keyboard::Keycode;
 
 // This thread handles both rendering and input (aka the client)
 pub fn start() -> Result<(), String> {
-    let sdl_context = sdl2::init()?;
-    let video_subsystem = sdl_context.video()?;
+    let sdl_context: Sdl = sdl2::init()?;
+    let video_subsystem: VideoSubsystem = sdl_context.video()?;
 
-    let window = video_subsystem.window("rust-sdl2 demo", 800, 600)
+    let window: Window = video_subsystem.window("rust-sdl2 demo", 800, 600)
         .position_centered()
         .build()
-        .expect("could not initialize video subsystem");
+        .unwrap();
 
-    let mut canvas = window.into_canvas().build()
+    let mut canvas: Canvas<Window> = window.into_canvas().build()
         .expect("could not make a canvas");
 
     canvas.set_draw_color(Color::RGB(0, 255, 255));
     canvas.clear();
     canvas.present();
-    let mut event_pump = sdl_context.event_pump()?;
-    let mut i = 0;
+
+    let mut event_pump: EventPump = sdl_context.event_pump()?;
+    let mut i: u8 = 0;
     'running: loop {
         i = (i + 1) % 255;
         canvas.set_draw_color(Color::RGB(i, 64, 255 - i));
@@ -45,6 +49,7 @@ pub fn start() -> Result<(), String> {
     Ok(())
 }
 
+// Unused, May Move Render/Event Loop Here
 fn render() {
     for i in 1..10 {
         println!("render: {}", i);

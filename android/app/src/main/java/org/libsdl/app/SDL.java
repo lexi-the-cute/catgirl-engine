@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
     SDL library initialization
 */
 public class SDL {
-
     // This function should be called first and sets up the native code
     // so it can call into the Java classes
     public static void setupJNI() {
@@ -37,7 +36,6 @@ public class SDL {
     }
 
     public static void loadLibrary(String libraryName) throws UnsatisfiedLinkError, SecurityException, NullPointerException {
-
         if (libraryName == null) {
             throw new NullPointerException("No library name provided.");
         }
@@ -67,15 +65,14 @@ public class SDL {
             Method loadMethod = relinkInstanceClass.getDeclaredMethod("loadLibrary", contextClass, stringClass, stringClass, relinkListenerClass);
             loadMethod.invoke(relinkInstance, mContext, libraryName, null, null);
         }
+
         catch (final Throwable e) {
             // Fall back
             try {
                 System.loadLibrary(libraryName);
-            }
-            catch (final UnsatisfiedLinkError ule) {
+            } catch (final UnsatisfiedLinkError ule) {
                 throw ule;
-            }
-            catch (final SecurityException se) {
+            } catch (final SecurityException se) {
                 throw se;
             }
         }

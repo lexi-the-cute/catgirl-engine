@@ -6,7 +6,6 @@ project(GAME)
 # include(AndroidNdkModules)
 # android_ndk_import_module_cpufeatures()
 
-
 # SDL sources are in a subfolder named "SDL"
 add_subdirectory(SDL)
 

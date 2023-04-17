@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.UUID;
 
 class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDevice {
-
     private static final String TAG = "hidapi";
     private HIDDeviceManager mManager;
     private BluetoothDevice mDevice;
@@ -220,7 +219,6 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     }
 
     public void reconnect() {
-
         if (getConnectionState() != BluetoothProfile.STATE_CONNECTED) {
             mGatt.disconnect();
             mGatt = connectGatt();
@@ -298,7 +296,6 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
     }
 
     private boolean probeService(HIDDeviceBLESteamController controller) {
-
         if (isRegistered()) {
             return true;
         }
@@ -323,6 +320,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                         }
                     }
                 }
+
                 return true;
             }
         }
@@ -446,8 +444,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
                 mIsConnected = false;
                 gatt.disconnect();
                 mGatt = connectGatt(false);
-            }
-            else {
+            } else {
                 probeService(this);
             }
         }
@@ -623,6 +620,7 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
 
     @Override
     public void close() {
+
     }
 
     @Override
@@ -640,11 +638,10 @@ class HIDDeviceBLESteamController extends BluetoothGattCallback implements HIDDe
             g.close();
             mGatt = null;
         }
+
         mManager = null;
         mIsRegistered = false;
         mIsConnected = false;
         mOperations.clear();
     }
-
 }
-
