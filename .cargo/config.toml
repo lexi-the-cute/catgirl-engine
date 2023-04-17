@@ -2,7 +2,7 @@
 
 [alias]
 rr = "run --release"
-android = [""]  # TODO: Figure out how to run builds
+android = ["build", "--target", "aarch64-linux-android", "--target", "armv7-linux-androideabi", "--target", "i686-linux-android", "--release"]  # TODO: Figure out how to run builds
 
 # [target.aarch64-linux-android]
 # ar = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
