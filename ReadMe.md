@@ -2,6 +2,8 @@ I want to make the android build system OS independent and build from fresh git 
 
 Note: Test in virtual machines to make sure it installs from scratch
 
+https://doc.rust-lang.org/cargo/reference/build-scripts.html
+
 # Android
 
 I'll rewrite the Android components later when I have more time. I'll also write proper up to date instructions.
