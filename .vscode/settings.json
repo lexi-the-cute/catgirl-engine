@@ -8,7 +8,7 @@
         "**/.cxx/**": true,
         "**/.idea/**": true,
         "**/.jniLibs/**": true,
-        "**/SDL/**"
+        "**/SDL/**": true
     },
     "cmake.sourceDirectory": "${workspaceFolder}/android/app/jni",
     "rust-analyzer.linkedProjects": [
