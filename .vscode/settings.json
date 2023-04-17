@@ -9,5 +9,9 @@
         "**/.idea/**": true,
         "**/.jniLibs/**": true,
     },
-    "cmake.sourceDirectory": "${workspaceFolder}/android/app/jni"
+    "cmake.sourceDirectory": "${workspaceFolder}/android/app/jni",
+    "rust-analyzer.linkedProjects": [
+        "./Cargo.toml",
+        "./Cargo.toml"
+    ]
 }
