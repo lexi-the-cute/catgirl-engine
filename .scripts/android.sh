@@ -27,4 +27,6 @@ mkdir $JNI_LIBS/x86
 #..and copy the rust library into the android studio project, ready for beeing included into the APK
 cp target/aarch64-linux-android/$BUILD_MODE/$LIB_NAME $JNI_LIBS/arm64-v8a/libmain.so
 cp target/armv7-linux-androideabi/$BUILD_MODE/$LIB_NAME $JNI_LIBS/armeabi-v7a/libmain.so
-cp target/i686-linux-android/$BUILD_MODE/$LIB_NAME $JNI_LIBS/x86/libmain.so 
+cp target/i686-linux-android/$BUILD_MODE/$LIB_NAME $JNI_LIBS/x86/libmain.so
+
+cd android && ./gradlew assembleDebug
