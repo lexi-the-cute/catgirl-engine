@@ -1,4 +1,4 @@
-use std::thread;
+// use std::thread;
 use std::time::Duration;
 
 use sdl2::render::Canvas;
@@ -50,11 +50,11 @@ pub fn start() -> Result<(), String> {
 }
 
 // Unused, May Move Render/Event Loop Here
-fn render() {
-    for i in 1..10 {
-        println!("render: {}", i);
-        thread::sleep(Duration::from_millis(1));
-    }
+// fn render() {
+//     for i in 1..10 {
+//         println!("render: {}", i);
+//         thread::sleep(Duration::from_millis(1));
+//     }
 
-    // thread::sleep(Duration::from_millis(1));
-}
+//     // thread::sleep(Duration::from_millis(1));
+// }
