@@ -1,5 +1,5 @@
 #NOTE: Dont't forget to modify these vars to your setup
-JNI_LIBS=./android-project/app/src/main/jniLibs
+JNI_LIBS=./android/app/src/main/jniLibs
 LIB_NAME=libmain.so
 SDL2_LIBS=/home/alexis/.libraries/SDL/libs
 BUILD_MODE=release

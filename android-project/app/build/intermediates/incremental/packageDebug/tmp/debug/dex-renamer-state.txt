@@ -1,4 +1,0 @@
-#Sun Apr 16 14:05:51 EDT 2023
-base.0=/home/alexis/Desktop/game/android-project/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
