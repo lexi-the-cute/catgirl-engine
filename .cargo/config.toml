@@ -1,0 +1,17 @@
+# https://doc.rust-lang.org/cargo/reference/config.html?highlight=alias#configuration-format
+
+[alias]
+rr = "run --release"
+android = [""]  # TODO: Figure out how to run builds
+
+# [target.aarch64-linux-android]
+# ar = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
+# linker ="/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android31-clang"
+
+# [target.armv7-linux-androideabi]
+# ar = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
+# linker = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi31-clang"
+
+# [target.i686-linux-android]
+# ar = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
+# linker = "/home/alexis/Android/Sdk/ndk/25.2.9519653/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android31-clang"
