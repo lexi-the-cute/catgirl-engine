@@ -1,5 +1,12 @@
 {
     "files.watcherExclude": {
-        "**/target/**": true
+        "**/target/**": true,
+        "**/.gradle/**": true,
+        "**/build/**": true,
+        "**/captures/**": true,
+        "**/externalNativeBuild/**": true,
+        "**/.cxx/**": true,
+        "**/.idea/**": true,
+        "**/.jniLibs/**": true,
     }
 }
