@@ -7,10 +7,13 @@
 sudo apt update
 
 # Install Required Packages
-sudo apt install git gcc libsdl2-dev
+sudo apt install git gcc libsdl2-dev #libsdl2-image-dev libsdl2-ttf-dev
 
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Run Cargo Environment Setup Script
+source "$HOME/.cargo/env"
 
 # Download This Repo
 git clone https://github.com/alexisart/game --recurse-submodules
@@ -107,11 +110,11 @@ cp ./target/armv7-linux-androideabi/release/libmain.so ./android/app/src/main/jn
 cp ./target/i686-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86/libmain.so
 cp ./target/x86_64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86_64/libmain.so
 
-# Switch Over To Android App Directory
-cd android
-
 # Set SDK Location
 cd ./tools && export ANDROID_HOME="`pwd`" && cd ..
+
+# Switch Over To Android App Directory
+cd android
 
 # Build Android Apk
 ./gradlew assembleRelease
