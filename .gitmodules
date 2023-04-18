@@ -1,3 +1,9 @@
 [submodule "android/app/jni/SDL"]
 	path = android/app/jni/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "android/app/jni/SDL_image"]
+	path = android/app/jni/SDL_image
+	url = https://github.com/libsdl-org/SDL_image
+[submodule "android/app/jni/SDL_ttf"]
+	path = android/app/jni/SDL_ttf
+	url = https://github.com/libsdl-org/SDL_ttf

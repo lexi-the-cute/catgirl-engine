@@ -76,7 +76,10 @@ cargo build
 ```bash
 # NOTE: If you change the Android API to call, change the version numbers in ./.cargo/config.toml too
 # Compile SDL For Android (APP_PLATFORM is Version Of Android API To Compile For)
-./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-21"
+# TODO: Add SDL_image and SDL_ttf to build includes
+# ./tools/android-ndk-r25c/ndk-build ... SDL_image
+# ./tools/android-ndk-r25c/ndk-build ... SDL_ttf
+./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-21" LOCAL_EXPORT_C_INCLUDES="./android/app/jni/SDL_image ./android/app/jni/SDL_ttf"
 
 # Make Directories For Dropping SDL Library Into
 mkdir -p ./target/aarch64-linux-android/release/deps
