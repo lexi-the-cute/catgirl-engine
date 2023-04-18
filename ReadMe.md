@@ -7,7 +7,7 @@
 sudo apt update
 
 # Install Required Packages
-sudo apt install git gcc libsdl2-dev #libsdl2-image-dev libsdl2-ttf-dev
+sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

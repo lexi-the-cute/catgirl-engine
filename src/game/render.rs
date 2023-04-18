@@ -1,3 +1,5 @@
+// https://sunjay.dev/learn-game-dev/rendering-an-image.html
+
 use std::thread;
 use std::time::Duration;
 

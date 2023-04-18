@@ -13,7 +13,11 @@ crate-type = ["cdylib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sdl2 = "0.35.2"  # You can use * to tell Rust to pick a version
-specs = "0.18.0"
+specs = "0.18.0"  # You can use * to tell Rust to pick a version
 rand = "0.8.5"
 rayon = "1.7.0"
+
+[dependencies.sdl2]
+version = "0.35.2"
+default-features = false
+features = ["image"]
