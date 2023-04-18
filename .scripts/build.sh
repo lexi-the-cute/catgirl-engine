@@ -5,7 +5,7 @@
 
 cargo build
 (cd android/app/jni/SDL && /home/alexis/Android/Sdk/ndk/25.2.9519653/ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=Android.mk APP_PLATFORM=android-31)
-.scripts/android.sh
+android.sh
 
 echo You can find your apk in ./android/app/build/outputs/apk/debug
 ls -liallh android/app/build/outputs/apk/debug
