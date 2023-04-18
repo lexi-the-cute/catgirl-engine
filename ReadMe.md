@@ -117,7 +117,7 @@ cd ./tools && export ANDROID_HOME="`pwd`" && cd ..
 cd android
 
 # Build Android Apk
-./gradlew assembleRelease
+./gradlew assembleDebug
 
 # Switch Over To Project Root
 cd ..
