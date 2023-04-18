@@ -79,16 +79,16 @@ cargo build
 ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-21"
 
 # Make Directories For Dropping SDL Library Into
-mkdir -p ./target/aarch64-linux-android/release/deps/
-mkdir -p ./target/armv7-linux-androideabi/release/deps/
-mkdir -p ./target/i686-linux-android/release/deps/
-mkdir -p ./target/x86_64-linux-android/release/deps/
+mkdir -p ./target/aarch64-linux-android/release/deps
+mkdir -p ./target/armv7-linux-androideabi/release/deps
+mkdir -p ./target/i686-linux-android/release/deps
+mkdir -p ./target/x86_64-linux-android/release/deps
 
 # Copy SDL Library Over To Corresponding Directories
-cp -a ./android/app/jni/SDL/libs/arm64-v8a/. target/aarch64-linux-android/release/deps/
-cp -a ./android/app/jni/SDL/libs/armeabi-v7a/. target/armv7-linux-androideabi/release/deps/
-cp -a ./android/app/jni/SDL/libs/x86/. ./target/i686-linux-android/release/deps/
-cp -a ./android/app/jni/SDL/libs/x86_64/. ./target/x86_64-linux-android/release/deps/
+cp -a ./android/app/jni/SDL/libs/arm64-v8a/. ./target/aarch64-linux-android/release/deps
+cp -a ./android/app/jni/SDL/libs/armeabi-v7a/. ./target/armv7-linux-androideabi/release/deps
+cp -a ./android/app/jni/SDL/libs/x86/. ./target/i686-linux-android/release/deps
+cp -a ./android/app/jni/SDL/libs/x86_64/. ./target/x86_64-linux-android/release/deps
 
 # Build Engine As Library
 cargo build --target aarch64-linux-android --release
@@ -124,7 +124,7 @@ cd ..
 
 # Find Compiled Android App
 echo You can find your apk in ./android/app/build/outputs/apk/debug
-ls -liallh android/app/build/outputs/apk/debug
+ls -liallh ./android/app/build/outputs/apk/debug
 ```
 
 # Run
