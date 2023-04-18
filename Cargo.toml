@@ -3,8 +3,6 @@ name = "game"
 version = "0.1.0"
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
-# build = "build.rs"
-build = false  # Disable Looking For External Build Script
 
 [lib]
 name = "main"

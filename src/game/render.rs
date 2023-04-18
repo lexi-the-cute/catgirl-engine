@@ -34,8 +34,8 @@ pub fn start() -> Result<(), String> {
     let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
     let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;
 
-    let position = Point::new(0, 0);
-    let sprite = Rect::new(0, 0, 26, 36);
+    let position: Point = Point::new(0, 0);
+    let sprite: Rect = Rect::new(0, 0, 26, 36);
 
     let mut event_pump: EventPump = sdl_context.event_pump()?;
     let mut i: u8 = 0;
