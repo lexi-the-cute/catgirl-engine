@@ -3,16 +3,22 @@ use std::time::Duration;
 
 // This thread handles physics (aka the server)
 pub fn start() {
+    let mut i: i8 = 0;
+
     loop {
-        update();
+        i += 1;
+
+        if i > 60 {
+            i = 0;
+        }
+
+        update(i);
     }
 }
 
-fn update() {
-    for i in 1..10 {
-        println!("update: {}", i);
-        thread::sleep(Duration::from_millis(1));
-    }
+fn update(i: i8) {
+    print!("\x1b[KPhysics Update: {}\r", i);
 
-    // thread::sleep(Duration::from_millis(1));
+    // Slow Down Physics (60 FPS)
+    thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
 }
