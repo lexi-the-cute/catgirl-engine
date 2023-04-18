@@ -1,5 +1,3 @@
-// https://sunjay.dev/learn-game-dev/refactor-traditional-game-loop.html
-
 use std::thread;
 use std::thread::JoinHandle;
 // use std::sync::mpsc;
