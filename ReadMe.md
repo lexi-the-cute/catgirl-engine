@@ -95,6 +95,12 @@ cp -a ./android/app/jni/SDL/libs/armeabi-v7a/. ./target/armv7-linux-androideabi/
 cp -a ./android/app/jni/SDL/libs/x86/. ./target/i686-linux-android/release/deps
 cp -a ./android/app/jni/SDL/libs/x86_64/. ./target/x86_64-linux-android/release/deps
 
+# Copy SDL Image Library Over To Corresponding Directories
+cp -a ./android/app/jni/SDL_image/libs/arm64-v8a/. ./target/aarch64-linux-android/release/deps
+cp -a ./android/app/jni/SDL_image/libs/armeabi-v7a/. ./target/armv7-linux-androideabi/release/deps
+cp -a ./android/app/jni/SDL_image/libs/x86/. ./target/i686-linux-android/release/deps
+cp -a ./android/app/jni/SDL_image/libs/x86_64/. ./target/x86_64-linux-android/release/deps
+
 # Build Engine As Library
 cargo build --target aarch64-linux-android --release
 cargo build --target armv7-linux-androideabi --release
