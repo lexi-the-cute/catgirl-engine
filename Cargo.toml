@@ -17,5 +17,6 @@ rayon = "1.7.0"
 
 [dependencies.sdl2]
 version = "0.35.2"
-default-features = false
+default-features = true
 features = ["image"]
+# features = ["ttf", "image"]  # -lSDL2_ttf and -lSDL2_image
