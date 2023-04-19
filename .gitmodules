@@ -1,9 +1,15 @@
 [submodule "android/app/jni/SDL"]
 	path = android/app/jni/SDL
-	url = https://github.com/libsdl-org/SDL
+	url = https://github.com/lexi-the-cute/SDL
 [submodule "android/app/jni/SDL_image"]
 	path = android/app/jni/SDL_image
-	url = https://github.com/libsdl-org/SDL_image
+	url = https://github.com/lexi-the-cute/SDL_image
 [submodule "android/app/jni/SDL_ttf"]
 	path = android/app/jni/SDL_ttf
-	url = https://github.com/libsdl-org/SDL_ttf
+	url = https://github.com/lexi-the-cute/SDL_ttf
+[submodule "android/app/jni/harfbuzz"]
+	path = android/app/jni/harfbuzz
+	url = https://github.com/lexi-the-cute/harfbuzz
+[submodule "android/app/jni/freetype"]
+	path = android/app/jni/freetype
+	url = https://github.com/lexi-the-cute/freetype

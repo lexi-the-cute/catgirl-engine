@@ -79,7 +79,11 @@ cargo build
 # TODO: Add SDL_image and SDL_ttf to build includes
 # ./tools/android-ndk-r25c/ndk-build ... SDL_image
 # ./tools/android-ndk-r25c/ndk-build ... SDL_ttf
-./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-21" LOCAL_EXPORT_C_INCLUDES="./android/app/jni/SDL_image ./android/app/jni/SDL_ttf"
+./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-21"
+./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_image" APP_BUILD_SCRIPT="./android/app/jni/SDL_image/Android.mk" APP_PLATFORM="android-21"
+# ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/freetype" APP_BUILD_SCRIPT="./android/app/jni/freetype/Android.mk" APP_PLATFORM="android-21"
+# ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/harfbuzz" APP_BUILD_SCRIPT="./android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="android-21"
+# ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="./android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="android-21"
 
 # Make Directories For Dropping SDL Library Into
 mkdir -p ./target/aarch64-linux-android/release/deps
