@@ -6,8 +6,11 @@ pub mod physics;
 pub mod render;
 
 pub fn start() {
+    // It's much easier to debug when one can see the log (logcat on Android)
+    setup_logger();
+
     // let (tx, rx) = mpsc::channel();
-    println!("Starting Game...");
+    info!("Starting Game...");
 
     /* This is a server/client model
      *
@@ -19,5 +22,18 @@ pub fn start() {
     let _handle: JoinHandle<()> = thread::spawn(|| physics::start());
     let _handle: JoinHandle<Result<(), String>> = thread::spawn(|| render::start());
 
-    _handle.join().unwrap().map_err(|err: String| println!("{:?}", err)).ok();
+    _handle.join().unwrap().map_err(|err: String| error!("{:?}", err)).ok();
+}
+
+fn setup_logger() {
+    if cfg!(android) {
+        android_logger::init_once(
+            android_logger::Config::default()
+                    .with_max_level(log::LevelFilter::Trace)
+                    .with_tag("CatgirlEngine")
+        );
+    } else {
+        // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
+        pretty_env_logger::init();
+    }
 }

@@ -1,6 +1,9 @@
+#[macro_use] extern crate log;
+
 use sdl2::libc;
 
 mod game;
+mod android;
 
 // Run as Library (e.g. Android)
 #[no_mangle]

@@ -14,6 +14,9 @@ crate-type = ["cdylib"]
 specs = "0.18.0"  # You can use * to tell Rust to pick a version
 rand = "0.8.5"
 rayon = "1.7.0"
+log = "0.4.17"
+android_logger = "0.13.1"
+pretty_env_logger = "0.4.0"
 
 [dependencies.sdl2]
 git = "https://github.com/alexisart/rust-sdl2"

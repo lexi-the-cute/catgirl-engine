@@ -16,8 +16,8 @@ pub fn start() {
     }
 }
 
-fn update(i: i8) {
-    print!("\x1b[KPhysics Update: {}\r", i);
+fn update(_i: i8) {
+    // debug!("Physics Update: {}", i);
 
     // Slow Down Physics (60 FPS)
     thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));

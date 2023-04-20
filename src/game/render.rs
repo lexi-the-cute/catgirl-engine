@@ -21,11 +21,10 @@ pub fn start() -> Result<(), String> {
 
     let window: Window = video_subsystem.window("Alexis' Game Engine", 800, 600)
         .position_centered()
-        .build()
-        .unwrap();
+        .build().expect("Could Not Make A Window");
 
-    let mut canvas: Canvas<Window> = window.into_canvas().build()
-        .expect("could not make a canvas");
+    let mut canvas: Canvas<Window> = window.into_canvas()
+        .build().expect("Could Not Make a Canvas");
 
     canvas.set_draw_color(Color::RGB(0, 255, 255));
     canvas.clear();
