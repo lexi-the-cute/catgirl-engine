@@ -32,7 +32,7 @@ pub fn start() -> Result<(), String> {
     canvas.present();
 
     let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
-    let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;
+    let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;  // TODO: This is what breaks Android
 
     let position: Point = Point::new(0, 0);
     let sprite: Rect = Rect::new(0, 0, 26, 36);
