@@ -1,4 +1,4 @@
-package org.libsdl.app;
+package land.catgirl.engine;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
