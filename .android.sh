@@ -1,8 +1,8 @@
 # ----------------------------------------
 # Clean Terminal
 # ----------------------------------------
-reset
-clear
+# reset
+# clear
 # ----------------------------------------
 
 
@@ -16,7 +16,7 @@ cd /home/alexis/Desktop/game
 # Note: TODO: I Want To Get Rid Of This And Use Gradle Output For Dependencies Instead
 # ----------------------------------------
 # Clean Rust Build Files
-cargo clean
+# cargo clean
 
 # NOTE: If you change the Android API to call, change the version numbers in ./.cargo/config.toml too
 # Compile SDL For Android (APP_PLATFORM is Version Of Android API To Compile For)
@@ -80,7 +80,7 @@ cd android
 # Build App
 # ----------------------------------------
 # Clean Android Build Files
-./gradlew clean
+# ./gradlew clean
 
 # Build Android Apk
 ./gradlew assembleDebug
