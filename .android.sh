@@ -1,11 +1,21 @@
-# This exists as a temporary resource for writing your own compilation scripts
-
+# ----------------------------------------
+# Clean Terminal
+# ----------------------------------------
 reset
 clear
+# ----------------------------------------
+
 
 cd /home/alexis/Desktop/game
 
-# ...
+
+
+# ----------------------------------------
+# Build Dependencies For Engine Builds
+# 
+# Note: TODO: I Want To Get Rid Of This And Use Gradle Output For Dependencies Instead
+# ----------------------------------------
+# Clean Rust Build Files
 cargo clean
 
 # NOTE: If you change the Android API to call, change the version numbers in ./.cargo/config.toml too
@@ -21,7 +31,6 @@ mkdir -p ./target/aarch64-linux-android/release/deps
 mkdir -p ./target/armv7-linux-androideabi/release/deps
 mkdir -p ./target/i686-linux-android/release/deps
 mkdir -p ./target/x86_64-linux-android/release/deps
-# mkdir -p ./target/x86_64-linux-laptop/release/deps
 
 # Copy SDL Library Over To Corresponding Directories
 cp -a ./android/app/jni/SDL/libs/arm64-v8a/libSDL2.so ./target/aarch64-linux-android/release/deps/libSDL2.so
@@ -34,13 +43,21 @@ cp -a ./android/app/jni/SDL_image/libs/arm64-v8a/libSDL2_image.so ./target/aarch
 cp -a ./android/app/jni/SDL_image/libs/armeabi-v7a/libSDL2_image.so ./target/armv7-linux-androideabi/release/deps/libSDL2_image.so
 cp -a ./android/app/jni/SDL_image/libs/x86/libSDL2_image.so ./target/i686-linux-android/release/deps/libSDL2_image.so
 cp -a ./android/app/jni/SDL_image/libs/x86_64/libSDL2_image.so ./target/x86_64-linux-android/release/deps/libSDL2_image.so
+# ----------------------------------------
+
+
+
+# ----------------------------------------
+# Build Engine
+# ----------------------------------------
+# Clean Rust Build Files
+# cargo clean
 
 # Build Engine As Library
 cargo build --target aarch64-linux-android --release
 cargo build --target armv7-linux-androideabi --release
 cargo build --target i686-linux-android --release
 cargo build --target x86_64-linux-android --release
-# cargo build --target x86_64-linux-laptop --release
 
 # Make Directories For Storing Engine In Android App
 rm -rf ./android/app/src/main/jniLibs
@@ -50,33 +67,34 @@ mkdir ./android/app/src/main/jniLibs/armeabi-v7a
 mkdir ./android/app/src/main/jniLibs/x86
 mkdir ./android/app/src/main/jniLibs/x86_64
 
-# Copy Libraries To Android App
-cp ./target/aarch64-linux-android/release/deps/*.so ./android/app/src/main/jniLibs/arm64-v8a/
-cp ./target/armv7-linux-androideabi/release/deps/*.so ./android/app/src/main/jniLibs/armeabi-v7a/
-cp ./target/i686-linux-android/release/deps/*.so ./android/app/src/main/jniLibs/x86/
-cp ./target/x86_64-linux-android/release/deps/*.so ./android/app/src/main/jniLibs/x86_64/
-
 # Copy Engine Over To Android App
-# cp ./target/aarch64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/arm64-v8a/libmain.so
-# cp ./target/armv7-linux-androideabi/release/libmain.so ./android/app/src/main/jniLibs/armeabi-v7a/libmain.so
-# cp ./target/i686-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86/libmain.so
-# cp ./target/x86_64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86_64/libmain.so
+cp ./target/aarch64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/arm64-v8a/libmain.so
+cp ./target/armv7-linux-androideabi/release/libmain.so ./android/app/src/main/jniLibs/armeabi-v7a/libmain.so
+cp ./target/i686-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86/libmain.so
+cp ./target/x86_64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86_64/libmain.so
+# ----------------------------------------
 
-# Switch Over To Android App Directory
+
 cd android
-
-# ...
+# ----------------------------------------
+# Build App
+# ----------------------------------------
+# Clean Android Build Files
 ./gradlew clean
 
 # Build Android Apk
 ./gradlew assembleDebug
+# ----------------------------------------
 
-# Switch Over To Project Root
+
 cd ..
-
+# ----------------------------------------
+# Install Android App
+# ----------------------------------------
 # Find Compiled Android App
 echo You can find your apk in ./android/app/build/outputs/apk/debug
 ls -liallh ./android/app/build/outputs/apk/debug
 
-# ...
+# Install Compiled Android App
 adb install ./android/app/build/outputs/apk/debug/app-debug.apk
+# ----------------------------------------

@@ -2,8 +2,8 @@ use std::thread;
 use std::thread::JoinHandle;
 // use std::sync::mpsc;
 
-mod physics;
-mod render;
+pub mod physics;
+pub mod render;
 
 pub fn start() {
     // let (tx, rx) = mpsc::channel();
