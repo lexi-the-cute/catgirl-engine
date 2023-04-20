@@ -1,4 +1,4 @@
-package org.libsdl.app;
+package land.catgirl.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
