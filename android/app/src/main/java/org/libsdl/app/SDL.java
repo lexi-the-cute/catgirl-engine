@@ -1,4 +1,4 @@
-package land.catgirl.engine;
+package org.libsdl.app;
 
 import android.content.Context;
 

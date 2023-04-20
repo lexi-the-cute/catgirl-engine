@@ -33,6 +33,7 @@ pub fn start() -> Result<(), String> {
 
     let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
     let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;  // TODO: This is what breaks Android
+    // let texture: Texture = texture_creator.load_texture("/data/data/land.catgirl.engine/files/assets/bardo.png")?;
 
     let position: Point = Point::new(0, 0);
     let sprite: Rect = Rect::new(0, 0, 26, 36);
