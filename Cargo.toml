@@ -16,7 +16,10 @@ rand = "0.8.5"
 rayon = "1.7.0"
 
 [dependencies.sdl2]
+git = "https://github.com/alexisart/rust-sdl2"
+branch = "master"
+# path = "/home/alexis/Desktop/rust-sdl2"
 version = "0.35.2"
-default-features = true
+default-features = false
 features = ["image"]
 # features = ["ttf", "image"]  # -lSDL2_ttf and -lSDL2_image
