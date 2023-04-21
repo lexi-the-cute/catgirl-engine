@@ -13,6 +13,8 @@ use sdl2::pixels::Color;
 use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
 use sdl2::keyboard::Keycode;
 
+use crate::game::entity::player::Player;
+
 // This thread handles both rendering and input (aka the client)
 pub fn start(tx: Sender<()>, rx: Receiver<()>) {
     run(rx).map_err(|err: String| {
@@ -62,6 +64,14 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
             }
         }
 
+        // let player: Player = Player(Point::new(0, 0), Rect::new(0, 0, 26, 36));
+        let player: Player = Player {
+            position: Point::new(0, 0),
+            sprite: Rect::new(0, 0, 26, 36),
+        };
+
+        error!("Player: {}", player.to_string());
+
         // Handle Events
         for event in event_pump.poll_iter() {
             match event {
@@ -76,7 +86,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         
         // Update Screen
         i = (i + 1) % 255;
-        render(&mut canvas, Color::RGB(i, 64, 255 - i), &texture, position, sprite)?;
+        render(&mut canvas, Color::RGB(i, 64, 255 - i), &texture, &player)?;
 
         // Slow Down Rendering (60 FPS)
         thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
@@ -86,15 +96,15 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
 }
 
 // Unused, May Move Render/Event Loop Here
-fn render(canvas: &mut Canvas<Window>, color: Color, texture: &Texture, position: Point, sprite: Rect) -> Result<(), String> {
+fn render(canvas: &mut Canvas<Window>, color: Color, texture: &Texture, player: &Player) -> Result<(), String> {
     canvas.set_draw_color(color);
     canvas.clear();
 
     let (width, height) = canvas.output_size()?;
-    let screen_position: Point = position + Point::new(width as i32 / 2, height as i32 / 2);
-    let screen_rect: Rect = Rect::from_center(screen_position, sprite.width(), sprite.height());
+    let screen_position: Point = player.get_position() + Point::new(width as i32 / 2, height as i32 / 2);
+    let screen_rect: Rect = Rect::from_center(screen_position, player.get_sprite().width(), player.get_sprite().height());
 
-    canvas.copy(texture, sprite, screen_rect)?;
+    canvas.copy(texture, player.get_sprite(), screen_rect)?;
     canvas.present();
 
     Ok(())
