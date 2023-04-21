@@ -4,6 +4,7 @@ use std::sync::mpsc;
 
 pub mod physics;
 pub mod render;
+pub mod entity;
 
 pub fn start() {
     // It's much easier to debug when one can see the log (logcat on Android)
