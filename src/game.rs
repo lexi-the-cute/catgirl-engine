@@ -1,6 +1,6 @@
 use std::thread;
 use std::thread::JoinHandle;
-// use std::sync::mpsc;
+use std::sync::mpsc;
 
 pub mod physics;
 pub mod render;
@@ -19,11 +19,44 @@ pub fn start() {
      * The client can either run standalone (multiplayer)
      *   or run both at the same time (singleplayer).
     */
-    let _handle: JoinHandle<()> = thread::spawn(|| physics::start());
-    let _handle: JoinHandle<Result<(), String>> = thread::spawn(|| render::start());
+    let (sptx, sprx) = mpsc::channel::<()>();  // Physics Messages Send
+    let (srtx, srrx) = mpsc::channel::<()>();  // Render Messages Send
 
-    _handle.join().unwrap().map_err(|err: String| error!("Crash: {:?}", err)).ok();
-    error!("Post Testing Error Logging...");
+    let (rptx, rprx) = mpsc::channel::<()>();  // Physics Messages Receive
+    let (rrtx, rrrx) = mpsc::channel::<()>();  // Render Messages Receive
+
+    let physics_thread: JoinHandle<()> = thread::Builder::new().name("physics".to_string())
+                    .spawn(|| physics::start(rptx, sprx)).unwrap();  // Server
+
+    let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
+                    .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
+
+    loop {
+        if physics_thread.is_finished() && render_thread.is_finished() {
+            info!("Stopping Game...");
+            break;
+        }
+
+        match rprx.try_recv() {
+            Ok(_) => {
+                debug!("Physics Thread Terminated...");
+                srtx.send(()).ok();
+            }
+            Err(_) => {
+                // Not Implemented At The Moment
+            }
+        }
+
+        match rrrx.try_recv() {
+            Ok(_) => {
+                debug!("Render Thread Terminated...");
+                sptx.send(()).ok();
+            }
+            Err(_) => {
+                // Not Implemented At The Moment
+            }
+        }
+    }
 }
 
 fn setup_logger() {
