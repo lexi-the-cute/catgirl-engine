@@ -22,11 +22,12 @@ pub fn start() {
     let _handle: JoinHandle<()> = thread::spawn(|| physics::start());
     let _handle: JoinHandle<Result<(), String>> = thread::spawn(|| render::start());
 
-    _handle.join().unwrap().map_err(|err: String| error!("{:?}", err)).ok();
+    _handle.join().unwrap().map_err(|err: String| error!("Crash: {:?}", err)).ok();
+    error!("Post Testing Error Logging...");
 }
 
 fn setup_logger() {
-    if cfg!(android) {
+    if cfg!(target_os = "android") {
         android_logger::init_once(
             android_logger::Config::default()
                     .with_max_level(log::LevelFilter::Trace)

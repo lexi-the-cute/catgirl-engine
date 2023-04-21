@@ -16,7 +16,6 @@ use sdl2::keyboard::Keycode;
 pub fn start() -> Result<(), String> {
     let sdl_context: Sdl = sdl2::init()?;
     let video_subsystem: VideoSubsystem = sdl_context.video()?;
-
     let _image_context: Sdl2ImageContext = image::init(InitFlag::PNG | InitFlag::JPG)?;
 
     let window: Window = video_subsystem.window("Alexis' Game Engine", 800, 600)
