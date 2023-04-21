@@ -57,6 +57,8 @@ pub fn start() {
             }
         }
     }
+
+    std::process::exit(0);
 }
 
 fn setup_logger() {
