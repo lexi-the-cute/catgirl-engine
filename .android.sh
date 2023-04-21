@@ -74,6 +74,9 @@ cp ./target/i686-linux-android/release/libmain.so ./android/app/src/main/jniLibs
 cp ./target/x86_64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86_64/libmain.so
 # ----------------------------------------
 
+# Copy Assets To Android Src (or `ln -s ../../../../assets ./android/app/src/main/assets`)
+# rm -r ./android/app/src/main/assets
+# cp -R assets ./android/app/src/main/
 
 cd android
 # ----------------------------------------
