@@ -1,5 +1,6 @@
 // https://sunjay.dev/learn-game-dev/refactor-player-struct.html
 
+use std::sync::mpsc::{Sender, Receiver};
 use std::thread;
 use std::time::Duration;
 
@@ -13,7 +14,16 @@ use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
 use sdl2::keyboard::Keycode;
 
 // This thread handles both rendering and input (aka the client)
-pub fn start() -> Result<(), String> {
+pub fn start(tx: Sender<()>, rx: Receiver<()>) {
+    run(rx).map_err(|err: String| {
+        error!("Render Crash: {:?}", err);
+    }).ok();
+
+    tx.send(()).ok();
+}
+
+fn run(rx: Receiver<()>) -> Result<(), String> {
+    // TODO: Make Sure These Three Lines Are Only Initialized Once
     let sdl_context: Sdl = sdl2::init()?;
     let video_subsystem: VideoSubsystem = sdl_context.video()?;
     let _image_context: Sdl2ImageContext = image::init(InitFlag::PNG | InitFlag::JPG)?;
@@ -38,12 +48,24 @@ pub fn start() -> Result<(), String> {
 
     let mut event_pump: EventPump = sdl_context.event_pump()?;
     let mut i: u8 = 0;
+
     'running: loop {
+        match rx.try_recv() {
+            Ok(_) => {
+                debug!("Terminating Render Thread...");
+                break;
+            }
+            Err(_) => {
+                // Not Implemented At The Moment
+            }
+        }
+
         // Handle Events
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit {..} |
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
+                    debug!("Terminating Render Thread (Quit)...");
                     break 'running;
                 },
                 _ => {}
