@@ -56,7 +56,7 @@ jobs:
 
       # Unzip Android NDK
       - name: Unzip Android NDK
-        run: unzip ndk.zip -d ./tools/
+        run: unzip ./tools/ndk.zip -d ./tools/
 
       # Download Android SDK
       - name: Download Android SDK
@@ -64,7 +64,7 @@ jobs:
 
       # Unzip Android SDK
       - name: Unzip Android SDK
-        run: unzip cmdlt.zip -d ./tools/
+        run: unzip ./tools/cmdlt.zip -d ./tools/
 
       # Download Desired Android API
       - name: Download Desired Android API
