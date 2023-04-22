@@ -138,7 +138,7 @@ jobs:
       - name: Build CatgirlEngine For aarch64
         run: cargo build --target aarch64-linux-android --release
       - name: Build CatgirlEngine For armv7
-        run: cargo build --target armv7-linux-android --release
+        run: cargo build --target armv7-linux-androideabi --release
       - name: Build CatgirlEngine For i686
         run: cargo build --target i686-linux-android --release
       - name: Build CatgirlEngine For x86_64
