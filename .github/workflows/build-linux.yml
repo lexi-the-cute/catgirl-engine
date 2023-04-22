@@ -47,7 +47,11 @@ jobs:
 
       # Compile Program
       - name: Build Program
-        run: cargo build
+        run: cargo build --release
+
+      # Display Build Directory
+      - name: Display Built Program Directory (Release)
+        run: ls -liallh ./target/release
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
