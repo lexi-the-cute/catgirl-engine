@@ -5,7 +5,7 @@ jobs:
   Build-Android:
     runs-on: ubuntu-latest
     env:
-      DESIRED_API: android-21
+      DESIRED_API: 21
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -32,7 +32,7 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install wget sudo coreutils
+      #   run: sudo apt install wget sudo coreutils sed
       - name: Install APT Packages
         run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev unzip openjdk-17-jre-headless
 
@@ -70,7 +70,7 @@ jobs:
 
       # Download Desired Android API
       - name: Download Desired Android API
-        run: ./tools/cmdline-tools/bin/sdkmanager --licenses --install "platforms;$DESIRED_API" --sdk_root=./tools
+        run: ./tools/cmdline-tools/bin/sdkmanager --licenses --install "platforms;android-$DESIRED_API" --sdk_root=./tools
 
       # Add Build Targets
       - name: Add armv7 Android Build Target
@@ -85,15 +85,15 @@ jobs:
       # ----------------------------------------
       # TODO: Get Rid Of This and Have Gradle Output Dependencies Instead
       - name: Build SDL
-        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="$DESIRED_API"
+        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       - name: Build SDL_image
-        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_image" APP_BUILD_SCRIPT="./android/app/jni/SDL_image/Android.mk" APP_PLATFORM="$DESIRED_API"
+        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_image" APP_BUILD_SCRIPT="./android/app/jni/SDL_image/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build freetype
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/freetype" APP_BUILD_SCRIPT="./android/app/jni/freetype/Android.mk" APP_PLATFORM="$DESIRED_API"
+      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/freetype" APP_BUILD_SCRIPT="./android/app/jni/freetype/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build harfbuzz
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/harfbuzz" APP_BUILD_SCRIPT="./android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="$DESIRED_API"
+      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/harfbuzz" APP_BUILD_SCRIPT="./android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build SDL_ttf
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="./android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="$DESIRED_API"
+      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="./android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="android-$DESIRED_API"
 
       # Make Directories For Dropping SDL Library Into
       - name: Make Deps Directory For aarch64
@@ -125,6 +125,10 @@ jobs:
       - name: Copy SDL Over To Deps Directory For x86_64
         run: cp -a ./android/app/jni/SDL_image/libs/x86_64/libSDL2_image.so ./target/x86_64-linux-android/release/deps/libSDL2_image.so
       # ----------------------------------------
+
+      # Create config.toml File
+      - name: Create config.toml File
+        run: sed "s/{android-version}/$DESIRED_API/g" ./.cargo/config.toml.sample > ./.cargo/config.toml
 
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
