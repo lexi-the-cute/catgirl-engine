@@ -70,7 +70,7 @@ jobs:
 
       # Auto-Accept Android SDK Licenses
       - name: Auto Accept Android SDK Licenses
-        run: ./tools/cmdline-tools/bin/sdkmanager --licenses --sdk_root=./tools
+        run: yes | ./tools/cmdline-tools/bin/sdkmanager --licenses --sdk_root=./tools
 
       # Download Desired Android API
       - name: Download Desired Android API
