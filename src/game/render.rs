@@ -13,6 +13,7 @@ use sdl2::pixels::Color;
 use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
 use sdl2::keyboard::Keycode;
 
+use crate::game::entity::entity::Entity;
 use crate::game::entity::player::Player;
 
 // This thread handles both rendering and input (aka the client)
@@ -96,7 +97,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
 }
 
 // Unused, May Move Render/Event Loop Here
-fn render(canvas: &mut Canvas<Window>, color: Color, texture: &Texture, player: &Player) -> Result<(), String> {
+fn render(canvas: &mut Canvas<Window>, color: Color, texture: &Texture, player: &dyn Entity) -> Result<(), String> {
     canvas.set_draw_color(color);
     canvas.clear();
 
