@@ -28,7 +28,7 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install sudo coreutils
+      #   run: sudo apt install sudo coreutils apt
       - name: Install APT Packages
         run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
