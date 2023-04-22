@@ -9,8 +9,12 @@ jobs:
       - run: sudo apt update
       - run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
+      - run: mkdir -p build
+
       # Install Rust
-      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ./build/rust.sh
+      - run: chmod +x ./build/rust.sh
+      - run: ./build/rust.sh -y
       - run: source "$HOME/.cargo/env"
 
       # Compile Program
