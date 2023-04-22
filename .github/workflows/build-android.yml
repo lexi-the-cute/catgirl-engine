@@ -2,7 +2,7 @@ name: Build For Android
 run-name: ${{ github.actor }} is building for Android
 on: [push]
 jobs:
-  Build-Linux:
+  Build-Android:
     runs-on: ubuntu-latest
     env:
       DESIRED_API: android-21
