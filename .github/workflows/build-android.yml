@@ -70,7 +70,7 @@ jobs:
 
       # Download Desired Android API
       - name: Download Desired Android API
-        run: ./tools/cmdline-tools/bin/sdkmanager --install "platforms;$DESIRED_API" --sdk_root=./tools
+        run: ./tools/cmdline-tools/bin/sdkmanager --licenses --install "platforms;$DESIRED_API" --sdk_root=./tools
 
       # Add Build Targets
       - name: Add armv7 Android Build Target
