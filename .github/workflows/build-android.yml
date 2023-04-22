@@ -32,9 +32,13 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install wget sudo coreutils sed
+      #   run: sudo apt install wget sudo coreutils sed dpkg apt
       - name: Install APT Packages
         run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev unzip openjdk-17-jre-headless
+
+      # Setup Packages
+      - name: Setup Java Update Alternatives
+        run: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
 
       - name: Create Build Directory
         run: mkdir -p build
