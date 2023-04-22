@@ -26,9 +26,11 @@ pub fn start() {
     let (rptx, rprx) = mpsc::channel::<()>();  // Physics Messages Receive
     let (rrtx, rrrx) = mpsc::channel::<()>();  // Render Messages Receive
 
+    // Treat As If Physical Server (Player Movement)
     let physics_thread: JoinHandle<()> = thread::Builder::new().name("physics".to_string())
                     .spawn(|| physics::start(rptx, sprx)).unwrap();  // Server
 
+    // Treat As If Physical Client (User Input)
     let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
                     .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
 
