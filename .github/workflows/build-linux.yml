@@ -5,17 +5,40 @@ jobs:
   Build-Linux:
     runs-on: ubuntu-latest
     steps:
-      # Install Dependencies
-      - run: sudo apt update
-      - run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+      # Setup Build Environment
+      - name: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      - run: mkdir -p build
+      # List Files
+      # - name: Switch To Running Directory
+      #   run: cd ${{ github.workspace }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+
+      # Install Dependencies
+      - name: Update APT Package Manager
+        run: sudo apt update
+      - name: Install APT Packages
+        run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
+      - name: Create Build Directory
+        run: mkdir -p build
 
       # Install Rust
-      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ./build/rust.sh
-      - run: chmod +x ./build/rust.sh
-      - run: ./build/rust.sh -y
-      - run: source "$HOME/.cargo/env"
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ./build/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ./build/rust.sh
+      - name: Install Rust
+        run: ./build/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
 
       # Compile Program
-      - run: cargo build
+      - name: Build Program
+        run: cargo build
