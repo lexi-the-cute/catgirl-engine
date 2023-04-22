@@ -1,0 +1,17 @@
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Build-Linux:
+    runs-on: ubuntu-latest
+    steps:
+      # Install Dependencies
+      - run: sudo apt update
+      - run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
+      # Install Rust
+      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      - run: source "$HOME/.cargo/env"
+
+      # Compile Program
+      - run: cargo build
