@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DESIRED_API: 21
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -38,7 +39,7 @@ jobs:
 
       # Setup Packages
       - name: Setup Java Update Alternatives
-        run: sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+        run: sudo update-alternatives --set java $JAVA_HOME/bin/java
 
       - name: Create Build Directory
         run: mkdir -p build
