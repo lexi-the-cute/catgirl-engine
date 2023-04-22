@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Build For Linux
+run-name: ${{ github.actor }} is building for Linux
 on: [push]
 jobs:
   Build-Linux:
@@ -27,6 +27,8 @@ jobs:
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
+      # - name: Installing Base Packages Via APT
+      #   run: sudo apt install sudo coreutils
       - name: Install APT Packages
         run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
@@ -46,3 +48,7 @@ jobs:
       # Compile Program
       - name: Build Program
         run: cargo build
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+      - run: echo "🍏 This job's status is ${{ job.status }}."
