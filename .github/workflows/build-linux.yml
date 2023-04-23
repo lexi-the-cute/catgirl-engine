@@ -58,15 +58,17 @@ jobs:
         run: cp ${{ github.workspace }}/target/release/game ${{ github.workspace }}
 
       # Zip Up Game and Assets
-      - name: Zip Up Game and Assets
-        run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/game
+      # - name: Zip Up Game and Assets
+      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/game
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine.zip
-          path: ${{ github.workspace }}/CatgirlEngine.zip
+          path: |
+            ${{ github.workspace }}/game
+            ${{ github.workspace }}/assets
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.

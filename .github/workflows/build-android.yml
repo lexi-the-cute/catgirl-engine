@@ -177,7 +177,7 @@ jobs:
 
       # Compile Program
       - name: Build Android App (Debug)
-        run: cd android && ${{ github.workspace }}/gradlew assembleDebug
+        run: cd android && ${{ github.workspace }}/android/gradlew assembleDebug
 
       # Display APK Directory
       - name: Display APK Directory (Debug)
