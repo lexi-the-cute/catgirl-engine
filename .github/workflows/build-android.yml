@@ -217,7 +217,7 @@ jobs:
         with:
           name: CatgirlEngine-Bundle-Android
           path: |
-            ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.aab
+            ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab
             ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
 
       # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
