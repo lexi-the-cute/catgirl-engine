@@ -48,9 +48,14 @@ android {
     }
     buildTypes {
         release {
-            // minifyEnabled true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            postprocessing {
+                removeUnusedCode false  // This breaks SDLActivity (Probably Due To JNI)
+                removeUnusedResources true
+                obfuscate false  // This breaks SDLActivity (Probably Due To JNI)
+                optimizeCode true
+            }
+            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     namespace 'land.catgirl.engine'
