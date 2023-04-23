@@ -65,10 +65,12 @@ jobs:
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine.zip
+          name: CatgirlEngine-Linux
           path: |
             ${{ github.workspace }}/game
             ${{ github.workspace }}/assets
+
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
