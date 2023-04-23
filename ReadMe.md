@@ -1,3 +1,8 @@
+# Download
+
+* [Itch.io](https://catgirlland.itch.io/catgirl-engine)
+* [Google Play](https://play.google.com/store/apps/details?id=land.catgirl.engine)
+
 # Setup Build Environment
 
 ## Debian x86_64
