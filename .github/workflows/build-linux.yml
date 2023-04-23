@@ -28,30 +28,45 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install sudo coreutils apt
+      #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip
 
       - name: Create Build Directory
         run: mkdir -p build
 
       # Install Rust
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ./build/rust.sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/build/rust.sh
       - name: Make Rust Installer Executable
-        run: chmod +x ./build/rust.sh
+        run: chmod +x ${{ github.workspace }}/build/rust.sh
       - name: Install Rust
-        run: ./build/rust.sh -y
+        run: ${{ github.workspace }}/build/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
       # Compile Program
-      - name: Build Program
+      - name: Build Program (Release)
         run: cargo build --release
 
       # Display Build Directory
       - name: Display Built Program Directory (Release)
-        run: ls -liallh ./target/release
+        run: ls -liallh ${{ github.workspace }}/target/release
+
+      # Copy To Root Of Project
+      - name: Copy Game To Root For Zipping Up
+        run: cp ${{ github.workspace }}/target/release/game ${{ github.workspace }}
+
+      # Zip Up Game and Assets
+      - name: Zip Up Game and Assets
+        run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/game
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine.zip
+          path: ${{ github.workspace }}/CatgirlEngine.zip
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.

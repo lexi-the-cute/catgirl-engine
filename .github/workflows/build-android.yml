@@ -33,9 +33,9 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install wget sudo coreutils sed dpkg apt
+      #   run: sudo apt install wget sudo coreutils sed dpkg apt git
       - name: Install APT Packages
-        run: sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev unzip openjdk-17-jre-headless
+        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev unzip openjdk-17-jre-headless
 
       # Setup Packages
       - name: Setup Java Update Alternatives
@@ -46,11 +46,11 @@ jobs:
 
       # Install Rust
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ./build/rust.sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/build/rust.sh
       - name: Make Rust Installer Executable
-        run: chmod +x ./build/rust.sh
+        run: chmod +x ${{ github.workspace }}/build/rust.sh
       - name: Install Rust
-        run: ./build/rust.sh -y
+        run: ${{ github.workspace }}/build/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
@@ -59,27 +59,27 @@ jobs:
 
       # Download Android NDK
       - name: Download Android NDK
-        run: wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O ./tools/ndk.zip
+        run: wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O ${{ github.workspace }}/tools/ndk.zip
 
       # Unzip Android NDK
       - name: Unzip Android NDK
-        run: unzip ./tools/ndk.zip -d ./tools/
+        run: unzip ${{ github.workspace }}/tools/ndk.zip -d ${{ github.workspace }}/tools/
 
       # Download Android SDK
       - name: Download Android SDK
-        run: wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O ./tools/cmdlt.zip
+        run: wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O ${{ github.workspace }}/tools/cmdlt.zip
 
       # Unzip Android SDK
       - name: Unzip Android SDK
-        run: unzip ./tools/cmdlt.zip -d ./tools/
+        run: unzip ${{ github.workspace }}/tools/cmdlt.zip -d ${{ github.workspace }}/tools/
 
       # Auto-Accept Android SDK Licenses
       - name: Auto Accept Android SDK Licenses
-        run: yes | ./tools/cmdline-tools/bin/sdkmanager --licenses --sdk_root=./tools
+        run: yes | ${{ github.workspace }}/tools/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${{ github.workspace }}/tools
 
       # Download Desired Android API
       - name: Download Desired Android API
-        run: ./tools/cmdline-tools/bin/sdkmanager --install "platforms;android-$DESIRED_API" --sdk_root=./tools
+        run: ${{ github.workspace }}/tools/cmdline-tools/bin/sdkmanager --install "platforms;android-$DESIRED_API" --sdk_root=${{ github.workspace }}/tools
 
       # Add Build Targets
       - name: Add armv7 Android Build Target
@@ -94,50 +94,50 @@ jobs:
       # ----------------------------------------
       # TODO: Get Rid Of This and Have Gradle Output Dependencies Instead
       - name: Build SDL
-        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL" APP_BUILD_SCRIPT="./android/app/jni/SDL/Android.mk" APP_PLATFORM="android-$DESIRED_API"
+        run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       - name: Build SDL_image
-        run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_image" APP_BUILD_SCRIPT="./android/app/jni/SDL_image/Android.mk" APP_PLATFORM="android-$DESIRED_API"
+        run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL_image" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL_image/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build freetype
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/freetype" APP_BUILD_SCRIPT="./android/app/jni/freetype/Android.mk" APP_PLATFORM="android-$DESIRED_API"
+      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/freetype" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/freetype/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build harfbuzz
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/harfbuzz" APP_BUILD_SCRIPT="./android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="android-$DESIRED_API"
+      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/harfbuzz" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="android-$DESIRED_API"
       # - name: Build SDL_ttf
-      #   run: ./tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="./android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="./android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="android-$DESIRED_API"
+      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="android-$DESIRED_API"
 
       # Make Directories For Dropping SDL Library Into
       - name: Make Deps Directory For aarch64
-        run: mkdir -p ./target/aarch64-linux-android/release/deps
+        run: mkdir -p ${{ github.workspace }}/target/aarch64-linux-android/release/deps
       - name: Make Deps Directory For armv7
-        run: mkdir -p ./target/armv7-linux-androideabi/release/deps
+        run: mkdir -p ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps
       - name: Make Deps Directory For i686
-        run: mkdir -p ./target/i686-linux-android/release/deps
+        run: mkdir -p ${{ github.workspace }}/target/i686-linux-android/release/deps
       - name: Make Deps Directory For x86_64
-        run: mkdir -p ./target/x86_64-linux-android/release/deps
+        run: mkdir -p ${{ github.workspace }}/target/x86_64-linux-android/release/deps
 
       # Copy SDL Library Over To Corresponding Directories
       - name: Copy SDL Over To Deps Directory For aarch64
-        run: cp -a ./android/app/jni/SDL/libs/arm64-v8a/libSDL2.so ./target/aarch64-linux-android/release/deps/libSDL2.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/arm64-v8a/libSDL2.so ${{ github.workspace }}/target/aarch64-linux-android/release/deps/libSDL2.so
       - name: Copy SDL Over To Deps Directory For armv7
-        run: cp -a ./android/app/jni/SDL/libs/armeabi-v7a/libSDL2.so ./target/armv7-linux-androideabi/release/deps/libSDL2.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/armeabi-v7a/libSDL2.so ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps/libSDL2.so
       - name: Copy SDL Over To Deps Directory For i686
-        run: cp -a ./android/app/jni/SDL/libs/x86/libSDL2.so ./target/i686-linux-android/release/deps/libSDL2.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/x86/libSDL2.so ${{ github.workspace }}/target/i686-linux-android/release/deps/libSDL2.so
       - name: Copy SDL Over To Deps Directory For x86_64
-        run: cp -a ./android/app/jni/SDL/libs/x86_64/libSDL2.so ./target/x86_64-linux-android/release/deps/libSDL2.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/x86_64/libSDL2.so ${{ github.workspace }}/target/x86_64-linux-android/release/deps/libSDL2.so
 
       # Copy SDL_image Library Over To Corresponding Directories
       - name: Copy SDL_image Over To Deps Directory For aarch64
-        run: cp -a ./android/app/jni/SDL_image/libs/arm64-v8a/libSDL2_image.so ./target/aarch64-linux-android/release/deps/libSDL2_image.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/arm64-v8a/libSDL2_image.so ${{ github.workspace }}/target/aarch64-linux-android/release/deps/libSDL2_image.so
       - name: Copy SDL Over To Deps Directory For armv7
-        run: cp -a ./android/app/jni/SDL_image/libs/armeabi-v7a/libSDL2_image.so ./target/armv7-linux-androideabi/release/deps/libSDL2_image.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/armeabi-v7a/libSDL2_image.so ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps/libSDL2_image.so
       - name: Copy SDL Over To Deps Directory For i686
-        run: cp -a ./android/app/jni/SDL_image/libs/x86/libSDL2_image.so ./target/i686-linux-android/release/deps/libSDL2_image.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86/libSDL2_image.so ${{ github.workspace }}/target/i686-linux-android/release/deps/libSDL2_image.so
       - name: Copy SDL Over To Deps Directory For x86_64
-        run: cp -a ./android/app/jni/SDL_image/libs/x86_64/libSDL2_image.so ./target/x86_64-linux-android/release/deps/libSDL2_image.so
+        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86_64/libSDL2_image.so ${{ github.workspace }}/target/x86_64-linux-android/release/deps/libSDL2_image.so
       # ----------------------------------------
 
       # Create config.toml File
       - name: Create config.toml File
-        run: sed "s/{android-version}/$DESIRED_API/g" ./.cargo/config.toml.sample > ./.cargo/config.toml
+        run: sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
@@ -151,37 +151,44 @@ jobs:
 
       # Create Directories For Storing Engine in App
       - name: Create Directory To Store CatgirlEngine In App For aarch64
-        run: mkdir -p ./android/app/src/main/jniLibs/arm64-v8a
+        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a
       - name: Create Directory To Store CatgirlEngine In App For armv7
-        run: mkdir -p ./android/app/src/main/jniLibs/armeabi-v7a
+        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a
       - name: Create Directory To Store CatgirlEngine In App For i686
-        run: mkdir -p ./android/app/src/main/jniLibs/x86
+        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/x86
       - name: Create Directory To Store CatgirlEngine In App For x86_64
-        run: mkdir -p ./android/app/src/main/jniLibs/x86_64
+        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64
 
       # Copy Engine To App
       - name: Store CatgirlEngine In App For aarch64
-        run: cp ./target/aarch64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/arm64-v8a/libmain.so
+        run: cp ${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a/libmain.so
       - name: Store CatgirlEngine In App For armv7
-        run: cp ./target/armv7-linux-androideabi/release/libmain.so ./android/app/src/main/jniLibs/armeabi-v7a/libmain.so
+        run: cp ${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a/libmain.so
       - name: Store CatgirlEngine In App For i686
-        run: cp ./target/i686-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86/libmain.so
+        run: cp ${{ github.workspace }}/target/i686-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86/libmain.so
       - name: Store CatgirlEngine In App For x86_64
-        run: cp ./target/x86_64-linux-android/release/libmain.so ./android/app/src/main/jniLibs/x86_64/libmain.so
+        run: cp ${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64/libmain.so
 
       # Copy Assets To Android Src
       # - name: Create Assets Directory
-      #   run: mkdir -p ./android/app/src/main/assets
+      #   run: mkdir -p ${{ github.workspace }}/android/app/src/main/assets
       # - name: Copy ResourcePack To Assets Directory
-      #   run: cp -R assets ./android/app/src/main/assets/resourcepack
+      #   run: cp -R assets ${{ github.workspace }}/android/app/src/main/assets/resourcepack
 
       # Compile Program
       - name: Build Android App (Debug)
-        run: cd android && ./gradlew assembleDebug
+        run: cd android && ${{ github.workspace }}/gradlew assembleDebug
 
       # Display APK Directory
       - name: Display APK Directory (Debug)
-        run: ls -liallh ./android/app/build/outputs/apk/debug
+        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/debug
+
+      # Upload APK
+      - name: Upload APK (Debug)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine.apk
+          path: ${{ github.workspace }}/android/app/build/outputs/apk/debug/app-debug.apk
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
