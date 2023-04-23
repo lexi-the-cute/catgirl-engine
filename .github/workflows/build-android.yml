@@ -41,6 +41,10 @@ jobs:
       - name: Setup Java Update Alternatives
         run: sudo update-alternatives --set java $JAVA_HOME/bin/java
 
+      # Extract Keystore
+      - name: Extract Keystore
+        run: echo "${{ RELEASE_KEY }}" | base64 -d > ${{ ANDROID_RELEASE_KEY_PATH }}
+
       - name: Create Build Directory
         run: mkdir -p build
 
@@ -176,19 +180,43 @@ jobs:
       #   run: cp -R assets ${{ github.workspace }}/android/app/src/main/assets/resourcepack
 
       # Compile Program
-      - name: Build Android App (Debug)
-        run: cd android && ${{ github.workspace }}/android/gradlew assembleDebug
+      - name: Build Android App as APK (Release)
+        run: cd android && ${{ github.workspace }}/android/gradlew assembleRelease
+
+      - name: Build Android App as Bundle (Release)
+        run: cd android && ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Display APK Directory
-      - name: Display APK Directory (Debug)
-        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/debug
+      - name: Display APK Directory (Release)
+        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/release
+
+      # Display Bundle Directory
+      - name: Display Bundle Directory (Release)
+        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
+
+      # I may get rid of obfuscation/minifying, but until I decode on if I'll do that,
+      #   I'm just releasing the mappings to make it easier for modders. Not that it'd help 
+      #   on the engine itself as the engine is in Rust, not Java.
 
       # Upload APK
-      - name: Upload APK (Debug)
+      - name: Upload APK (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine.apk
-          path: ${{ github.workspace }}/android/app/build/outputs/apk/debug/app-debug.apk
+          name: CatgirlEngine-Android
+          path: |
+            ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
+            ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
+
+      # Upload Bundle
+      - name: Upload Bundle (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Android
+          path: |
+            ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.aab
+            ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
+
+      # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.

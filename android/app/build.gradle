@@ -38,9 +38,18 @@ android {
             // }
         }
     }
+    signingConfigs {
+        release {
+            storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
+            storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
+            keyAlias "key0"
+            keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
