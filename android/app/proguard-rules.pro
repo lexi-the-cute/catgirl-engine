@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# https://www.guardsquare.com/manual/configuration/usage
+# Proguard Doesn't Handle Resources
+-dontshrink
+-dontobfuscate
+#-dontoptimize
+
+#-printmapping build/outputs/mapping/release/mapping.txt  # Already is Generated As Per `minifyEnabled true`
