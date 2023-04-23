@@ -44,7 +44,7 @@ jobs:
 
       # Extract Keystore
       - name: Extract Keystore
-        run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ secrets.ANDROID_RELEASE_KEY_PATH }}
+        run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ environment.ANDROID_RELEASE_KEY_PATH }}
 
       - name: Create Build Directory
         run: mkdir -p build
