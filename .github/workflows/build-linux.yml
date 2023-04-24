@@ -49,7 +49,7 @@ jobs:
       - name: Switch to SDL2 Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL
       - name: Autogen SDL2
-        run: ${{ github.workspace }}/android/app/jni/SDL/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL/autogen.sh
       - name: Configure SDL2
         run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL/configure
       - name: Make SDL2
@@ -59,7 +59,7 @@ jobs:
       - name: Switch to SDL_image Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_image
       - name: Autogen SDL_image
-        run: ${{ github.workspace }}/android/app/jni/SDL_image/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL_image/autogen.sh
       - name: Configure SDL_image
         run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL_image/configure
       - name: Make SDL_image
@@ -69,7 +69,7 @@ jobs:
       - name: Switch to SDL_ttf Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
       - name: Autogen SDL_ttf
-        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/autogen.sh
       - name: Configure SDL_ttf
         run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL_ttf/configure
       - name: Make SDL_ttf
