@@ -1,8 +1,8 @@
-name: Build For Linux
-run-name: ${{ github.actor }} is building for Linux
+name: Build For Linux (Simple)
+run-name: ${{ github.actor }} is building for Linux (Simple)
 on: [push]
 jobs:
-  Build-Linux:
+  Build-Linux-Simple:
     runs-on: ubuntu-latest
     steps:
       # Setup Build Environment
