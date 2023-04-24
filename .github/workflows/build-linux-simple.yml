@@ -47,11 +47,11 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
-      # ...
-
       # Build SDL2
       - name: Switch to SDL2 Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
@@ -62,20 +62,24 @@ jobs:
       # Build SDL_image
       - name: Switch to SDL_image Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_image
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
       # Build SDL_ttf
       - name: Switch to SDL_ttf Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       - name: Make SDL_ttf
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
