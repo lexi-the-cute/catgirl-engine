@@ -49,9 +49,9 @@ jobs:
       - name: Switch to SDL2 Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL
       - name: Autogen SDL2
-        run: ${{ github.workspace }}/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL/autogen
       - name: Configure SDL2
-        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL/configure
       - name: Make SDL2
         run: make
 
@@ -59,9 +59,9 @@ jobs:
       - name: Switch to SDL_image Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_image
       - name: Autogen SDL_image
-        run: ${{ github.workspace }}/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL_image/autogen
       - name: Configure SDL_image
-        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL_image/configure
       - name: Make SDL_image
         run: make
 
@@ -69,9 +69,9 @@ jobs:
       - name: Switch to SDL_ttf Directory
         run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
       - name: Autogen SDL_ttf
-        run: ${{ github.workspace }}/autogen
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/autogen
       - name: Configure SDL_ttf
-        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/android/app/jni/SDL_ttf/configure
       - name: Make SDL_ttf
         run: make
 
