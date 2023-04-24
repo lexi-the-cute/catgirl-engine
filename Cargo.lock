@@ -76,6 +76,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
+name = "catgirl-engine"
+version = "0.1.0"
+dependencies = [
+ "android_logger",
+ "log",
+ "pretty_env_logger",
+ "rand",
+ "rayon",
+ "sdl2",
+ "specs",
+]
+
+[[package]]
 name = "cfg-if"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -161,19 +174,6 @@ checksum = "85cdab6a89accf66733ad5a1693a4dcced6aeff64602b634530dd73c1f3ee9f0"
 dependencies = [
  "log",
  "regex",
-]
-
-[[package]]
-name = "game"
-version = "0.1.0"
-dependencies = [
- "android_logger",
- "log",
- "pretty_env_logger",
- "rand",
- "rayon",
- "sdl2",
- "specs",
 ]
 
 [[package]]

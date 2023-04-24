@@ -81,7 +81,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/lib/x86_64-linux-musl" cargo build --release --target x86_64-unknown-linux-musl --bin game
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/lib/x86_64-linux-musl" cargo build --release --target x86_64-unknown-linux-musl --bin catgirl-engine
 
       # Copy Libraries To Project Root For Embedding...
       # ...
@@ -92,11 +92,11 @@ jobs:
 
       # Copy To Root Of Project
       - name: Copy Game To Root For Zipping Up
-        run: cp ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/game ${{ github.workspace }}
+        run: cp ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/catgirl-engine ${{ github.workspace }}
 
       # Zip Up Game and Assets
       # - name: Zip Up Game and Assets
-      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/game
+      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/catgirl-engine
 
       # Upload Engine
       - name: Upload Engine (Release)
@@ -104,7 +104,7 @@ jobs:
         with:
           name: CatgirlEngine-Linux
           path: |
-            ${{ github.workspace }}/game
+            ${{ github.workspace }}/catgirl-engine
             ${{ github.workspace }}/assets
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
