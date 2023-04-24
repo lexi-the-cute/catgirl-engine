@@ -1,5 +1,5 @@
-name: Build For Linux (Simple)
-run-name: ${{ github.actor }} is building for Linux (Simple)
+name: Build For Linux
+run-name: ${{ github.actor }} is building for Linux
 on: [push]
 jobs:
   Build-Linux-Simple:
@@ -14,6 +14,8 @@ jobs:
         run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
@@ -45,17 +47,63 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
+      # ...
+
+      # Build SDL2
+      - name: Switch to SDL2 Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Make SDL2
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+
+      # Build SDL_image
+      - name: Switch to SDL_image Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+      - name: Make SDL_image
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
+
+      # Build SDL_ttf
+      - name: Switch to SDL_ttf Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+
       # Compile Program
       - name: Build Program (Release)
-        run: cargo build --release
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin game
 
-      # Display Build Directory
-      - name: Display Built Program Directory (Release)
-        run: ls -liallh ${{ github.workspace }}/target/release
+      - name: Make Export Directory
+        run: mkdir -p export
 
-      # Copy To Root Of Project
-      - name: Copy Game To Root For Zipping Up
-        run: cp ${{ github.workspace }}/target/release/game ${{ github.workspace }}
+      - name: Copy SDL Over To Export Directory
+        run: cp -L ${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so ${{ github.workspace }}/export/libSDL2-2.0.so.0
+
+      - name: Copy SDL_image Over To Export Directory
+        run: cp -L ${{ github.workspace }}/android/app/jni/SDL_image/build/libSDL2_image.so ${{ github.workspace }}/export/libSDL2_image-2.0.so.0
+
+      - name: Copy SDL_ttf Over To Export Directory
+        run: cp -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/libSDL2_ttf.so ${{ github.workspace }}/export/libSDL2_ttf-2.0.so.0
+
+      - name: Copy Engine Over To Export Directory
+        run: cp -L ${{ github.workspace }}/game ${{ github.workspace }}/export/game
+
+      - name: Copy Assets Over To Export Directory
+        run: cp -a ${{ github.workspace }}/assets ${{ github.workspace }}/export/assets
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: ls -liallh ${{ github.workspace }}/export
 
       # Zip Up Game and Assets
       # - name: Zip Up Game and Assets
@@ -67,8 +115,7 @@ jobs:
         with:
           name: CatgirlEngine-Linux
           path: |
-            ${{ github.workspace }}/game
-            ${{ github.workspace }}/assets
+            ${{ github.workspace }}/export/.
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
