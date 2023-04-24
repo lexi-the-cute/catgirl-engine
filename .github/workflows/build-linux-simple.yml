@@ -100,7 +100,7 @@ jobs:
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/libSDL2_ttf.so ${{ github.workspace }}/export/libSDL2_ttf-2.0.so.0
 
       - name: Copy Engine Over To Export Directory
-        run: cp -L ${{ github.workspace }}/game ${{ github.workspace }}/export/game
+        run: cp -L ${{ github.workspace }}/target/release/game ${{ github.workspace }}/export/game
 
       - name: Copy Assets Over To Export Directory
         run: cp -a ${{ github.workspace }}/assets ${{ github.workspace }}/export/assets
