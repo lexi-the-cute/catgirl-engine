@@ -21,10 +21,10 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source "$HOME/.cargo/env"
 
 # Download This Repo
-git clone https://github.com/alexisart/game --recurse-submodules
+git clone https://github.com/alexisart/CatgirlEngine --recurse-submodules
 
 # Switch To Project Root
-cd game
+cd CatgirlEngine
 ```
 
 # Build

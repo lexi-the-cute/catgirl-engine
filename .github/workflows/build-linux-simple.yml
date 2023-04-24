@@ -85,7 +85,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,lib,-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin game
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,lib,-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin catgirl-engine
 
       - name: Setup Export Directory
         run: mkdir -p ${{ github.workspace }}/export/lib
@@ -100,7 +100,7 @@ jobs:
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/libSDL2_ttf.so ${{ github.workspace }}/export/lib/libSDL2_ttf-2.0.so.0
 
       - name: Copy Engine Over To Export Directory
-        run: cp -L ${{ github.workspace }}/target/release/game ${{ github.workspace }}/export/game
+        run: cp -L ${{ github.workspace }}/target/release/catgirl-engine ${{ github.workspace }}/export/catgirl-engine
 
       - name: Copy Assets Over To Export Directory
         run: cp -a ${{ github.workspace }}/assets ${{ github.workspace }}/export/assets
@@ -111,7 +111,7 @@ jobs:
 
       # Zip Up Game and Assets
       # - name: Zip Up Game and Assets
-      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/game
+      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/catgirl-engine
 
       # Upload Engine
       - name: Upload Engine (Release)
