@@ -30,7 +30,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip
+        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip musl-tools
 
       - name: Create Build Directory
         run: mkdir -p build
@@ -45,17 +45,47 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
+      # Build SDL2
+      - name: Switch to SDL2 Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL
+      - name: Autogen SDL2
+        run: ${{ github.workspace }}/autogen
+      - name: Configure SDL2
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+      - name: Make SDL2
+        run: make
+
+      # Build SDL_image
+      - name: Switch to SDL_image Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
+      - name: Autogen SDL_image
+        run: ${{ github.workspace }}/autogen
+      - name: Configure SDL_image
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+      - name: Make SDL_image
+        run: make
+
+      # Build SDL_image
+      - name: Switch to SDL_ttf Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
+      - name: Autogen SDL_ttf
+        run: ${{ github.workspace }}/autogen
+      - name: Configure SDL_ttf
+        run: CC=/usr/bin/musl-gcc ${{ github.workspace }}/configure
+      - name: Make SDL_ttf
+        run: make
+
       # Compile Program
       - name: Build Program (Release)
-        run: cargo build --release
+        run: cargo build --release --target x86_64-unknown-linux-musl --bin game
 
       # Display Build Directory
       - name: Display Built Program Directory (Release)
-        run: ls -liallh ${{ github.workspace }}/target/release
+        run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release
 
       # Copy To Root Of Project
       - name: Copy Game To Root For Zipping Up
-        run: cp ${{ github.workspace }}/target/release/game ${{ github.workspace }}
+        run: cp ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/game ${{ github.workspace }}
 
       # Zip Up Game and Assets
       # - name: Zip Up Game and Assets
