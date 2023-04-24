@@ -31,21 +31,21 @@ impl Player {
         return self.sprite;
     }
     
-    pub fn get_speed(&self) -> i32 {
-        return self.speed;
-    }
+    // pub fn get_speed(&self) -> i32 {
+    //     return self.speed;
+    // }
 
-    pub fn set_position(&mut self, position: Point) {
-        self.position = position;
-    }
+    // pub fn set_position(&mut self, position: Point) {
+    //     self.position = position;
+    // }
 
-    pub fn set_sprite(&mut self, sprite: Rect) {
-        self.sprite = sprite;
-    }
+    // pub fn set_sprite(&mut self, sprite: Rect) {
+    //     self.sprite = sprite;
+    // }
 
-    pub fn set_speed(&mut self, speed: i32) {
-        self.speed = speed;
-    }
+    // pub fn set_speed(&mut self, speed: i32) {
+    //     self.speed = speed;
+    // }
 
     // pub fn get_inventory(&self) -> Inventory {
     //     return self.inventory;
@@ -75,7 +75,7 @@ impl Player {
         }
     }
 
-    pub fn to_string(&self) -> String {
-        return "Player".to_string();
-    }
+    // pub fn to_string(&self) -> String {
+    //     return "Player".to_string();
+    // }
 }

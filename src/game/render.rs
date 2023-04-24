@@ -4,12 +4,12 @@ use std::sync::mpsc::{Sender, Receiver};
 use std::thread;
 use std::time::Duration;
 
-use sdl2::controller::{Button, GameController};
+use sdl2::controller::{Button};
 use sdl2::rect::{Point, Rect};
 use sdl2::render::{Canvas, TextureCreator, Texture};
-use sdl2::sys::Button1;
+
 use sdl2::video::{Window, WindowContext};
-use sdl2::{VideoSubsystem, Sdl, EventPump, JoystickSubsystem, HapticSubsystem, GameControllerSubsystem};
+use sdl2::{VideoSubsystem, Sdl, EventPump, HapticSubsystem, GameControllerSubsystem};
 use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
