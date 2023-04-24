@@ -32,7 +32,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip musl-tools g++ musl
+        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip musl-tools g++ musl libwayland-dev
 
       - name: Create Build Directory
         run: mkdir -p build
