@@ -119,7 +119,7 @@ jobs:
         with:
           name: CatgirlEngine-Linux
           path: |
-            ${{ github.workspace }}/export/.
+            ${{ github.workspace }}/export/*
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
