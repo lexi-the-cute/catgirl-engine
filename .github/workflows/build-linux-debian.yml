@@ -61,7 +61,7 @@ jobs:
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux
+          name: CatgirlEngine-Linux-x86_64-Deb
           path: |
             ${{ github.workspace }}/target/debian/*.deb
 
