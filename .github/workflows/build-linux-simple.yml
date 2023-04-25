@@ -32,7 +32,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libc6-dev-amd64
+        run: sudo apt install gcc
 
       - name: Create Build Directory
         run: mkdir -p build
