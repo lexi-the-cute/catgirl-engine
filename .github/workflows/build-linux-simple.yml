@@ -74,8 +74,8 @@ jobs:
       # Build freetype
       - name: Switch to freetype Directory
         run: cd ${{ github.workspace }}/android/app/jni/freetype
-      - name: Generate Configure Script
-        run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
+      - name: Generate Configure Script (Have To Change Directory Again)
+        run: cd ${{ github.workspace }}/android/app/jni/freetype && ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib
       - name: Make freetype
