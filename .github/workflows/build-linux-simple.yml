@@ -70,19 +70,7 @@ jobs:
         run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH=lib
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
-
-      # Build harfbuzz
-      - name: Switch to harfbuzz Directory
-        run: cd ${{ github.workspace }}/android/app/jni/harfbuzz
-      - name: Make Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/harfbuzz/build
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/harfbuzz/CMakeCache.txt ${{ github.workspace }}/android/app/jni/harfbuzz/CMakeFiles/
-      - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/harfbuzz/ -B ${{ github.workspace }}/android/app/jni/harfbuzz/build -DCMAKE_BUILD_RPATH=lib
-      - name: Make harfbuzz
-        run: cmake --build ${{ github.workspace }}/android/app/jni/harfbuzz/build
-
+      
       # Build freetype
       - name: Switch to freetype Directory
         run: cd ${{ github.workspace }}/android/app/jni/freetype
@@ -122,9 +110,6 @@ jobs:
 
       - name: Copy freetype Over To Export Directory
         run: cp -L ${{ github.workspace }}/android/app/jni/freetype/build/libfreetype.a ${{ github.workspace }}/export/lib/libfreetype.so.6
-
-      - name: Copy harfbuzz Over To Export Directory
-        run: cp -L ${{ github.workspace }}/android/app/jni/harfbuzz/build/libharfbuzz-subset.a ${{ github.workspace }}/export/lib/libharfbuzz.so.6
 
       - name: Copy SDL_ttf Over To Export Directory
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/libSDL2_ttf.so ${{ github.workspace }}/export/lib/libSDL2_ttf-2.0.so.0

@@ -7,9 +7,6 @@
 [submodule "android/app/jni/SDL_ttf"]
 	path = android/app/jni/SDL_ttf
 	url = https://github.com/alexisart/SDL_ttf
-[submodule "android/app/jni/harfbuzz"]
-	path = android/app/jni/harfbuzz
-	url = https://github.com/alexisart/harfbuzz
 [submodule "android/app/jni/freetype"]
 	path = android/app/jni/freetype
 	url = https://github.com/alexisart/freetype
