@@ -1,0 +1,74 @@
+name: Build For Linux (Deb)
+run-name: ${{ github.actor }} is building for Linux (Deb)
+on: [push]
+jobs:
+  Build-Linux-Debian:
+    runs-on: ubuntu-latest
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # List Files
+      # - name: Switch To Running Directory
+      #   run: cd ${{ github.workspace }}
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+
+      # Install Dependencies
+      - name: Update APT Package Manager
+        run: sudo apt update
+      # - name: Installing Base Packages Via APT
+      #   run: sudo apt install sudo coreutils apt git
+      - name: Install APT Packages
+        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libc6-dev-amd64
+
+      - name: Create Build Directory
+        run: mkdir -p build
+
+      # Install Rust
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/build/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ${{ github.workspace }}/build/rust.sh
+      - name: Install Rust
+        run: ${{ github.workspace }}/build/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
+
+      # Add Build Targets
+      - name: Add x86_64 GNU Build Target
+        run: rustup target add x86_64-unknown-linux-gnu
+
+      # Compile Program
+      - name: Build Program (Release)
+        run: cargo deb --target=x86_64-unknown-linux-gnu
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/debian
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Linux
+          path: |
+            ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/debian/*.deb
+
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
