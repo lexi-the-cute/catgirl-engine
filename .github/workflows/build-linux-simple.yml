@@ -71,7 +71,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/harfbuzz/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
-        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath='$ORIGIN'
+        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-z,origin,-rpath='$ORIGIN'
       - name: Make harfbuzz
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
         run: make
@@ -82,7 +82,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
-        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath='$ORIGIN'
+        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-z,origin,-rpath='$ORIGIN'
       - name: Make freetype
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
         run: make
@@ -99,7 +99,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,'$ORIGIN/lib',-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin catgirl-engine
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-z,origin,-rpath,'$ORIGIN/lib',-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin catgirl-engine
 
       - name: Setup Export Directory
         run: mkdir -p ${{ github.workspace }}/export/lib
