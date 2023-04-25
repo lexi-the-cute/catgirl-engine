@@ -40,6 +40,8 @@ jobs:
       #   run: sudo apt install wget sudo coreutils sed dpkg apt git
       - name: Install APT Packages
         run: sudo apt install gcc unzip openjdk-17-jre-headless
+      - name: Install SDL Packages  # "Is `aarch64-linux-android-clang` installed?" if SDL packages not installed
+        run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       # Setup Packages
       - name: Setup Java Update Alternatives

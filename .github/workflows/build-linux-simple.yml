@@ -75,9 +75,9 @@ jobs:
       - name: Switch to freetype Directory
         run: cd ${{ github.workspace }}/android/app/jni/freetype
       - name: Make Build Directory
-        run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
+        run: ./autogen.sh
       - name: Deleting Old CMake Cache
-        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib
+        run: ./configure LDFLAGS=-Wl,-rpath=lib
       - name: Initialize CMake
         run: make
       - name: Make freetype
