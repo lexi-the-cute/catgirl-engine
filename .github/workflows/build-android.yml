@@ -27,8 +27,6 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # List Files
-      # - name: Switch To Running Directory
-      #   run: cd ${{ github.workspace }}
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
