@@ -73,7 +73,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-z,origin,-rpath,'$ORIGIN/lib',-rpath-link,/lib/x86_64-linux-musl" cargo build --release --target x86_64-unknown-linux-musl --bin catgirl-engine
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/lib/x86_64-linux-musl" cargo build --release --target x86_64-unknown-linux-musl --bin catgirl-engine
 
       # Copy Libraries To Project Root For Embedding...
       # ...
