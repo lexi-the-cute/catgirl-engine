@@ -20,8 +20,6 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # List Files
-      # - name: Switch To Running Directory
-      #   run: cd ${{ github.workspace }}
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
@@ -50,8 +48,6 @@ jobs:
       # ...
 
       # Build SDL2
-      - name: Switch to SDL2 Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
@@ -60,8 +56,6 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
       # Build SDL_image
-      - name: Switch to SDL_image Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
       - name: Initialize CMake
@@ -70,8 +64,6 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
       # Build SDL_ttf
-      - name: Switch to SDL_ttf Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
       - name: Initialize CMake

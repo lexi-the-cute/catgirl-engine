@@ -20,8 +20,6 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # List Files
-      # - name: Switch To Running Directory
-      #   run: cd ${{ github.workspace }}
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
@@ -48,8 +46,6 @@ jobs:
         run: source "$HOME/.cargo/env"
 
       # Build SDL2
-      - name: Switch to SDL2 Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL
       - name: Make Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Deleting Old CMake Cache
@@ -60,8 +56,6 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
       # Build SDL_image
-      - name: Switch to SDL_image Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
       - name: Make Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Deleting Old CMake Cache
@@ -72,14 +66,9 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
       
       # Build freetype
-      - name: Switch to freetype Directory
-        run: cd ${{ github.workspace }}/android/app/jni/freetype
-      - name: Print Working Directory
-        run: pwd
-      - name: List Working Directory
-        run: ls -liallh ${{ github.workspace }}/android/app/jni/freetype
-      - name: Generate Configure Script (Have To Change Directory Again)
-        run: cd ${{ github.workspace }}/android/app/jni/freetype && ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
+      - name: Generate Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/freetype
+        run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib
       - name: Make freetype
@@ -88,8 +77,6 @@ jobs:
         run: ls -liallh ${{ github.workspace }}/android/app/jni/freetype/objs/.libs
 
       # Build SDL_ttf
-      - name: Switch to SDL_ttf Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
       - name: Make Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       - name: Deleting Old CMake Cache
