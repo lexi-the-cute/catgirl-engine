@@ -39,7 +39,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install wget sudo coreutils sed dpkg apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev unzip openjdk-17-jre-headless
+        run: sudo apt install gcc unzip openjdk-17-jre-headless
 
       # Setup Packages
       - name: Setup Java Update Alternatives

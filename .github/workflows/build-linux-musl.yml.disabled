@@ -32,7 +32,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev zip musl-tools g++ musl libwayland-dev
+        run: sudo apt install gcc g++ musl-tools musl libwayland-dev
 
       - name: Create Build Directory
         run: mkdir -p build
@@ -93,10 +93,6 @@ jobs:
       # Copy To Root Of Project
       - name: Copy Game To Root For Zipping Up
         run: cp ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/catgirl-engine ${{ github.workspace }}
-
-      # Zip Up Game and Assets
-      # - name: Zip Up Game and Assets
-      #   run: zip -9 -r ${{ github.workspace }}/CatgirlEngine.zip ${{ github.workspace }}/assets ${{ github.workspace }}/catgirl-engine
 
       # Upload Engine
       - name: Upload Engine (Release)
