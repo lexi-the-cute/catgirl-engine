@@ -90,7 +90,7 @@ jobs:
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux
+          name: CatgirlEngine-Linux-x86_64-Musl
           path: |
             ${{ github.workspace }}/catgirl-engine
             ${{ github.workspace }}/assets
