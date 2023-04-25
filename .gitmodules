@@ -10,3 +10,6 @@
 [submodule "android/app/jni/freetype"]
 	path = android/app/jni/freetype
 	url = https://github.com/alexisart/freetype
+[submodule "android/app/jni/harfbuzz"]
+	path = android/app/jni/harfbuzz
+	url = https://github.com/alexisart/harfbuzz.git
