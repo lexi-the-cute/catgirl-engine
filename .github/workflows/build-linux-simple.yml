@@ -51,7 +51,7 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH='$ORIGIN/lib'
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH='$ORIGIN'
       - name: Make SDL2
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
@@ -61,7 +61,7 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH='$ORIGIN/lib'
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH='$ORIGIN'
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
       
@@ -71,7 +71,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/harfbuzz/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
-        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath='$ORIGIN/lib'
+        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath='$ORIGIN'
       - name: Make harfbuzz
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
         run: make
@@ -82,7 +82,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
-        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath='$ORIGIN/lib'
+        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath='$ORIGIN'
       - name: Make freetype
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
         run: make
@@ -93,7 +93,7 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH='$ORIGIN/lib'
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH='$ORIGIN'
       - name: Make SDL_ttf
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
