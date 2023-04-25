@@ -70,6 +70,7 @@ jobs:
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
         run: ${{ github.workspace }}/android/app/jni/harfbuzz/autogen.sh
       - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
         run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath=lib
       - name: Make harfbuzz
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
@@ -80,6 +81,7 @@ jobs:
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
         run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/freetype
         run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib
       - name: Make freetype
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
