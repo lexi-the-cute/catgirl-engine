@@ -74,12 +74,18 @@ jobs:
       # Build freetype
       - name: Switch to freetype Directory
         run: cd ${{ github.workspace }}/android/app/jni/freetype
+      - name: Print Working Directory
+        run: pwd
+      - name: List Working Directory
+        run: ls -liallh ${{ github.workspace }}/android/app/jni/freetype
       - name: Generate Configure Script (Have To Change Directory Again)
         run: cd ${{ github.workspace }}/android/app/jni/freetype && ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib
       - name: Make freetype
         run: make
+      - name: List Output Directory
+        run: ls -liallh ${{ github.workspace }}/android/app/jni/freetype/objs/.libs
 
       # Build SDL_ttf
       - name: Switch to SDL_ttf Directory
