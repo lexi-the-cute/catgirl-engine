@@ -111,7 +111,7 @@ jobs:
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL_image/build/libSDL2_image.so ${{ github.workspace }}/export/lib/libSDL2_image-2.0.so.0
 
       - name: Copy harfbuzz Over To Export Directory
-        run: cp -L ${{ github.workspace }}/android/app/jni/freetype/objs/.libs/libharfbuzz.so ${{ github.workspace }}/export/lib/libharfbuzz.so.6
+        run: cp -L ${{ github.workspace }}/android/app/jni/harfbuzz/src/.libs/libharfbuzz.so ${{ github.workspace }}/export/lib/libharfbuzz.so.6
 
       - name: Copy freetype Over To Export Directory
         run: cp -L ${{ github.workspace }}/android/app/jni/freetype/objs/.libs/libfreetype.so ${{ github.workspace }}/export/lib/libfreetype.so.6
