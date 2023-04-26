@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Android
 on: [push]
 jobs:
   Build-Android:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     environment: Android
     env:
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
@@ -165,6 +165,13 @@ jobs:
             ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
 
       # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
+
+      - name: List All Files
+        run: find ${{ github.workspace }}
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
