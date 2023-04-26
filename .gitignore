@@ -2,4 +2,4 @@
 /build
 /tools
 /.cargo/config.toml
-glibc-*
+glibc*
