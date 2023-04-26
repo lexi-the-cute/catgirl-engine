@@ -52,13 +52,15 @@ jobs:
         run: wget https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz -O ${{ github.workspace }}/android/app/jni/glibc.tar.gz
       - name: Extract Source
         run: tar xf ${{ github.workspace }}/android/app/jni/glibc.tar.gz -C ${{ github.workspace }}/android/app/jni/
+      - name: Rename Directory
+        run: mv ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION ${{ github.workspace }}/android/app/jni/glibc
       - name: Make Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/glibc/build
       - name: Run Configure Script
-        working-directory: ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build
-        run: ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/configure LDFLAGS=-Wl,-rpath='lib' --prefix=/usr/local/glibc2
+        working-directory: ${{ github.workspace }}/android/app/jni/glibc/build
+        run: ${{ github.workspace }}/android/app/jni/glibc/configure LDFLAGS=-Wl,-rpath='lib' --prefix=/usr/local/glibc2
       - name: Make GLibC
-        working-directory: ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build
+        working-directory: ${{ github.workspace }}/android/app/jni/glibc/build
         run: make
 
       # Build SDL2
@@ -67,7 +69,7 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
-        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build" cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=lib
+        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc/build" cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=lib
       - name: Make SDL2
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
@@ -77,7 +79,7 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
       - name: Initialize CMake
-        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build" cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH=lib
+        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc/build" cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH=lib
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
       
@@ -87,7 +89,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/freetype/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
-        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib,-L,${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build
+        run: ${{ github.workspace }}/android/app/jni/freetype/configure LDFLAGS=-Wl,-rpath=lib,-L,${{ github.workspace }}/android/app/jni/glibc/build
       - name: Make freetype
         working-directory: ${{ github.workspace }}/android/app/jni/freetype
         run: make
@@ -98,7 +100,7 @@ jobs:
         run: ${{ github.workspace }}/android/app/jni/harfbuzz/autogen.sh
       - name: Run Configure Script
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
-        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath=lib,-L,${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build,-L,${{ github.workspace }}/android/app/jni/freetype/objs/.libs/
+        run: ${{ github.workspace }}/android/app/jni/harfbuzz/configure LDFLAGS=-Wl,-rpath=lib,-L,${{ github.workspace }}/android/app/jni/glibc/build,-L,${{ github.workspace }}/android/app/jni/freetype/objs/.libs/
       - name: Make harfbuzz
         working-directory: ${{ github.workspace }}/android/app/jni/harfbuzz
         run: make
@@ -109,19 +111,19 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
       - name: Initialize CMake
-        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build -L ${{ github.workspace }}/android/app/jni/freetype/objs/.libs/ -L ${{ github.workspace }}/android/app/jni/harfbuzz/src/.libs/" cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH=lib
+        run: LDFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc/build -L ${{ github.workspace }}/android/app/jni/freetype/objs/.libs/ -L ${{ github.workspace }}/android/app/jni/harfbuzz/src/.libs/" cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DCMAKE_BUILD_RPATH=lib
       - name: Make SDL_ttf
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build -L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,lib,-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin catgirl-engine
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/glibc/build -L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,lib,-rpath-link,/lib/x86_64-linux-gnu" cargo build --release --bin catgirl-engine
 
       - name: Setup Export Directory
         run: mkdir -p ${{ github.workspace }}/export/lib
 
       - name: Copy GLibC Over To Export Directory
-        run: cp -L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build/libc.so ${{ github.workspace }}/export/lib/glibc.so.6
+        run: cp -L ${{ github.workspace }}/android/app/jni/glibc/build/libc.so ${{ github.workspace }}/export/lib/glibc.so.6
 
       - name: Copy SDL Over To Export Directory
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so ${{ github.workspace }}/export/lib/libSDL2-2.0.so.0
