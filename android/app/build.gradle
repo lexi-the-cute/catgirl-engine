@@ -11,7 +11,8 @@ if (buildAsApplication) {
 }
 
 android {
-    compileSdkVersion 31
+    // the `compileSdkVersion` is what the NDK is passed
+    compileSdkVersion 21
     defaultConfig {
         if (buildAsApplication) {
             applicationId "land.catgirl.engine"
