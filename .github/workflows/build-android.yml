@@ -75,7 +75,7 @@ jobs:
         working-directory: /usr/local/lib/android/sdk/ndk
         run: |
           ls -liallh /usr/local/lib/android/sdk/ndk
-          cd /usr/local/lib/android/sdk/ndk/*
+          cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
           ln -s `pwd` ../current
 
       # Create config.toml File
