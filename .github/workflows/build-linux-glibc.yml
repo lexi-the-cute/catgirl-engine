@@ -120,6 +120,9 @@ jobs:
       - name: Setup Export Directory
         run: mkdir -p ${{ github.workspace }}/export/lib
 
+      - name: Copy GLibC Over To Export Directory
+        run: cp -L ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build/*.so ${{ github.workspace }}/export/lib/
+
       - name: Copy SDL Over To Export Directory
         run: cp -L ${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so ${{ github.workspace }}/export/lib/libSDL2-2.0.so.0
 
