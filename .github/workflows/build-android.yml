@@ -84,6 +84,9 @@ jobs:
           export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
           sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
         run: |
