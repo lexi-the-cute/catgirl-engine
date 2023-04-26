@@ -99,49 +99,10 @@ jobs:
       - name: Add x86_64 Android Build Target
         run: rustup target add x86_64-linux-android
 
-      # ----------------------------------------
-      # TODO: Get Rid Of This and Have Gradle Output Dependencies Instead
-      - name: Build SDL
-        run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL/Android.mk" APP_PLATFORM="android-$DESIRED_API"
-      - name: Build SDL_image
-        run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL_image" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL_image/Android.mk" APP_PLATFORM="android-$DESIRED_API"
-      # - name: Build freetype
-      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/freetype" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/freetype/Android.mk" APP_PLATFORM="android-$DESIRED_API"
-      # - name: Build harfbuzz
-      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/harfbuzz" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/harfbuzz/Android.mk" APP_PLATFORM="android-$DESIRED_API"
-      # - name: Build SDL_ttf
-      #   run: ${{ github.workspace }}/tools/android-ndk-r25c/ndk-build NDK_PROJECT_PATH="${{ github.workspace }}/android/app/jni/SDL_ttf" APP_BUILD_SCRIPT="${{ github.workspace }}/android/app/jni/SDL_ttf/Android.mk" APP_PLATFORM="android-$DESIRED_API"
-
-      # Make Directories For Dropping SDL Library Into
-      - name: Make Deps Directory For aarch64
-        run: mkdir -p ${{ github.workspace }}/target/aarch64-linux-android/release/deps
-      - name: Make Deps Directory For armv7
-        run: mkdir -p ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps
-      - name: Make Deps Directory For i686
-        run: mkdir -p ${{ github.workspace }}/target/i686-linux-android/release/deps
-      - name: Make Deps Directory For x86_64
-        run: mkdir -p ${{ github.workspace }}/target/x86_64-linux-android/release/deps
-
-      # Copy SDL Library Over To Corresponding Directories
-      - name: Copy SDL Over To Deps Directory For aarch64
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/arm64-v8a/libSDL2.so ${{ github.workspace }}/target/aarch64-linux-android/release/deps/libSDL2.so
-      - name: Copy SDL Over To Deps Directory For armv7
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/armeabi-v7a/libSDL2.so ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps/libSDL2.so
-      - name: Copy SDL Over To Deps Directory For i686
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/x86/libSDL2.so ${{ github.workspace }}/target/i686-linux-android/release/deps/libSDL2.so
-      - name: Copy SDL Over To Deps Directory For x86_64
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL/libs/x86_64/libSDL2.so ${{ github.workspace }}/target/x86_64-linux-android/release/deps/libSDL2.so
-
-      # Copy SDL_image Library Over To Corresponding Directories
-      - name: Copy SDL_image Over To Deps Directory For aarch64
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/arm64-v8a/libSDL2_image.so ${{ github.workspace }}/target/aarch64-linux-android/release/deps/libSDL2_image.so
-      - name: Copy SDL Over To Deps Directory For armv7
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/armeabi-v7a/libSDL2_image.so ${{ github.workspace }}/target/armv7-linux-androideabi/release/deps/libSDL2_image.so
-      - name: Copy SDL Over To Deps Directory For i686
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86/libSDL2_image.so ${{ github.workspace }}/target/i686-linux-android/release/deps/libSDL2_image.so
-      - name: Copy SDL Over To Deps Directory For x86_64
-        run: cp -a ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86_64/libSDL2_image.so ${{ github.workspace }}/target/x86_64-linux-android/release/deps/libSDL2_image.so
-      # ----------------------------------------
+      # Build Native Libraries
+      - name: Build Native Libraries (Release)
+        working-directory: android
+        run: ${{ github.workspace }}/android/gradlew externalNativeBuildRelease
 
       # Create config.toml File
       - name: Create config.toml File
@@ -177,18 +138,14 @@ jobs:
       - name: Store CatgirlEngine In App For x86_64
         run: cp ${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64/libmain.so
 
-      # Copy Assets To Android Src
-      # - name: Create Assets Directory
-      #   run: mkdir -p ${{ github.workspace }}/android/app/src/main/assets
-      # - name: Copy ResourcePack To Assets Directory
-      #   run: cp -R assets ${{ github.workspace }}/android/app/src/main/assets/resourcepack
-
       # Compile Program
       - name: Build Android App as APK (Release)
-        run: cd android && ${{ github.workspace }}/android/gradlew assembleRelease
+        working-directory: android
+        run: ${{ github.workspace }}/android/gradlew assembleRelease
 
       - name: Build Android App as Bundle (Release)
-        run: cd android && ${{ github.workspace }}/android/gradlew bundleRelease
+        working-directory: android
+        run: ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Display APK Directory
       - name: Display APK Directory (Release)
@@ -197,10 +154,6 @@ jobs:
       # Display Bundle Directory
       - name: Display Bundle Directory (Release)
         run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
-
-      # I may get rid of obfuscation/minifying, but until I decode on if I'll do that,
-      #   I'm just releasing the mappings to make it easier for modders. Not that it'd help 
-      #   on the engine itself as the engine is in Rust, not Java.
 
       # Upload APK
       - name: Upload APK (Release)
