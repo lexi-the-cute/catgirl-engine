@@ -32,7 +32,7 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git wget
       - name: Install APT Packages
-        run: sudo apt install gcc ragel unzip
+        run: sudo apt install gcc ragel
 
       - name: Create Build Directory
         run: mkdir -p build
@@ -49,9 +49,9 @@ jobs:
 
       # Build GLibC
       - name: Download Source
-        run: wget https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz -O ${{ github.workspace }}/android/app/jni/glibc.zip
+        run: wget https://ftp.gnu.org/gnu/libc/glibc-$GLIBC_VERSION.tar.gz -O ${{ github.workspace }}/android/app/jni/glibc.tar.gz
       - name: Extract Source
-        run: unzip ${{ github.workspace }}/android/app/jni/glibc.zip -d ${{ github.workspace }}/android/app/jni/
+        run: tar xf ${{ github.workspace }}/android/app/jni/glibc.tar.gz -C ${{ github.workspace }}/android/app/jni/
       - name: Make Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/glibc-$GLIBC_VERSION/build
       - name: Run Configure Script
