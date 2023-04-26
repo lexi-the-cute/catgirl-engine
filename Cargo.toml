@@ -28,7 +28,8 @@ features = ["image", "ttf"]  # bundled for cmake
 
 [package.metadata.deb]
 # This depends string is set based on what Github Actions compiles against
-depends = "libc6 (>= 2.32),libsdl2-dev,libsdl2-image-dev,libsdl2-ttf-dev,libfreetype-dev,libharfbuzz-dev"
+# depends = "libc6 (>= 2.32),libsdl2-dev,libsdl2-image-dev,libsdl2-ttf-dev,libfreetype-dev,libharfbuzz-dev"
+depends = "$auto"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
