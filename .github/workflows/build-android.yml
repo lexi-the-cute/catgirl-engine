@@ -87,19 +87,19 @@ jobs:
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/libs/arm64-v8a -L ${{ github.workspace }}/android/app/jni/SDL_image/libs/arm64-v8a -L ${{ github.workspace }}/android/app/jni/SDL_ttf/libs/arm64-v8a"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/obj/local/arm64-v8a -L ${{ github.workspace }}/android/app/jni/SDL_image/obj/local/arm64-v8a -L ${{ github.workspace }}/android/app/jni/SDL_ttf/obj/local/arm64-v8a"
           cargo build --target aarch64-linux-android --release --lib
       - name: Build CatgirlEngine For armv7
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/libs/armeabi-v7a -L ${{ github.workspace }}/android/app/jni/SDL_image/libs/armeabi-v7a -L ${{ github.workspace }}/android/app/jni/SDL_ttf/libs/armeabi-v7a"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/obj/local/armeabi-v7a -L ${{ github.workspace }}/android/app/jni/SDL_image/obj/local/armeabi-v7a -L ${{ github.workspace }}/android/app/jni/SDL_ttf/obj/local/armeabi-v7a"
           cargo build --target armv7-linux-androideabi --release --lib
       - name: Build CatgirlEngine For i686
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/libs/x86 -L ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86 -L ${{ github.workspace }}/android/app/jni/SDL_ttf/libs/x86"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/obj/local/x86 -L ${{ github.workspace }}/android/app/jni/SDL_image/obj/local/x86 -L ${{ github.workspace }}/android/app/jni/SDL_ttf/obj/local/x86"
           cargo build --target i686-linux-android --release --lib
       - name: Build CatgirlEngine For x86_64
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/libs/x86_64 -L ${{ github.workspace }}/android/app/jni/SDL_image/libs/x86_64 -L ${{ github.workspace }}/android/app/jni/SDL_ttf/libs/x86_64"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/obj/local/x86_64 -L ${{ github.workspace }}/android/app/jni/SDL_image/obj/local/x86_64 -L ${{ github.workspace }}/android/app/jni/SDL_ttf/obj/local/x86_64"
           cargo build --target x86_64-linux-android --release --lib
 
       # Create Directories For Storing Engine in App
