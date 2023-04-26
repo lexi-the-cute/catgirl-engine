@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Android
 on: [push]
 jobs:
   Build-Android:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: Android
     env:
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
