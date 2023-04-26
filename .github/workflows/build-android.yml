@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Android
     env:
-      DESIRED_API: 21
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
       ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
@@ -35,15 +34,9 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       # - name: Installing Base Packages Via APT
-      #   run: sudo apt install wget sudo coreutils sed dpkg apt git
+      #   run: sudo apt install wget sudo coreutils sed dpkg apt git util-linux
       - name: Install APT Packages
         run: sudo apt install gcc unzip openjdk-17-jre-headless
-      - name: Install SDL Packages  # "Is `aarch64-linux-android-clang` installed?" if SDL packages not installed
-        run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev  # libfreetype-dev libharfbuzz-dev
-
-      # Setup Packages
-      - name: Setup Java Update Alternatives
-        run: sudo update-alternatives --set java $JAVA_HOME/bin/java
 
       # Extract Keystore
       - name: Extract Keystore
@@ -62,33 +55,6 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
-      - name: Create Tools Directory
-        run: mkdir -p tools
-
-      # Download Android NDK
-      - name: Download Android NDK
-        run: wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O ${{ github.workspace }}/tools/ndk.zip
-
-      # Unzip Android NDK
-      - name: Unzip Android NDK
-        run: unzip ${{ github.workspace }}/tools/ndk.zip -d ${{ github.workspace }}/tools/
-
-      # Download Android SDK
-      - name: Download Android SDK
-        run: wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O ${{ github.workspace }}/tools/cmdlt.zip
-
-      # Unzip Android SDK
-      - name: Unzip Android SDK
-        run: unzip ${{ github.workspace }}/tools/cmdlt.zip -d ${{ github.workspace }}/tools/
-
-      # Auto-Accept Android SDK Licenses
-      - name: Auto Accept Android SDK Licenses
-        run: yes | ${{ github.workspace }}/tools/cmdline-tools/bin/sdkmanager --licenses --sdk_root=${{ github.workspace }}/tools
-
-      # Download Desired Android API
-      - name: Download Desired Android API
-        run: ${{ github.workspace }}/tools/cmdline-tools/bin/sdkmanager --install "platforms;android-$DESIRED_API" --sdk_root=${{ github.workspace }}/tools
-
       # Add Build Targets
       - name: Add armv7 Android Build Target
         run: rustup target add armv7-linux-androideabi
@@ -104,9 +70,16 @@ jobs:
         working-directory: android
         run: ${{ github.workspace }}/android/gradlew externalNativeBuildRelease
 
+      # Create Symlink for NDK
+      - name: Create Symlink For NDK
+        working-directory: /usr/local/lib/android/sdk/ndk
+        run: cd * && ln -s `pwd` ../current
+
       # Create config.toml File
       - name: Create config.toml File
-        run: sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
+        run: |
+          export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
+          sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
