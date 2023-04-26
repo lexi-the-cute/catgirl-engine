@@ -73,7 +73,10 @@ jobs:
       # Create Symlink for NDK
       - name: Create Symlink For NDK
         working-directory: /usr/local/lib/android/sdk/ndk
-        run: cd * && ln -s `pwd` ../current
+        run: |
+          ls -liallh /usr/local/lib/android/sdk/ndk
+          cd /usr/local/lib/android/sdk/ndk/*
+          ln -s `pwd` ../current
 
       # Create config.toml File
       - name: Create config.toml File
