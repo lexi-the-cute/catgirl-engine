@@ -90,23 +90,23 @@ jobs:
       # Build Engine As Library
       - name: Build CatgirlEngine For aarch64
         run: |
-          ls -liallh ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/arm64-v8a
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/arm64-v8a"
+          ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
           cargo build --target aarch64-linux-android --release --lib
       - name: Build CatgirlEngine For armv7
         run: |
-          ls -liallh ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/armeabi-v7a
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/armeabi-v7a"
+          ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
           cargo build --target armv7-linux-androideabi --release --lib
       - name: Build CatgirlEngine For i686
         run: |
-          ls -liallh ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/x86
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/x86"
+          ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
           cargo build --target i686-linux-android --release --lib
       - name: Build CatgirlEngine For x86_64
         run: |
-          ls -liallh ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/x86_64
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/build/intermediates/cmake/release/obj/x86_64"
+          ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
           cargo build --target x86_64-linux-android --release --lib
 
       # Create Directories For Storing Engine in App
