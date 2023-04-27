@@ -65,6 +65,28 @@ jobs:
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
+      # Build freetype
+      - name: Generate Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/autogen.sh
+      - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
+      - name: Make freetype
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: make
+
+      # Build harfbuzz
+      - name: Generate Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/autogen.sh
+      - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
+      - name: Make harfbuzz
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: make
+
       # Build SDL_ttf
       - name: Make Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
@@ -81,7 +103,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine" cargo deb
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine,-rpath-link,/lib/x86_64-linux-gnu" cargo deb
 
       # Display Export Directory
       - name: Display Export Directory
