@@ -43,7 +43,7 @@ jobs:
         run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
 
       - name: Create Build Directory
-        run: mkdir -p build
+        run: mkdir -p ${{ github.workspace }}/build
 
       # Install Rust
       - name: Download Rust Installer

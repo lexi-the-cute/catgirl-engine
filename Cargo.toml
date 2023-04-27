@@ -30,8 +30,10 @@ features = ["image", "ttf"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/
 
 [package.metadata.deb]
 # This depends string is set based on what Github Actions compiles against
-depends = "libc6 (>= 2.32), libsdl2-2.0-0, libsdl2-image-2.0-0, libsdl2-ttf-2.0-0"
+# depends = "libc6 (>= 2.32), libsdl2-2.0-0, libsdl2-image-2.0-0, libsdl2-ttf-2.0-0"
+depends = "libc6 (>= 2.29)"  # Double check to confirm this is the minimum supported version, not 2.31
 assets = [
+    ["android/app/jni/SDL*/build/*.so", "/usr/lib/catgirl-engine", "755"],
     ["target/release/catgirl-engine", "/usr/games/", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
