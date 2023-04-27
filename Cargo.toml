@@ -34,7 +34,7 @@ features = ["image", "ttf"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/
 depends = "libc6 (>= 2.29)"  # Double check to confirm this is the minimum supported version, not 2.31
 assets = [
     ["android/app/jni/SDL_ttf/external/freetype/objs/.libs/libfreetype.so", "/usr/lib/catgirl-engine/libfreetype.so.6", "755"],
-    ["android/app/jni/SDL_ttf/external/freetype/src/.libs/libharfbuzz.so", "/usr/lib/catgirl-engine/libharfbuzz.so.6", "755"],
+    ["android/app/jni/SDL_ttf/external/harfbuzz/src/.libs/libharfbuzz.so", "/usr/lib/catgirl-engine/libharfbuzz.so.6", "755"],
     ["android/app/jni/SDL/build/libSDL2-2.0.so.0", "/usr/lib/catgirl-engine/libSDL2-2.0.so.0", "755"],
     ["android/app/jni/SDL_image/build/libSDL2_image-2.0.so.0", "/usr/lib/catgirl-engine/libSDL2_image-2.0.so.0", "755"],
     ["android/app/jni/SDL_ttf/build/libSDL2_ttf-2.0.so.0", "/usr/lib/catgirl-engine/libSDL2_ttf-2.0.so.0", "755"],

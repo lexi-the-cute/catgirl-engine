@@ -101,6 +101,10 @@ jobs:
       - name: Install Deb Packager
         run: cargo install cargo-deb
 
+      # Debug Failed Paths
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
       # Compile Program
       - name: Build Program (Release)
         run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine,-rpath-link,/lib/x86_64-linux-gnu" cargo deb
