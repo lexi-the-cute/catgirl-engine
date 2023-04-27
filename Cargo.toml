@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "All Rights Reserved (For Now)"
-version = "0.1.0"
+version = "0.3.0"  # https://semver.org/ (Do not use 1.0.0 until first production release)
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
