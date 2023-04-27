@@ -30,7 +30,9 @@ jobs:
       # - name: Installing Base Packages Via APT
       #   run: sudo apt install sudo coreutils apt git
       - name: Install APT Packages
-        run: sudo apt install gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libfreetype-dev libharfbuzz-dev
+        run: sudo apt install gcc libfreetype-dev libharfbuzz-dev
+      - name: Install SDL Packages
+        run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       - name: Create Build Directory
         run: mkdir -p build
