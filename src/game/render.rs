@@ -23,9 +23,7 @@ pub fn start(tx: Sender<()>, rx: Receiver<()>) {
         error!("Render Crash: {:?}", err);
     }).ok();
 
-    error!("Render Almost Quit (Testing Segfault)");
     tx.send(()).ok();
-    error!("Render Quit (Testing Segfault)");
 }
 
 fn run(rx: Receiver<()>) -> Result<(), String> {
@@ -139,7 +137,6 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 
-    error!("Render Pre-Quit (Testing Segfault)");
     Ok(())
 }
 
