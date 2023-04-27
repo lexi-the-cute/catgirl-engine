@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Linux (Deb)
 on: [push]
 jobs:
   Build-Linux-Debian:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -50,6 +50,13 @@ jobs:
       # Install Deb Packager
       - name: Install Deb Packager
         run: cargo install cargo-deb
+
+      - name: List All Files
+        run: find ${{ github.workspace }}
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
 
       # Compile Program
       - name: Build Program (Release)
