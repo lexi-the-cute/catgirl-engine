@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Linux (Deb)
 on: [push]
 jobs:
   Build-Linux-Debian:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
