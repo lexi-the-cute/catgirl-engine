@@ -53,7 +53,7 @@ pub fn start() {
         match rrrx.try_recv() {
             Ok(_) => {
                 debug!("Render Thread Terminated...");
-                sptx.send(()).ok();
+                // sptx.send(()).ok();
             }
             Err(_) => {
                 // Not Implemented At The Moment
