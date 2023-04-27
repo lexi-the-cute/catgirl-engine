@@ -65,37 +65,37 @@ jobs:
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
-      # # Build freetype
-      # - name: Generate Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/autogen.sh
-      # - name: Run Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
-      # - name: Make freetype
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-      #   run: make
+      # Build freetype
+      - name: Generate Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/autogen.sh
+      - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
+      - name: Make freetype
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
+        run: make
 
-      # # Build harfbuzz
-      # - name: Generate Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/autogen.sh
-      # - name: Run Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
-      # - name: Make harfbuzz
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: make
+      # Build harfbuzz
+      - name: Generate Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/autogen.sh
+      - name: Run Configure Script
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
+      - name: Make harfbuzz
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
+        run: make
 
-      # # Build SDL_ttf
-      # - name: Make Build Directory
-      #   run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      # - name: Deleting Old CMake Cache
-      #   run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
-      # - name: Initialize CMake
-      #   run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/usr/lib/catgirl-engine
-      # - name: Make SDL_ttf
-      #   run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      # Build SDL_ttf
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/usr/lib/catgirl-engine
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
       # Install Deb Packager
       - name: Install Deb Packager
@@ -107,7 +107,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine,-rpath-link,/lib/x86_64-linux-gnu" cargo deb
+        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine,-rpath-link,/lib/x86_64-linux-gnu" cargo deb
 
       # Display Export Directory
       - name: Display Export Directory
