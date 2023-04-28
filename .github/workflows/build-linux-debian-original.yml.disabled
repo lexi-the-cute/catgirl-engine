@@ -1,4 +1,4 @@
-name: Build For Linux (Deb)
+name: Build For Linux (Deb Original)
 run-name: ${{ github.actor }} is building for Linux (Deb)
 on: [push]
 jobs:
