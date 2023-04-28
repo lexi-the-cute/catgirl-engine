@@ -1,5 +1,5 @@
 name: Build For Linux (Deb Original)
-run-name: ${{ github.actor }} is building for Linux (Deb)
+run-name: ${{ github.actor }} is building for Linux (Deb Original)
 on: [push]
 jobs:
   Build-Linux-Debian-Original:
