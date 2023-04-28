@@ -17,6 +17,9 @@ lto = true
 debug = true
 #panic = "abort"
 
+[features]
+bundled = ["sdl2/bundled"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

@@ -10,6 +10,7 @@ jobs:
       ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+      CARGO_TERM_COLOR: always
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -87,22 +88,40 @@ jobs:
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
-          cargo build --target aarch64-linux-android --release --lib
+          cargo build --verbose --target aarch64-linux-android --release --lib
       - name: Build CatgirlEngine For armv7
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
-          cargo build --target armv7-linux-androideabi --release --lib
+          cargo build --verbose --target armv7-linux-androideabi --release --lib
       - name: Build CatgirlEngine For i686
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
-          cargo build --target i686-linux-android --release --lib
+          cargo build --verbose --target i686-linux-android --release --lib
       - name: Build CatgirlEngine For x86_64
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
-          cargo build --target x86_64-linux-android --release --lib
+          cargo build --verbose --target x86_64-linux-android --release --lib
+
+      # Test Engine
+      - name: Test CatgirlEngine For aarch64
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
+          cargo test --verbose --target aarch64-linux-android
+      - name: Test CatgirlEngine For armv7
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
+          cargo test --verbose --target armv7-linux-androideabi
+      - name: Test CatgirlEngine For i686
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
+          cargo test --verbose --target i686-linux-android
+      - name: Test CatgirlEngine For x86_64
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
+          cargo test --verbose --target x86_64-linux-android
 
       # Create Directories For Storing Engine in App
       - name: Create Directory To Store CatgirlEngine In App For aarch64
