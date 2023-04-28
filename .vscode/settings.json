@@ -10,10 +10,5 @@
         "**/.jniLibs/**": true,
         "**/SDL/**": true,
         "**/tools/**": true
-    },
-    "cmake.sourceDirectory": "${workspaceFolder}/android/app/jni",
-    "rust-analyzer.linkedProjects": [
-        "./Cargo.toml"
-    ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    }
 }

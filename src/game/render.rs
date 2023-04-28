@@ -27,8 +27,10 @@ pub fn start(tx: Sender<()>, rx: Receiver<()>) {
 }
 
 fn run(rx: Receiver<()>) -> Result<(), String> {
+    debug!("run(rx) on render called...");
     // TODO: Make Sure These Three Lines Are Only Initialized Once
     let sdl_context: Sdl = sdl2::init()?;
+    debug!("SDL2 Initialized...");
     let game_controller_subsystem: GameControllerSubsystem = sdl_context.game_controller()?;
     let _haptic_subsystem: HapticSubsystem = sdl_context.haptic()?;
     let video_subsystem: VideoSubsystem = sdl_context.video()?;

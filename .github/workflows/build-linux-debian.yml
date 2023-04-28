@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Linux (Deb)
 on: [push]
 jobs:
   Build-Linux-Debian:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -28,10 +28,12 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt install gcc
+        run: sudo apt install gcc binutils
+      - name: Install SDL Packages
+        run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       - name: Create Build Directory
-        run: mkdir -p ${{ github.workspace }}/build
+        run: mkdir -p build
 
       # Install Rust
       - name: Download Rust Installer
@@ -43,69 +45,16 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
-      # Build SDL2
-      - name: Make Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
-      - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/usr/lib/catgirl-engine
-      - name: Make SDL2
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
-
-      # Build SDL_image
-      - name: Make Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
-      - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/usr/lib/catgirl-engine
-      - name: Make SDL_image
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
-
-      # Build freetype
-      - name: Generate Configure Script
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/autogen.sh
-      - name: Run Configure Script
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-        run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
-      - name: Make freetype
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
-        run: make
-
-      # Build harfbuzz
-      # - name: Generate Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/autogen.sh
-      # - name: Run Configure Script
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz/configure LDFLAGS=-Wl,-rpath='/usr/lib/catgirl-engine'
-      # - name: Make harfbuzz
-      #   working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/harfbuzz
-      #   run: make
-
-      # Build SDL_ttf
-      - name: Make Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
-      - name: Initialize CMake
-        run: cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/usr/lib/catgirl-engine
-      - name: Make SDL_ttf
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Add x86_64 Musl Build Target
+        run: rustup target add x86_64-unknown-linux-musl
 
       # Install Deb Packager
       - name: Install Deb Packager
         run: cargo install cargo-deb
 
-      # Debug Failed Paths
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
       # Compile Program
       - name: Build Program (Release)
-        run: RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,/usr/lib/catgirl-engine,-rpath-link,/lib/x86_64-linux-gnu" cargo deb
+        run: cargo deb --separate-debug-symbols --bin catgirl-engine  # --target=x86_64-unknown-linux-musl
 
       # Display Export Directory
       - name: Display Export Directory
@@ -120,13 +69,6 @@ jobs:
             ${{ github.workspace }}/target/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
-
-      - name: List All Files
-        run: find ${{ github.workspace }}
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
