@@ -33,8 +33,6 @@ jobs:
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
-      # - name: Installing Base Packages Via APT
-      #   run: sudo apt install wget sudo coreutils sed dpkg apt git util-linux
       - name: Install APT Packages
         run: sudo apt install gcc unzip openjdk-17-jre-headless
 

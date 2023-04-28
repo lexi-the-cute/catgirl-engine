@@ -6,12 +6,6 @@
     "configurations": [
         {
             "type": "lldb",
-            "request": "attach",
-            "name": "Attach",
-            "program": "catgirl-engine"
-        },
-        {
-            "type": "lldb",
             "request": "launch",
             "name": "Debug executable 'catgirl-engine'",
             "cargo": {
