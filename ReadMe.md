@@ -33,7 +33,12 @@ cd CatgirlEngine
 
 ```bash
 # Compile Program
-cargo build
+cargo run --release
+
+# For Installing As Deb
+cargo install cargo-deb
+cargo deb --install
+catgirl-engine
 ```
 
 ## Android
