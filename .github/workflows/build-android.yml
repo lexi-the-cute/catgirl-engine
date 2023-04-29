@@ -11,7 +11,6 @@ jobs:
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
       CARGO_TERM_COLOR: always
-      ANDROID_HOME: /usr/local/lib/android/sdk
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -68,18 +67,14 @@ jobs:
       # Build Native Libraries
       - name: Build Native Libraries (Release)
         working-directory: android
-        env:
-          ANDROID_HOME: /usr/local/lib/android/sdk
         run: ${{ github.workspace }}/android/gradlew externalNativeBuildRelease
 
       # Create Symlink for NDK
       - name: Create Symlink For NDK
-        working-directory: $ANDROID_HOME/ndk
-        env:
-          ANDROID_HOME: /usr/local/lib/android/sdk
+        working-directory: /usr/local/lib/android/sdk/ndk
         run: |
-          ls -liallh $ANDROID_HOME/ndk
-          cd $ANDROID_HOME/ndk/`ls -1v $ANDROID_HOME/ndk | tail -n1`
+          ls -liallh /usr/local/lib/android/sdk/ndk
+          cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
           ln -s `pwd` ../current
 
       # Create config.toml File
