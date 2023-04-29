@@ -30,9 +30,9 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt install gcc g++ binutils musl-tools
+        run: sudo apt -y install gcc g++ binutils musl-tools
       # - name: Install SDL Packages
-      #   run: sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+      #   run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       # Symlink g++ to musl-g++
       - name: Install SDL Packages
@@ -52,19 +52,23 @@ jobs:
         run: source "$HOME/.cargo/env"
 
       - name: Add x86_64 Musl Build Target
-        run: rustup target add x86_64-unknown-linux-musl
+        run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-musl
 
       # Install Deb Packager
       - name: Install Deb Packager
-        run: cargo install cargo-deb
+        run: $HOME/.cargo/bin/cargo install cargo-deb
 
       # Compile Program (Testing)
       - name: Build Program (Release)
-        run: RUST_BACKTRACE=full cargo build --release --target=x86_64-unknown-linux-musl --features bundled --bin catgirl-engine  # --separate-debug-symbols
+        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --release --target=x86_64-unknown-linux-musl --features bundled --bin catgirl-engine  # --separate-debug-symbols
 
       # Compile Program
       - name: Build Program (Deb)
-        run: RUST_BACKTRACE=full cargo deb --target=x86_64-unknown-linux-musl  # --separate-debug-symbols
+        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl  # --separate-debug-symbols
+
+      - name: Test Program
+        run: |
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl
 
       # Display Export Directory
       - name: Display Export Directory

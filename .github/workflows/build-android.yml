@@ -11,6 +11,7 @@ jobs:
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
       CARGO_TERM_COLOR: always
+      ANDROID_HOME: /usr/local/lib/android/sdk
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -35,7 +36,7 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt install gcc unzip openjdk-17-jre-headless
+        run: sudo apt -y install gcc unzip openjdk-17-jre-headless
 
       # Extract Keystore
       - name: Extract Keystore
@@ -56,25 +57,29 @@ jobs:
 
       # Add Build Targets
       - name: Add armv7 Android Build Target
-        run: rustup target add armv7-linux-androideabi
+        run: $HOME/.cargo/bin/rustup target add armv7-linux-androideabi
       - name: Add aarch64 Android Build Target
-        run: rustup target add aarch64-linux-android
+        run: $HOME/.cargo/bin/rustup target add aarch64-linux-android
       - name: Add i686 Android Build Target
-        run: rustup target add i686-linux-android
+        run: $HOME/.cargo/bin/rustup target add i686-linux-android
       - name: Add x86_64 Android Build Target
-        run: rustup target add x86_64-linux-android
+        run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
 
       # Build Native Libraries
       - name: Build Native Libraries (Release)
         working-directory: android
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
         run: ${{ github.workspace }}/android/gradlew externalNativeBuildRelease
 
       # Create Symlink for NDK
       - name: Create Symlink For NDK
-        working-directory: /usr/local/lib/android/sdk/ndk
+        working-directory: $ANDROID_HOME/ndk
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
         run: |
-          ls -liallh /usr/local/lib/android/sdk/ndk
-          cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
+          ls -liallh $ANDROID_HOME/ndk
+          cd $ANDROID_HOME/ndk/`ls -1v $ANDROID_HOME/ndk | tail -n1`
           ln -s `pwd` ../current
 
       # Create config.toml File
@@ -88,40 +93,40 @@ jobs:
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
-          cargo build --verbose --target aarch64-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target aarch64-linux-android --release --lib
       - name: Build CatgirlEngine For armv7
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
-          cargo build --verbose --target armv7-linux-androideabi --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target armv7-linux-androideabi --release --lib
       - name: Build CatgirlEngine For i686
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
-          cargo build --verbose --target i686-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target i686-linux-android --release --lib
       - name: Build CatgirlEngine For x86_64
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
-          cargo build --verbose --target x86_64-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target x86_64-linux-android --release --lib
 
       # Test Engine
       - name: Test CatgirlEngine For aarch64
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
-          cargo test --verbose --target aarch64-linux-android
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=aarch64-linux-android
       - name: Test CatgirlEngine For armv7
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
-          cargo test --verbose --target armv7-linux-androideabi
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=armv7-linux-androideabi
       - name: Test CatgirlEngine For i686
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
-          cargo test --verbose --target i686-linux-android
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=i686-linux-android
       - name: Test CatgirlEngine For x86_64
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
-          cargo test --verbose --target x86_64-linux-android
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-linux-android
 
       # Create Directories For Storing Engine in App
       - name: Create Directory To Store CatgirlEngine In App For aarch64
