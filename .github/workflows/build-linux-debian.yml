@@ -68,7 +68,7 @@ jobs:
 
       - name: Test Program
         run: |
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory

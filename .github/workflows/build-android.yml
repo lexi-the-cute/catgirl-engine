@@ -109,19 +109,19 @@ jobs:
       - name: Test CatgirlEngine For aarch64
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a"
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=aarch64-linux-android --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=aarch64-linux-android --tests --benches --examples
       - name: Test CatgirlEngine For armv7
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=armv7-linux-androideabi --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=armv7-linux-androideabi --tests --benches --examples
       - name: Test CatgirlEngine For i686
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86"
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=i686-linux-android --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=i686-linux-android --tests --benches --examples
       - name: Test CatgirlEngine For x86_64
         run: |
           export RUSTFLAGS="-L ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64"
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-linux-android --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-linux-android --tests --benches --examples
 
       # Create Directories For Storing Engine in App
       - name: Create Directory To Store CatgirlEngine In App For aarch64
