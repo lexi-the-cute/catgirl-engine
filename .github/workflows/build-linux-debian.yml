@@ -29,8 +29,8 @@ jobs:
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
-      - name: Install APT Packages
-        run: sudo apt -y install gcc g++ binutils musl-tools
+      # - name: Install APT Packages
+      #   run: sudo apt -y install gcc g++ binutils #musl-tools
       # - name: Install SDL Packages
       #   run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
