@@ -4,9 +4,13 @@
 # rr = "run --release"
 # android = ["build", "--target", "aarch64-linux-android", "--target", "armv7-linux-androideabi", "--target", "i686-linux-android", "--release"]  # TODO: Figure out how to run builds
 
+#[target.x86_64-unknown-linux-musl]
+#ar = "/usr/bin/ar"
+#linker = "/usr/bin/musl-gcc"
+
 [target.x86_64-unknown-linux-musl]
-ar = "/usr/bin/ar"
-linker = "/usr/bin/musl-gcc"
+ar = "/bin/x86_64-linux-musl-ar"
+linker = "/bin/x86_64-linux-musl-gcc"  # /bin/x86_64-linux-musl-gcc-9.4.0
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
