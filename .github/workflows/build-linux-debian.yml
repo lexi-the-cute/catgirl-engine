@@ -41,6 +41,14 @@ jobs:
         run: |
           wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
           sudo apt install ${{ github.workspace }}/build/musl-cross.deb
+      
+      - name: Create Workaround Symlinks
+        run: |
+          # Is Supplied As Arguments For CMAKE_C_COMPILER and CMAKE_CXX_COMPILER to `./SDL/CMakeLists.txt`
+          # Used when Bundling In rust-sdl/sdl2-sys
+          sudo ln -s /bin/x86_64-linux-musl-ar /bin/musl-ar
+          sudo ln -s /bin/x86_64-linux-musl-gcc /bin/musl-gcc
+          sudo ln -s /bin/x86_64-linux-musl-g++ /bin/musl-g++
 
       # Install Rust
       - name: Download Rust Installer
