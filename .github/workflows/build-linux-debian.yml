@@ -29,25 +29,18 @@ jobs:
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
-      # - name: Install APT Packages
-      #   run: sudo apt -y install gcc g++ binutils #musl-tools
+      - name: Install APT Packages
+        run: sudo apt -y install gcc g++ binutils #musl-tools
       # - name: Install SDL Packages
       #   run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       - name: Create Build Directory
         run: mkdir -p build
 
-      # - name: Download and Install Musl Cross Compiler
-      #   run: |
-      #     wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
-      #     sudo apt install ${{ github.workspace }}/build/musl-cross.deb
-
-      - name: Download Musl Cross Compiler
-        working-directory: ${{ github.workspace }}/build
+      - name: Download and Install Musl Cross Compiler
         run: |
-          wget https://musl.cc/x86_64-linux-musl-cross.tgz -O ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz
-          sudo tar xf ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz -C /
-          find /x86_64-linux-musl-cross
+          wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
+          sudo apt install ${{ github.workspace }}/build/musl-cross.deb
 
       # Build SDL2
       - name: Switch to SDL2 Directory
