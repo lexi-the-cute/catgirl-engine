@@ -5,8 +5,8 @@
 # android = ["build", "--target", "aarch64-linux-android", "--target", "armv7-linux-androideabi", "--target", "i686-linux-android", "--release"]  # TODO: Figure out how to run builds
 
 [target.x86_64-unknown-linux-musl]
-ar = "~/x86_64-linux-musl-cross/bin/x86_64-linux-musl-ar"
-linker = "~/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
+ar = "/x86_64-linux-musl-cross/bin/x86_64-linux-musl-ar"
+linker = "/x86_64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"

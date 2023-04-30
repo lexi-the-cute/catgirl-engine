@@ -46,7 +46,7 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         run: |
           wget https://musl.cc/x86_64-linux-musl-cross.tgz -O ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz
-          tar xvf ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz -C ~
+          sudo tar xvf ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz -C /
 
       # Build SDL2
       - name: Switch to SDL2 Directory
