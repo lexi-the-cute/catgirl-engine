@@ -39,7 +39,7 @@ jobs:
 
       - name: Download and Install Musl Cross Compiler
         run: |
-          wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
+          wget https://github.com/alexisart/musl-cross-make/releases/download/v1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
           sudo apt install ${{ github.workspace }}/build/musl-cross.deb
 
       # Build SDL2
