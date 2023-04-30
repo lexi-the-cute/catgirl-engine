@@ -41,14 +41,36 @@ jobs:
         run: |
           wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
           sudo apt install ${{ github.workspace }}/build/musl-cross.deb
-      
-      - name: Create Workaround Symlinks
-        run: |
-          # Is Supplied As Arguments For CMAKE_C_COMPILER and CMAKE_CXX_COMPILER to `./SDL/CMakeLists.txt`
-          # Used when Bundling In rust-sdl/sdl2-sys
-          sudo ln -s /bin/x86_64-linux-musl-ar /bin/musl-ar
-          sudo ln -s /bin/x86_64-linux-musl-gcc /bin/musl-gcc
-          sudo ln -s /bin/x86_64-linux-musl-g++ /bin/musl-g++
+
+      # Build SDL2
+      - name: Switch to SDL2 Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Make SDL2
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+
+      # Build SDL_image
+      - name: Switch to SDL_image Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+      - name: Make SDL_image
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
+
+      # Build SDL_ttf
+      - name: Switch to SDL_ttf Directory
+        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
       # Install Rust
       - name: Download Rust Installer
@@ -69,10 +91,14 @@ jobs:
 
       # Compile Program
       - name: Build Program (Deb)
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl -- --features bundled
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/x86_64-linux-musl/lib"
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl  # -- --features bundled
 
       - name: Test Program
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
+        run: |
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/x86_64-linux-musl/lib"
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
