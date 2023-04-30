@@ -37,10 +37,16 @@ jobs:
       - name: Create Build Directory
         run: mkdir -p build
 
-      - name: Download and Install Musl Cross Compiler
+      # - name: Download and Install Musl Cross Compiler
+      #   run: |
+      #     wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
+      #     sudo apt install ${{ github.workspace }}/build/musl-cross.deb
+
+      - name: Download Musl Cross Compiler
+        working-directory: ${{ github.workspace }}/build
         run: |
-          wget https://github.com/alexisart/musl-cross-make/releases/download/1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
-          sudo apt install ${{ github.workspace }}/build/musl-cross.deb
+          wget https://musl.cc/x86_64-linux-musl-cross.tgz -O ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz
+          tar xvf ${{ github.workspace }}/build/x86_64-linux-musl-cross.tgz -C ~
 
       # Build SDL2
       - name: Switch to SDL2 Directory
