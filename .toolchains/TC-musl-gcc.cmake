@@ -17,9 +17,9 @@ set(CMAKE_CXX_COMPILER x86_64-linux-musl-g++)
 # set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)  # ONLY
 # set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)  # BOTH
 
-set(CMAKE_SYSTEM_INCLUDE_PATH /usr/x86_64-linux-gnu/include $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include)  # /include
-set(CMAKE_SYSTEM_LIBRARY_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross)  # /lib
-# set(CMAKE_SYSTEM_PROGRAM_PATH /bin)  # /bin
+set(CMAKE_SYSTEM_INCLUDE_PATH /usr/x86_64-linux-gnu/include $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/include $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include)  # /include
+set(CMAKE_SYSTEM_LIBRARY_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/lib $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/lib)  # /lib
+set(CMAKE_SYSTEM_PROGRAM_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/bin $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/bin)  # /bin
 
 # Cross Compiler Stuff
 # SET (CMAKE_C_COMPILER_WORKS 1)
