@@ -7,6 +7,7 @@
 [target.x86_64-unknown-linux-musl]
 ar = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-ar"
 linker = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
+rustflags = ["-L", "$WORKSPACE/android/app/jni/SDL/build", "-L", "$WORKSPACE/android/app/jni/SDL_image/build", "-L", "$WORKSPACE/android/app/jni/SDL_ttf/build", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/lib", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/x86_64-linux-musl/lib", "-C", "link-arg=-Wl,-rpath,.,-rpath-link,$WORKSPACE/android/app/jni/SDL/build"]
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
