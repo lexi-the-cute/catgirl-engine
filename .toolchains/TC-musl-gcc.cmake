@@ -6,7 +6,7 @@ set(CMAKE_C_COMPILER   x86_64-linux-musl-gcc)
 set(CMAKE_CXX_COMPILER x86_64-linux-musl-g++)
 
 # Set Root Paths
-set(CMAKE_FIND_ROOT_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl)  #  /usr/x86_64-linux-gnu
+set(CMAKE_FIND_ROOT_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl)
 
 # Set System Paths
 # set(CMAKE_SYSTEM_INCLUDE_PATH /usr/x86_64-linux-gnu/include)  # /include
