@@ -34,7 +34,7 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt -y install gcc g++ binutils unzip #musl-tools
+        run: sudo apt -y install gcc g++ binutils unzip libc6-dev-amd64-cross #musl-tools
       # - name: Install SDL Packages
       #   run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
