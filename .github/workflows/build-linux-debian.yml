@@ -50,14 +50,11 @@ jobs:
       - name: List Files In /usr/x86_64-linux-gnu
         run: find /usr/x86_64-linux-gnu
 
-      - name: Symlink Folder From /usr/x86_64-linux-gnu
-        run: ln -s /usr/x86_64-linux-gnu ${{ github.workspace }}/build/x86_64-linux-gnu
-
       # Build SDL2
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
-        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
+        run: cmake -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Make SDL2
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
