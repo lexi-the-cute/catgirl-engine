@@ -6,7 +6,7 @@ set(CMAKE_C_COMPILER   x86_64-linux-musl-gcc)
 set(CMAKE_CXX_COMPILER x86_64-linux-musl-g++)
 
 # where is the target environment located
-set(CMAKE_FIND_ROOT_PATH  $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include;$ENV{WORKSPACE}/build/x86-64-linux-musl-cross)
+set(CMAKE_FIND_ROOT_PATH  $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include;$ENV{WORKSPACE}/build/manual/include;$ENV{WORKSPACE}/build/x86-64-linux-musl-cross)
 
 # adjust the default behavior of the FIND_XXX() commands:
 # search programs in the host environment
