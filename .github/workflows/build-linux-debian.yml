@@ -47,8 +47,11 @@ jobs:
           unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
           chmod +x -R ${{ github.workspace }}/build/x86-64-linux-musl-cross  # Github Packaging Loses Executable Bit
 
-      - name: Download Manual Includes
-        run: git clone https://github.com/alexisart/Manual-Includes.git ${{ github.workspace }}/build/manual
+      # Create wordsize.h
+      - name: Create bits/wordsize.h
+        run: |
+          mkdir -p ${{ github.workspace }}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include/bits
+          echo "#define __WORDSIZE	64" > ${{ github.workspace }}/build/x86-64-linux-musl-cross/x86_64-linux-musl/include/bits/wordsize.h
 
       # Build SDL2
       - name: Deleting Old CMake Cache
@@ -115,8 +118,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine-Linux-x86_64-Deb
-          path: |
-            ${{ github.workspace }}/target/debian/*.deb
+          path: ${{ github.workspace }}/target/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
