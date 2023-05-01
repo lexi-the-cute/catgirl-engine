@@ -104,12 +104,12 @@ jobs:
       # Compile Program
       - name: Build Program (Deb)
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/x86_64-linux-musl/lib"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/lib,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib"
           RUST_BACKTRACE=full $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl  # -- --features bundled
 
       - name: Test Program
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,/x86_64-linux-musl/lib"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/lib,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib"
           RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
 
       # Display Export Directory
