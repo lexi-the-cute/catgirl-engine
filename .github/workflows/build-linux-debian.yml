@@ -47,6 +47,13 @@ jobs:
           unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
           chmod +x -R ${{ github.workspace }}/build/x86-64-linux-musl-cross  # Github Packaging Loses Executable Bit
 
+      - name: List All Files
+        run: find ${{ github.workspace }}
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+
       # Build SDL2
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
@@ -115,6 +122,13 @@ jobs:
           path: ${{ github.workspace }}/target/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      - name: List All Files
+        run: find ${{ github.workspace }}
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
