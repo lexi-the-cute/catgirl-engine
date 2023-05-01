@@ -56,7 +56,7 @@ jobs:
       - name: Creating Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
-        run: cmake -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
+        run: cmake -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Make SDL2
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
@@ -66,7 +66,7 @@ jobs:
       - name: Creating Build Directory
         run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
-        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
@@ -76,7 +76,7 @@ jobs:
       # - name: Creating Build Directory
       #   run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       # - name: Initialize CMake
-      #   run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
+      #   run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       # - name: Make SDL_ttf
       #   run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
@@ -104,12 +104,12 @@ jobs:
       # Compile Program
       - name: Build Program (Deb)
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/lib,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build -L ${{ github.workspace }}/android/app/jni/SDL_image/build -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build -L ${{ github.workspace }}/x86-64-linux-musl-cross/lib -L ${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib -C link-arg=-Wl,-rpath,."
           RUST_BACKTRACE=full $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl  # -- --features bundled
 
       - name: Test Program
         run: |
-          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build/ -L ${{ github.workspace }}/android/app/jni/SDL_image/build/ -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build/ -C link-arg=-Wl,-rpath,.,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/lib,-rpath-link,${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib"
+          export RUSTFLAGS="-L ${{ github.workspace }}/android/app/jni/SDL/build -L ${{ github.workspace }}/android/app/jni/SDL_image/build -L ${{ github.workspace }}/android/app/jni/SDL_ttf/build -L ${{ github.workspace }}/x86-64-linux-musl-cross/lib -L ${{ github.workspace }}/x86-64-linux-musl-cross/x86_64-linux-musl/lib -C link-arg=-Wl,-rpath,."
           RUST_BACKTRACE=full $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
 
       # Display Export Directory
