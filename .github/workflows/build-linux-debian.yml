@@ -45,6 +45,7 @@ jobs:
         run: |
           wget https://github.com/alexisart/musl-cross-make/releases/download/v1.2.3/x86-64-linux-musl-cross-zip.zip -O ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip
           unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
+          chmod +x -R ${{ github.workspace }}/build/x86-64-linux-musl-cross  # Github Packaging Loses Executable Bit
 
       # Build SDL2
       - name: Deleting Old CMake Cache
