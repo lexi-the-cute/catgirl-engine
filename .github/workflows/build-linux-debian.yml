@@ -47,14 +47,8 @@ jobs:
           unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
           chmod +x -R ${{ github.workspace }}/build/x86-64-linux-musl-cross  # Github Packaging Loses Executable Bit
 
-      - name: List Files In /usr/x86_64-linux-gnu/include
-        run: find /usr/x86_64-linux-gnu/include
-      - name: List All Files
-        run: find ${{ github.workspace }}
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
+      - name: List Files In /usr/x86_64-linux-gnu
+        run: find /usr/x86_64-linux-gnu
 
       # Build SDL2
       - name: Deleting Old CMake Cache
