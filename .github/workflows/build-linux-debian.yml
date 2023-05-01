@@ -52,7 +52,9 @@ jobs:
 
       # Build SDL2
       - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Creating Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
         run: cmake -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL/ -B ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Make SDL2
@@ -60,7 +62,9 @@ jobs:
 
       # Build SDL_image
       - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Creating Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
         run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       - name: Make SDL_image
@@ -68,7 +72,9 @@ jobs:
 
       # Build SDL_ttf
       - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles  ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Creating Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       - name: Initialize CMake
         run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/ -B build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so
       - name: Make SDL_ttf
