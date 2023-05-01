@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -23,14 +24,17 @@ jobs:
 
       # List Files
       - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+        run: ls ${{ github.workspace }}
+
+      # List Environment
+      - name: List Environment
+        run: env
 
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt -y install gcc g++ binutils #musl-tools
+        run: sudo apt -y install gcc g++ binutils unzip #musl-tools
       # - name: Install SDL Packages
       #   run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
@@ -39,12 +43,10 @@ jobs:
 
       - name: Download and Install Musl Cross Compiler
         run: |
-          wget https://github.com/alexisart/musl-cross-make/releases/download/v1.2.3/x86-64-linux-musl-cross_1.2.3-1_amd64.deb -O ${{ github.workspace }}/build/musl-cross.deb
-          sudo apt install ${{ github.workspace }}/build/musl-cross.deb
+          wget https://github.com/alexisart/musl-cross-make/releases/download/v1.2.3/x86-64-linux-musl-cross-zip.zip -O ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip
+          unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
 
       # Build SDL2
-      - name: Switch to SDL2 Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles/
       - name: Initialize CMake
@@ -53,8 +55,6 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
       # Build SDL_image
-      - name: Switch to SDL_image Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_image
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles/
       - name: Initialize CMake
@@ -63,8 +63,6 @@ jobs:
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
       # Build SDL_ttf
-      - name: Switch to SDL_ttf Directory
-        run: cd ${{ github.workspace }}/android/app/jni/SDL_ttf
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles/
       - name: Initialize CMake
@@ -81,6 +79,10 @@ jobs:
         run: ${{ github.workspace }}/build/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
+
+      # Toml Files Don't Take Variables, So We Have To Hardcode The File
+      - name: Setup Config.toml
+        run: sed "s/\$WORKSPACE/$WORKSPACE/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
       - name: Add x86_64 Musl Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-musl
