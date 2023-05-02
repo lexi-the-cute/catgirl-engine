@@ -149,6 +149,7 @@ jobs:
           path: |
             ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
             ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
+            ${{ github.workspace }}/target/binding
 
       # Upload Bundle
       - name: Upload Bundle (Release)
@@ -158,6 +159,7 @@ jobs:
           path: |
             ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab
             ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
+            ${{ github.workspace }}/target/binding
 
       # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
 
