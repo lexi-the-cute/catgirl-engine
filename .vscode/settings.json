@@ -9,6 +9,8 @@
         "**/.idea/**": true,
         "**/.jniLibs/**": true,
         "**/SDL/**": true,
+        "**/SDL_image/**": true,
+        "**/SDL_ttf/**": true,
         "**/tools/**": true
     }
 }
