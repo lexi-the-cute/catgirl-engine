@@ -80,7 +80,7 @@ jobs:
       - name: Create config.toml File
         run: |
           export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
-          sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.1
+          sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml.1
           sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.1 > ${{ github.workspace }}/.cargo/config.toml
 
       # Build Engine As Library
