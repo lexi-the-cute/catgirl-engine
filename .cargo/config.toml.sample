@@ -13,15 +13,19 @@ rustflags = ["-L", "$WORKSPACE/android/app/jni/SDL/build", "-L", "$WORKSPACE/and
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi{android-version}-clang"
+rustflags = ["-L", "$WORKSPACE/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"]
 
 [target.aarch64-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker ="/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android{android-version}-clang"
+rustflags = ["-L", "$WORKSPACE/android/app/build/intermediates/cmake/release/obj/arm64-v8a"]
 
 [target.i686-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android{android-version}-clang"
+rustflags = ["-L", "$WORKSPACE/android/app/build/intermediates/cmake/release/obj/x86"]
 
 [target.x86_64-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android{android-version}-clang"
+rustflags = ["-L", "$WORKSPACE/android/app/build/intermediates/cmake/release/obj/x86_64"]
