@@ -12,5 +12,6 @@
         "**/SDL_image/**": true,
         "**/SDL_ttf/**": true,
         "**/tools/**": true
-    }
+    },
+    "git.detectSubmodules": false
 }
