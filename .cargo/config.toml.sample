@@ -8,7 +8,7 @@
 ar = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-ar"
 linker = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
 # TODO: Figure out why pthread code not found. It's in Musl libc lib. https://wiki.musl-libc.org/faq.html
-rustflags = ["-L", "$WORKSPACE/android/app/jni/SDL/build", "-L", "$WORKSPACE/android/app/jni/SDL_image/build", "-L", "$WORKSPACE/android/app/jni/SDL_ttf/build", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/lib", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/x86_64-linux-musl/lib", "-C", "link-arg=-Wl,-rpath,.,-rpath-link,$WORKSPACE/android/app/jni/SDL/build"]
+rustflags = ["-L", "$WORKSPACE/android/app/jni/SDL/build", "-L", "$WORKSPACE/android/app/jni/SDL_image/build", "-L", "$WORKSPACE/android/app/jni/SDL_ttf/build", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/lib", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/x86_64-linux-musl/lib", "-C", "link-arg=-Wl,-rpath,.,-rpath-link,$WORKSPACE/android/app/jni/SDL/build", "-C", "link-arg=-lpthread", "-C", "link-arg=-lc"]
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
