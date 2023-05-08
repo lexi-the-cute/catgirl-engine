@@ -122,6 +122,8 @@ jobs:
         with:
           name: CatgirlEngine-Linux-x86_64-Deb
           path: |
+            ${{ github.workspace }}/android/app/jni/SDL/build/*.so
+            ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so
             ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debian/*.deb
             ${{ github.workspace }}/target/binding
 
