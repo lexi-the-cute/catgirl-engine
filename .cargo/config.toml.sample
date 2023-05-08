@@ -7,7 +7,7 @@
 [target.x86_64-unknown-linux-musl]
 ar = "/usr/bin/ar"
 linker = "/usr/bin/musl-gcc"
-rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,-lc,-rpath,/lib/x86_64-linux-musl,-rpath,/lib/x86_64-linux-musl/catgirl-engine,-rpath-link,$WORKSPACE/target/libs"]
+rustflags = ["-L$WORKSPACE/target/libs", "-Crelocation-model=pic", "-Clink-arg=-Wl,-lc,-rpath,/lib/x86_64-linux-musl,-rpath,/lib/x86_64-linux-musl/catgirl-engine,-rpath-link,$WORKSPACE/target/libs"]
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"

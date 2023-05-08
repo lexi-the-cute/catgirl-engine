@@ -34,6 +34,7 @@ pretty_env_logger = "0.4.0"
 git = "https://github.com/alexisart/rust-sdl2"
 branch = "master"
 default-features = false
+# TODO: Re-enable ttf
 features = ["image"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/blob/27cd1fd67c811e06b9d997a77bb6089a1b65070d/src/sdl2/lib.rs#L86
 
 [build-dependencies]
@@ -45,5 +46,8 @@ section = "games"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
     ["target/libs/*", "/lib/x86_64-linux-musl/catgirl-engine", "755"],
+    ["target/binding/*.h", "/usr/include/catgirl-engine", "755"],
+    ["target/binding/*.hpp", "/usr/include/catgirl-engine", "755"],
+    ["target/binding/*.pyx", "/usr/lib/python3/dist-packages/catgirl-engine", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
