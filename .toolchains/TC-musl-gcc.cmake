@@ -2,11 +2,11 @@
 set(CMAKE_SYSTEM_NAME Linux)
 
 # C and C++ Compilers
-set(CMAKE_C_COMPILER   x86_64-linux-musl-gcc)
-set(CMAKE_CXX_COMPILER x86_64-linux-musl-g++)
+set(CMAKE_C_COMPILER   musl-gcc)
+set(CMAKE_CXX_COMPILER musl-gcc)  # musl-g++
 
 # Set Root Paths
-set(CMAKE_FIND_ROOT_PATH $ENV{WORKSPACE}/build/x86-64-linux-musl-cross $ENV{WORKSPACE}/build/x86-64-linux-musl-cross/x86_64-linux-musl)
+set(CMAKE_FIND_ROOT_PATH /usr/lib/x86_64-linux-musl /usr/include/x86_64-linux-musl)
 
 # Set System Paths
 # set(CMAKE_SYSTEM_INCLUDE_PATH /usr/x86_64-linux-gnu/include)  # /include
