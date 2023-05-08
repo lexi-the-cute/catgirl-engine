@@ -99,6 +99,11 @@ jobs:
           cp ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
           # cp ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
 
+      - name: Symlink Libs In Export Directory
+        continue-on-error: true
+        run: |
+          ln -s libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+
       # Install Deb Packager
       - name: Install Deb Packager
         run: $HOME/.cargo/bin/cargo install cargo-deb
