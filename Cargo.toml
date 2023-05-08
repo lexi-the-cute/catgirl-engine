@@ -40,9 +40,10 @@ features = ["image"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/blob/27
 cbindgen = "0.24.3"
 
 [package.metadata.deb]
-depends = "$auto"
+depends = "musl (>= 1.2.0)"
 section = "games"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
+    ["target/libs/*", "/lib/x86_64-linux-musl/catgirl-engine", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]

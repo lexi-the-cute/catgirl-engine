@@ -5,10 +5,9 @@
 # android = ["build", "--target", "aarch64-linux-android", "--target", "armv7-linux-androideabi", "--target", "i686-linux-android", "--release"]  # TODO: Figure out how to run builds
 
 [target.x86_64-unknown-linux-musl]
-ar = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-ar"
-linker = "$WORKSPACE/build/x86-64-linux-musl-cross/bin/x86_64-linux-musl-gcc"
-# TODO: Figure out why pthread code not found. It's in Musl libc lib. https://wiki.musl-libc.org/faq.html
-rustflags = ["-L", "$WORKSPACE/android/app/jni/SDL/build", "-L", "$WORKSPACE/android/app/jni/SDL_image/build", "-L", "$WORKSPACE/android/app/jni/SDL_ttf/build", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/lib", "-L", "$WORKSPACE/build/x86-64-linux-musl-cross/x86_64-linux-musl/lib", "-C", "relocation-model=pic", "-C", "link-arg=-Wl,-rpath,.,-rpath-link,$WORKSPACE/android/app/jni/SDL/build,-lc,-lpthread"]
+ar = "/usr/bin/ar"
+linker = "/usr/bin/musl-gcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-Crelocation-model=pic", "-Clink-arg=-Wl,-lc,-rpath,/lib/x86_64-linux-musl,-rpath,/lib/x86_64-linux-musl/catgirl-engine,-rpath-link,$WORKSPACE/target/libs"]
 
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"

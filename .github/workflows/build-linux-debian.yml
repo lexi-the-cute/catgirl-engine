@@ -36,16 +36,7 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt -y install unzip # cmake gcc g++ binutils unzip libc6-dev-amd64-cross libgl1-mesa-dev libegl1-mesa-dev
-
-      - name: Create Build Directory
-        run: mkdir -p build
-
-      - name: Download and Install Musl Cross Compiler
-        run: |
-          wget https://github.com/alexisart/musl-cross-make/releases/download/v1.2.3/x86-64-linux-musl-cross-zip.zip -O ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip
-          unzip ${{ github.workspace }}/build/x86-64-linux-musl-cross-zip.zip -d ${{ github.workspace }}/build/x86-64-linux-musl-cross
-          chmod +x -R ${{ github.workspace }}/build/x86-64-linux-musl-cross  # Github Packaging Loses Executable Bit
+        run: sudo apt -y install unzip musl-tools binutils # musl musl-dev cmake gcc g++ automake libc6-dev-amd64-cross libgl1-mesa-dev libegl1-mesa-dev
 
       # Build SDL2
       - name: Deleting Old CMake Cache
@@ -96,6 +87,15 @@ jobs:
       - name: Add x86_64 Musl Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-musl
 
+      - name: Copy SDL Libs To Export Directory
+        # continue-on-error: true
+        run: |
+          mkdir -p ${{ github.workspace }}/target/libs
+          `test ${{ github.workspace }}/android/app/jni/SDL/build/*.so*` && cp ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
+          `test ${{ github.workspace }}/android/app/jni/SDL/build/*.a*` && cp ${{ github.workspace }}/android/app/jni/SDL/build/*.a* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
+          `test ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*` && cp ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
+          `test ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*` && cp ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
+
       # Install Deb Packager
       - name: Install Deb Packager
         run: $HOME/.cargo/bin/cargo install cargo-deb
@@ -117,9 +117,6 @@ jobs:
         with:
           name: CatgirlEngine-Linux-x86_64-Deb
           path: |
-            ${{ github.workspace }}/android/app/jni/SDL/build/*.so
-            ${{ github.workspace }}/android/app/jni/SDL/build/*.a
-            ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so
             ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debian/*.deb
             ${{ github.workspace }}/target/binding
 
