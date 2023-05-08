@@ -93,10 +93,10 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL/build/*.a* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/x86_64-unknown-linux-musl/libs
+          cp ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
+          cp ${{ github.workspace }}/android/app/jni/SDL/build/*.a* ${{ github.workspace }}/target/libs
+          cp ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
+          cp ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
       - name: Install Deb Packager
