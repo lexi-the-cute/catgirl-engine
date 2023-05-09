@@ -141,15 +141,24 @@ jobs:
       - name: Display Bundle Directory (Release)
         run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
 
+      # Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads
+        run: |
+          mkdir -p ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.aab ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+
       # Upload APK
       - name: Upload APK (Release)
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine-Android-APK
           path: |
-            ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk
-            ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
-            ${{ github.workspace }}/target/binding
+            ${{ github.workspace }}/upload/app-release.apk
+            ${{ github.workspace }}/upload/mapping.txt
+            ${{ github.workspace }}/upload/binding
 
       # Upload Bundle
       - name: Upload Bundle (Release)
@@ -157,9 +166,9 @@ jobs:
         with:
           name: CatgirlEngine-Android-Bundle
           path: |
-            ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab
-            ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt
-            ${{ github.workspace }}/target/binding
+            ${{ github.workspace }}/upload/app-release.aab
+            ${{ github.workspace }}/upload/mapping.txt
+            ${{ github.workspace }}/upload/binding
 
       # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
 
