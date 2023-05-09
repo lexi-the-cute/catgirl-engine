@@ -40,9 +40,7 @@ jobs:
 
       # Build SDL2
       - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL/CMakeFiles ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Creating Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
         run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build  # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
       - name: Make SDL2
@@ -50,9 +48,7 @@ jobs:
 
       # Build SDL_image
       - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_image/CMakeFiles ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Creating Build Directory
-        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
         run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a
       - name: Make SDL_image
@@ -63,9 +59,7 @@ jobs:
       # TODO: Re-enable
       # Build SDL_ttf
       # - name: Deleting Old CMake Cache
-      #   run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeCache.txt ${{ github.workspace }}/android/app/jni/SDL_ttf/CMakeFiles ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      # - name: Creating Build Directory
-      #   run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      #   run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       # - name: Initialize CMake
       #   run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/objs/.libs/libfreetype.so -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
       # - name: Make SDL_ttf
@@ -94,15 +88,11 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
-          # cp ${{ github.workspace }}/android/app/jni/SDL/build/*.a ${{ github.workspace }}/target/libs
-          cp ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
-          # cp ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
-
-      - name: Symlink Libs In Export Directory
-        continue-on-error: true
-        run: |
+          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
           ln -s libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
       - name: Install Deb Packager

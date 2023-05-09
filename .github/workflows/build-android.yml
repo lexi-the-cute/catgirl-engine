@@ -40,16 +40,15 @@ jobs:
       - name: Extract Keystore
         run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
 
-      - name: Create Build Directory
-        run: mkdir -p ${{ github.workspace }}/build
-
       # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/build/rust.sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
-        run: chmod +x ${{ github.workspace }}/build/rust.sh
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
       - name: Install Rust
-        run: ${{ github.workspace }}/build/rust.sh -y
+        run: ${{ github.workspace }}/tools/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
@@ -117,13 +116,13 @@ jobs:
 
       # Copy Engine To App
       - name: Store CatgirlEngine In App For aarch64
-        run: cp ${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a/libmain.so
+        run: cp -av ${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a/libmain.so
       - name: Store CatgirlEngine In App For armv7
-        run: cp ${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a/libmain.so
+        run: cp -av ${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a/libmain.so
       - name: Store CatgirlEngine In App For i686
-        run: cp ${{ github.workspace }}/target/i686-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86/libmain.so
+        run: cp -av ${{ github.workspace }}/target/i686-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86/libmain.so
       - name: Store CatgirlEngine In App For x86_64
-        run: cp ${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64/libmain.so
+        run: cp -av ${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64/libmain.so
 
       # Compile Program
       - name: Build Android App as APK (Release)
