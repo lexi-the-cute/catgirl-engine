@@ -1,7 +1,8 @@
 # Target Operating System
 set(CMAKE_SYSTEM_NAME Linux)
 
-# C and C++ Compilers
+# C and C++ Compilers as well as Static Linker (AR)
+set(CMAKE_AR   ar)  # /usr/bin/ar
 set(CMAKE_C_COMPILER   musl-gcc)
 set(CMAKE_CXX_COMPILER musl-gcc)  # musl-g++
 
