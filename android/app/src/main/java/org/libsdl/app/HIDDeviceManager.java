@@ -36,7 +36,6 @@ public class HIDDeviceManager {
         if (sManagerRefCount == 0) {
             sManager = new HIDDeviceManager(context);
         }
-
         ++sManagerRefCount;
         return sManager;
     }
@@ -171,7 +170,7 @@ public class HIDDeviceManager {
                 Log.i(TAG,"  Interface protocol: " + mUsbInterface.getInterfaceProtocol());
                 Log.i(TAG,"  Endpoint count: " + mUsbInterface.getEndpointCount());
 
-                // Get endpoint details 
+                // Get endpoint details
                 for (int epi = 0; epi < mUsbInterface.getEndpointCount(); epi++)
                 {
                     UsbEndpoint mEndpoint = mUsbInterface.getEndpoint(epi);
@@ -217,11 +216,9 @@ public class HIDDeviceManager {
         if (usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_HID) {
             return true;
         }
-
         if (isXbox360Controller(usbDevice, usbInterface) || isXboxOneController(usbDevice, usbInterface)) {
             return true;
         }
-
         return false;
     }
 
@@ -254,6 +251,7 @@ public class HIDDeviceManager {
             0x20d6, // PowerA
             0x24c6, // PowerA
             0x2c22, // Qanba
+            0x2dc8, // 8BitDo
         };
 
         if (usbInterface.getInterfaceClass() == UsbConstants.USB_CLASS_VENDOR_SPEC &&
@@ -267,7 +265,6 @@ public class HIDDeviceManager {
                 }
             }
         }
-
         return false;
     }
 
@@ -275,14 +272,16 @@ public class HIDDeviceManager {
         final int XB1_IFACE_SUBCLASS = 71;
         final int XB1_IFACE_PROTOCOL = 208;
         final int[] SUPPORTED_VENDORS = {
+            0x044f, // Thrustmaster
             0x045e, // Microsoft
             0x0738, // Mad Catz
             0x0e6f, // PDP
             0x0f0d, // Hori
+            0x10f5, // Turtle Beach
             0x1532, // Razer Wildcat
             0x20d6, // PowerA
             0x24c6, // PowerA
-            0x2dc8, /* 8BitDo */
+            0x2dc8, // 8BitDo
             0x2e24, // Hyperkin
         };
 
@@ -297,7 +296,6 @@ public class HIDDeviceManager {
                 }
             }
         }
-
         return false;
     }
 
@@ -312,7 +310,6 @@ public class HIDDeviceManager {
                 devices.add(device.getId());
             }
         }
-
         for (int id : devices) {
             HIDDevice device = mDevicesById.get(id);
             mDevicesById.remove(id);
@@ -328,7 +325,6 @@ public class HIDDeviceManager {
                 if (permission_granted) {
                     opened = device.open();
                 }
-
                 HIDDeviceOpenResult(device.getId(), opened);
             }
         }
@@ -346,7 +342,6 @@ public class HIDDeviceManager {
                     if ((interface_mask & (1 << interface_id)) != 0) {
                         continue;
                     }
-
                     interface_mask |= (1 << interface_id);
 
                     HIDDeviceUSB device = new HIDDeviceUSB(this, usbDevice, interface_index);
@@ -373,7 +368,7 @@ public class HIDDeviceManager {
         }
 
         // Find bonded bluetooth controllers and create SteamControllers for them
-        mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothManager = (BluetoothManager)mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         if (mBluetoothManager == null) {
             // This device doesn't support Bluetooth.
             return;
@@ -387,10 +382,12 @@ public class HIDDeviceManager {
 
         // Get our bonded devices.
         for (BluetoothDevice device : btAdapter.getBondedDevices()) {
+
             Log.d(TAG, "Bluetooth device available: " + device);
             if (isSteamController(device)) {
                 connectBluetoothDevice(device);
             }
+
         }
 
         // NOTE: These don't work on Chromebooks, to my undying dismay.
@@ -519,7 +516,6 @@ public class HIDDeviceManager {
             for (HIDDevice device : mDevicesById.values()) {
                 device.shutdown();
             }
-
             mDevicesById.clear();
             mBluetoothDevices.clear();
             HIDDeviceReleaseCallback();
@@ -531,7 +527,7 @@ public class HIDDeviceManager {
             for (HIDDevice device : mDevicesById.values()) {
                 device.setFrozen(frozen);
             }
-        }        
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -545,7 +541,6 @@ public class HIDDeviceManager {
                 Log.v(TAG, "No device for id: " + id);
                 Log.v(TAG, "Available devices: " + mDevicesById.keySet());
             }
-
             return result;
         }
     }
@@ -560,11 +555,9 @@ public class HIDDeviceManager {
         if (usb) {
             initializeUSB();
         }
-
         if (bluetooth) {
             initializeBluetooth();
         }
-
         return true;
     }
 
@@ -593,7 +586,6 @@ public class HIDDeviceManager {
                 Log.v(TAG, "Couldn't request permission for USB device " + usbDevice);
                 HIDDeviceOpenResult(deviceID, false);
             }
-
             return false;
         }
 
@@ -602,7 +594,6 @@ public class HIDDeviceManager {
         } catch (Exception e) {
             Log.e(TAG, "Got exception: " + Log.getStackTraceString(e));
         }
-
         return false;
     }
 
@@ -620,7 +611,6 @@ public class HIDDeviceManager {
         } catch (Exception e) {
             Log.e(TAG, "Got exception: " + Log.getStackTraceString(e));
         }
-
         return -1;
     }
 
@@ -638,7 +628,6 @@ public class HIDDeviceManager {
         } catch (Exception e) {
             Log.e(TAG, "Got exception: " + Log.getStackTraceString(e));
         }
-
         return -1;
     }
 
@@ -656,7 +645,6 @@ public class HIDDeviceManager {
         } catch (Exception e) {
             Log.e(TAG, "Got exception: " + Log.getStackTraceString(e));
         }
-
         return false;
     }
 
