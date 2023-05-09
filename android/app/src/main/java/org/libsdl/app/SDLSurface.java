@@ -1,5 +1,6 @@
 package org.libsdl.app;
 
+
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.hardware.Sensor;
@@ -19,6 +20,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+
 /**
     SDLSurface. This is what we draw on, so we need to know when it's created
     in order to do anything useful.
@@ -26,7 +28,7 @@ import android.view.WindowManager;
     Because of this, that's where we set up the SDL thread
 */
 public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
-    View.OnKeyListener, View.OnTouchListener, SensorEventListener {
+    View.OnKeyListener, View.OnTouchListener, SensorEventListener  {
 
     // Sensors
     protected SensorManager mSensorManager;
@@ -112,15 +114,15 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         mHeight = height;
         int nDeviceWidth = width;
         int nDeviceHeight = height;
-        try {
+        try
+        {
             if (Build.VERSION.SDK_INT >= 17) {
                 DisplayMetrics realMetrics = new DisplayMetrics();
-                mDisplay.getRealMetrics(realMetrics);
+                mDisplay.getRealMetrics( realMetrics );
                 nDeviceWidth = realMetrics.widthPixels;
                 nDeviceHeight = realMetrics.heightPixels;
             }
         } catch(Exception ignored) {
-
         }
 
         synchronized(SDLActivity.getContext()) {
@@ -223,7 +225,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                     mouseButton = (Integer) object;
                 }
             } catch(Exception ignored) {
-                
             }
 
             // We need to check if we're in relative mouse mode and get the axis offset rather than the x/y values
@@ -246,7 +247,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                             // see the documentation of getPressure(i)
                             p = 1.0f;
                         }
-
                         SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
                     }
                     break;
@@ -272,7 +272,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                         // see the documentation of getPressure(i)
                         p = 1.0f;
                     }
-
                     SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
                     break;
 
@@ -287,7 +286,6 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                             // see the documentation of getPressure(i)
                             p = 1.0f;
                         }
-
                         SDLActivity.onNativeTouch(touchDevId, pointerFingerId, MotionEvent.ACTION_UP, x, y, p);
                     }
                     break;
@@ -321,6 +319,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+
             // Since we may have an orientation set, we won't receive onConfigurationChanged events.
             // We thus should check here.
             int newOrientation;
@@ -364,7 +363,8 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     }
 
     // Captured pointer events for API 26.
-    public boolean onCapturedPointerEvent(MotionEvent event) {
+    public boolean onCapturedPointerEvent(MotionEvent event)
+    {
         int action = event.getActionMasked();
 
         float x, y;
