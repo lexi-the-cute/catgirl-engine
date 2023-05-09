@@ -50,20 +50,17 @@ jobs:
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
-        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/objs/.libs/libfreetype.so -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
       - name: Make SDL_image
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
 
-      # Build freetype
-
-      # TODO: Re-enable
       # Build SDL_ttf
-      # - name: Deleting Old CMake Cache
-      #   run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      # - name: Initialize CMake
-      #   run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/objs/.libs/libfreetype.so -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
-      # - name: Make SDL_ttf
-      #   run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/objs/.libs/libfreetype.so -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
 
       # Install Rust
       - name: Make Tools Directory
@@ -91,7 +88,7 @@ jobs:
           cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
           # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
-          # cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
           ln -s libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
           ls -liallh ${{ github.workspace }}/target/libs
 
