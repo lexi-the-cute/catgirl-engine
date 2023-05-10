@@ -40,9 +40,20 @@ features = ["image", "ttf"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/
 cbindgen = "0.24.3"
 
 [package.metadata.deb]
-depends = "musl (>= 1.2.0)"
 section = "games"
 preserve-symlinks = true
+# This depends and assets is for packages which I don't include the dependencies with the engine
+depends = "$auto"
+assets = [
+    ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
+    ["target/binding/*.h", "/usr/include/catgirl-engine", "755"],
+    ["target/binding/*.hpp", "/usr/include/catgirl-engine", "755"],
+    ["target/binding/*.pyx", "/usr/lib/python3/dist-packages/catgirl-engine", "755"],
+    ["assets/*", "/var/games/catgirl-engine/assets", "644"],
+]
+
+[package.metadata.deb.variants.musl]
+depends = "musl (>= 1.2.0)"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
     ["target/libs/*", "/lib/x86_64-linux-musl/catgirl-engine", "755"],

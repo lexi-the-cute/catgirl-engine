@@ -1,5 +1,5 @@
-name: Build For Linux (Deb)
-run-name: ${{ github.actor }} is building for Linux (Deb)
+name: Build For Linux Musl x86_64 (Deb)
+run-name: ${{ github.actor }} is building for Linux Musl x86_64 (Deb)
 on: [push]
 jobs:
   Build-Linux-Debian:
@@ -110,7 +110,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Deb)
-        run: $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl
+        run: $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-musl --variant=musl
 
       # TODO: Re-enable
       # - name: Test Program
@@ -124,7 +124,7 @@ jobs:
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux-x86_64-Deb
+          name: CatgirlEngine-Linux-x86_64-Musl-Deb
           path: ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message

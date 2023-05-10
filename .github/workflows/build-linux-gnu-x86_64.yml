@@ -1,0 +1,73 @@
+name: Build For Linux GNU x86_64 (Deb)
+run-name: ${{ github.actor }} is building for Linux GNU x86_64 (Deb)
+on: [push]
+jobs:
+  Build-Linux-Debian:
+    runs-on: ubuntu-latest
+    environment: Linux
+    env:
+      CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
+      RUST_BACKTRACE: full
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+      - name: Install Rust
+        run: ${{ github.workspace }}/tools/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
+
+      # Toml Files Don't Take Variables, So We Have To Hardcode The File
+      - name: Setup Config.toml
+        run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
+
+      - name: Add x86_64 GNU Build Target
+        run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-gnu
+
+      # Install Deb Packager
+      - name: Install Deb Packager
+        run: $HOME/.cargo/bin/cargo install cargo-deb
+
+      # Compile Program
+      - name: Build Program (Deb)
+        run: $HOME/.cargo/bin/cargo deb --target=x86_64-unknown-linux-gnu
+
+      # TODO: Re-enable
+      # - name: Test Program
+      #   run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/debian
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-Deb
+          path: ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/debian/*.deb
+
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
