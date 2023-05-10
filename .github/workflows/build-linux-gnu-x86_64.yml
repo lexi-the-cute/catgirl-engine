@@ -24,7 +24,7 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      Install Dependencies
+      # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
