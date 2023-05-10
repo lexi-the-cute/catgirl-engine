@@ -44,3 +44,11 @@ catgirl-engine
 ## Android
 
 The Android build process can be read from [./.github/workflows/build-android.yml](.github/workflows/build-android.yml)
+
+# Running
+
+You may want to use [different drivers](https://wiki.libsdl.org/SDL2/FAQUsingSDL) depending on circumstances or preference.
+
+For example, on (Debian) Linux, SDL defaults to `SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=pulseaudio path/to/engine`.
+
+If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=debug path/to/engine`.
