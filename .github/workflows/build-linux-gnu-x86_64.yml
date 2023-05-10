@@ -28,6 +28,10 @@ jobs:
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install APT Packages
+        run: sudo apt -y install software-properties-common
+      - name: Add Lunar Repo
+        run: sudo add-apt-repository -y -u 'lunar'
+      - name: Install SDL APT Packages
         run: sudo apt -y install libsdl2-dev/lunar libsdl2-image-dev/lunar libsdl2-ttf-dev/lunar
 
       # Install Rust
