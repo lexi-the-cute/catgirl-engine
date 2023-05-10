@@ -2,7 +2,7 @@ name: Build For Linux GNU x86_64 (Deb)
 run-name: ${{ github.actor }} is building for Linux GNU x86_64 (Deb)
 on: [push]
 jobs:
-  Build-Linux-Debian:
+  Build-Linux-GNU-x86-64:
     runs-on: ubuntu-20.04
     environment: Linux
     env:
