@@ -1,5 +1,10 @@
 # https://doc.rust-lang.org/cargo/reference/config.html?highlight=alias#configuration-format
 
+[target.x86_64-unknown-linux-gnu]
+ar = "/usr/bin/x86_64-linux-gnu-ar"
+linker = "/usr/bin/x86_64-linux-gnu-gcc"
+rustflags = ["-Crelocation-model=static", "-Clink-arg=-Wl,-lc,--enable-new-dtags,-rpath,/lib/x86_64-linux-gnu,-rpath,/usr/lib/x86_64-linux-gnu"]
+
 [target.x86_64-unknown-linux-musl]
 ar = "/usr/bin/ar"
 linker = "/usr/bin/musl-gcc"
