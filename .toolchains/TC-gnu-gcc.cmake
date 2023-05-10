@@ -17,8 +17,8 @@ set(CMAKE_FIND_ROOT_PATH /usr/bin /usr/lib/x86_64-linux-gnu /usr/include/x86_64-
 # NEVER Means Don't Use CMAKE_FIND_ROOT_PATH,
 # Only Means Only Use CMAKE_FIND_ROOT_PATH
 # Both Means Use Both Standard Paths and CMAKE_FIND_ROOT_PATH
-set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)  # /lib
-set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)  # /include
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY BOTH)  # /lib
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE BOTH)  # /include
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM BOTH)  # /bin
 
 # Enable Position Indepent Code (-fPIC)
