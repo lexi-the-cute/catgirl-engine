@@ -94,7 +94,6 @@ jobs:
         run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-musl
 
       - name: Copy SDL Libs To Export Directory
-        continue-on-error: true
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
