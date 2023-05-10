@@ -25,13 +25,48 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Add Jammy Repo
-        continue-on-error: true
-        run: sudo add-apt-repository -y -u 'jammy'
       - name: Update APT Package Manager
         run: sudo apt update
       - name: Install SDL APT Packages
-        run: sudo apt -y install libsdl2-dev/jammy libsdl2-image-dev/jammy libsdl2-ttf-dev/jammy
+        run: sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
+      # ----------------------------------------
+      # Build SDL2
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
+      - name: Make SDL2
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+
+      # Build SDL_image
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu/catgirl-engine
+      - name: Make SDL_image
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Reset RunPath
+        run: patchelf --set-rpath /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*
+
+      # Build Freetype
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+
+      # Build SDL_ttf
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu/catgirl-engine
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Reset RunPath
+        run: patchelf --set-rpath /lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*
+      # ----------------------------------------
 
       # Install Rust
       - name: Make Tools Directory
@@ -51,6 +86,16 @@ jobs:
 
       - name: Add x86_64 GNU Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-gnu
+
+      - name: Copy SDL Libs To Export Directory
+        run: |
+          mkdir -p ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
+          # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
+          ln -s libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
       - name: Install Deb Packager
