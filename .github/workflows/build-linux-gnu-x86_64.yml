@@ -25,10 +25,10 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Update APT Package Manager
-        run: sudo apt update
-      - name: Install APT Packages
-        run: sudo apt -y install gcc g++ libxext-dev #libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+      # - name: Update APT Package Manager
+      #   run: sudo apt update
+      # - name: Install APT Packages
+      #   run: sudo apt -y install gcc g++ libxext-dev #libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       # ----------------------------------------
       # Build SDL2
