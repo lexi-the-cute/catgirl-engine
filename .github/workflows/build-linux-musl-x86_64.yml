@@ -2,7 +2,7 @@ name: Build For Linux Musl x86_64 (Deb)
 run-name: ${{ github.actor }} is building for Linux Musl x86_64 (Deb)
 on: [push]
 jobs:
-  Build-Linux-Debian:
+  Build-Linux-Musl-x86-64:
     runs-on: ubuntu-latest
     environment: Linux
     env:
