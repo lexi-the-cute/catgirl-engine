@@ -24,11 +24,11 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Install Dependencies
-      # - name: Update APT Package Manager
-      #   run: sudo apt update
-      # - name: Install APT Packages
-      #   run: sudo apt -y install gcc g++ libxext-dev #libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+      Install Dependencies
+      - name: Update APT Package Manager
+        run: sudo apt update
+      - name: Install APT Packages
+        run: sudo apt -y install binutils patchelf gcc g++ #libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
       # ----------------------------------------
       # Build SDL2
@@ -54,7 +54,7 @@ jobs:
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
       - name: Initialize CMake
         run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Make SDL_ttf
+      - name: Make Freetype
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
 
       # Build SDL_ttf
