@@ -65,3 +65,6 @@ assets = [
     ["target/binding/*.pyx", "/usr/lib/python3/dist-packages/catgirl-engine", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
+
+[package.metadata.deb.variants.rasberrypios]
+depends = "$auto, libsdl2-2.0-0 (>= 2.0.14), libsdl2-image-2.0-0 (>= 2.0.5), libsdl2-ttf-2.0-0 (>= 2.0.15)"
