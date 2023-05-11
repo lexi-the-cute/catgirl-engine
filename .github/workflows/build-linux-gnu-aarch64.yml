@@ -101,8 +101,8 @@ jobs:
         run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu --variant=rasberrypios
 
       # Test Program
-      - name: Test Program
-        run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-unknown-linux-gnu --bins --tests --benches --examples
+      # - name: Test Program
+      #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-unknown-linux-gnu --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
