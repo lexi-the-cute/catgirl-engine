@@ -40,6 +40,7 @@ features = ["image", "ttf"]  # hidapi at https://github.com/Rust-SDL2/rust-sdl2/
 cbindgen = "0.24.3"
 
 [package.metadata.deb]
+name = "catgirl-engine"
 section = "games"
 preserve-symlinks = true
 # This depends and assets is for packages which I don't include the dependencies with the engine
@@ -53,9 +54,15 @@ assets = [
 ]
 
 [package.metadata.deb.variants.gnu]
+name = "catgirl-engine"
 depends = "$auto, libsdl2-2.0-0 (>= 2.0.12)"  # SDL_Metal_DestroyView
 
+[package.metadata.deb.variants.rasberrypios]
+name = "catgirl-engine"
+depends = "$auto, libsdl2-2.0-0 (>= 2.0.12), libsdl2-image-2.0-0 (>= 2.0.5), libsdl2-ttf-2.0-0 (>= 2.0.15)"
+
 [package.metadata.deb.variants.musl]
+name = "catgirl-engine-musl"
 depends = "musl (>= 1.2.0)"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
@@ -65,6 +72,3 @@ assets = [
     ["target/binding/*.pyx", "/usr/lib/python3/dist-packages/catgirl-engine", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
-
-[package.metadata.deb.variants.rasberrypios]
-depends = "$auto, libsdl2-2.0-0 (>= 2.0.14), libsdl2-image-2.0-0 (>= 2.0.5), libsdl2-ttf-2.0-0 (>= 2.0.15)"
