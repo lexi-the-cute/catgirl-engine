@@ -3,7 +3,7 @@
 [target.x86_64-unknown-linux-gnu]
 ar = "/usr/bin/x86_64-linux-gnu-ar"
 linker = "/usr/bin/x86_64-linux-gnu-gcc"
-rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,-lc,--enable-new-dtags,-rpath,/lib/x86_64-linux-gnu,-rpath,/usr/lib/x86_64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
+rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/x86_64-linux-gnu,-rpath,/usr/lib/x86_64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
 
 [target.x86_64-unknown-linux-musl]
 ar = "/usr/bin/ar"
@@ -13,19 +13,24 @@ rustflags = ["-L$WORKSPACE/target/libs", "-Crelocation-model=static", "-Clink-ar
 [target.armv7-linux-androideabi]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi{android-version}-clang"
+rustflags = ["-L$WORKSPACE/android/app/build/intermediates/cmake/release/obj/armeabi-v7a"]
 
 [target.aarch64-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker ="/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android{android-version}-clang"
+rustflags = ["-L$WORKSPACE/android/app/build/intermediates/cmake/release/obj/arm64-v8a"]
 
 [target.i686-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android{android-version}-clang"
+rustflags = ["-L$WORKSPACE/android/app/build/intermediates/cmake/release/obj/x86"]
 
 [target.x86_64-linux-android]
 ar = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar"
 linker = "/usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android{android-version}-clang"
+rustflags = ["-L$WORKSPACE/android/app/build/intermediates/cmake/release/obj/x86_64"]
 
 [target.aarch64-unknown-linux-gnu]
 ar = "/usr/bin/aarch64-linux-gnu-gcc-ar"
 linker = "/usr/bin/aarch64-linux-gnu-gcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/aarch64-linux-gnu,-rpath,/usr/lib/aarch64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
