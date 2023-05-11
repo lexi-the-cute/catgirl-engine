@@ -41,6 +41,8 @@ cbindgen = "0.24.3"
 
 [package.metadata.deb]
 name = "catgirl-engine"
+provides = "catgirl-engine"
+replaces = "catgirl-engine"
 section = "games"
 preserve-symlinks = true
 # This depends and assets is for packages which I don't include the dependencies with the engine
