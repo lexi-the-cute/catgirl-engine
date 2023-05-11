@@ -52,6 +52,9 @@ assets = [
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
 
+[package.metadata.deb.variants.gnu]
+depends = "$auto, libsdl2-2.0-0 (>= 2.0.12)"  # SDL_Metal_DestroyView
+
 [package.metadata.deb.variants.musl]
 depends = "musl (>= 1.2.0)"
 assets = [
