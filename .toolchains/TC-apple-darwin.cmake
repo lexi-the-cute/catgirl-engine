@@ -2,17 +2,12 @@
 set(CMAKE_SYSTEM_NAME Linux)
 
 # C and C++ Compilers as well as Static Linker (AR)
-set(CMAKE_AR   ar)  # /usr/bin/ar
-set(CMAKE_C_COMPILER   musl-gcc)
-set(CMAKE_CXX_COMPILER musl-gcc)  # musl-g++
+set(CMAKE_AR   ar)  # /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar
+set(CMAKE_C_COMPILER   clang-fat.sh)
+set(CMAKE_CXX_COMPILER clang-fat++.sh)  # clang++
 
 # Set Root Paths
-set(CMAKE_FIND_ROOT_PATH /usr/lib/x86_64-linux-musl /usr/include/x86_64-linux-musl)
-
-# Set System Paths
-# set(CMAKE_SYSTEM_INCLUDE_PATH /usr/x86_64-linux-gnu/include)  # /include
-# set(CMAKE_SYSTEM_LIBRARY_PATH /lib)  # /lib
-# set(CMAKE_SYSTEM_PROGRAM_PATH /bin)  # /bin
+set(CMAKE_FIND_ROOT_PATH $WORKSPACE/android/app/jni/SDL/build-scripts /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin /usr/local/include)
 
 # NEVER Means Don't Use CMAKE_FIND_ROOT_PATH,
 # Only Means Only Use CMAKE_FIND_ROOT_PATH

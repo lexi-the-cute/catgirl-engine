@@ -33,77 +33,37 @@ jobs:
         run: env      
 
       # Build SDL2
-      - name: Deleting Old Build Directory
+      - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL/configure
-      - name: Make SDL
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: make
-      - name: Install SDL
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: sudo make install
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-apple-darwin.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Make SDL2
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
       # Build SDL_image
-      - name: Deleting Old Build Directory
+      - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_image/configure
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-apple-darwin.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a
       - name: Make SDL_image
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: make
-      - name: Install SDL_image
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: sudo make install
-      
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
+
       # Build Freetype
-      - name: Deleting Old Build Directory
+      - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure
-      - name: Make freetype
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: make
-      - name: Install freetype
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: sudo make install
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-apple-darwin.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Make Freetype
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
 
       # Build SDL_ttf
-      - name: Deleting Old Build Directory
+      - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_ttf/configure
+      - name: Initialize CMake
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-apple-darwin.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
       - name: Make SDL_ttf
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: make
-      - name: Install SDL_ttf
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: sudo make install
-      
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
