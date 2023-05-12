@@ -3,8 +3,8 @@ set(CMAKE_SYSTEM_NAME Linux)
 
 # C and C++ Compilers as well as Static Linker (AR)
 set(CMAKE_AR   ar)  # /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar
-set(CMAKE_C_COMPILER   clang-fat.sh)
-set(CMAKE_CXX_COMPILER clang-fat.sh)  # clang++-fat.sh
+set(CMAKE_C_COMPILER   $WORKSPACE/android/app/jni/SDL/build-scripts/clang-fat.sh)
+set(CMAKE_CXX_COMPILER $WORKSPACE/android/app/jni/SDL/build-scripts/clang++-fat.sh)  # clang++-fat.sh
 
 # Set Root Paths
 set(CMAKE_FIND_ROOT_PATH $WORKSPACE/android/app/jni/SDL/build-scripts /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin /usr/local/include)
