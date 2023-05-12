@@ -59,7 +59,7 @@ assets = [
 name = "catgirl-engine"
 depends = "$auto, libsdl2-2.0-0 (>= 2.0.12)"  # SDL_Metal_DestroyView
 
-[package.metadata.deb.variants.rasberrypios]
+[package.metadata.deb.variants.raspberrypios]
 name = "catgirl-engine"
 depends = "$auto, libsdl2-2.0-0 (>= 2.0.12), libsdl2-image-2.0-0 (>= 2.0.5), libsdl2-ttf-2.0-0 (>= 2.0.15)"
 

@@ -82,7 +82,7 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
-      - name: Add Raspberry Pi Build Target
+      - name: Add aarch64 GNU Pi Build Target
         run: $HOME/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
 
       - name: Copy SDL Libs To Export Directory
@@ -101,7 +101,7 @@ jobs:
 
       # Compile Program
       - name: Build Program (Deb)
-        run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu --variant=rasberrypios
+        run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu --variant=raspberrypios
 
       # Test Program
       # - name: Test Program
@@ -115,7 +115,7 @@ jobs:
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux-x86_64-RaspberryPiOS-Deb
+          name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
           path: ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message

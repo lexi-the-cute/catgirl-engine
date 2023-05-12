@@ -34,3 +34,13 @@ rustflags = ["-L$WORKSPACE/android/app/build/intermediates/cmake/release/obj/x86
 ar = "/usr/bin/aarch64-linux-gnu-gcc-ar"
 linker = "/usr/bin/aarch64-linux-gnu-gcc"
 rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/aarch64-linux-gnu,-rpath,/usr/lib/aarch64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
+
+[target.x86_64-apple-darwin]
+ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
+linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+rustflags = ["-arch", "x86_64", "-mmacosx-version-min=10.9", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]
+
+[target.aarch64-apple-darwin]
+ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
+linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+rustflags = ["-arch", "arm64", "-mmacosx-version-min=11.0", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]

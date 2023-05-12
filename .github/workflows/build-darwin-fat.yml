@@ -1,0 +1,183 @@
+name: Build For Darwin x86_64 (DMG)
+run-name: ${{ github.actor }} is building for Darwin x86_64 (DMG)
+on: [push]
+jobs:
+  Build-Darwin-x86-64:
+    runs-on: macos-latest
+    environment: Linux
+    env:
+      CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
+      RUST_BACKTRACE: full
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # List Files
+      - name: List files in the repository
+        run: ls ${{ github.workspace }}
+
+      # List Environment
+      - name: List Environment
+        run: env      
+
+      # Build SDL2
+      - name: Deleting Old Build Directory
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Create Empty Build Directory
+        run: mkdir ${{ github.workspace }}/android/app/jni/SDL/build
+      - name: Configure Build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
+        run: | 
+          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
+          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
+          ${{ github.workspace }}/android/app/jni/SDL/configure
+      - name: Make SDL
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
+        run: make
+      - name: Install SDL
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
+        run: sudo make install
+
+      # Build SDL_image
+      - name: Deleting Old Build Directory
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Create Empty Build Directory
+        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Configure Build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: | 
+          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
+          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
+          ${{ github.workspace }}/android/app/jni/SDL_image/configure
+      - name: Make SDL_image
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: make
+      - name: Install SDL_image
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: sudo make install
+      
+      # Build Freetype
+      - name: Deleting Old Build Directory
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Create Empty Build Directory
+        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Configure Build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        run: | 
+          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
+          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
+          ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure
+      - name: Make freetype
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        run: make
+      - name: Install freetype
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        run: sudo make install
+
+      # Build SDL_ttf
+      - name: Deleting Old Build Directory
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Create Empty Build Directory
+        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Configure Build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+        run: | 
+          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
+          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
+          ${{ github.workspace }}/android/app/jni/SDL_ttf/configure
+      - name: Make SDL_ttf
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+        run: make
+      - name: Install SDL_ttf
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+        run: sudo make install
+      
+      # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+      - name: Install Rust
+        run: ${{ github.workspace }}/tools/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
+
+      # Toml Files Don't Take Variables, So We Have To Hardcode The File
+      - name: Setup Config.toml
+        run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
+
+      # Add Build Targets (No PowerPC or i686 For Now)
+      - name: Add x86_64 Darwin Build Target
+        run: $HOME/.cargo/bin/rustup target add x86_64-apple-darwin
+      - name: Add aarch64 Darwin Build Target
+        run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
+
+      - name: Copy SDL Libs To Export Directory
+        run: |
+          mkdir -p ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.dylib* ${{ github.workspace }}/target/libs
+          # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.dylib* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.dylib* ${{ github.workspace }}/target/libs
+          ln -s libSDL2-2.0.dylib ${{ github.workspace }}/target/libs/libSDL2.dylib
+          ls -liallh ${{ github.workspace }}/target/libs
+
+      # Compile Program
+      - name: Build Program (x86_64)
+        run: $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
+      - name: Build Program (aarch64)
+        run: $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
+
+      # Lipo (To Combine Outputs Into Fat Binary)
+      # ...
+
+      # Test Program
+      - name: Test Program (x86_64)
+        run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
+      # - name: Test Program (aarch64)
+      #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
+
+      # hdiutil (To Create DMG For Downloading)
+      # ...
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: |
+          find ${{ github.workspace }}/target
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Darwin-Fat-DMG
+          path: |
+            ${{ github.workspace }}/target/x86_64-apple-darwin/*
+            ${{ github.workspace }}/target/aarch64-apple-darwin/*
+            ${{ github.workspace }}/target/libs/*
+
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      - name: List All Files
+        run: find ${{ github.workspace }}
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
