@@ -69,27 +69,6 @@ jobs:
         continue-on-error: true
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
         run: sudo make install
-      
-      # Build Freetype
-      - name: Deleting Old Build Directory
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Configure Build
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/configure
-      - name: Make freetype
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: make
-      - name: Install freetype
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-        run: sudo make install
 
       # Build SDL_ttf
       - name: Deleting Old Build Directory
@@ -184,10 +163,6 @@ jobs:
 
       - name: List All Files
         run: find ${{ github.workspace }}
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
