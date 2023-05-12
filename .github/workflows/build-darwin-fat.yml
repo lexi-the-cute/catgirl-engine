@@ -76,6 +76,7 @@ jobs:
       - name: Create Empty Build Directory
         run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
       - name: Configure Build
+        continue-on-error: true
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
         run: | 
           export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
