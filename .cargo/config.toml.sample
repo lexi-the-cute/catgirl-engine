@@ -38,9 +38,9 @@ rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpa
 [target.x86_64-apple-darwin]
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-rustflags = ["-arch", "x86_64", "-mmacosx-version-min=10.9", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]
+#rustflags = ["-arch", "x86_64", "-mmacosx-version-min=10.9", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]
 
 [target.aarch64-apple-darwin]
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-rustflags = ["-arch", "arm64", "-mmacosx-version-min=11.0", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]
+#rustflags = ["-arch", "arm64", "-mmacosx-version-min=11.0", "-DMAC_OS_X_VERSION_MIN_REQUIRED=1070", "-I/usr/local/include"]
