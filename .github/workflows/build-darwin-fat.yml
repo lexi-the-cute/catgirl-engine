@@ -1,8 +1,8 @@
-name: Build For Darwin x86_64 (DMG)
-run-name: ${{ github.actor }} is building for Darwin x86_64 (DMG)
+name: Build For Darwin Fat (DMG)
+run-name: ${{ github.actor }} is building for Darwin Fat (DMG)
 on: [push]
 jobs:
-  Build-Darwin-x86-64:
+  Build-Darwin-Fat:
     runs-on: macos-latest
     environment: Linux
     env:
@@ -31,6 +31,10 @@ jobs:
       # List Environment
       - name: List Environment
         run: env      
+
+      # Link Build Scripts Folder
+      - name: Symlink Build Scripts Folder
+        run: ln -s ${{ github.workspace }}/android/app/jni/SDL/build-scripts /tmp/build-scripts
 
       # Build SDL2
       - name: Deleting Old CMake Cache
