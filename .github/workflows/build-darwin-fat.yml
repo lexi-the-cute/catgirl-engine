@@ -92,7 +92,7 @@ jobs:
         run: |
           export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
           export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
-          export PATH="$PATH:/System/Library/Frameworks"
+          export PATH="$PATH:$SDK_ROOT/System/Library/Frameworks"
           echo $SDK_ROOT - $LIBRARY_PATH - $PATH
   
           $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
@@ -100,7 +100,7 @@ jobs:
         run: |
           export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
           export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
-          export PATH="$PATH:/System/Library/Frameworks"
+          export PATH="$PATH:$SDK_ROOT/System/Library/Frameworks"
           echo $SDK_ROOT - $LIBRARY_PATH - $PATH
 
           $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
@@ -110,7 +110,7 @@ jobs:
         run: |
           export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
           export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
-          export PATH="$PATH:/System/Library/Frameworks"
+          export PATH="$PATH:$SDK_ROOT/System/Library/Frameworks"
           echo $SDK_ROOT - $LIBRARY_PATH - $PATH
 
           $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
