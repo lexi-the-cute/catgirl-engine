@@ -9,8 +9,6 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
-      SDK_ROOT: $(xcrun --sdk macosx --show-sdk-path)
-      LIBRARY_PATH: "$LIBRARY_PATH:$SDK_ROOT/usr/lib"
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
