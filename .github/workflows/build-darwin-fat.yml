@@ -39,7 +39,7 @@ jobs:
       # Build SDL2
       - name: Make and Install SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
-        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Shared Library" install SYMROOT=${{ github.workspace }}/target/libs
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=${{ github.workspace }}/target/libs
 
       # Build SDL_image
       - name: Make and Install SDL_image
@@ -73,22 +73,6 @@ jobs:
       - name: Add aarch64 Darwin Build Target
         run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
 
-      # List Frameworks
-      - name: List /Library/Frameworks
-        run: find /Library/Frameworks
-      - name: List /System/Library/Frameworks
-        run: find /System/Library/Frameworks
-      - name: List $HOME/Library/Frameworks
-        run: find $HOME/Library/Frameworks
-
-      # List SDL Repos
-      - name: List $WORKSPACE/android/app/jni/SDL
-        run: find ${{ github.workspace }}/android/app/jni/SDL
-      - name: List $WORKSPACE/android/app/jni/SDL_image
-        run: find ${{ github.workspace }}/android/app/jni/SDL_image
-      - name: List $WORKSPACE/android/app/jni/SDL_ttf
-        run: find ${{ github.workspace }}/android/app/jni/SDL_ttf
-
       # Copy SDL Libs To Export Directory
       - name: List Libs In Export Directory
         run: |
@@ -98,24 +82,27 @@ jobs:
 
       # Compile Program
       - name: Build Program (x86_64)
-        continue-on-error: true
         run: $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
       - name: Build Program (aarch64)
-        continue-on-error: true
         run: $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
-
-      # Lipo (To Combine Outputs Into Fat Binary)
-      # ...
 
       # Test Program
       - name: Test Program (x86_64)
-        continue-on-error: true
         run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
       # - name: Test Program (aarch64)
       #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
 
-      # hdiutil (To Create DMG For Downloading)
-      # ...
+      # Combine Binaries Into Fat Binary
+      - name: Combine Binaries Into Fat Binary
+        run: lipo --help
+
+      # Create .app Directory
+      - name: Create .app Directory
+        run: mkdir -p ${{ github.workspace }}/target/catgirl-engine.app
+
+      # Create DMG For Downloading
+      - name: Create DMG For Downloading
+        run: hdiutil --help
 
       # Display Export Directory
       - name: Display Export Directory
