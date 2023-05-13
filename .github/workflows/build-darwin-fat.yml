@@ -39,17 +39,17 @@ jobs:
       # Build SDL2
       - name: Make and Install SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
-        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks/SDL.framework
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks
 
       # Build SDL_image
       - name: Make and Install SDL_image
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks/SDL_image.framework
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks
 
       # Build SDL_ttf
       - name: Make and Install SDL_ttf
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks/SDL_ttf.framework
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/target/frameworks
 
       # Install Rust
       - name: Make Tools Directory
@@ -73,20 +73,30 @@ jobs:
       - name: Add aarch64 Darwin Build Target
         run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
 
+      # List Frameworks
       - name: List /Library/Frameworks
         run: find /Library/Frameworks
       - name: List /System/Library/Frameworks
         run: find /System/Library/Frameworks
-      - name: List ${{ github.workspace }}/target/frameworks
+      - name: List $WORKSPACE/target/frameworks
         run: find ${{ github.workspace }}/target/frameworks
 
+      # List SDL Repos
+      - name: List $WORKSPACE/android/app/jni/SDL
+        run: find ${{ github.workspace }}/android/app/jni/SDL
+      - name: List $WORKSPACE/android/app/jni/SDL_image
+        run: find ${{ github.workspace }}/android/app/jni/SDL_image
+      - name: List $WORKSPACE/android/app/jni/SDL_ttf
+        run: find ${{ github.workspace }}/android/app/jni/SDL_ttf
+
+      # Copy SDL Libs To Export Directory
       - name: Copy SDL Libs To Export Directory
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/target/frameworks/SDL2.framework/Versions/A/SDL2/*.dylib* ${{ github.workspace }}/target/libs
-          # cp -av ${{ github.workspace }}/target/frameworks/SDL2.framework/Versions/A/SDL2/libSDLmain.a ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/target/frameworks/SDL2_image.framework/Versions/A/SDL2_image/*.dylib* ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/target/frameworks/SDL2_ttf.framework/Versions/A/SDL2_ttf/*.dylib* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/target/frameworks/Release/SDL2.framework/Versions/A/SDL2/*.dylib* ${{ github.workspace }}/target/libs
+          # cp -av ${{ github.workspace }}/target/frameworks/Release/SDL2.framework/Versions/A/SDL2/libSDLmain.a ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/target/frameworks/Release/SDL2_image.framework/Versions/A/SDL2_image/*.dylib* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/target/frameworks/Release/SDL2_ttf.framework/Versions/A/SDL2_ttf/*.dylib* ${{ github.workspace }}/target/libs
           ln -s libSDL2-2.0.dylib ${{ github.workspace }}/target/libs/libSDL2.dylib
           ls -liallh ${{ github.workspace }}/target/libs
 
