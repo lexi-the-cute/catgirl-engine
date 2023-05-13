@@ -9,8 +9,8 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
-      SDKROOT: $(xcrun --sdk macosx --show-sdk-path)
-      LIBRARY_PATH: "$LIBRARY_PATH:$SDKROOT/usr/lib"
+      SDK_ROOT: $(xcrun --sdk macosx --show-sdk-path)
+      LIBRARY_PATH: "$LIBRARY_PATH:$SDK_ROOT/usr/lib"
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -84,13 +84,22 @@ jobs:
 
       # Compile Program
       - name: Build Program (x86_64)
-        run: $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
+        run: |
+          export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
+          export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
+          $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
       - name: Build Program (aarch64)
-        run: $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
+        run: |
+          export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
+          export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
+          $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
 
       # Test Program
       - name: Test Program (x86_64)
-        run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
+        run: |
+          export SDK_ROOT=$(xcrun --sdk macosx --show-sdk-path)
+          export LIBRARY_PATH="$LIBRARY_PATH:$SDK_ROOT/usr/lib"
+          $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
       # - name: Test Program (aarch64)
       #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
 
