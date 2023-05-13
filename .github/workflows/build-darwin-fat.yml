@@ -32,24 +32,24 @@ jobs:
       - name: List Environment
         run: env
 
-      # Make Frameworks Folder
-      - name: Make Frameworks Folder
-        run: mkdir -p $HOME/Library/Frameworks
+      # Make Libs Folder
+      - name: Make Libs Folder
+        run: mkdir -p ${{ github.workspace }}/target/libs
 
       # Build SDL2
       - name: Make and Install SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
-        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Shared Library" install SYMROOT=$HOME/Library/Frameworks
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Shared Library" install SYMROOT=${{ github.workspace }}/target/libs
 
       # Build SDL_image
       - name: Make and Install SDL_image
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=$HOME/Library/Frameworks
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=${{ github.workspace }}/target/libs
 
       # Build SDL_ttf
       - name: Make and Install SDL_ttf
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=$HOME/Library/Frameworks
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=${{ github.workspace }}/target/libs
 
       # Install Rust
       - name: Make Tools Directory
@@ -90,14 +90,10 @@ jobs:
         run: find ${{ github.workspace }}/android/app/jni/SDL_ttf
 
       # Copy SDL Libs To Export Directory
-      - name: Copy SDL Libs To Export Directory
+      - name: List Libs In Export Directory
         run: |
-          mkdir -p ${{ github.workspace }}/target/libs
-          cp -av $HOME/Library/Frameworks/Release/SDL2.framework/Versions/A/SDL2/*.dylib* ${{ github.workspace }}/target/libs
-          # cp -av $HOME/Library/Frameworks/Release/SDL2.framework/Versions/A/SDL2/libSDLmain.a ${{ github.workspace }}/target/libs
-          cp -av $HOME/Library/Frameworks/Release/SDL2_image.framework/Versions/A/SDL2_image/*.dylib* ${{ github.workspace }}/target/libs
-          cp -av $HOME/Library/Frameworks/Release/SDL2_ttf.framework/Versions/A/SDL2_ttf/*.dylib* ${{ github.workspace }}/target/libs
-          ln -s libSDL2-2.0.dylib ${{ github.workspace }}/target/libs/libSDL2.dylib
+          mv ${{ github.workspace }}/target/libs/Release/* ${{ github.workspace }}/target/libs
+          rmdir ${{ github.workspace }}/target/libs/Release
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Compile Program
