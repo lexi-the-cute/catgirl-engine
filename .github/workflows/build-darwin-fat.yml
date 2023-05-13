@@ -33,62 +33,19 @@ jobs:
         run: env      
 
       # Build SDL2
-      - name: Deleting Old Build Directory
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL/configure
       - name: Make SDL
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: make
-      - name: Install SDL
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
-        run: sudo make install
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework-macOS" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL PLATFORM=macOS
 
       # Build SDL_image
-      - name: Deleting Old Build Directory
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_image/configure
       - name: Make SDL_image
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: make
-      - name: Install SDL_image
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
-        run: sudo make install
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework-macOS" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL_image PLATFORM=macOS
 
       # Build SDL_ttf
-      - name: Deleting Old Build Directory
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Create Empty Build Directory
-        run: mkdir ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Configure Build
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: | 
-          export CC=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang-fat.sh
-          export CXX=${{ github.workspace }}/android/app/jni/SDL/build-scripts/clang++-fat.sh
-          ${{ github.workspace }}/android/app/jni/SDL_ttf/configure
       - name: Make SDL_ttf
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: make
-      - name: Install SDL_ttf
-        continue-on-error: true
-        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-        run: sudo make install
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework-macOS" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL_ttf PLATFORM=macOS
       
       # Install Rust
       - name: Make Tools Directory
@@ -113,7 +70,6 @@ jobs:
         run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
 
       - name: Copy SDL Libs To Export Directory
-        continue-on-error: true
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.dylib* ${{ github.workspace }}/target/libs
