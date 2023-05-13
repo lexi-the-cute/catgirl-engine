@@ -36,17 +36,26 @@ jobs:
       - name: Make SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
         run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL PLATFORM=macosx
+      - name: Install SDL
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/android/app/jni/SDL PLATFORM=macosx
 
       # Build SDL_image
       - name: Make SDL_image
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
         run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL_image PLATFORM=macosx
+      - name: Install SDL_image
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/android/app/jni/SDL_image PLATFORM=macosx
 
       # Build SDL_ttf
       - name: Make SDL_ttf
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
         run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" build SYMROOT=${{ github.workspace }}/android/app/jni/SDL_ttf PLATFORM=macosx
-      
+      - name: Install SDL_ttf
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=${{ github.workspace }}/android/app/jni/SDL_ttf PLATFORM=macosx
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
