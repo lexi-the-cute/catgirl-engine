@@ -87,6 +87,9 @@ jobs:
           path: |
             ${{ github.workspace }}/target/libs/*
 
+      - name: Symlink $SDK_ROOT to $WORKSPACE/target/sdk
+        run: ln -s $SDK_ROOT $WORKSPACE/target/sdk
+
       # Compile Program
       - name: Build Program (x86_64)
         run: |
