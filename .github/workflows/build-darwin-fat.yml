@@ -35,17 +35,17 @@ jobs:
       # Build SDL2
       - name: Make and Install SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
-        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install
+        run: xcodebuild OTHER_CFLAGS="-fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=/Library/Frameworks/SDL.framework
 
       # Build SDL_image
       - name: Make and Install SDL_image
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=/Library/Frameworks/SDL_image.framework
 
       # Build SDL_ttf
       - name: Make and Install SDL_ttf
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
-        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install
+        run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Framework" install SYMROOT=/Library/Frameworks/SDL_ttf.framework
 
       # Install Rust
       - name: Make Tools Directory
