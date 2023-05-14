@@ -4,7 +4,7 @@ on: [push]
 jobs:
   Build-Darwin-Fat:
     runs-on: macos-latest
-    environment: Linux
+    environment: Darwin
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -80,37 +80,25 @@ jobs:
           rmdir ${{ github.workspace }}/target/libs/Release
           ls -liallh ${{ github.workspace }}/target/libs
 
-      - name: Upload SDL Libs (Release)
-        uses: actions/upload-artifact@v3
-        with:
-          name: SDL-Darwin-Fat-Libs
-          path: |
-            ${{ github.workspace }}/target/libs/*
-
       # Symlink SDK to WORKSPACE/target/sdk
       - name: Symlink SDK to $WORKSPACE/target/sdk
         run: |
           mkdir -p ${{ github.workspace }}/target
           ln -s $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/target/sdk
 
+      - name: Debug Linker and Compiler
+        run: |
+          clang --print-supported-cpus
+
       # Compile Program
       - name: Build Program (x86_64)
-        run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
-          export PATH="$PATH:${{ github.workspace }}/target/sdk/System/Library/Frameworks"
-          $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
+        run: $HOME/.cargo/bin/cargo build --release --target=x86_64-apple-darwin --bin catgirl-engine
       - name: Build Program (aarch64)
-        run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
-          export PATH="$PATH:${{ github.workspace }}/target/sdk/System/Library/Frameworks"
-          $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
+        run: $HOME/.cargo/bin/cargo build --release --target=aarch64-apple-darwin --bin catgirl-engine
 
       # Test Program
       - name: Test Program (x86_64)
-        run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
-          export PATH="$PATH:${{ github.workspace }}/target/sdk/System/Library/Frameworks"
-          $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
+        run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
       # - name: Test Program (aarch64)
       #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
 
