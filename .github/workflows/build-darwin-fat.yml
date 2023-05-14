@@ -93,12 +93,20 @@ jobs:
           mkdir -p ${{ github.workspace }}/target
           ln -s $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/target/sdk
 
+      # List Files In Libs
+      - name: List Files In Libs
+        run: |
+          ls -liallh ${{ github.workspace }}/target/libs
+          ls -liallh ${{ github.workspace }}/target/sdk/usr/lib
+          find ${{ github.workspace }}/target/libs
+          find ${{ github.workspace }}/target/sdk/usr/lib
+
       # List Files In SDK
       - name: List Files In SDK
         run: |
           ls -liallh $(xcrun --sdk macosx --show-sdk-path)
           ls -liallh ${{ github.workspace }}/target/sdk
-          find ${{ github.workspace }}/target/sdk/
+          find ${{ github.workspace }}/target/sdk
 
       # List Files In Frameworks
       - name: List Files In Frameworks
