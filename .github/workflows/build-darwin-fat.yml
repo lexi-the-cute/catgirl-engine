@@ -51,6 +51,20 @@ jobs:
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
         run: xcodebuild OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=${{ github.workspace }}/target/libs
 
+      # List and Organize Libs In Export Directory
+      - name: List and Organize Libs In Export Directory
+        run: |
+          mv ${{ github.workspace }}/target/libs/Release/* ${{ github.workspace }}/target/libs
+          rmdir ${{ github.workspace }}/target/libs/Release
+          ls -liallh ${{ github.workspace }}/target/libs
+
+      # Upload Libs
+      - name: Upload Libs (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: SDL-Darwin-Fat-Zip
+          path: ${{ github.workspace }}/target/libs/*
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -73,13 +87,6 @@ jobs:
       - name: Add aarch64 Darwin Build Target
         run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
 
-      # Copy SDL Libs To Export Directory
-      - name: List Libs In Export Directory
-        run: |
-          mv ${{ github.workspace }}/target/libs/Release/* ${{ github.workspace }}/target/libs
-          rmdir ${{ github.workspace }}/target/libs/Release
-          ls -liallh ${{ github.workspace }}/target/libs
-
       # Symlink SDK to WORKSPACE/target/sdk
       - name: Symlink SDK to $WORKSPACE/target/sdk
         run: |
@@ -88,7 +95,17 @@ jobs:
 
       # List Files In SDK
       - name: List Files In SDK
-        run: find ${{ github.workspace }}/target/sdk
+        run: |
+          ls -liallh $(xcrun --sdk macosx --show-sdk-path)
+          ls -liallh ${{ github.workspace }}/target/sdk
+          find ${{ github.workspace }}/target/sdk/
+
+      # List Files In Frameworks
+      - name: List Files In Frameworks
+        run: |
+          find /Library/Frameworks
+          find /System/Library/Frameworks
+          find ${{ github.workspace }}/target/sdk/System/Library/Frameworks
 
       # Compile Program
       - name: Build Program (x86_64)
