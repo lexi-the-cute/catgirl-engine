@@ -38,9 +38,9 @@ rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpa
 [target.x86_64-apple-darwin]
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=x86_64-apple-darwin", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework CoreAudio.framework"]
+rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=x86_64-apple-darwin", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework=CoreAudio.framework"]
 
 [target.aarch64-apple-darwin]
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=aarch64-apple-darwin", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework CoreAudio.framework"]
+rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=aarch64-apple-darwin", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework=CoreAudio.framework"]
