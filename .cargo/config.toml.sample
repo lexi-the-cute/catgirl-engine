@@ -43,4 +43,4 @@ rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Cl
 [target.aarch64-apple-darwin]
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=aarch64-apple-darwin", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework,CoreAudio,-framework,CoreFoundation,-framework,CoreGraphics,-framework,ImageIO,-framework,CoreServices"]
+rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/target/sdk/usr/lib", "-Clink-arg=--target=aarch64-apple-macos", "-Clink-arg=-Wl,-F$WORKSPACE/target/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework,CoreAudio,-framework,CoreFoundation,-framework,CoreGraphics,-framework,ImageIO,-framework,CoreServices"]
