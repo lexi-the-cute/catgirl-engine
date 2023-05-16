@@ -62,6 +62,10 @@ jobs:
       - name: Add x86_64 Android Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
 
+      # Setup Gradle Build Action (For Caching Builds)
+      - name: Setup Gradle Build Action (For Caching Builds)
+        uses: gradle/gradle-build-action@v2
+
       # Build Native Libraries
       - name: Build Native Libraries (Release)
         working-directory: android
