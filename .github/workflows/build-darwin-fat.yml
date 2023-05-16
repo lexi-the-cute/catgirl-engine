@@ -58,13 +58,6 @@ jobs:
           rmdir ${{ github.workspace }}/target/libs/Release
           ls -liallh ${{ github.workspace }}/target/libs
 
-      # Upload Libs
-      - name: Upload Libs (Release)
-        uses: actions/upload-artifact@v3
-        with:
-          name: SDL-Darwin-Fat-Zip
-          path: ${{ github.workspace }}/target/libs/*
-
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -137,11 +130,26 @@ jobs:
       # - name: Test Program (aarch64)
       #   run: $HOME/.cargo/bin/cargo test --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
 
+      # List Built Files
+      - name: List Built Files
+        run: |
+          find ${{ github.workspace }}/target -not -path "${{ github.workspace }}/target/sdk*"
+
+      # Upload Libs
+      - name: Upload Files (Testing)
+        uses: actions/upload-artifact@v3
+        with:
+          name: Files-Darwin-Zip
+          path: |
+            ${{ github.workspace }}/target/libs/*
+            ${{ github.workspace }}/target/x86_64-apple-darwin/*
+            ${{ github.workspace }}/target/aarch64-apple-darwin/*
+
       # Combine Binaries Into Fat Binary
       - name: Combine Binaries Into Fat Binary
         run: |
           mkdir -p ${{ github.workspace }}/target/fat-apple-darwin
-          lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/catgirl-engine ${{ github.workspace }}/target/aarch64-apple-darwin/catgirl-engine -output ${{ github.workspace }}/target/fat-apple-darwin/catgirl-engine
+          lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/* ${{ github.workspace }}/target/aarch64-apple-darwin/* -output ${{ github.workspace }}/target/fat-apple-darwin/catgirl-engine
 
       # Create .app Directory
       - name: Create .app Directory
