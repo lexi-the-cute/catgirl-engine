@@ -100,8 +100,9 @@ jobs:
       # List and Organize Libs In Export Directory
       - name: List and Organize Libs In Export Directory
         run: |
-          mv ${{ github.workspace }}/target/libs/Release/* ${{ github.workspace }}/target/libs
-          rm -r ${{ github.workspace }}/target/libs/Release
+          ls -liallh ${{ github.workspace }}/target/libs
+          mv ${{ github.workspace }}/target/libs/*/* ${{ github.workspace }}/target/libs
+          # rm -r ${{ github.workspace }}/target/libs/Release
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Rust
