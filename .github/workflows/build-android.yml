@@ -26,10 +26,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
-      - name: Setup Gradle Build Action (For Caching Builds)
-        uses: gradle/gradle-build-action@v2
-
       # Cache Built Libs
       - name: Cache Built Libs
         uses: actions/cache@v3
@@ -81,6 +77,10 @@ jobs:
         run: $HOME/.cargo/bin/rustup target add i686-linux-android
       - name: Add x86_64 Android Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
+
+      # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
+      - name: Setup Gradle Build Action (For Caching Builds)
+        uses: gradle/gradle-build-action@v2
 
       # Build Native Libraries
       - name: Build Native Libraries (Release)
