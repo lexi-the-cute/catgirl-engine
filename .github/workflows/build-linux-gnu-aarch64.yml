@@ -30,17 +30,58 @@ jobs:
       - name: Install APT Packages
         run: sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev 
 
+      - name: Cache CMake SDL
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache CMake SDL_image
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-image
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_image/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache CMake Freetype
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-freetype
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+        - name: Cache CMake SDL_ttf
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-ttf
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-aarch64-linux-gnu-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       # Build SDL2
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
       - name: Make SDL2
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
 
       # Build SDL_image
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
       - name: Make SDL_image
@@ -49,16 +90,12 @@ jobs:
         run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*
 
       # Build Freetype
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
       - name: Make Freetype
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
 
       # Build SDL_ttf
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
       - name: Make SDL_ttf

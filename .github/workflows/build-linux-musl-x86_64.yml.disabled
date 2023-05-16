@@ -24,6 +24,51 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      - name: Cache CMake SDL
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-x86_64-linux-musl-sdl
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache CMake SDL_image
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-x86_64-linux-musl-sdl-image
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_image/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache CMake Freetype
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-x86_64-linux-musl-freetype
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+        - name: Cache CMake SDL_ttf
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-x86_64-linux-musl-sdl-ttf
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-x86_64-linux-musl-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       # List Files
       - name: List files in the repository
         run: ls ${{ github.workspace }}

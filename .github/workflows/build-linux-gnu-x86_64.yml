@@ -24,6 +24,24 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      - name: Cache CMake SDL
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-x86_64-linux-gnu-sdl
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/build/CMakeCache.txt') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-x86_64-linux-gnu-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       # Install Dependencies
       - name: Update APT Package Manager
         run: sudo apt update
