@@ -157,7 +157,7 @@ jobs:
 
       # Create DMG For Downloading
       - name: Create DMG For Downloading
-        run: hdiutil --help
+        run: hdiutil help
 
       # Display Export Directory
       - name: Display Export Directory
