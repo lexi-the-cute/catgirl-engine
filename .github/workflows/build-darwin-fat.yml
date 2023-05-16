@@ -98,8 +98,11 @@ jobs:
         run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install SYMROOT=${{ github.workspace }}/target/libs BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-ttf
 
       # List and Organize Libs In Export Directory
-      - name: List Libs In Export Directory
-        run: ls -liallh ${{ github.workspace }}/target/libs
+      - name: List and Organize Libs In Export Directory
+        run: |
+          mv ${{ github.workspace }}/target/libs/Release/* ${{ github.workspace }}/target/libs
+          rm -r ${{ github.workspace }}/target/libs/Release
+          ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Rust
       - name: Make Tools Directory
