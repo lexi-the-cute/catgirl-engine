@@ -51,7 +51,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/CMakeCache.txt') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-        - name: Cache CMake SDL_ttf
+      - name: Cache CMake SDL_ttf
         uses: actions/cache@v3
         env:
           cache-name: cache-cmake-build-x86_64-linux-musl-sdl-ttf
