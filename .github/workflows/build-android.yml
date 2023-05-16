@@ -90,19 +90,19 @@ jobs:
       - name: Build CatgirlEngine For aarch64
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/arm64-v8a
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target aarch64-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target aarch64-linux-android --release --lib
       - name: Build CatgirlEngine For armv7
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/armeabi-v7a
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target armv7-linux-androideabi --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target armv7-linux-androideabi --release --lib
       - name: Build CatgirlEngine For i686
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target i686-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target i686-linux-android --release --lib
       - name: Build CatgirlEngine For x86_64
         run: |
           ls -liallh ${{ github.workspace }}/android/app/build/intermediates/cmake/release/obj/x86_64
-          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build --verbose --target x86_64-linux-android --release --lib
+          RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target x86_64-linux-android --release --lib
 
       # Create Directories For Storing Engine in App
       - name: Create Directory To Store CatgirlEngine In App For aarch64

@@ -68,7 +68,7 @@ jobs:
 
       # Install Deb Packager
       - name: Install Deb Packager
-        run: $HOME/.cargo/bin/cargo install cargo-deb
+        run: $HOME/.cargo/bin/cargo install -j 4 cargo-deb
 
       # Compile Program
       - name: Build Program (Deb)
@@ -76,7 +76,7 @@ jobs:
 
       # Test Program
       - name: Test Program
-        run: $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
+        run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
