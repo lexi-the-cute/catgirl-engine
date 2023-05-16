@@ -30,6 +30,17 @@ jobs:
       - name: Install APT Packages
         run: sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev 
 
+      # Cache Built Libs
+      - name: Cache Built Libs
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-built-aarch64-linux-gnu-libs
+        with:
+          path: ${{ github.workspace }}/build/libs
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/target/libs') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache CMake SDL_SDL
       - name: Cache CMake SDL
         uses: actions/cache@v3
         env:
@@ -39,6 +50,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/build/CMakeCache.txt') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      # Cache CMake SDL_image
       - name: Cache CMake SDL_image
         uses: actions/cache@v3
         env:
@@ -48,6 +60,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/build/CMakeCache.txt') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      # Cache CMake Freetype
       - name: Cache CMake Freetype
         uses: actions/cache@v3
         env:
@@ -57,6 +70,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/CMakeCache.txt') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      # Cache CMake SDL_ttf
       - name: Cache CMake SDL_ttf
         uses: actions/cache@v3
         env:
@@ -66,6 +80,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/build/CMakeCache.txt') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      # Cache Rust Target
       - name: Cache Rust Target
         uses: actions/cache@v3
         env:
