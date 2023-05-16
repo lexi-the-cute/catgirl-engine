@@ -130,7 +130,7 @@ jobs:
       - name: Symlink SDK to $WORKSPACE/build/sdk
         run: |
           mkdir -p ${{ github.workspace }}/build
-          ln -s $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
+          ln -sf $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
       # Compile Program
       - name: Build Program (x86_64)
