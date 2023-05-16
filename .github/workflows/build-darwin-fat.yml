@@ -178,6 +178,7 @@ jobs:
           path: |
             ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
             ${{ github.workspace }}/target/libs/*
+            ${{ github.workspace }}/target/binding
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
