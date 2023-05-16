@@ -160,7 +160,7 @@ jobs:
           # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
-          ln -s libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager

@@ -93,7 +93,7 @@ jobs:
         run: |
           ls -liallh /usr/local/lib/android/sdk/ndk
           cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
-          ln -s `pwd` ../current
+          ln -sf `pwd` ../current
 
       # Create config.toml File
       - name: Create config.toml File
