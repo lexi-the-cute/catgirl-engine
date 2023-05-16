@@ -24,9 +24,14 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # List Files
-      - name: List files in the repository
-        run: ls ${{ github.workspace }}
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-fat-darwin-macos-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # List Environment
       - name: List Environment
@@ -80,42 +85,20 @@ jobs:
       - name: Add aarch64 Darwin Build Target
         run: $HOME/.cargo/bin/rustup target add aarch64-apple-darwin
 
-      # Symlink SDK to WORKSPACE/target/sdk
-      - name: Symlink SDK to $WORKSPACE/target/sdk
+      # Symlink SDK to WORKSPACE/build/sdk
+      - name: Symlink SDK to $WORKSPACE/build/sdk
         run: |
-          mkdir -p ${{ github.workspace }}/target
-          ln -s $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/target/sdk
-
-      # List Files In Libs
-      - name: List Files In Libs
-        run: |
-          ls -liallh ${{ github.workspace }}/target/libs
-          ls -liallh ${{ github.workspace }}/target/sdk/usr/lib
-          find ${{ github.workspace }}/target/libs
-          find ${{ github.workspace }}/target/sdk/usr/lib
-
-      # List Files In SDK
-      - name: List Files In SDK
-        run: |
-          ls -liallh $(xcrun --sdk macosx --show-sdk-path)
-          ls -liallh ${{ github.workspace }}/target/sdk
-          find ${{ github.workspace }}/target/sdk
-
-      # List Files In Frameworks
-      - name: List Files In Frameworks
-        run: |
-          find /Library/Frameworks
-          find /System/Library/Frameworks
-          find ${{ github.workspace }}/target/sdk/System/Library/Frameworks
+          mkdir -p ${{ github.workspace }}/build
+          ln -s $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
       # Compile Program
       - name: Build Program (x86_64)
         run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
+          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/build/sdk/usr/lib"
           $HOME/.cargo/bin/cargo build -j 6 --release --target=x86_64-apple-darwin --bin catgirl-engine
       - name: Build Program (aarch64)
         run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
+          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/build/sdk/usr/lib"
           $HOME/.cargo/bin/cargo build -j 6 --release --target=aarch64-apple-darwin --bin catgirl-engine
 
       # Copy Libs
@@ -125,15 +108,10 @@ jobs:
       # Test Program
       - name: Test Program (x86_64)
         run: |
-          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/target/sdk/usr/lib"
+          export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/build/sdk/usr/lib"
           $HOME/.cargo/bin/cargo test -j 6 --verbose --target=x86_64-apple-darwin --bins --tests --benches --examples
       # - name: Test Program (aarch64)
       #   run: $HOME/.cargo/bin/cargo test -j 6 --verbose --target=aarch64-apple-darwin --bins --tests --benches --examples
-
-      # List Built Files
-      - name: List Built Files
-        run: |
-          find ${{ github.workspace }}/target -not -path "${{ github.workspace }}/target/sdk*"
 
       # Combine Binaries Into Fat Binary
       - name: Combine Binaries Into Fat Binary

@@ -26,9 +26,14 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # List Files
-      - name: List files in the repository
-        run: ls ${{ github.workspace }}
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-android-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Install Dependencies
       - name: Update APT Package Manager
@@ -171,13 +176,6 @@ jobs:
             ${{ github.workspace }}/upload/binding
 
       # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
-
-      - name: List All Files
-        run: find ${{ github.workspace }}
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
