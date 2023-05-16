@@ -142,14 +142,14 @@ jobs:
           name: Files-Darwin-Zip
           path: |
             ${{ github.workspace }}/target/libs/*
-            ${{ github.workspace }}/target/x86_64-apple-darwin/*
-            ${{ github.workspace }}/target/aarch64-apple-darwin/*
+            ${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine
+            ${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine
 
       # Combine Binaries Into Fat Binary
       - name: Combine Binaries Into Fat Binary
         run: |
-          mkdir -p ${{ github.workspace }}/target/fat-apple-darwin
-          lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/* ${{ github.workspace }}/target/aarch64-apple-darwin/* -output ${{ github.workspace }}/target/fat-apple-darwin/catgirl-engine
+          mkdir -p ${{ github.workspace }}/target/fat-apple-darwin/release
+          lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine ${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine -output ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
 
       # Create .app Directory
       - name: Create .app Directory
@@ -170,9 +170,9 @@ jobs:
         with:
           name: CatgirlEngine-Darwin-Fat-DMG
           path: |
-            ${{ github.workspace }}/target/x86_64-apple-darwin/*
-            ${{ github.workspace }}/target/aarch64-apple-darwin/*
-            ${{ github.workspace }}/target/fat-apple-darwin/*
+            ${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine
+            ${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine
+            ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
             ${{ github.workspace }}/target/libs/*
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
