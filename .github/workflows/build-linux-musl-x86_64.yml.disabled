@@ -105,7 +105,7 @@ jobs:
 
       # Install Deb Packager
       - name: Install Deb Packager
-        run: $HOME/.cargo/bin/cargo install cargo-deb
+        run: $HOME/.cargo/bin/cargo install -j 4 cargo-deb
 
       # Compile Program
       - name: Build Program (Deb)
@@ -116,7 +116,7 @@ jobs:
         run: |
           # Install CatgirlEngine So Runpaths Line Up For Tests
           sudo apt -y install ${{ github.workspace }}/target/x86_64-unknown-linux-musl/debian/*.deb
-          $HOME/.cargo/bin/cargo test --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
+          $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-unknown-linux-musl --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
