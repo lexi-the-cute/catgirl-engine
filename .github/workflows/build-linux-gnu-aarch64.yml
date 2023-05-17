@@ -158,7 +158,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
-          path: ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
+          path: |
+            ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
+            ${{ github.workspace }}/upload/binding
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
