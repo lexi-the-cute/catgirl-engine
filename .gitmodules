@@ -13,3 +13,6 @@
 [submodule "android/app/jni/harfbuzz"]
 	path = android/app/jni/harfbuzz
 	url = https://github.com/lexi-the-cute/harfbuzz.git
+[submodule "android/app/jni/SDL_mixer"]
+	path = android/app/jni/SDL_mixer
+	url = https://github.com/libsdl-org/SDL_mixer
