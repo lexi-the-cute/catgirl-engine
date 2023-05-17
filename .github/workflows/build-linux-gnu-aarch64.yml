@@ -31,9 +31,9 @@ jobs:
           max_attempts: 3
           timeout_minutes: 60
           retry_on: error
-        command: |
-          sudo apt update
-          sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
+          command: |
+            sudo apt update
+            sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
 
       # Cache CMake SDL_SDL
       - name: Cache CMake SDL
