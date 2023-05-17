@@ -119,9 +119,15 @@ jobs:
       - name: Make Ogg
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
 
+      # Build Opus
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus/build
+      - name: Make Opus
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus/build
+
       # Build Opusfile
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build -DOgg_DIR=$WORKSPACE/android/app/jni/SDL_mixer/external/ogg/build -DOpus_DIR=$WORKSPACE/android/app/jni/SDL_mixer/external/opus/build
       - name: Make Opusfile
         run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
 
