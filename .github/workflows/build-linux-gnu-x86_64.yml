@@ -45,10 +45,15 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Install Dependencies
-      - name: Update APT Package Manager
-        run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt -y install libsdl2-image-dev libsdl2-ttf-dev ninja-build  # libsdl2-dev
+			  uses: nick-fields/retry@v2
+			  with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+        command: |
+          sudo apt update
+          sudo apt -y install libsdl2-image-dev libsdl2-ttf-dev ninja-build  # libsdl2-dev
 
       # ----------------------------------------
       # Build SDL2

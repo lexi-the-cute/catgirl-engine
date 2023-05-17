@@ -25,10 +25,15 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Update APT Package Manager
-        run: sudo apt update
       - name: Install APT Packages
-        run: sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev 
+			  uses: nick-fields/retry@v2
+			  with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+        command: |
+          sudo apt update
+          sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
 
       # Cache CMake SDL_SDL
       - name: Cache CMake SDL
