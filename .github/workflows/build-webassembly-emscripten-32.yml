@@ -1,8 +1,9 @@
-name: Build For Linux GNU aarch64 (Deb)
-run-name: ${{ github.actor }} is building for Linux GNU aarch64 (Deb)
+# Wasm is not yet available for 64 bit, see https://github.com/WebAssembly/memory64
+name: Build For WebAssembly 32
+run-name: ${{ github.actor }} is building for WebAssembly 32
 on: [push]
 jobs:
-  Build-Linux-GNU-aarch64:
+  Build-WebAssembly-Emscripten-32:
     runs-on: ubuntu-latest
     environment: Linux
     env:
@@ -25,21 +26,33 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Install APT Packages
-        uses: nick-fields/retry@v2
-        with:
-          max_attempts: 3
-          timeout_minutes: 60
-          retry_on: error
-          command: |
-            sudo apt update
-            sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
+      # - name: Install APT Packages
+      #   uses: nick-fields/retry@v2
+      #   with:
+      #     max_attempts: 3
+      #     timeout_minutes: 60
+      #     retry_on: error
+      #     command: |
+      #       sudo apt update
+      #       sudo apt -y install emscripten
+
+      # Make Tools Directory
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
+
+      # Install and Setup Enscripten
+      - name: Install and Setup Enscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk ${{ github.workspace }}/tools/emsdk
+          ${{ github.workspace }}/tools/emsdk/emsdk install latest
+          ${{ github.workspace }}/tools/emsdk/emsdk activate latest
+          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
 
       # Cache CMake SDL_SDL
       - name: Cache CMake SDL
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl
+          cache-name: cache-cmake-build-webassembly-emscripten-32-sdl
         with:
           path: ${{ github.workspace }}/android/app/jni/SDL/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
@@ -49,7 +62,7 @@ jobs:
       - name: Cache CMake SDL_image
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-image
+          cache-name: cache-cmake-build-webassembly-emscripten-32-sdl-image
         with:
           path: ${{ github.workspace }}/android/app/jni/SDL_image/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/*.*') }}
@@ -59,7 +72,7 @@ jobs:
       - name: Cache CMake Freetype
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-freetype
+          cache-name: cache-cmake-build-webassembly-emscripten-32-freetype
         with:
           path: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/src') }}
@@ -69,7 +82,7 @@ jobs:
       - name: Cache CMake SDL_ttf
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-ttf
+          cache-name: cache-cmake-build-webassembly-emscripten-32-sdl-ttf
         with:
           path: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/*.*') }}
@@ -79,63 +92,83 @@ jobs:
       - name: Cache Rust Target
         uses: actions/cache@v3
         env:
-          cache-name: cache-rust-target-aarch64-linux-gnu-catgirl-engine
+          cache-name: cache-rust-target-webassembly-emscripten-32-catgirl-engine
         with:
           path: ${{ github.workspace }}/target
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Build SDL2
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL -DBUILD_SHARED_LIBS=off
       - name: Make SDL2
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL/build
+        run: emcmake make -j 4
 
       # Build SDL_image
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_image/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_image -DBUILD_SHARED_LIBS=off -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a
       - name: Make SDL_image
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/build
+        run: emcmake make -j 4
 
       # Build Freetype
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype
       - name: Make Freetype
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+        run: emcmake make -j 4
 
       # Build SDL_ttf
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_ttf/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_ttf -DBUILD_SHARED_LIBS=off -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include
       - name: Make SDL_ttf
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+        run: emcmake make -j 4
 
       # Build Ogg
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg
       - name: Make Ogg
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+        run: emcmake make -j 4
 
       # Build Opusfile
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile
       - name: Make Opusfile
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+        run: emcmake make -j 4
 
       # Build SDL_mixer
+      - name: Make Build Directory
+        run: mkdir -p ${{ github.workspace }}/android/app/jni/SDL_mixer/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer -B ${{ github.workspace }}/android/app/jni/SDL_mixer/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/build
+        run: emcmake cmake ${{ github.workspace }}/android/app/jni/SDL_mixer -DBUILD_SHARED_LIBS=off -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a
       - name: Make SDL_mixer
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so*
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/build
+        run: emcmake make -j 4
 
       # Install Rust
-      - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
@@ -149,8 +182,8 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
-      - name: Add aarch64 GNU Pi Build Target
-        run: $HOME/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
+      - name: Add aarch32 GNU Pi Build Target
+        run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown
 
       - name: Copy SDL Libs To Export Directory
         run: |
@@ -159,7 +192,6 @@ jobs:
           # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so* ${{ github.workspace }}/target/libs
           ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
           ls -liallh ${{ github.workspace }}/target/libs
 
@@ -169,22 +201,22 @@ jobs:
 
       # Compile Program
       - name: Build Program (Deb)
-        run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu --variant=raspberrypios
+        run: $HOME/.cargo/bin/cargo deb --target=wasm32-unknown-unknown --variant=raspberrypios
 
       # Test Program
       # - name: Test Program
-      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=aarch64-unknown-linux-gnu --bins --tests --benches --examples
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-unknown --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
-        run: ls -liallh ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian
+        run: ls -liallh ${{ github.workspace }}/target/wasm32-unknown-unknown/debian
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
-          path: ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
+          name: CatgirlEngine-Linux-aarch32-GNU-RaspberryPiOS-Deb
+          path: ${{ github.workspace }}/target/wasm32-unknown-unknown/debian/*.deb
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 

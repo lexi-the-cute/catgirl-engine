@@ -54,6 +54,16 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/*.*') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      # Cache XCodeBuild SDL_mixer
+      - name: Cache XCodeBuild SDL_mixer
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-xcodebuild-build-fat-darwin-macos-sdl-mixer
+        with:
+          path: ${{ github.workspace }}/build/xcode/sdl-mixer
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_mixer/*.*') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       # Cache Rust Target
       - name: Cache Rust Target
         uses: actions/cache@v3
@@ -87,6 +97,11 @@ jobs:
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
         run: xcodebuild -parallelizeTargets CFLAGS="-mmacosx-version-min=11.0" OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/temp
 
+      # Build SDL_mixer
+      - name: Make and Install SDL_mixer
+        working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/Xcode
+        run: xcodebuild -parallelizeTargets CFLAGS="-mmacosx-version-min=11.0" OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_mixer.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-mixer/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-mixer/temp
+
       # List XCode Build Folder
       - name: List XCode Build Folder
         run: find ${{ github.workspace }}/build/xcode
@@ -97,6 +112,7 @@ jobs:
           cp -av ${{ github.workspace }}/build/xcode/sdl/build/* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-mixer/build/* ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Rust
