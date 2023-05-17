@@ -24,16 +24,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Cache Built Libs
-      - name: Cache Built Libs
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-built-x86_64-linux-gnu-libs
-        with:
-          path: ${{ github.workspace }}/build/libs
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/target/libs') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
       # Cache CMake SDL
       - name: Cache CMake SDL
         uses: actions/cache@v3
@@ -41,7 +31,7 @@ jobs:
           cache-name: cache-cmake-build-x86_64-linux-gnu-sdl
         with:
           path: ${{ github.workspace }}/android/app/jni/SDL/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/build/CMakeCache.txt') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Cache Rust Target
@@ -51,7 +41,7 @@ jobs:
           cache-name: cache-rust-target-x86_64-linux-gnu-catgirl-engine
         with:
           path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/Cargo.lock') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Install Dependencies
