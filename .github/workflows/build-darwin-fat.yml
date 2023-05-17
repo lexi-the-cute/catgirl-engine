@@ -105,8 +105,8 @@ jobs:
       - name: List and Organize Libs In Export Directory
         run: |
           cp -av ${{ github.workspace }}/build/xcode/sdl/build/* ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/build/xcode/sdl_image/build/* ${{ github.workspace }}/target/Libs
-          cp -av ${{ github.workspace }}/build/xcode/sdl_ttf/build/* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Rust
