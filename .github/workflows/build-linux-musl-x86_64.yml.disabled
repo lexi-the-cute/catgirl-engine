@@ -129,6 +129,32 @@ jobs:
       - name: Reset RunPath
         run: patchelf --set-rpath /lib/x86_64-linux-musl:/lib/x86_64-linux-musl/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*
 
+      # Build Ogg
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+      - name: Make Ogg
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
+
+      # Build Opusfile
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+      - name: Make Opusfile
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
+
+      # Build SDL_mixer
+      - name: Deleting Old CMake Cache
+        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL_mixer/build
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer -B ${{ github.workspace }}/android/app/jni/SDL_mixer/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-musl:/lib/x86_64-linux-musl/catgirl-engine
+      - name: Make SDL_mixer
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/build
+      - name: Reset RunPath
+        run: patchelf --set-rpath /lib/x86_64-linux-musl:/lib/x86_64-linux-musl/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so*
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -155,6 +181,7 @@ jobs:
           # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so* ${{ github.workspace }}/target/libs
           ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
           ls -liallh ${{ github.workspace }}/target/libs
 

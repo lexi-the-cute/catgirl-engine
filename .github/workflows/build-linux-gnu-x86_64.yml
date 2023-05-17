@@ -53,7 +53,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install libsdl2-image-dev libsdl2-ttf-dev ninja-build  # libsdl2-dev
+            sudo apt -y install libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev ninja-build  # libsdl2-dev
 
       # ----------------------------------------
       # Build SDL2
