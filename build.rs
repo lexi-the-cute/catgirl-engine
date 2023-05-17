@@ -10,7 +10,7 @@ fn main() {
 
     create_binding("h", Language::C, &package_name, &crate_directory);
     create_binding("hpp", Language::Cxx, &package_name, &crate_directory);
-    create_binding("pyx", Language::Cython, &package_name, &crate_directory);
+    create_binding("pyx", Language::Cython, &package_name.replace("-", "_"), &crate_directory);
 }
 
 fn create_binding(extension: &str, language: Language, package_name: &String, crate_directory: &String) {
