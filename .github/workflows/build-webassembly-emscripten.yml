@@ -1,0 +1,172 @@
+name: Build For WebAssembly
+run-name: ${{ github.actor }} is building for WebAssembly
+on: [push]
+jobs:
+  Build-WebAssembly-Emscripten:
+    runs-on: ubuntu-latest
+    environment: Linux
+    env:
+      CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
+      RUST_BACKTRACE: full
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install emscripten
+
+      # Cache CMake SDL_SDL
+      - name: Cache CMake SDL
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache CMake SDL_image
+      - name: Cache CMake SDL_image
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-image
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_image/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/*.*') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache CMake Freetype
+      - name: Cache CMake Freetype
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-freetype
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache CMake SDL_ttf
+      - name: Cache CMake SDL_ttf
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-ttf
+        with:
+          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/*.*') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache Rust Target
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-aarch64-linux-gnu-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Build SDL2
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
+      - name: Make SDL2
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+
+      # Build SDL_image
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
+      - name: Make SDL_image
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
+      - name: Reset RunPath
+        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*
+
+      # Build Freetype
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+      - name: Make Freetype
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
+
+      # Build SDL_ttf
+      - name: Initialize CMake
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
+      - name: Make SDL_ttf
+        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
+      - name: Reset RunPath
+        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*
+
+      # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+      - name: Install Rust
+        run: ${{ github.workspace }}/tools/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
+
+      # Toml Files Don't Take Variables, So We Have To Hardcode The File
+      - name: Setup Config.toml
+        run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
+
+      - name: Add aarch64 GNU Pi Build Target
+        run: $HOME/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
+
+      - name: Copy SDL Libs To Export Directory
+        run: |
+          mkdir -p ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
+          # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
+          ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          ls -liallh ${{ github.workspace }}/target/libs
+
+      # Install Deb Packager
+      - name: Install Deb Packager
+        run: $HOME/.cargo/bin/cargo install -j 4 cargo-deb
+
+      # Compile Program
+      - name: Build Program (Deb)
+        run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu --variant=raspberrypios
+
+      # Test Program
+      # - name: Test Program
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=aarch64-unknown-linux-gnu --bins --tests --benches --examples
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: ls -liallh ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
+          path: ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
+
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
