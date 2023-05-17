@@ -53,9 +53,9 @@ jobs:
           max_attempts: 3
           timeout_minutes: 60
           retry_on: error
-        command: |
-          sudo apt update
-          sudo apt -y install unzip
+          command: |
+            sudo apt update
+            sudo apt -y install unzip
 
       # Extract Keystore
       - name: Extract Keystore

@@ -89,9 +89,9 @@ jobs:
           max_attempts: 3
           timeout_minutes: 60
           retry_on: error
-        command: |
-          sudo apt update
-          sudo apt -y install musl-tools binutils patchelf ninja-build # unzip musl musl-dev cmake gcc g++ automake libc6-dev-amd64-cross libgl1-mesa-dev libegl1-mesa-dev
+          command: |
+            sudo apt update
+            sudo apt -y install musl-tools binutils patchelf ninja-build # unzip musl musl-dev cmake gcc g++ automake libc6-dev-amd64-cross libgl1-mesa-dev libegl1-mesa-dev
 
       # Build SDL2
       - name: Deleting Old CMake Cache
