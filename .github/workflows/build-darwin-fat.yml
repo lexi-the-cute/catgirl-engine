@@ -168,15 +168,20 @@ jobs:
         run: |
           find ${{ github.workspace }}/target
 
+      # Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads
+        run: |
+          mkdir -p ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/libs/* ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine-Darwin-Fat-DMG
-          path: |
-            ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
-            ${{ github.workspace }}/target/libs/*
-            ${{ github.workspace }}/target/binding
+          path: ${{ github.workspace }}/upload/*
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
