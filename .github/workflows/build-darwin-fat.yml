@@ -75,17 +75,17 @@ jobs:
       # Build SDL2
       - name: Make and Install SDL
         working-directory: ${{ github.workspace }}/android/app/jni/SDL/Xcode/SDL
-        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-mmacosx-version-min=11.0 -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Shared Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl/temp
+        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-macosx-version-min=11.0 -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL.xcodeproj -sdk macosx -configuration Release -scheme "Shared Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl/temp
 
       # Build SDL_image
       - name: Make and Install SDL_image
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_image/Xcode
-        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-mmacosx-version-min=11.0 -I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-image/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-image/temp
+        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-macosx-version-min=11.0 -I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_image.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-image/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-image/temp
 
       # Build SDL_ttf
       - name: Make and Install SDL_ttf
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_ttf/Xcode
-        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-mmacosx-version-min=11.0 -I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/temp
+        run: xcodebuild -parallelizeTargets OTHER_CFLAGS="-macosx-version-min=11.0 -I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_ttf.xcodeproj -sdk macosx -configuration Release -scheme "Static Library" install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-ttf/temp
 
       # List XCode Build Folder
       - name: List XCode Build Folder
