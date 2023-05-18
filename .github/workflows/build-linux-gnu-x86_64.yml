@@ -86,6 +86,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/android/app/jni/build/*/*.so* ${{ github.workspace }}/target/libs
+          ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
