@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>Catgirl Engine</title>
+        <!-- https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm -->
+    </head>
+    <body>
+        <!-- <script type="module">
+            import init, { wasm_main } from "./pkg/catgirl-engine.js";
+            init().then(() => {
+                wasm_main();
+            });
+        </script> -->
+
+        <script type="module">
+            const importObject = {
+                imports: {
+                    imported_func(arg) {
+                        console.log(arg);
+                    }
+                }
+            };
+
+            WebAssembly.instantiateStreaming(fetch("main.wasm"), importObject).then(
+                (obj) => {
+                    // obj.instance.exports.wasm_main();
+                }
+            );
+        </script>
+    </body>
+</html>
