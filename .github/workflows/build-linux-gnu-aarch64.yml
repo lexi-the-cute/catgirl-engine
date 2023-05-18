@@ -35,44 +35,14 @@ jobs:
             sudo apt update
             sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu ninja-build  # libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
 
-      # Cache CMake SDL_SDL
+      # Cache CMake Libs
       - name: Cache CMake SDL
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl
+          cache-name: cache-cmake-build-aarch64-linux-gnu-libs
         with:
-          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          path: ${{ github.workspace }}/android/app/jni/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      # Cache CMake SDL_image
-      - name: Cache CMake SDL_image
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-image
-        with:
-          path: ${{ github.workspace }}/android/app/jni/SDL_image/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_image/*.*') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      # Cache CMake Freetype
-      - name: Cache CMake Freetype
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-freetype
-        with:
-          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      # Cache CMake SDL_ttf
-      - name: Cache CMake SDL_ttf
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-cmake-build-aarch64-linux-gnu-sdl-ttf
-        with:
-          path: ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_ttf/*.*') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Cache Rust Target
@@ -85,59 +55,13 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # Build SDL2
+      # Build Libs
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
-      - name: Make SDL2
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
-
-      # Build SDL_image
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_image -B ${{ github.workspace }}/android/app/jni/SDL_image/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
-      - name: Make SDL_image
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_image/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so*
-
-      # Build Freetype
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype -B ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-      - name: Make Freetype
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build
-
-      # Build SDL_ttf
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_ttf -B ${{ github.workspace }}/android/app/jni/SDL_ttf/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DFREETYPE_LIBRARY=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/build/libfreetype.a -DFREETYPE_INCLUDE_DIRS=${{ github.workspace }}/android/app/jni/SDL_ttf/external/freetype/include -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
-      - name: Make SDL_ttf
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_ttf/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so*
-
-      # Build Ogg
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
-      - name: Make Ogg
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/ogg/build
-
-      # Build Opus
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus/build
-      - name: Make Opus
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opus/build
-
-      # Build Opusfile
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile -B ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build -DOgg_DIR=$WORKSPACE/android/app/jni/SDL_mixer/external/ogg/build -DOpus_DIR=$WORKSPACE/android/app/jni/SDL_mixer/external/opus/build
-      - name: Make Opusfile
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/external/opusfile/build
-
-      # Build SDL_mixer
-      - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni/SDL_mixer -B ${{ github.workspace }}/android/app/jni/SDL_mixer/build -DSDL2_INCLUDE_DIR=${{ github.workspace }}/android/app/jni/SDL/include -DSDL2_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2-2.0.so -DSDL2_MAIN_LIBRARY=${{ github.workspace }}/android/app/jni/SDL/build/libSDL2main.a -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine
-      - name: Make SDL_mixer
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL_mixer/build
-      - name: Reset RunPath
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so*
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-aarch64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/aarch64-linux-gnu -DSDL2TTF_VENDORED=ON
+      - name: Make Libs
+        run: ninja -C ${{ github.workspace }}/android/app/jni/build
+      - name: Reset RunPath For SDL_*
+        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_*/build/*.so*
 
       # Install Rust
       - name: Make Tools Directory
@@ -161,12 +85,7 @@ jobs:
       - name: Copy SDL Libs To Export Directory
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
-          # cp -av ${{ github.workspace }}/android/app/jni/SDL/build/libSDLmain.a ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL_image/build/*.so* ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL_ttf/build/*.so* ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL_mixer/build/*.so* ${{ github.workspace }}/target/libs
-          ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          cp -av ${{ github.workspace }}/android/app/jni/build/*/*.so* ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
