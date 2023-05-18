@@ -98,15 +98,15 @@ jobs:
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Compile Program
-      - name: Build Program (Deb)
+      - name: Build Program
         run: |
-          export EMCC_CFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry"
+          export EMCC_CFLAGS="--no-entry"
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release
 
       # Test Program
       # - name: Test Program
       #   run: |
-      #     export EMCC_CFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry"
+      #     export EMCC_CFLAGS="--no-entry"
       #     $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
 
       # Display Export Directory
