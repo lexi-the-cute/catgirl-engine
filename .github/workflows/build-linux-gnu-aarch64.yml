@@ -42,7 +42,7 @@ jobs:
           cache-name: cache-cmake-build-aarch64-linux-gnu-libs
         with:
           path: ${{ github.workspace }}/android/app/jni/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Cache Rust Target
@@ -61,7 +61,7 @@ jobs:
       - name: Make Libs
         run: ninja -C ${{ github.workspace }}/android/app/jni/build
       - name: Reset RunPath For SDL_*
-        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/SDL_*/build/*.so*
+        run: patchelf --set-rpath /lib/aarch64-linux-gnu:/lib/aarch64-linux-gnu/catgirl-engine ${{ github.workspace }}/android/app/jni/build/SDL_*/*.so*
 
       # Install Rust
       - name: Make Tools Directory

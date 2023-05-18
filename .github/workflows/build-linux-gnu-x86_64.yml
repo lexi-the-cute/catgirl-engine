@@ -24,14 +24,14 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Cache CMake SDL
-      - name: Cache CMake SDL
+      # Cache CMake Libs
+      - name: Cache CMake Libs
         uses: actions/cache@v3
         env:
           cache-name: cache-cmake-build-x86_64-linux-gnu-libs
         with:
           path: ${{ github.workspace }}/android/app/jni/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Cache Rust Target
@@ -57,8 +57,6 @@ jobs:
 
       # ----------------------------------------
       # Build Libs
-      - name: Deleting Old CMake Cache
-        run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu
       - name: Make Libs

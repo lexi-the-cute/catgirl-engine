@@ -44,3 +44,8 @@ rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/build/sdk/usr/lib", "-Cli
 ar = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar"
 linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
 rustflags = ["-L$WORKSPACE/target/libs", "-L$WORKSPACE/build/sdk/usr/lib", "-Clink-arg=--target=aarch64-apple-macos", "-Clink-arg=-Wl,-F$WORKSPACE/build/sdk/System/Library/Frameworks,-F/System/Library/Frameworks,-framework,CoreAudio,-framework,CoreFoundation,-framework,CoreGraphics,-framework,ImageIO,-framework,CoreServices"]
+
+[target.wasm32-unknown-emscripten]
+ar = "$WORKSPACE/tools/emsdk/emar"
+linker = "$WORKSPACE/tools/emsdk/emcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL2_mixer"]
