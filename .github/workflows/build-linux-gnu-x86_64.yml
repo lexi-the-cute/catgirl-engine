@@ -28,9 +28,9 @@ jobs:
       - name: Cache CMake SDL
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-x86_64-linux-gnu-sdl
+          cache-name: cache-cmake-build-x86_64-linux-gnu-libs
         with:
-          path: ${{ github.workspace }}/android/app/jni/SDL/build
+          path: ${{ github.workspace }}/android/app/jni/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
@@ -56,13 +56,13 @@ jobs:
             sudo apt -y install libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev ninja-build  # libsdl2-dev
 
       # ----------------------------------------
-      # Build SDL2
+      # Build Libs
       - name: Deleting Old CMake Cache
         run: rm -rf ${{ github.workspace }}/android/app/jni/SDL/build
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni/SDL -B ${{ github.workspace }}/android/app/jni/SDL/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu # -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
-      - name: Make SDL2
-        run: cmake --build ${{ github.workspace }}/android/app/jni/SDL/build
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-gnu-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-gnu
+      - name: Make Libs
+        run: ninja -C ${{ github.workspace }}/android/app/jni/build
       # ----------------------------------------
 
       # Install Rust
@@ -87,8 +87,7 @@ jobs:
       - name: Copy SDL Libs To Export Directory
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/SDL/build/*.so* ${{ github.workspace }}/target/libs
-          ln -sf libSDL2-2.0.so ${{ github.workspace }}/target/libs/libSDL2.so
+          cp -av ${{ github.workspace }}/android/app/jni/build/*/*.so* ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Deb Packager
