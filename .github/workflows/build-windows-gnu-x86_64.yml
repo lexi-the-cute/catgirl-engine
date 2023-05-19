@@ -33,7 +33,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install gcc-mingw-w64-x86-64-posix wine64 ninja-build # mingw-w64
+            sudo apt -y install gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix wine64 ninja-build # mingw-w64
 
       # Cache CMake Libs
       - name: Cache CMake SDL
