@@ -1,11 +1,10 @@
-# Wasm is not yet available for 64 bit, see https://github.com/WebAssembly/memory64
-name: Build For WebAssembly 32
-run-name: ${{ github.actor }} is building for WebAssembly 32
+name: Build For Windows GNU x86_64
+run-name: ${{ github.actor }} is building for Windows GNU x86_64
 on: [push]
 jobs:
-  Build-WebAssembly-Emscripten-32:
+  Build-Windows-GNU-x86_64:
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: Windows
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -26,33 +25,21 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      # - name: Install APT Packages
-      #   uses: nick-fields/retry@v2
-      #   with:
-      #     max_attempts: 3
-      #     timeout_minutes: 60
-      #     retry_on: error
-      #     command: |
-      #       sudo apt update
-      #       sudo apt -y install emscripten
-
-      # Make Tools Directory
-      - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/tools
-
-      # Install and Setup Enscripten
-      - name: Install and Setup Enscripten
-        run: |
-          git clone https://github.com/emscripten-core/emsdk ${{ github.workspace }}/tools/emsdk
-          ${{ github.workspace }}/tools/emsdk/emsdk install latest
-          ${{ github.workspace }}/tools/emsdk/emsdk activate latest
-          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install gcc-mingw-w64-x86-64-posix wine64 ninja-build # mingw-w64
 
       # Cache CMake Libs
-      - name: Cache CMake Libs
+      - name: Cache CMake SDL
         uses: actions/cache@v3
         env:
-          cache-name: cache-cmake-build-webassembly-emscripten-32-libs
+          cache-name: cache-cmake-build-x86_64-windows-gnu-libs
         with:
           path: ${{ github.workspace }}/android/app/jni/build
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
@@ -62,7 +49,7 @@ jobs:
       - name: Cache Rust Target
         uses: actions/cache@v3
         env:
-          cache-name: cache-rust-target-webassembly-emscripten-32-catgirl-engine
+          cache-name: cache-rust-target-x86_64-windows-gnu-catgirl-engine
         with:
           path: ${{ github.workspace }}/target
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
@@ -70,11 +57,13 @@ jobs:
 
       # Build Libs
       - name: Initialize CMake
-        run: emcmake cmake -G Ninja -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-mingw-gcc-x86_64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DSDL2TTF_VENDORED=ON
       - name: Make Libs
-        run: emcmake ninja -C ${{ github.workspace }}/android/app/jni/build
+        run: ninja -C ${{ github.workspace }}/android/app/jni/build
 
       # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
@@ -88,39 +77,42 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
-      - name: Add Wasm32 Emscripten Build Target
-        run: $HOME/.cargo/bin/rustup target add wasm32-unknown-emscripten  # asmjs-unknown-emscripten also exists
+      - name: Add x86_64 GNU Windows Build Target
+        run: $HOME/.cargo/bin/rustup target add x86_64-pc-windows-gnu
 
       - name: Copy SDL Libs To Export Directory
         run: |
           mkdir -p ${{ github.workspace }}/target/libs
-          cp -av ${{ github.workspace }}/android/app/jni/build/*/*.a ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/android/app/jni/build/*/*.dll ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Compile Program
       - name: Build Program
-        run: |
-          export EMCC_CFLAGS="--no-entry"
-          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release
+        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine
 
       # Test Program
       # - name: Test Program
-      #   run: |
-      #     export EMCC_CFLAGS="--no-entry"
-      #     $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-pc-windows-gnu --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
-        run: ls -liallh ${{ github.workspace }}/target/wasm32-unknown-emscripten/release
+        run: ls -liallh ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release
+
+      # Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads
+        run: |
+          mkdir -p ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/libs/* ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/assets ${{ github.workspace }}/upload
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
-          name: CatgirlEngine-Linux-webassembly-emscripten-32-Zip
-          path: |
-            ${{ github.workspace }}/target/wasm32-unknown-emscripten/release/*.wasm
-            ${{ github.workspace }}/target/wasm32-unknown-emscripten/release/*.js
+          name: CatgirlEngine-Windows-x86_64-GNU-Zip
+          path: ${{ github.workspace }}/upload/*
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
