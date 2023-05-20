@@ -14,38 +14,38 @@ message("This file's directory is ${CMAKE_CURRENT_LIST_DIR}")
 # Freetype
 #set(SDL2TTF_FREETYPE OFF)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype)
-set(FREETYPE_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/build/libfreetype.*)
-set(FREETYPE_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/include)
+#set(FREETYPE_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/build/libfreetype.*)
+#set(FREETYPE_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/include)
 
 # Harfbuzz
 set(SDL2TTF_HARFBUZZ ON)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/harfbuzz)
-set(harfbuzz_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/harfbuzz/build/libharfbuzz.*)
-set(harfbuzz_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/harfbuzz/src)
+#set(harfbuzz_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/harfbuzz/build/libharfbuzz.*)
+#set(harfbuzz_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/harfbuzz/src)
 
 # Opus
 set(SDL2MIXER_OPUS OFF)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/opus)
-set(OpusFile_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/opus/build/libopus.*)
-set(OpusFile_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/opus/include)
+#set(OpusFile_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/opus/build/libopus.*)
+#set(OpusFile_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/opus/include)
 
 # OGG
 #set(SDL2MIXER_OGG OFF)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/ogg)
-set(OGG_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/ogg/build/libogg.*)
-set(OGG_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/ogg/include)
+#set(OGG_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/ogg/build/libogg.*)
+#set(OGG_INCLUDE_DIR ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/ogg/include)
 
 # Flac
 set(SDL2MIXER_FLAC OFF)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/flac)
-set(FLAC_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/flac/build/libflac.*)
-set(FLAC_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/flac/include)
+#set(FLAC_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/flac/build/libflac.*)
+#set(FLAC_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/flac/include)
 
 # WavPack
 set(SDL2MIXER_WAVPACK OFF)
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/wavpack)
-set(wavpack_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/wavpack/build/libflac.*)
-set(wavpack_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/wavpack/include)
+#set(wavpack_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/wavpack/build/libflac.*)
+#set(wavpack_INCLUDE_PATH ${CMAKE_CURRENT_LIST_DIR}/SDL_mixer/external/wavpack/include)
 
 # XMP
 set(SDL2MIXER_MOD_XMP OFF)
