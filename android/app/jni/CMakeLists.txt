@@ -13,6 +13,8 @@ message("This file's directory is ${CMAKE_CURRENT_LIST_DIR}")
 set(SDL2IMAGE_VENDORED ON)
 set(SDL2TTF_VENDORED ON)
 set(SDL2MIXER_VENDORED ON)
+
+set(SDL2MIXER_FLAC OFF)
 # ----------------------------------------
 
 # SDL sources are in a subfolder named "SDL"
