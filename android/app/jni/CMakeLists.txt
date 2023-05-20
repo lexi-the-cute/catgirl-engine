@@ -14,6 +14,7 @@ message("This file's directory is ${CMAKE_CURRENT_LIST_DIR}")
 # Freetype
 #set(SDL2TTF_FREETYPE OFF)
 #add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype)
+#set_target_properties(Freetype::Freetype PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/build/libfreetype.a)
 set(FREETYPE_LIBRARY ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/build/libfreetype.a)
 set(FREETYPE_INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/SDL_ttf/external/freetype/include)
 
