@@ -101,7 +101,7 @@ jobs:
       - name: Build Program
         run: |
           export EMCC_CFLAGS="--no-entry"
-          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release
+          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
 
       # Test Program
       # - name: Test Program
