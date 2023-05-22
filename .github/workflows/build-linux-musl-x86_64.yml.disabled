@@ -35,9 +35,9 @@ jobs:
             sudo apt update
             sudo apt -y install musl-tools binutils patchelf ninja-build # unzip musl musl-dev cmake gcc g++ automake libc6-dev-amd64-cross libgl1-mesa-dev libegl1-mesa-dev
 
-
       # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
       - name: Clear Accidental Cache Build Data
+        continue-on-error: true
         run: ${{ github.workspace }}/helper/clean.sh
 
       # Cache CMake Libs
