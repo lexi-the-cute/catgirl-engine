@@ -53,4 +53,4 @@ rustflags = ["-L$WORKSPACE/target/libs"]
 [target.wasm32-unknown-emscripten]
 ar = "$WORKSPACE/tools/emsdk/emar"
 linker = "$WORKSPACE/tools/emsdk/emcc"
-rustflags = ["-L$WORKSPACE/target/libs", "-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL2_mixer", "-oformat=html"]
+rustflags = ["-L$WORKSPACE/target/libs", "-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL2_mixer", "-lpthread"]
