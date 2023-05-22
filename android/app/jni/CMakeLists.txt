@@ -14,9 +14,11 @@ set(SDL2IMAGE_VENDORED ON)
 set(SDL2TTF_VENDORED ON)
 set(SDL2MIXER_VENDORED ON)
 
-set(SDL2TTF_HARFBUZZ ON)
-set(SDL2MIXER_FLAC OFF)
-set(SDL2MIXER_WAVPACK OFF)
+option(SDL2TTF_HARFBUZZ ON)  # This is set as an option so WebAssembly can disable it
+set(SDL2MIXER_FLAC ON)
+set(SDL2MIXER_WAVPACK ON)
+
+option(SDL2MIXER_ENABLED ON)  # This is set as an option so WebAssembly can disable it
 # ----------------------------------------
 
 # SDL sources are in a subfolder named "SDL"
@@ -25,7 +27,10 @@ add_subdirectory(SDL)
 # Compilation of companion libraries
 add_subdirectory(SDL_image)
 add_subdirectory(SDL_ttf)
-#add_subdirectory(SDL_mixer)
+
+if (SDL2MIXER_ENABLED)
+    add_subdirectory(SDL_mixer)
+endif()
 
 # Your game and its CMakeLists.txt are in a subfolder named "src"
 #add_subdirectory(src)
