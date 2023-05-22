@@ -70,7 +70,7 @@ jobs:
 
       # Build Libs
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-musl -DSDL2TTF_VENDORED=ON -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-musl -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
       - name: Make SDL2
         run: ninja -C ${{ github.workspace }}/android/app/jni/build
 

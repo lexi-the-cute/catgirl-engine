@@ -74,7 +74,7 @@ jobs:
 
       # Build Libs
       - name: Initialize CMake
-        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
+        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/tools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
       - name: Make Libs
         run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake ninja -C ${{ github.workspace }}/android/app/jni/build
 
