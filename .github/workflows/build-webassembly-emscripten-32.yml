@@ -25,6 +25,26 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      # Cache CMake Libs
+      - name: Cache CMake Libs
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-cmake-build-webassembly-emscripten-32-libs
+        with:
+          path: ${{ github.workspace }}/android/app/jni/build
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
+      # Cache Rust Target
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-webassembly-emscripten-32-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+
       # Install Dependencies
       # - name: Install APT Packages
       #   uses: nick-fields/retry@v2
@@ -46,27 +66,7 @@ jobs:
           git clone https://github.com/emscripten-core/emsdk ${{ github.workspace }}/tools/emsdk
           ${{ github.workspace }}/tools/emsdk/emsdk install latest
           ${{ github.workspace }}/tools/emsdk/emsdk activate latest
-          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
-
-      # Cache CMake Libs
-      - name: Cache CMake Libs
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-cmake-build-webassembly-emscripten-32-libs
-        with:
-          path: ${{ github.workspace }}/android/app/jni/build
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
-      # Cache Rust Target
-      - name: Cache Rust Target
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-rust-target-webassembly-emscripten-32-catgirl-engine
-        with:
-          path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+          echo "source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh" >> $HOME/.bash_profile
 
       # Build Libs
       - name: Initialize CMake
