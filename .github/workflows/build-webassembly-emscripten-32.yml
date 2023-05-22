@@ -75,7 +75,9 @@ jobs:
 
       # Build Libs
       - name: Initialize CMake
-        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/tools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_CROSSCOMPILING_EMULATOR=${{ github.workspace }}/tools/emsdk/node/*/bin/node -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
+        run: |
+          export TEMPORARY_FLAGS="-DSDL2TTF_HARFBUZZ=OFF -DSDL2MIXER_ENABLED=OFF"
+          ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/tools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_CROSSCOMPILING_EMULATOR=${{ github.workspace }}/tools/emsdk/node/*/bin/node -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off $TEMPORARY_FLAGS
       - name: Make Libs
         run: ninja -C ${{ github.workspace }}/android/app/jni/build
 
