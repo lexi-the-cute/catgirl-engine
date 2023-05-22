@@ -13,5 +13,6 @@
         "**/SDL_ttf/**": true,
         "**/tools/**": true
     },
-    "git.detectSubmodules": false
+    "git.detectSubmodules": false,
+    "cmake.sourceDirectory": "${workspaceRoot}/android/app/jni"
 }
