@@ -37,6 +37,7 @@ jobs:
 
       # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
       - name: Clear Accidental Cache Build Data
+        continue-on-error: true
         run: ${{ github.workspace }}/helper/clean.sh
 
       # Cache CMake Libs
