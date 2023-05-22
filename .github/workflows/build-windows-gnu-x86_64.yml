@@ -35,6 +35,10 @@ jobs:
             sudo apt update
             sudo apt -y install gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix wine64 ninja-build # mingw-w64
 
+      # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
+      - name: Clear Accidental Cache Build Data
+        run: ${{ github.workspace }}/helper/clean.sh
+
       # Cache CMake Libs
       - name: Cache CMake SDL
         uses: actions/cache@v3
