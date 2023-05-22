@@ -61,7 +61,7 @@ jobs:
 
       # Build Libs
       - name: Initialize CMake
-        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-mingw-gcc-x86_64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DSDL2TTF_VENDORED=ON
+        run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-mingw-gcc-x86_64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build
       - name: Make Libs
         run: ninja -C ${{ github.workspace }}/android/app/jni/build
 
