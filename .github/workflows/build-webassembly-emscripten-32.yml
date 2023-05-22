@@ -25,16 +25,16 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Install Dependencies
-      # - name: Install APT Packages
-      #   uses: nick-fields/retry@v2
-      #   with:
-      #     max_attempts: 3
-      #     timeout_minutes: 60
-      #     retry_on: error
-      #     command: |
-      #       sudo apt update
-      #       sudo apt -y install emscripten
+      Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install ninja-build # emscripten
 
       # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
       - name: Clear Accidental Cache Build Data
