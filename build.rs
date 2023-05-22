@@ -5,6 +5,16 @@ use std::path::PathBuf;
 use cbindgen::{Config, Language};
 
 fn main() {
+    create_js();
+    create_bindings();
+}
+
+fn create_js() {
+    // This is only to run for the wasm32-unknown-emscripten target
+    println!("cargo:rustc-link-arg=--oformat=js");
+}
+
+fn create_bindings() {
     let crate_directory: String = env::var("CARGO_MANIFEST_DIR").unwrap();
     let package_name: String = env::var("CARGO_PKG_NAME").unwrap();
 
