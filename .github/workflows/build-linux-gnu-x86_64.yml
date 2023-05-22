@@ -25,9 +25,9 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
-      - name: Clear Accidental Cache Build Data
-        continue-on-error: true
-        run: ${{ github.workspace }}/helper/clean.sh
+      # - name: Clear Accidental Cache Build Data
+      #   continue-on-error: true
+      #   run: ${{ github.workspace }}/helper/clean.sh
 
       # Install Dependencies
       - name: Install APT Packages

@@ -37,9 +37,9 @@ jobs:
             sudo apt -y install ninja-build # emscripten
 
       # Clear Any Accidentally Cached Build Data (Runs Before Desired Cache)
-      - name: Clear Accidental Cache Build Data
-        continue-on-error: true
-        run: ${{ github.workspace }}/helper/clean.sh
+      # - name: Clear Accidental Cache Build Data
+      #   continue-on-error: true
+      #   run: ${{ github.workspace }}/helper/clean.sh
 
       # Cache CMake Libs
       - name: Cache CMake Libs
@@ -71,13 +71,13 @@ jobs:
           git clone https://github.com/emscripten-core/emsdk ${{ github.workspace }}/tools/emsdk
           ${{ github.workspace }}/tools/emsdk/emsdk install latest
           ${{ github.workspace }}/tools/emsdk/emsdk activate latest
-          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
+          # source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
 
       # Build Libs
       - name: Initialize CMake
-        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/tools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
+        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/tools/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_CROSSCOMPILING_EMULATOR=${{ github.workspace }}/tools/emsdk/node/*/bin/node -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DBUILD_SHARED_LIBS=off
       - name: Make Libs
-        run: ${{ github.workspace }}/tools/emsdk/upstream/emscripten/emcmake ninja -C ${{ github.workspace }}/android/app/jni/build
+        run: ninja -C ${{ github.workspace }}/android/app/jni/build
 
       # Install Rust
       - name: Download Rust Installer
