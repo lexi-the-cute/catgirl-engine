@@ -109,7 +109,6 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/libs/* ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/assets ${{ github.workspace }}/upload
 
       # Upload Engine
