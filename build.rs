@@ -21,11 +21,13 @@ fn main() {
 fn create_emscripten_wasm() {
     // This is only to run for the wasm32-unknown-emscripten target
     // println!("cargo:warning=Building Emscripten Wasm");
-    let output_file: String = target_dir()
-    .join("wasm")
-    .join(format!("{}.{}", "main", "js"))
+    let parent_dir: PathBuf = target_dir().join("wasm");
+    let output_file: String = parent_dir.join(format!("{}.{}", "main", "js"))
     .display()
     .to_string();
+
+    // Create Parent Directories If Not Exists
+    std::fs::create_dir_all(parent_dir).unwrap();
 
     println!("cargo:rustc-env=EMCC_CFLAGS=-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry");
     println!("cargo:rustc-link-arg=-o{output_file}");
