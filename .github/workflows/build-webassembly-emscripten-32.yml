@@ -106,26 +106,21 @@ jobs:
 
       # Compile Program
       - name: Build Program
-        run: |
-          export EMCC_CFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry"
-          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
+        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
 
       # Test Program
       # - name: Test Program
-      #   run: |
-      #     export EMCC_CFLAGS="-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry"
-      #     $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
-        run: ls -liallh ${{ github.workspace }}/target/wasm32-unknown-emscripten/release
+        run: ls -liallh ${{ github.workspace }}/target/wasm
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/wasm32-unknown-emscripten/release/*.wasm ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/wasm32-unknown-emscripten/release/*.js ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/wasm/* ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/examples/web/*.html ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/examples/web/*.py ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload

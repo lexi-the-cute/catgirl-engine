@@ -195,7 +195,6 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/libs/* ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
 
       # Upload Engine
       - name: Upload Engine (Release)
