@@ -71,6 +71,10 @@ fn setup_logger() {
                     .with_max_level(log::LevelFilter::Trace)
                     .with_tag("CatgirlEngine")
         );
+    } else if cfg!(any(target_arch = "wasm32", target_arch = "wasm64")) {
+        eprintln!("Currently logging is broken due to something with wasm-bindgen. Working on a fix...");
+        eprintln!("See Github Issue at https://github.com/rustwasm/wasm-bindgen/issues/3447");
+        console_log::init().unwrap();
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
