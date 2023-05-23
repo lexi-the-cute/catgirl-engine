@@ -6,6 +6,13 @@
         <!-- https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm -->
     </head>
     <body>
+        <script type="text/javascript">
+            var Module = {
+                onRuntimeInitialized: function() {
+                    Module._SDL_main(); // SDL_main was exported
+                }
+            };
+        </script>
         <script src="/main.js"></script>
     </body>
 </html>

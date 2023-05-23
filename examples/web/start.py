@@ -28,7 +28,7 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
 
-        self.wfile.write(bytes("<html><head><title>404 - File Not Found</title></head>", "utf-8"))
+        self.wfile.write(bytes("<!DOCTYPE html><html><head><title>404 - File Not Found</title></head>", "utf-8"))
         self.wfile.write(bytes("<p>Request: %s</p>" % self.path, "utf-8"))
         self.wfile.write(bytes("<body>", "utf-8"))
         self.wfile.write(bytes("<h1>404 - File Not Found</h1>", "utf-8"))
