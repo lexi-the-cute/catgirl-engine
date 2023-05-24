@@ -6,11 +6,11 @@ use cbindgen::{Config, Language};
 
 fn main() {
     // For some reason, the cfg!() macros won't cooperate, so Alexis is doing this herself
-    let target_arch: String = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
+    let target_family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
     let target_os: String = env::var("CARGO_CFG_TARGET_OS").unwrap();
 
     // Only Emscripten builds need the javascript generation flag set
-    if (target_arch == "wasm32" || target_arch == "wasm64") && target_os == "emscripten" {
+    if target_family.contains("wasm") && target_os == "emscripten" {
         create_emscripten_wasm();
     }
 
