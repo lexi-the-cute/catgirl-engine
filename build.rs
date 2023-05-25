@@ -1,3 +1,4 @@
+// extern crate cc;
 extern crate cbindgen;
 
 use std::env::{self, Vars};
@@ -11,11 +12,26 @@ fn main() {
 
     // Only Emscripten builds need the javascript generation flag set
     if target_family.contains("wasm") && target_os == "emscripten" {
+        #[cfg(feature = "browser")]
+        add_browser_support();
         create_emscripten_wasm();
     }
 
     // Bindings are only usable when building libs
     create_bindings();
+}
+
+#[allow(dead_code)]
+fn add_browser_support() {
+    let lib_path: PathBuf = PathBuf::from("c").join("browser.c");
+
+    // println!("cargo:rustc-link-search=/path/to/lib");
+    // println!("cargo:rustc-link-lib=SDL");
+    println!("cargo:rerun-if-changed={}", lib_path.to_str().unwrap());
+
+    cc::Build::new()
+        .file(lib_path.to_str().unwrap())
+        .compile("browser");
 }
 
 fn create_emscripten_wasm() {
