@@ -72,9 +72,13 @@ fn setup_logger() {
                     .with_tag("CatgirlEngine")
         );
     } else if cfg!(target_family = "wasm") {
-        eprintln!("Currently logging is broken due to something with wasm-bindgen. Working on a fix...");
-        eprintln!("See Github Issue at https://github.com/rustwasm/wasm-bindgen/issues/3447");
-        console_log::init().unwrap();
+        #[cfg(feature = "browser")]
+        {
+            crate::loggers::browser::init().unwrap();
+
+            // Wasm Specific Messages
+            error!("Currently pthread support is broken. Working on a fix...");
+        }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
