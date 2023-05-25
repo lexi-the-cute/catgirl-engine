@@ -106,7 +106,9 @@ jobs:
 
       # Compile Program
       - name: Build Program
-        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
+        run: |
+          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh  # Temporary Until Var Fixed. https://github.com/rust-lang/cargo/issues/12183
+          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
 
       # Test Program
       # - name: Test Program
