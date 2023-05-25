@@ -30,6 +30,9 @@ fn add_browser_support() {
     println!("cargo:rerun-if-changed={}", lib_path.to_str().unwrap());
 
     cc::Build::new()
+        .compiler(PathBuf::from(env::var("RUSTC_LINKER").unwrap()))
+        // https://github.com/rust-lang/cargo/issues/12183
+        // .archiver(PathBuf::from(env::var("RUSTC_AR").unwrap()))
         .file(lib_path.to_str().unwrap())
         .compile("browser");
 }

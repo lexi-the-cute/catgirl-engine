@@ -18,12 +18,12 @@ impl log::Log for ConsoleLogger {
 
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
-            let console_log: unsafe extern "C" fn(*const i8) = match record.level() {
-                Level::Trace => trace,
-                Level::Debug => debug,
-                Level::Info => info,
-                Level::Warn => warn,
-                Level::Error => error
+            let console_log: unsafe extern "C" fn(*const c_char) = match record.level() {
+                Level::Trace => trace as unsafe extern "C" fn(*const c_char),
+                Level::Debug => debug as unsafe extern "C" fn(*const c_char),
+                Level::Info => info as unsafe extern "C" fn(*const c_char),
+                Level::Warn => warn as unsafe extern "C" fn(*const c_char),
+                Level::Error => error as unsafe extern "C" fn(*const c_char)
             };
     
             unsafe {
