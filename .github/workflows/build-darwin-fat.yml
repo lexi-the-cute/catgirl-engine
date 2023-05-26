@@ -114,10 +114,10 @@ jobs:
       # List and Organize Libs In Export Directory
       - name: List and Organize Libs In Export Directory
         run: |
-          cp -avL ${{ github.workspace }}/build/xcode/sdl/build/* ${{ github.workspace }}/target/libs
-          cp -avL ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
-          cp -avL ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
-          cp -avL ${{ github.workspace }}/build/xcode/sdl-mixer/build/* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl/build/* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
+          cp -av ${{ github.workspace }}/build/xcode/sdl-mixer/build/* ${{ github.workspace }}/target/libs
           ls -liallh ${{ github.workspace }}/target/libs
 
       # Install Rust
@@ -148,6 +148,10 @@ jobs:
           mkdir -p ${{ github.workspace }}/build
           ln -sf $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
+      # Copy Libs
+      - name: Copy SDL2 To /usr/local/lib For Tests
+        run: cp ${{ github.workspace }}/target/libs/libSDL2.dylib /usr/local/lib
+
       # Compile Program
       - name: Build Program (x86_64)
         run: |
@@ -157,10 +161,6 @@ jobs:
         run: |
           export LIBRARY_PATH="$LIBRARY_PATH:${{ github.workspace }}/build/sdk/usr/lib"
           $HOME/.cargo/bin/cargo build -j 6 --release --target=aarch64-apple-darwin --bin catgirl-engine
-
-      # Copy Libs
-      - name: Copy SDL2 To /usr/local/lib For Tests
-        run: cp ${{ github.workspace }}/target/libs/libSDL2.dylib /usr/local/lib
 
       # Test Program
       - name: Test Program (x86_64)
