@@ -70,14 +70,14 @@ jobs:
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # Cache Rust Target
-      # - name: Cache Rust Target
-      #   uses: actions/cache@v3
-      #   env:
-      #     cache-name: cache-rust-target-fat-darwin-macos-catgirl-engine
-      #   with:
-      #     path: ${{ github.workspace }}/target
-      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-      #     restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
+      - name: Cache Rust Target
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-rust-target-fat-darwin-macos-catgirl-engine
+        with:
+          path: ${{ github.workspace }}/target
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
+          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
       # List Environment
       - name: List Environment
