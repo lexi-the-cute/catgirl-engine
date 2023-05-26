@@ -122,7 +122,8 @@ jobs:
         run: |
           ls -liallh ${{ github.workspace }}/target/libs
           ls -liallhL ${{ github.workspace }}/target/libs
-          find ${{ github.workspace }}/target/libs -name "libSDL2.dylib"
+          find ${{ github.workspace }}/target/libs -name "*.dylib"
+          find ${{ github.workspace }}/target/libs -name
 
       # Install Rust
       - name: Make Tools Directory
