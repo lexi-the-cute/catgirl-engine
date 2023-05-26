@@ -9,7 +9,11 @@
         <script type="text/javascript">
             var Module = {
                 onRuntimeInitialized: function() {
-                    Module._SDL_main(); // SDL_main was exported
+                    try {
+                        Module._SDL_main(); // SDL_main was exported
+                    } catch(exceptionVariable) {
+                        
+                    }
                 }
             };
         </script>
