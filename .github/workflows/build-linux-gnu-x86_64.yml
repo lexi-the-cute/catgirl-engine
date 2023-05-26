@@ -121,6 +121,16 @@ jobs:
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
