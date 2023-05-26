@@ -176,35 +176,54 @@ jobs:
           mkdir -p ${{ github.workspace }}/target/fat-apple-darwin/release
           lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine ${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine -output ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
 
-      # Create .app Directory
-      - name: Create .app Directory
-        run: mkdir -p ${{ github.workspace }}/target/catgirl-engine.app
+      # Prepare App
+      - name: Prepare App
+        run: |
+          mkdir -p ${{ github.workspace }}/target/osx
+          cp -av ${{ github.workspace }}/examples/osx/disk_image ${{ github.workspace }}/target/osx
+          ln -s /Applications '${{ github.workspace }}/target/osx/disk_image/ '
 
-      # Info.plist Vars (Use With sed)
-      # $MACOSX_BUNDLE_EXECUTABLE_NAME = catgirl-engine
-      # $MACOSX_BUNDLE_INFO_STRING = "A game engine for cool moddability and procedurally generated data"
-      # $MACOSX_BUNDLE_ICON_FILE = catgirl-engine.icns
-      # $MACOSX_BUNDLE_GUI_IDENTIFIER = land.catgirl.engine
-      # $MACOSX_BUNDLE_BUNDLE_NAME = "catgirl-engine"
-      # $MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME = "Catgirl Engine"
-      # $MACOSX_BUNDLE_BUNDLE_VERSION = 0.3.0
-      # $MACOSX_BUNDLE_COPYRIGHT = zlib
+      - name: Setup Info.plist
+        run: |
+          export MACOSX_BUNDLE_EXECUTABLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
+          export MACOSX_BUNDLE_INFO_STRING=cat ${{ github.workspace }}/Cargo.toml | grep '^description' | head -n1 | cut -d'"' -f2
+          export MACOSX_BUNDLE_ICON_FILE=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`.icns
+          export MACOSX_BUNDLE_GUI_IDENTIFIER=cat ${{ github.workspace }}/android/app/build.gradle | grep "applicationId" | head -n1 | cut -d'"' -f2
+          export MACOSX_BUNDLE_BUNDLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
+          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g`
+          export MACOSX_BUNDLE_BUNDLE_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2`
+          export MACOSX_BUNDLE_COPYRIGHT=`cat ${{ github.workspace }}/Cargo.toml | grep '^license' | head -n1 | cut -d'"' -f2`
+
+          sed "s:\$MACOSX_BUNDLE_EXECUTABLE_NAME:$MACOSX_BUNDLE_EXECUTABLE_NAME:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_INFO_STRING:$MACOSX_BUNDLE_INFO_STRING:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_ICON_FILE:$MACOSX_BUNDLE_ICON_FILE:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_GUI_IDENTIFIER:$MACOSX_BUNDLE_GUI_IDENTIFIER:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_BUNDLE_NAME:$MACOSX_BUNDLE_BUNDLE_NAME:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME:$MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_BUNDLE_VERSION:$MACOSX_BUNDLE_BUNDLE_VERSION:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
+          sed "s:\$MACOSX_BUNDLE_COPYRIGHT:$MACOSX_BUNDLE_COPYRIGHT:g" ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist > ${{ github.workspace }}/target/osx/disk_image/catgirl-engine.app/Contents/Info.plist
 
       # Create DMG For Downloading
       - name: Create DMG For Downloading
-        run: hdiutil help
+        run: |
+          export MACOSX_BUNDLE_EXECUTABLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
+          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g`
+          
+          mv ${{ github.workspace }}/target/fat-apple-darwin/release/$MACOSX_BUNDLE_EXECUTABLE_NAME ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS/
+          mv ${{ github.workspace }}/target/libs/*.framework ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks/
+
+          hdiutil create -volname "$MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME" -srcfolder ${{ github.workspace }}/target/osx/disk_image -ov -format UDZO ${{ github.workspace }}/target/osx/$MACOSX_BUNDLE_EXECUTABLE_NAME.dmg
 
       # Display Export Directory
       - name: Display Export Directory
         run: |
-          find ${{ github.workspace }}/target
+          find ${{ github.workspace }}/target/osx
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/libs/* ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/osx/*.dmg ${{ github.workspace }}/upload
 
       # Upload Engine
       - name: Upload Engine (Release)
