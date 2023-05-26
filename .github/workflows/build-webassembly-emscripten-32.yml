@@ -1,6 +1,6 @@
 # Wasm is not yet available for 64 bit, see https://github.com/WebAssembly/memory64
-name: Build For WebAssembly 32
-run-name: ${{ github.actor }} is building for WebAssembly 32
+name: Build For WebAssembly Emscripten 32
+run-name: ${{ github.actor }} is building for WebAssembly Emscripten 32
 on: [push]
 jobs:
   Build-WebAssembly-Emscripten-32:
