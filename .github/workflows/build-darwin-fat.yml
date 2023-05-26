@@ -155,14 +155,6 @@ jobs:
           cp -av ${{ github.workspace }}/target/libs/SDL2_ttf.framework/SDL2_ttf /usr/local/lib/libSDL2_ttf.dylib
           cp -av ${{ github.workspace }}/target/libs/SDL2_mixer.framework/SDL2_mixer /usr/local/lib/libSDL2_mixer.dylib
 
-      # Copy Frameworks (For Testing)
-      - name: Copy SDL2 and Dependencies To /System/Library/Frameworks (For Testing)
-        run: |
-          sudo cp -av ${{ github.workspace }}/target/libs/SDL2.framework /System/Library/Frameworks
-          sudo cp -av ${{ github.workspace }}/target/libs/SDL2_image.framework /System/Library/Frameworks
-          sudo cp -av ${{ github.workspace }}/target/libs/SDL2_ttf.framework /System/Library/Frameworks
-          sudo cp -av ${{ github.workspace }}/target/libs/SDL2_mixer.framework /System/Library/Frameworks
-
       # Compile Program
       - name: Build Program (x86_64)
         run: |
