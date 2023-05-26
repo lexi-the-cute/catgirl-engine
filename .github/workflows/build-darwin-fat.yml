@@ -191,16 +191,16 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/target/osx
           cp -av ${{ github.workspace }}/examples/osx/disk_image ${{ github.workspace }}/target/osx
-          ln -s /Applications '${{ github.workspace }}/target/osx/disk_image/ '
+          ln -s /Applications "${{ github.workspace }}/target/osx/disk_image/ "
 
       - name: Setup Info.plist
         run: |
           export MACOSX_BUNDLE_EXECUTABLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
-          export MACOSX_BUNDLE_INFO_STRING=cat ${{ github.workspace }}/Cargo.toml | grep '^description' | head -n1 | cut -d'"' -f2
+          export MACOSX_BUNDLE_INFO_STRING=`cat ${{ github.workspace }}/Cargo.toml | grep '^description' | head -n1 | cut -d'"' -f2`
           export MACOSX_BUNDLE_ICON_FILE=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`.icns
-          export MACOSX_BUNDLE_GUI_IDENTIFIER=cat ${{ github.workspace }}/android/app/build.gradle | grep "applicationId" | head -n1 | cut -d'"' -f2
+          export MACOSX_BUNDLE_GUI_IDENTIFIER=`cat ${{ github.workspace }}/android/app/build.gradle | grep "applicationId" | head -n1 | cut -d'"' -f2`
           export MACOSX_BUNDLE_BUNDLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
-          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g`
+          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g'`
           export MACOSX_BUNDLE_BUNDLE_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2`
           export MACOSX_BUNDLE_COPYRIGHT=`cat ${{ github.workspace }}/Cargo.toml | grep '^license' | head -n1 | cut -d'"' -f2`
 
@@ -217,7 +217,7 @@ jobs:
       - name: Create DMG For Downloading
         run: |
           export MACOSX_BUNDLE_EXECUTABLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
-          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g`
+          export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g'`
           
           mv ${{ github.workspace }}/target/fat-apple-darwin/release/$MACOSX_BUNDLE_EXECUTABLE_NAME ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS/
           mv ${{ github.workspace }}/target/libs/*.framework ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks/
