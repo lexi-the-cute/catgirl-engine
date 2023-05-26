@@ -121,9 +121,16 @@ jobs:
       - name: List Libs In Export Directory
         run: |
           ls -liallh ${{ github.workspace }}/target/libs
-          ls -liallhL ${{ github.workspace }}/target/libs
-          find -L ${{ github.workspace }}/target/libs -name "*.dylib"
+          ls -liallhL ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2
+          file ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2
           find -L ${{ github.workspace }}/target/libs
+
+      # Upload Frameworks
+      - name: Upload SDL Frameworks (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: SDL-Frameworks-Darwin-Fat-Zip
+          path: ${{ github.workspace }}/target/libs/*
 
       # Install Rust
       - name: Make Tools Directory
@@ -155,7 +162,7 @@ jobs:
 
       # Copy Libs
       - name: Copy SDL2 To /usr/local/lib For Tests
-        run: cp ${{ github.workspace }}/target/libs/libSDL2.dylib /usr/local/lib
+        run: cp ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2 /usr/local/lib/libSDL2.dylib
 
       # Compile Program
       - name: Build Program (x86_64)
