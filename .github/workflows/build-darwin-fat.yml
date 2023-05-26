@@ -123,7 +123,7 @@ jobs:
           ls -liallh ${{ github.workspace }}/target/libs
           ls -liallhL ${{ github.workspace }}/target/libs
           find -L ${{ github.workspace }}/target/libs -name "*.dylib"
-          # find -L ${{ github.workspace }}/target/libs
+          find -L ${{ github.workspace }}/target/libs
 
       # Install Rust
       - name: Make Tools Directory
