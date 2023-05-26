@@ -159,7 +159,7 @@ jobs:
       # Copy Frameworks
       - name: Copy SDL2 and Dependencies To /usr/local/lib
         run: |
-          cp -av ${{ github.workspace }}/target/libs/*.framework /Library/Frameworks
+          sudo cp -R ${{ github.workspace }}/target/libs/*.framework /Library/Frameworks
           ls -liallhL /Library/Frameworks/SDL2*
 
       # Compile Program
