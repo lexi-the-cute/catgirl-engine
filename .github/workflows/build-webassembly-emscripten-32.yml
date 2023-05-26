@@ -107,12 +107,14 @@ jobs:
       # Compile Program
       - name: Build Program
         run: |
-          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh  # Temporary Until Var Fixed. https://github.com/rust-lang/cargo/issues/12183
+          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
 
       # Test Program
-      # - name: Test Program
-      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
+      - name: Test Program
+        run: |
+          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
+          $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory
@@ -135,6 +137,16 @@ jobs:
           path: ${{ github.workspace }}/upload
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.

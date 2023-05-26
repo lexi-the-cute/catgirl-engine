@@ -60,14 +60,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # List Files
-      - name: List files in the repository
-        run: ls ${{ github.workspace }}
-
-      # List Environment
-      - name: List Environment
-        run: env
-
       # Build Libs
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-musl-gcc-x86-64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build -DCMAKE_BUILD_RPATH=/lib/x86_64-linux-musl -DSDL_WAYLAND=OFF -DSDL_PULSEAUDIO=OFF -DSDL_IBUS=OFF
@@ -127,12 +119,15 @@ jobs:
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
-      - name: List All Files
-        run: find ${{ github.workspace }}
+      # List Environment
+      - name: List Environment
+        run: env
       - name: List All Installed Packages
         run: |
           apt list --installed | wc -l
           apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
 
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.

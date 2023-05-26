@@ -79,10 +79,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # List Environment
-      - name: List Environment
-        run: env
-
       # Make Libs Folder
       - name: Make Libs Folder
         run: mkdir -p ${{ github.workspace }}/target/libs
@@ -107,10 +103,6 @@ jobs:
         working-directory: ${{ github.workspace }}/android/app/jni/SDL_mixer/Xcode
         run: xcodebuild -parallelizeTargets CFLAGS="-mmacosx-version-min=11.0" OTHER_CFLAGS="-I${{ github.workspace }}/android/app/jni/SDL/include -fembed-bitcode" ONLY_ACTIVE_ARCH=NO -arch arm64 -arch x86_64 -project SDL_mixer.xcodeproj -sdk macosx -configuration Release -scheme Framework install CONFIGURATION_BUILD_DIR=${{ github.workspace }}/build/xcode/sdl-mixer/build CONFIGURATION_TEMP_DIR=${{ github.workspace }}/build/xcode/sdl-mixer/temp
 
-      # List XCode Build Folder
-      - name: List XCode Build Folder
-        run: find ${{ github.workspace }}/build/xcode
-
       # List and Organize Libs In Export Directory
       - name: Organize Libs In Export Directory
         run: |
@@ -118,19 +110,14 @@ jobs:
           cp -av ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-mixer/build/* ${{ github.workspace }}/target/libs
-      - name: List Libs In Export Directory
-        run: |
-          ls -liallh ${{ github.workspace }}/target/libs
-          ls -liallhL ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2
-          file ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2
-          find -L ${{ github.workspace }}/target/libs
+          ls -liallhL ${{ github.workspace }}/target/libs
 
       # Upload Frameworks
-      - name: Upload SDL Frameworks (Release)
-        uses: actions/upload-artifact@v3
-        with:
-          name: SDL-Frameworks-Darwin-Fat-Zip
-          path: ${{ github.workspace }}/target/libs/*
+      # - name: Upload SDL Frameworks (Release)
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: SDL-Frameworks-Darwin-Fat-Zip
+      #     path: ${{ github.workspace }}/target/libs/*
 
       # Install Rust
       - name: Make Tools Directory
@@ -161,8 +148,12 @@ jobs:
           ln -sf $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
       # Copy Libs
-      - name: Copy SDL2 To /usr/local/lib For Tests
-        run: cp ${{ github.workspace }}/target/libs/SDL2.framework/Versions/Current/SDL2 /usr/local/lib/libSDL2.dylib
+      - name: Copy SDL2 and Dependencies To /usr/local/lib
+        run: |
+          cp ${{ github.workspace }}/target/libs/SDL2.framework/SDL2 /usr/local/lib/libSDL2.dylib
+          cp ${{ github.workspace }}/target/libs/SDL2_image.framework/SDL2_image /usr/local/lib/libSDL2_image.dylib
+          cp ${{ github.workspace }}/target/libs/SDL2_ttf.framework/SDL2_ttf /usr/local/lib/libSDL2_ttf.dylib
+          cp ${{ github.workspace }}/target/libs/SDL2_mixer.framework/SDL2_mixer /usr/local/lib/libSDL2_mixer.dylib
 
       # Compile Program
       - name: Build Program (x86_64)
@@ -246,6 +237,9 @@ jobs:
 
       # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
 
+      # List Environment
+      - name: List Environment
+        run: env
       - name: List All Files
         run: find ${{ github.workspace }}
 
