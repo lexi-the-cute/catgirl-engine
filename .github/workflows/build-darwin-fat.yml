@@ -112,13 +112,17 @@ jobs:
         run: find ${{ github.workspace }}/build/xcode
 
       # List and Organize Libs In Export Directory
-      - name: List and Organize Libs In Export Directory
+      - name: Organize Libs In Export Directory
         run: |
           cp -av ${{ github.workspace }}/build/xcode/sdl/build/* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-image/build/* ${{ github.workspace }}/target/Libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-ttf/build/* ${{ github.workspace }}/target/libs
           cp -av ${{ github.workspace }}/build/xcode/sdl-mixer/build/* ${{ github.workspace }}/target/libs
+      - name: List Libs In Export Directory
+        run: |
           ls -liallh ${{ github.workspace }}/target/libs
+          ls -liallhL ${{ github.workspace }}/target/libs
+          find ${{ github.workspace }}/target/libs -name "libSDL2.dylib"
 
       # Install Rust
       - name: Make Tools Directory
