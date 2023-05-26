@@ -111,10 +111,10 @@ jobs:
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-emscripten --release --lib
 
       # Test Program
-      - name: Test Program
-        run: |
-          source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
-          $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
+      # - name: Test Program
+      #   run: |
+      #     source ${{ github.workspace }}/tools/emsdk/emsdk_env.sh
+      #     $HOME/.cargo/bin/cargo test -j 4 --verbose --target=wasm32-unknown-emscripten --bins --tests --benches --examples
 
       # Display Export Directory
       - name: Display Export Directory

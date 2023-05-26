@@ -154,6 +154,7 @@ jobs:
           cp ${{ github.workspace }}/target/libs/SDL2_image.framework/SDL2_image /usr/local/lib/libSDL2_image.dylib
           cp ${{ github.workspace }}/target/libs/SDL2_ttf.framework/SDL2_ttf /usr/local/lib/libSDL2_ttf.dylib
           cp ${{ github.workspace }}/target/libs/SDL2_mixer.framework/SDL2_mixer /usr/local/lib/libSDL2_mixer.dylib
+          ls -liallhL /usr/local/lib/libSDL*
 
       # Compile Program
       - name: Build Program (x86_64)
