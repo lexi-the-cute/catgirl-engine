@@ -153,15 +153,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cmake"
-version = "0.1.50"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a31c789563b815f77f4250caee12365734369f942439b7defd71e18a48197130"
-dependencies = [
- "cc",
-]
-
-[[package]]
 name = "crossbeam-channel"
 version = "0.5.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -634,7 +625,6 @@ version = "0.35.2"
 source = "git+https://github.com/alexisart/rust-sdl2?branch=master#b6a1bf66e768d1a97c20026acfe9636fc396b62d"
 dependencies = [
  "cfg-if",
- "cmake",
  "libc",
  "version-compare",
 ]
