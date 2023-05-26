@@ -158,10 +158,10 @@ jobs:
       # Copy Frameworks (For Testing)
       - name: Copy SDL2 and Dependencies To /System/Library/Frameworks (For Testing)
         run: |
-          cp -av ${{ github.workspace }}/target/libs/SDL2.framework /System/Library/Frameworks
-          cp -av ${{ github.workspace }}/target/libs/SDL2_image.framework /System/Library/Frameworks
-          cp -av ${{ github.workspace }}/target/libs/SDL2_ttf.framework /System/Library/Frameworks
-          cp -av ${{ github.workspace }}/target/libs/SDL2_mixer.framework /System/Library/Frameworks
+          sudo -H cp -av ${{ github.workspace }}/target/libs/SDL2.framework /System/Library/Frameworks
+          sudo -H cp -av ${{ github.workspace }}/target/libs/SDL2_image.framework /System/Library/Frameworks
+          sudo -H cp -av ${{ github.workspace }}/target/libs/SDL2_ttf.framework /System/Library/Frameworks
+          sudo -H cp -av ${{ github.workspace }}/target/libs/SDL2_mixer.framework /System/Library/Frameworks
 
       # Compile Program
       - name: Build Program (x86_64)
