@@ -42,4 +42,4 @@ rustflags = ["-L$WORKSPACE/target/libs"]
 
 [target.wasm32-unknown-emscripten]
 linker = "$WORKSPACE/tools/emsdk/upstream/emscripten/emcc"
-rustflags = ["-L$WORKSPACE/target/libs"]
+rustflags = ["-L$WORKSPACE/target/libs", "-lpthread", "-Clink-arg=-Wl,-lpthread", "-Ctarget-feature=+atomics,+bulk-memory,+mutable-globals"]

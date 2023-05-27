@@ -148,7 +148,7 @@ jobs:
           ln -sf $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
       # Copy Libs
-      - name: Copy SDL2 and Dependencies To /usr/local/lib
+      - name: Copy SDL2 Libs and Dependencies To /usr/local/lib
         run: |
           cp ${{ github.workspace }}/target/libs/SDL2.framework/SDL2 /usr/local/lib/libSDL2.dylib
           cp ${{ github.workspace }}/target/libs/SDL2_image.framework/SDL2_image /usr/local/lib/libSDL2_image.dylib
@@ -157,7 +157,7 @@ jobs:
           ls -liallhL /usr/local/lib/libSDL*
 
       # Copy Frameworks
-      - name: Copy SDL2 and Dependencies To /usr/local/lib
+      - name: Copy SDL2 Frameworks and Dependencies To /Library/Frameworks
         run: |
           sudo cp -LR ${{ github.workspace }}/target/libs/*.framework /Library/Frameworks
           ls -liallhL /Library/Frameworks/SDL2*
