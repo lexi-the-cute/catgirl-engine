@@ -219,6 +219,8 @@ jobs:
           export MACOSX_BUNDLE_EXECUTABLE_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2`
           export MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME=`cat ${{ github.workspace }}/Cargo.toml | grep '^name' | head -n1 | cut -d'"' -f2 | sed 's/-/ /g' | tr "[A-Z]" "[a-z]" | sed -r 's/\<./\U&/g'`
           
+          mkdir -p ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS
+          mkdir -p ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks
           mv ${{ github.workspace }}/target/fat-apple-darwin/release/$MACOSX_BUNDLE_EXECUTABLE_NAME ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS/
           mv ${{ github.workspace }}/target/libs/*.framework ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks/
 
