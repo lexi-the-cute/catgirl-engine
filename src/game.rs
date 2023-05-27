@@ -73,12 +73,7 @@ fn setup_logger() {
         );
     } else if cfg!(target_family = "wasm") {
         #[cfg(feature = "browser")]
-        {
-            crate::loggers::browser::init().unwrap();
-
-            // Wasm Specific Messages
-            error!("Currently pthread support is broken. Working on a fix...");
-        }
+        crate::loggers::browser::init().unwrap();
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
