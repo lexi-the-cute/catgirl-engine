@@ -221,8 +221,8 @@ jobs:
           
           mkdir -p ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS
           mkdir -p ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks
-          mv ${{ github.workspace }}/target/fat-apple-darwin/release/$MACOSX_BUNDLE_EXECUTABLE_NAME ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS/
-          mv ${{ github.workspace }}/target/libs/*.framework ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks/
+          cp -L ${{ github.workspace }}/target/fat-apple-darwin/release/$MACOSX_BUNDLE_EXECUTABLE_NAME ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/MacOS/
+          cp -L ${{ github.workspace }}/target/libs/*.framework ${{ github.workspace }}/target/osx/disk_image/$MACOSX_BUNDLE_EXECUTABLE_NAME.app/Contents/Frameworks/
 
           hdiutil create -volname "$MACOSX_BUNDLE_BUNDLE_DISPLAY_NAME" -srcfolder ${{ github.workspace }}/target/osx/disk_image -ov -format UDZO ${{ github.workspace }}/target/osx/$MACOSX_BUNDLE_EXECUTABLE_NAME.dmg
 
