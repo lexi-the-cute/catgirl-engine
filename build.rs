@@ -69,6 +69,8 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
     let config: Config = Config {
         namespace: Some(String::from("ffi")),
         language: language,
+        only_target_dependencies: true,
+        no_includes: if language == Language::Cython { true } else { false },
         ..Default::default()
     };
 
