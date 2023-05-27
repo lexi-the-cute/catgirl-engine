@@ -9,10 +9,6 @@
         <script type="text/javascript">
             var Module = {
                 onRuntimeInitialized: function() {
-                    self.onmessage = function(e) {
-                        console.error("Worker Message: " + e.data.cmd);
-                    }
-
                     try {
                         if (crossOriginIsolated) {
                             // SharedArrayBuffer is available

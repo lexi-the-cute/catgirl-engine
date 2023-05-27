@@ -6,7 +6,11 @@ void trace(char* message) {
         if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_NODE) {
             console.trace(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
-            postMessage(UTF8ToString($0, $1));
+            let data = {};
+            data['cmd'] = "printErr";
+            data['text'] = UTF8ToString($0, $1);
+
+            postMessage(data);
         }
     }, message, strlen(message));
 }
@@ -16,7 +20,11 @@ void debug(char* message) {
         if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_NODE) {
             console.debug(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
-            postMessage(UTF8ToString($0, $1));
+            let data = {};
+            data['cmd'] = "printErr";
+            data['text'] = UTF8ToString($0, $1);
+
+            postMessage(data);
         }
     }, message, strlen(message));
 }
@@ -26,7 +34,11 @@ void info(char* message) {
         if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_NODE) {
             console.info(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
-            postMessage(UTF8ToString($0, $1));
+            let data = {};
+            data['cmd'] = "printErr";
+            data['text'] = UTF8ToString($0, $1);
+
+            postMessage(data);
         }
     }, message, strlen(message));
 }
@@ -36,7 +48,11 @@ void warn(char* message) {
         if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_NODE) {
             console.warn(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
-            postMessage(UTF8ToString($0, $1));
+            let data = {};
+            data['cmd'] = "printErr";
+            data['text'] = UTF8ToString($0, $1);
+
+            postMessage(data);
         }
     }, message, strlen(message));
 }
@@ -46,7 +62,11 @@ void error(char* message) {
         if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_NODE) {
             console.error(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
-            postMessage(UTF8ToString($0, $1));
+            let data = {};
+            data['cmd'] = "printErr";
+            data['text'] = UTF8ToString($0, $1);
+
+            postMessage(data);
         }
     }, message, strlen(message));
 }
