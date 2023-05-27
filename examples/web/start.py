@@ -16,6 +16,10 @@ files: dict = {
         "path": os.path.join(script_dir, "main.js"),
         "content-type": "text/javascript"
     },
+    "/main.worker.js": {
+        "path": os.path.join(script_dir, "main.worker.js"),
+        "content-type": "text/javascript"
+    },
     "/main.wasm": {
         "path": os.path.join(script_dir, "main.wasm"),
         "content-type": "application/wasm"
@@ -37,6 +41,11 @@ class MyServer(BaseHTTPRequestHandler):
     def send_file(self, file_path: str, content_type: str):
         self.send_response(200)
         self.send_header("Content-type", content_type)
+
+        # For Page Loading Wasm
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header("Cross-Origin-Embedder-Policy", "require-corp")
+
         self.end_headers()
 
         with open(file=file_path, mode="rb") as f:

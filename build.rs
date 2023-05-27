@@ -45,7 +45,8 @@ fn create_emscripten_wasm() {
     // Create Parent Directories If Not Exists
     std::fs::create_dir_all(parent_dir).unwrap();
 
-    println!("cargo:rustc-env=EMCC_CFLAGS=-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry");
+    // 
+    println!("cargo:rustc-env=EMCC_CFLAGS=-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --no-entry");
     println!("cargo:rustc-link-arg=-o{output_file}");
 }
 

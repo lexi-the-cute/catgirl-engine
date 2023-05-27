@@ -10,7 +10,12 @@
             var Module = {
                 onRuntimeInitialized: function() {
                     try {
-                        Module._SDL_main(); // SDL_main was exported
+                        if (crossOriginIsolated) {
+                            // SharedArrayBuffer is available
+                            Module._SDL_main(); // SDL_main was exported
+                        } else {
+                            console.error("Unable to use multi-threading... Not starting engine!");
+                        }
                     } catch(exceptionVariable) {
                         // console.error("Crash Message: '" + UTF8ToString(exceptionVariable) + "'");
                     }
