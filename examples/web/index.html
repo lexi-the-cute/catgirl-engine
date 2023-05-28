@@ -4,9 +4,30 @@
         <meta charset="utf-8" />
         <title>Catgirl Engine</title>
         <!-- https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm -->
+
+        <style>
+            canvas.emscripten { border: 0px none; background-color: black; }
+        </style>
     </head>
     <body>
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
         <script type="text/javascript">
+            /*
+             * There are many more modules which are checked in main.js.
+             * 
+             * This even includes some kind of handler command
+             * 
+             * worker.onmessage = (e) => {
+             *     var d = e['data'];
+             *     var cmd = d['cmd'];
+             *     ...
+             *     if (cmd === 'callHandler') {
+             *         Module[d['handler']](...d['args']);
+             *     }
+             *     ...
+             * }
+             */
             var Module = {
                 onRuntimeInitialized: function() {
                     try {
@@ -19,6 +40,72 @@
                     } catch(exceptionVariable) {
                         // console.error("Crash Message: '" + UTF8ToString(exceptionVariable) + "'");
                     }
+                },
+                // Custom Logging Handles
+                trace: function(text) {
+                    // This function exists to facilitate logging from web worker threads
+                    console.trace(text);
+                },
+                debug: function(text) {
+                    // This function exists to facilitate logging from web worker threads
+                    console.debug(text);
+                },
+                info: function(text) {
+                    // This function exists to facilitate logging from web worker threads
+                    console.info(text);
+                },
+                warn: function(text) {
+                    // This function exists to facilitate logging from web worker threads
+                    console.warn(text);
+                },
+                error: function(text) {
+                    // This function exists to facilitate logging from web worker threads
+                    console.error(text);
+                },
+                // End Custom Logging Handles
+                print: function() {
+                    return function(text) {
+                        console.log("Print Handler: '" + text + "'");
+                    }
+                },
+                printErr: function() {
+                    return function(text) {
+                        console.error("PrintErr Handler: '" + text + "'");
+                    }
+                },
+                setStatus: function(text) {
+                    console.log("Status: '" + text + "'");
+                },
+                canvas: function() {
+                    var canvas = document.getElementById('canvas');
+
+                    // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+                    // application robust, you may want to override this behavior before shipping!
+                    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+                    canvas.addEventListener("webglcontextlost", (e) => { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+                    return canvas;
+                },
+                onFullScreen: function(isFullscreen) {
+                    console.log("Fullscreen: '" + isFullscreen + "'");
+                },
+                preRun: function() {
+                    console.log("preRun called...");
+                },
+                postRun: function() {
+                    console.log("postRun called...");
+                },
+                onExit: function(code) {
+                    console.log("Exit Code: '" + code + "'");
+                },
+                quit: function() {
+                    console.log("quit called...");
+                },
+                preMainLoop: function() {
+                    console.log("preMainLoop called...");
+                },
+                postMainLoop: function() {
+                    console.log("postMainLoop called...");
                 }
             };
         </script>

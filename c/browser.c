@@ -7,8 +7,9 @@ void trace(char* message) {
             console.trace(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
             let data = {};
-            data['cmd'] = "printErr";
-            data['text'] = UTF8ToString($0, $1);
+            data['cmd'] = "callHandler";
+            data['handler'] = "trace";
+            data['args'] = UTF8ToString($0, $1);
 
             postMessage(data);
         }
@@ -21,10 +22,11 @@ void debug(char* message) {
             console.debug(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
             let data = {};
-            data['cmd'] = "printErr";
-            data['text'] = UTF8ToString($0, $1);
+            data['cmd'] = "callHandler";
+            data['handler'] = "debug";
+            data['args'] = UTF8ToString($0, $1);
 
-            postMessage(data);
+            this.postMessage(data);
         }
     }, message, strlen(message));
 }
@@ -35,8 +37,9 @@ void info(char* message) {
             console.info(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
             let data = {};
-            data['cmd'] = "printErr";
-            data['text'] = UTF8ToString($0, $1);
+            data['cmd'] = "callHandler";
+            data['handler'] = "info";
+            data['args'] = UTF8ToString($0, $1);
 
             postMessage(data);
         }
@@ -49,8 +52,9 @@ void warn(char* message) {
             console.warn(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
             let data = {};
-            data['cmd'] = "printErr";
-            data['text'] = UTF8ToString($0, $1);
+            data['cmd'] = "callHandler";
+            data['handler'] = "warn";
+            data['args'] = UTF8ToString($0, $1);
 
             postMessage(data);
         }
@@ -63,8 +67,9 @@ void error(char* message) {
             console.error(UTF8ToString($0, $1));
         } else if (ENVIRONMENT_IS_WORKER) {
             let data = {};
-            data['cmd'] = "printErr";
-            data['text'] = UTF8ToString($0, $1);
+            data['cmd'] = "callHandler";
+            data['handler'] = "error";
+            data['args'] = UTF8ToString($0, $1);
 
             postMessage(data);
         }
