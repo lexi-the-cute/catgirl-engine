@@ -2,6 +2,7 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import os
+import base64
 
 hostName = "localhost"
 serverPort = 8080
@@ -23,6 +24,10 @@ files: dict = {
     "/main.wasm": {
         "path": os.path.join(script_dir, "main.wasm"),
         "content-type": "application/wasm"
+    },
+    "/favicon.ico": {
+        "base64": "AAABAAEAAQECAAEAAQA4AAAAFgAAACgAAAABAAAAAgAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8AAAAAAAAAAAAAAAAA",
+        "content-type": "image/vnd.microsoft.icon"
     }
 }
 
@@ -51,10 +56,19 @@ class MyServer(BaseHTTPRequestHandler):
         with open(file=file_path, mode="rb") as f:
             self.wfile.write(f.read())
 
+    def send_base64(self, base64_str: str, content_type: str):
+        self.send_response(200)
+        self.send_header("Content-type", content_type)
+        self.end_headers()
+
+        self.wfile.write(base64.b64decode(base64_str))
+
     def get_file(self, url_path: str):
         if url_path in files:
-            if os.path.exists(files[url_path]["path"]):
-                self.send_file(file_path = files[url_path]["path"], content_type=files[url_path]["content-type"])
+            if "path" in files[url_path] and os.path.exists(files[url_path]["path"]):
+                self.send_file(file_path=files[url_path]["path"], content_type=files[url_path]["content-type"])
+            elif "base64" in files[url_path]:
+                self.send_base64(base64_str=files[url_path]["base64"], content_type=files[url_path]["content-type"])
             else:
                 self.send_404()
         else:
