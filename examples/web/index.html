@@ -74,7 +74,7 @@
                     }
                 },
                 setStatus: function(text) {
-                    console.log("Status: '" + text + "'");
+                    console.debug("Status: '" + text + "'");
                 },
                 canvas: function() {
                     var canvas = document.getElementById('canvas');
@@ -87,25 +87,25 @@
                     return canvas;
                 },
                 onFullScreen: function(isFullscreen) {
-                    console.log("Fullscreen: '" + isFullscreen + "'");
+                    console.debug("Fullscreen: '" + isFullscreen + "'");
                 },
                 preRun: function() {
-                    console.log("preRun called...");
+                    console.debug("preRun called...");
                 },
                 postRun: function() {
-                    console.log("postRun called...");
+                    console.debug("postRun called...");
                 },
                 onExit: function(code) {
-                    console.log("Exit Code: '" + code + "'");
+                    console.debug("Exit Code: '" + code + "'");
                 },
                 quit: function() {
-                    console.log("quit called...");
+                    console.debug("quit called...");
                 },
                 preMainLoop: function() {
-                    console.log("preMainLoop called...");
+                    console.debug("preMainLoop called...");
                 },
                 postMainLoop: function() {
-                    console.log("postMainLoop called...");
+                    console.debug("postMainLoop called...");
                 }
             };
         </script>
