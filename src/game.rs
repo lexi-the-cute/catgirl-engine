@@ -1,10 +1,47 @@
 use std::thread;
 use std::thread::JoinHandle;
-use std::sync::mpsc;
+use std::sync::mpsc::{self, Sender, Receiver};
 
 pub mod physics;
 pub mod render;
 pub mod entity;
+
+extern "C" {
+    // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    pub fn emscripten_set_main_loop_arg(
+        func: extern "C" fn(*mut LoopStruct) -> bool,
+        arg: *mut (),
+        fps: std::os::raw::c_int,
+        simulate_infinite_loop: std::os::raw::c_int
+    );
+}
+
+// #[derive(Debug)]
+#[repr(C)]
+pub struct LoopStruct {
+    // Physics Messages Send
+    pub sptx: Sender<()>,  // Send To Physics Thread From Main Thread
+    // pub sprx: Receiver<()>,  // Receive From Main Thread In Physics Thread
+
+    // Render Messages Send
+    pub srtx: Sender<()>,  // Send To Render Thread From Main Thread
+    // pub srrx: Receiver<()>,  // Receive From Main Thread In Render Thread
+
+    // Physics Messages Receive
+    // pub rptx: Sender<()>,  // Send To Main Thread From Physics Thread
+    pub rprx: Receiver<()>,  // Receive From Physics Thread In Main Thread
+
+    // Render Messages Receive
+    // pub rrtx: Sender<()>,  // Send To Main Thread From Render Thread
+    pub rrrx: Receiver<()>,  // Receive From Render Thread In Main Thread
+
+    // Server Thread (Physics)
+    pub physics_thread: JoinHandle<()>,
+
+    // Client Thread (Render)
+    pub render_thread: JoinHandle<()>
+}
 
 pub fn start() {
     // It's much easier to debug when one can see the log (logcat on Android)
@@ -34,48 +71,69 @@ pub fn start() {
     let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
                     .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
 
+    let mut loop_struct: LoopStruct = LoopStruct {
+        sptx, srtx, rprx, rrrx, physics_thread, render_thread
+    };
+
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    unsafe {
+        emscripten_set_main_loop_arg(main_loop, &mut loop_struct as *mut _ as *mut (), -1, 0);
+    }
+    
+    #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
     loop {
-        if physics_thread.is_finished() && render_thread.is_finished() {
-            info!("Stopping Game...");
+        if main_loop(&mut loop_struct) {
+            // Ending Loop
             break;
-        }
-
-        match rprx.try_recv() {
-            Ok(_) => {
-                debug!("Physics Thread Terminated...");
-                srtx.send(()).ok();
-            }
-            Err(_) => {
-                // Not Implemented At The Moment
-            }
-        }
-
-        match rrrx.try_recv() {
-            Ok(_) => {
-                debug!("Render Thread Terminated...");
-                sptx.send(()).ok();
-            }
-            Err(_) => {
-                // Not Implemented At The Moment
-            }
         }
     }
 
     // std::process::exit(0);
 }
 
-fn setup_logger() {
-    if cfg!(target_os = "android") {
-        android_logger::init_once(
-            android_logger::Config::default()
-                    .with_max_level(log::LevelFilter::Trace)
-                    .with_tag("CatgirlEngine")
-        );
-    } else if cfg!(target_family = "wasm") {
-        #[cfg(feature = "browser")]
-        crate::loggers::browser::init().unwrap();
-    } else {
-        // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
-        pretty_env_logger::init();
+extern "C" fn main_loop(loop_struct: *mut LoopStruct) -> bool {
+    unsafe {
+        if (*loop_struct).physics_thread.is_finished() && (*loop_struct).render_thread.is_finished() {
+            info!("Stopping Game...");
+            return true;
+        }
+
+        match (*loop_struct).rprx.try_recv() {
+            Ok(_) => {
+                debug!("Physics Thread Terminated...");
+                (*loop_struct).srtx.send(()).ok();
+            }
+            Err(_) => {
+                // Not Implemented At The Moment
+            }
+        }
+
+        match (*loop_struct).rrrx.try_recv() {
+            Ok(_) => {
+                debug!("Render Thread Terminated...");
+                (*loop_struct).sptx.send(()).ok();
+            }
+            Err(_) => {
+                // Not Implemented At The Moment
+            }
+        }
+
+        return false;
     }
+}
+
+fn setup_logger() {
+    #[cfg(target_os="android")]
+    android_logger::init_once(
+        android_logger::Config::default()
+                .with_max_level(log::LevelFilter::Trace)
+                .with_tag("CatgirlEngine")
+    );
+
+    #[cfg(all(target_family="wasm", feature="browser"))]
+    crate::loggers::browser::init().unwrap();
+
+    #[cfg(not(any(target_os="android",target_family="wasm")))]
+    // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
+    pretty_env_logger::init();
 }
