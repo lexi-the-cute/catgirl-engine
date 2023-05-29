@@ -44,37 +44,37 @@
                 // Custom Logging Handles
                 trace: function(text) {
                     // This function exists to facilitate logging from web worker threads
-                    console.trace(text);
+                    console.trace("Threaded Trace: '" + text + "'");
                 },
                 debug: function(text) {
                     // This function exists to facilitate logging from web worker threads
-                    console.debug(text);
+                    console.debug("Threaded Debug: '" + text + "'");
                 },
                 info: function(text) {
                     // This function exists to facilitate logging from web worker threads
-                    console.info(text);
+                    console.info("Threaded Info: '" + text + "'");
                 },
                 warn: function(text) {
                     // This function exists to facilitate logging from web worker threads
-                    console.warn(text);
+                    console.warn("Threaded Warn: '" + text + "'");
                 },
                 error: function(text) {
                     // This function exists to facilitate logging from web worker threads
-                    console.error(text);
+                    console.error("Threaded Error: '" + text + "'");
                 },
                 // End Custom Logging Handles
                 print: function() {
                     return function(text) {
-                        console.log("Print Handler: '" + text + "'");
+                        console.log("Print: '" + text + "'");
                     }
                 },
                 printErr: function() {
                     return function(text) {
-                        console.error("PrintErr Handler: '" + text + "'");
+                        console.error("Print Error: '" + text + "'");
                     }
                 },
                 setStatus: function(text) {
-                    console.debug("Status: '" + text + "'");
+                    // console.debug("Status: '" + text + "'");
                 },
                 canvas: function() {
                     var canvas = document.getElementById('canvas');
@@ -90,22 +90,22 @@
                     console.debug("Fullscreen: '" + isFullscreen + "'");
                 },
                 preRun: function() {
-                    console.debug("preRun called...");
+                    // console.debug("preRun called...");
                 },
                 postRun: function() {
-                    console.debug("postRun called...");
+                    // console.debug("postRun called...");
                 },
                 onExit: function(code) {
                     console.debug("Exit Code: '" + code + "'");
                 },
                 quit: function() {
-                    console.debug("quit called...");
+                    console.debug("WebAssembly program has exited...");
                 },
                 preMainLoop: function() {
-                    console.debug("preMainLoop called...");
+                    // console.debug("preMainLoop called...");
                 },
                 postMainLoop: function() {
-                    console.debug("postMainLoop called...");
+                    // console.debug("postMainLoop called...");
                 }
             };
         </script>
