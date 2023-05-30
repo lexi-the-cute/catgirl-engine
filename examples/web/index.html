@@ -41,15 +41,11 @@
                         // console.error("Crash Message: '" + UTF8ToString(exceptionVariable) + "'");
                     }
                 },
-                print: function() {
-                    return function(text) {
-                        console.log(text);
-                    }
+                print: function(text) {
+                    console.log(text);
                 },
-                printErr: function() {
-                    return function(text) {
-                        console.error(text);
-                    }
+                printErr: function(text) {
+                    console.error(text);
                 },
                 setStatus: function(text) {
                     // console.debug("Status: '" + text + "'");
@@ -86,6 +82,14 @@
                     // console.debug("postMainLoop called...");
                 }
             };
+
+            // worker.onerror = (e) => {
+            //     console.error("Crash: " + " " + e.filename + ":" + e.lineno + ": " + e.message);
+            // };
+
+            // window.onerror = (e) => {
+            //     console.error("Crash: " + " " + e.filename + ":" + e.lineno + ": " + e.message);
+            // };
         </script>
         <script src="/main.js"></script>
     </body>

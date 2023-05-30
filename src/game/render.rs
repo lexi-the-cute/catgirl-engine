@@ -28,30 +28,44 @@ pub fn start(tx: Sender<()>, rx: Receiver<()>) {
 
 fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("run(rx) on render called...");
-    // TODO: Make Sure These Three Lines Are Only Initialized Once
+
+    // TODO: Make Sure These Lines Are Only Initialized Once
     let sdl_context: Sdl = sdl2::init()?;
     debug!("SDL2 Initialized...");
+
     let game_controller_subsystem: GameControllerSubsystem = sdl_context.game_controller()?;
+    debug!("Game Controller Subsystem Initialized...");
+
     let _haptic_subsystem: HapticSubsystem = sdl_context.haptic()?;
+    debug!("Haptic Subsystem Initialized...");
+
     let video_subsystem: VideoSubsystem = sdl_context.video()?;
+    debug!("Video Subsystem Initialized...");
+
     let _image_context: Sdl2ImageContext = image::init(InitFlag::PNG | InitFlag::JPG)?;
+    debug!("Image Context Initialized...");
 
     let window: Window = video_subsystem.window("Alexis' Game Engine", 800, 600)
         .position_centered()
         .build().expect("Could Not Make A Window");
+    debug!("Window Created...");
 
     let mut canvas: Canvas<Window> = window.into_canvas()
         .build().expect("Could Not Make a Canvas");
+    debug!("Canvas Created...");
 
     canvas.set_draw_color(Color::RGB(0, 255, 255));
     canvas.clear();
     canvas.present();
+    debug!("Canvas Setup...");
 
     let texture_creator: TextureCreator<WindowContext> = canvas.texture_creator();
+    debug!("Texture Creator Retrieved...");
 
     // `assets/bardo.png` automatically translates to `/data/data/land.catgirl.engine/files/assets/bardo.png` on Android
     // Android returns an empty string for this particular asset error while the error works as intended on Linux
     let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;
+    debug!("Texture Loaded...");
 
     // TODO: Move To Server Thread
     const PLAYER_MOVEMENT_SPEED: i32 = 20;
@@ -64,8 +78,11 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     };
 
     let mut event_pump: EventPump = sdl_context.event_pump()?;
+    debug!("Event Pump Retrieved...");
+
     let mut i: u8 = 0;
 
+    debug!("Starting Render Loop...");
     'running: loop {
         match rx.try_recv() {
             Ok(_) => {
@@ -138,6 +155,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         // Slow Down Rendering (60 FPS)
         thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
+    debug!("Exiting Render Loop...");
 
     Ok(())
 }
