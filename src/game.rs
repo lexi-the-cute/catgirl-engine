@@ -98,7 +98,7 @@ extern "C" fn main_loop(loop_struct: *mut LoopStruct) -> bool {
             return true;
         }
 
-        match (*loop_struct).rprx.try_recv() {
+        match (*loop_struct).rprx.try_recv() { // <---- TODO: Determine why this breaks Emscripten...
             Ok(_) => {
                 debug!("Physics Thread Terminated...");
                 (*loop_struct).srtx.send(()).ok();
