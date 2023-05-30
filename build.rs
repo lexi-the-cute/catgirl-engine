@@ -46,7 +46,16 @@ fn create_emscripten_wasm() {
     std::fs::create_dir_all(parent_dir).unwrap();
 
     // Flags to Make Emscripten Compile This Correctly (Combined With RUSTFLAGS)
-    println!("cargo:rustc-env=EMCC_CFLAGS=-s ASSERTIONS -s ERROR_ON_UNDEFINED_SYMBOLS=0 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=2 --no-entry");
+    println!("cargo:rustc-env=EMCC_CFLAGS=-s ERROR_ON_UNDEFINED_SYMBOLS=0 --no-entry \
+                -O3 -s ASSERTIONS \
+                -s USE_PTHREADS=1 \
+                -s PTHREAD_POOL_SIZE=2 \
+                -lSDL2 \
+                -lSDL2_image \
+                -lSDL2_ttf \
+                -s EXPORTED_FUNCTIONS=\"['_SDL_main', '_malloc']\"
+            ");
+    
     println!("cargo:rustc-link-arg=-o{output_file}");
 }
 
