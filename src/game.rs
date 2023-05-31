@@ -7,7 +7,7 @@ pub mod physics;
 pub mod render;
 pub mod entity;
 
-static LOOPSTRUCT: OnceLock<LoopStruct> = OnceLock::new();
+static LOOPSTRUCT: OnceLock<MainLoopStruct> = OnceLock::new();
 
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
@@ -21,7 +21,7 @@ extern "C" {
 
 #[derive(Debug)]
 #[repr(C)]
-pub struct LoopStruct {
+pub struct MainLoopStruct {
     // Physics Messages Send
     pub sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
     // pub sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
@@ -73,7 +73,7 @@ pub fn start() {
     let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
                     .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
 
-    let loopstruct: LoopStruct = LoopStruct {
+    let loopstruct: MainLoopStruct = MainLoopStruct {
         sptx: sptx.into(), srtx: srtx.into(),
         rprx: rprx.into(), rrrx: rrrx.into(),
         physics_thread: physics_thread.into(),
@@ -99,14 +99,14 @@ pub fn start() {
     // std::process::exit(0);
 }
 
-fn is_finished(loopstruct: &LoopStruct) -> bool {
+fn is_finished(loopstruct: &MainLoopStruct) -> bool {
     let physics_thread: MutexGuard<JoinHandle<()>> = loopstruct.physics_thread.lock().unwrap();
     let render_thread: MutexGuard<JoinHandle<()>> = loopstruct.render_thread.lock().unwrap();
 
     return physics_thread.is_finished() && render_thread.is_finished();
 }
 
-fn is_physics_thread_terminated(loopstruct: &LoopStruct) -> bool {
+fn is_physics_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     let receiver: MutexGuard<Receiver<()>> = loopstruct.rprx.lock().unwrap();
     let sender: MutexGuard<Sender<()>> = loopstruct.srtx.lock().unwrap();
 
@@ -117,14 +117,12 @@ fn is_physics_thread_terminated(loopstruct: &LoopStruct) -> bool {
             return true;
         }
         Err(_) => {
-            // Not Implemented At The Moment
+            return false;
         }
     }
-
-    return false;
 }
 
-fn is_render_thread_terminated(loopstruct: &LoopStruct) -> bool {
+fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     let receiver: MutexGuard<Receiver<()>> = loopstruct.rrrx.lock().unwrap();
     let sender: MutexGuard<Sender<()>> = loopstruct.sptx.lock().unwrap();
 
@@ -139,15 +137,14 @@ fn is_render_thread_terminated(loopstruct: &LoopStruct) -> bool {
         }
         Err(_) => {
             // debug!("Post-Try Receive Render Thread Termination...");
-            // Not Implemented At The Moment
+
+            return false;
         }
     }
-
-    return false;
 }
 
 extern "C" fn main_loop() -> bool {
-    let loopstruct: &LoopStruct = LOOPSTRUCT.get().unwrap();
+    let loopstruct: &MainLoopStruct = LOOPSTRUCT.get().unwrap();
 
     if is_finished(loopstruct) {
         info!("Stopping Game...");
