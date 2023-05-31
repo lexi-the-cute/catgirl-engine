@@ -2,6 +2,7 @@
 
 use std::sync::mpsc::{Sender, Receiver};
 use std::thread;
+use std::sync::{Mutex, OnceLock};
 use std::time::Duration;
 
 use sdl2::controller::{Button};
@@ -16,6 +17,18 @@ use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
 use sdl2::keyboard::Keycode;
 
 use crate::game::entity::player::{Player, Direction};
+
+// static LOOPSTRUCT: OnceLock<RenderLoopStruct> = OnceLock::new();
+
+extern "C" {
+    // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    pub fn emscripten_set_main_loop(
+        func: extern "C" fn() -> bool,
+        fps: std::os::raw::c_int,
+        simulate_infinite_loop: std::os::raw::c_int
+    );
+}
 
 // This thread handles both rendering and input (aka the client)
 pub fn start(tx: Sender<()>, rx: Receiver<()>) {
