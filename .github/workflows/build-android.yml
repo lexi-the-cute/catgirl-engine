@@ -78,6 +78,10 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
+      # Install Rust Nightly Toolchains
+      - name: Set Rust To The Nightly Toolchains
+        run: $HOME/.cargo/bin/rustup default nightly
+
       # Add Build Targets
       - name: Add armv7 Android Build Target
         run: $HOME/.cargo/bin/rustup target add armv7-linux-androideabi

@@ -82,6 +82,7 @@ dependencies = [
  "android_logger",
  "cbindgen",
  "cc",
+ "lazy_static",
  "log",
  "pretty_env_logger",
  "rand",

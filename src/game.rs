@@ -1,46 +1,48 @@
 use std::thread;
 use std::thread::JoinHandle;
+use std::sync::{Mutex, OnceLock};
 use std::sync::mpsc::{self, Sender, Receiver};
 
 pub mod physics;
 pub mod render;
 pub mod entity;
 
+static LOOPSTRUCT: OnceLock<LoopStruct> = OnceLock::new();
+
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    pub fn emscripten_set_main_loop_arg(
-        func: extern "C" fn(*mut LoopStruct) -> bool,
-        arg: *mut (),
+    pub fn emscripten_set_main_loop(
+        func: extern "C" fn() -> bool,
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
     );
 }
 
-// #[derive(Debug)]
+#[derive(Debug)]
 #[repr(C)]
 pub struct LoopStruct {
     // Physics Messages Send
-    pub sptx: Sender<()>,  // Send To Physics Thread From Main Thread
-    // pub sprx: Receiver<()>,  // Receive From Main Thread In Physics Thread
+    pub sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
+    // pub sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
 
     // Render Messages Send
-    pub srtx: Sender<()>,  // Send To Render Thread From Main Thread
-    // pub srrx: Receiver<()>,  // Receive From Main Thread In Render Thread
+    pub srtx: Mutex<Sender<()>>,  // Send To Render Thread From Main Thread
+    // pub srrx: Mutex<Receiver<()>>,  // Receive From Main Thread In Render Thread
 
     // Physics Messages Receive
-    // pub rptx: Sender<()>,  // Send To Main Thread From Physics Thread
-    pub rprx: Receiver<()>,  // Receive From Physics Thread In Main Thread
+    // pub rptx: Mutex<Sender<()>>,  // Send To Main Thread From Physics Thread
+    pub rprx: Mutex<Receiver<()>>,  // Receive From Physics Thread In Main Thread
 
     // Render Messages Receive
-    // pub rrtx: Sender<()>,  // Send To Main Thread From Render Thread
-    pub rrrx: Receiver<()>,  // Receive From Render Thread In Main Thread
+    // pub rrtx: Mutex<Sender<()>>,  // Send To Main Thread From Render Thread
+    pub rrrx: Mutex<Receiver<()>>,  // Receive From Render Thread In Main Thread
 
     // Server Thread (Physics)
-    pub physics_thread: JoinHandle<()>,
+    pub physics_thread: Mutex<JoinHandle<()>>,
 
     // Client Thread (Render)
-    pub render_thread: JoinHandle<()>
+    pub render_thread: Mutex<JoinHandle<()>>
 }
 
 pub fn start() {
@@ -71,18 +73,23 @@ pub fn start() {
     let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
                     .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
 
-    let mut loop_struct: LoopStruct = LoopStruct {
-        sptx, srtx, rprx, rrrx, physics_thread, render_thread
+    let loopstruct: LoopStruct = LoopStruct {
+        sptx: sptx.into(), srtx: srtx.into(),
+        rprx: rprx.into(), rrrx: rrrx.into(),
+        physics_thread: physics_thread.into(),
+        render_thread: render_thread.into()
     };
+
+    LOOPSTRUCT.set(loopstruct).unwrap();
 
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop_arg(main_loop, &mut loop_struct as *mut _ as *mut (), -1, 0);
+        emscripten_set_main_loop(main_loop, -1, 0);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
     loop {
-        if main_loop(&mut loop_struct) {
+        if main_loop() {
             // Ending Loop
             break;
         }
@@ -91,35 +98,59 @@ pub fn start() {
     // std::process::exit(0);
 }
 
-extern "C" fn main_loop(loop_struct: *mut LoopStruct) -> bool {
-    unsafe {
-        if (*loop_struct).physics_thread.is_finished() && (*loop_struct).render_thread.is_finished() {
-            info!("Stopping Game...");
+fn is_finished(loopstruct: &LoopStruct) -> bool {
+    return loopstruct.physics_thread.lock().unwrap().is_finished()
+        && loopstruct.render_thread.lock().unwrap().is_finished();
+    
+}
+
+fn is_physics_thread_terminated(loopstruct: &LoopStruct) -> bool {
+    match loopstruct.rprx.lock().unwrap().try_recv() {
+        Ok(_) => {
+            loopstruct.srtx.lock().unwrap().send(()).ok();
+
             return true;
         }
-
-        match (*loop_struct).rprx.try_recv() { // <---- TODO: Determine why this breaks Emscripten...
-            Ok(_) => {
-                debug!("Physics Thread Terminated...");
-                (*loop_struct).srtx.send(()).ok();
-            }
-            Err(_) => {
-                // Not Implemented At The Moment
-            }
+        Err(_) => {
+            // Not Implemented At The Moment
         }
-
-        match (*loop_struct).rrrx.try_recv() {
-            Ok(_) => {
-                debug!("Render Thread Terminated...");
-                (*loop_struct).sptx.send(()).ok();
-            }
-            Err(_) => {
-                // Not Implemented At The Moment
-            }
-        }
-
-        return false;
     }
+
+    return false;
+}
+
+fn is_render_thread_terminated(loopstruct: &LoopStruct) -> bool {
+    match loopstruct.rrrx.lock().unwrap().try_recv() {
+        Ok(_) => {
+            loopstruct.sptx.lock().unwrap().send(()).ok();
+
+            return true;
+        }
+        Err(_) => {
+            // Not Implemented At The Moment
+        }
+    }
+
+    return false;
+}
+
+extern "C" fn main_loop() -> bool {
+    let loopstruct: &LoopStruct = LOOPSTRUCT.get().unwrap();
+
+    if is_finished(loopstruct) {
+        info!("Stopping Game...");
+        return true;
+    }
+
+    if is_physics_thread_terminated(loopstruct) {
+        debug!("Physics Thread Terminated...");
+    }
+
+    if is_render_thread_terminated(loopstruct) {
+        debug!("Render Thread Terminated...");
+    }
+
+    return false;
 }
 
 fn setup_logger() {
