@@ -1,6 +1,6 @@
 use std::thread;
 use std::thread::JoinHandle;
-use std::sync::{Mutex, OnceLock};
+use std::sync::{Mutex, OnceLock, MutexGuard};
 use std::sync::mpsc::{self, Sender, Receiver};
 
 pub mod physics;
@@ -89,7 +89,8 @@ pub fn start() {
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
     loop {
-        if main_loop() {
+        let exit_loop: bool = main_loop();
+        if exit_loop {
             // Ending Loop
             break;
         }
@@ -99,15 +100,19 @@ pub fn start() {
 }
 
 fn is_finished(loopstruct: &LoopStruct) -> bool {
-    return loopstruct.physics_thread.lock().unwrap().is_finished()
-        && loopstruct.render_thread.lock().unwrap().is_finished();
-    
+    let physics_thread: MutexGuard<JoinHandle<()>> = loopstruct.physics_thread.lock().unwrap();
+    let render_thread: MutexGuard<JoinHandle<()>> = loopstruct.render_thread.lock().unwrap();
+
+    return physics_thread.is_finished() && render_thread.is_finished();
 }
 
 fn is_physics_thread_terminated(loopstruct: &LoopStruct) -> bool {
-    match loopstruct.rprx.lock().unwrap().try_recv() {
+    let receiver: MutexGuard<Receiver<()>> = loopstruct.rprx.lock().unwrap();
+    let sender: MutexGuard<Sender<()>> = loopstruct.srtx.lock().unwrap();
+
+    match receiver.try_recv() {
         Ok(_) => {
-            loopstruct.srtx.lock().unwrap().send(()).ok();
+            sender.send(()).ok();
 
             return true;
         }
@@ -120,13 +125,20 @@ fn is_physics_thread_terminated(loopstruct: &LoopStruct) -> bool {
 }
 
 fn is_render_thread_terminated(loopstruct: &LoopStruct) -> bool {
-    match loopstruct.rrrx.lock().unwrap().try_recv() {
+    let receiver: MutexGuard<Receiver<()>> = loopstruct.rrrx.lock().unwrap();
+    let sender: MutexGuard<Sender<()>> = loopstruct.sptx.lock().unwrap();
+
+    // debug!("Try Receive Render Thread Termination... {:?}", receiver.try_recv());
+    match receiver.try_recv() {
         Ok(_) => {
-            loopstruct.sptx.lock().unwrap().send(()).ok();
+            // This is never called on browser. Not sure if thread is still running...
+            // debug!("Post-Try Receive Render Thread Termination (Terminating)...");
+            sender.send(()).ok();
 
             return true;
         }
         Err(_) => {
+            // debug!("Post-Try Receive Render Thread Termination...");
             // Not Implemented At The Moment
         }
     }
