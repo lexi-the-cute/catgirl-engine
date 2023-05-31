@@ -1,4 +1,5 @@
 # Wasm is not yet available for 64 bit, see https://github.com/WebAssembly/memory64
+# Emscripten is technically a full musl toolchain, just for wasm instead of native binaries
 name: Build For WebAssembly Emscripten 32
 run-name: ${{ github.actor }} is building for WebAssembly Emscripten 32
 on: [push]
@@ -96,6 +97,11 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
+      # Install Rust Nightly Toolchains
+      - name: Set Rust To The Nightly Toolchains
+        run: $HOME/.cargo/bin/rustup default nightly
+
+      # Add Build Targets
       - name: Add Wasm32 Emscripten Build Target
         run: $HOME/.cargo/bin/rustup target add wasm32-unknown-emscripten  # asmjs-unknown-emscripten also exists
 

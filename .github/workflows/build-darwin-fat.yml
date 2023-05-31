@@ -135,6 +135,10 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
+      # Install Rust Nightly Toolchains 
+      - name: Set Rust To The Nightly Toolchains
+        run: $HOME/.cargo/bin/rustup default nightly
+
       # Add Build Targets (No PowerPC or i686 For Now)
       - name: Add x86_64 Darwin Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-apple-darwin
