@@ -161,6 +161,9 @@ fn should_terminate_thread(loopstruct: &Box<&mut RenderLoopStruct>) -> bool {
 }
 
 extern "C" fn render_loop(loopstruct: Box<&mut RenderLoopStruct>) -> bool {
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    debug!("Looping In Render Thread...");
+
     if should_terminate_thread(&loopstruct) {
         debug!("Terminating Render Thread...");
         return true;
