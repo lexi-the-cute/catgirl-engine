@@ -129,7 +129,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("Starting Render Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), -1, 0);
+        emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), -1, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]

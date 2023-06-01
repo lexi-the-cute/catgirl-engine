@@ -82,9 +82,10 @@ pub fn start() {
 
     LOOPSTRUCT.set(loopstruct).unwrap();
 
+    debug!("Starting Main Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop(main_loop, -1, 0);
+        emscripten_set_main_loop(main_loop, -1, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
@@ -95,8 +96,7 @@ pub fn start() {
             break;
         }
     }
-
-    // std::process::exit(0);
+    debug!("Exiting Main Loop...");
 }
 
 fn is_finished(loopstruct: &MainLoopStruct) -> bool {
@@ -129,15 +129,11 @@ fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     // debug!("Try Receive Render Thread Termination... {:?}", receiver.try_recv());
     match receiver.try_recv() {
         Ok(_) => {
-            // This is never called on browser. Not sure if thread is still running...
-            // debug!("Post-Try Receive Render Thread Termination (Terminating)...");
             sender.send(()).ok();
 
             return true;
         }
         Err(_) => {
-            // debug!("Post-Try Receive Render Thread Termination...");
-
             return false;
         }
     }
