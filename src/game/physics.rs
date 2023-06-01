@@ -74,6 +74,9 @@ fn should_terminate_thread(loopstruct: &PhysicsLoopStruct) -> bool {
 }
 
 extern "C" fn physics_loop() -> bool {
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    debug!("Looping In Physics Thread...");
+
     let loopstruct: &PhysicsLoopStruct = LOOPSTRUCT.get().unwrap();
 
     if should_terminate_thread(loopstruct) {

@@ -191,6 +191,9 @@ fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
 }
 
 extern "C" fn main_loop() -> bool {
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    debug!("Looping In Main Thread...");
+
     #[allow(unused_variables)]
     let loopstruct: &MainLoopStruct = LOOPSTRUCT.get().unwrap();
 
