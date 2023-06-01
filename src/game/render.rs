@@ -22,8 +22,8 @@ extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     pub fn emscripten_set_main_loop_arg(
-        func: extern "C" fn(&mut RenderLoopStruct) -> bool,
-        arg: RenderLoopStruct,
+        func: extern "C" fn(Box<&mut RenderLoopStruct>) -> bool,
+        arg: Box<&mut RenderLoopStruct>, // Box::from(&mut loopstruct)
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
     );
@@ -128,12 +128,12 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("Starting Render Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop_arg(render_loop, loopstruct, -1, 0);
+        emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), -1, 0);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
     loop {
-        let exit_loop: bool = render_loop(&mut loopstruct);
+        let exit_loop: bool = render_loop(Box::from(&mut loopstruct));
         if exit_loop {
             // Ending Loop
             break;
@@ -144,7 +144,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     Ok(())
 }
 
-fn should_terminate_thread(loopstruct: &RenderLoopStruct) -> bool {
+fn should_terminate_thread(loopstruct: &Box<&mut RenderLoopStruct>) -> bool {
     let rx: &Receiver<()> = &loopstruct.receive;
 
     match rx.try_recv() {
@@ -157,8 +157,8 @@ fn should_terminate_thread(loopstruct: &RenderLoopStruct) -> bool {
     }
 }
 
-extern "C" fn render_loop(loopstruct: &mut RenderLoopStruct) -> bool {
-    if should_terminate_thread(loopstruct) {
+extern "C" fn render_loop(loopstruct: Box<&mut RenderLoopStruct>) -> bool {
+    if should_terminate_thread(&loopstruct) {
         debug!("Terminating Render Thread...");
         return true;
     }
