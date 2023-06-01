@@ -1,3 +1,5 @@
+#![cfg(feature="server")]
+
 use std::sync::atomic::{AtomicI8, Ordering};
 use std::sync::mpsc::{Sender, Receiver};
 use std::thread;
