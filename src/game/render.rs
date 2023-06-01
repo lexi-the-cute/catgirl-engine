@@ -20,10 +20,11 @@ use crate::game::entity::player::{Player, Direction};
 
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
+    #[allow(improper_ctypes)]  // Rust discord said linter is doing false positive here
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     pub fn emscripten_set_main_loop_arg(
         func: extern "C" fn(Box<&mut RenderLoopStruct>) -> bool,
-        arg: Box<&mut RenderLoopStruct>, // Box::from(&mut loopstruct)
+        arg: Box<&mut RenderLoopStruct>,  // Either `&mut RLS` or `Box<&mut RLS>` should work according to Rust discord
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
     );
