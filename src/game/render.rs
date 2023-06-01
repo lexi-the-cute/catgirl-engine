@@ -1,3 +1,5 @@
+#![cfg(feature="client")]
+
 // https://sunjay.dev/learn-game-dev/refactor-player-struct.html
 
 use std::sync::atomic::{AtomicU8, Ordering};

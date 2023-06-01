@@ -18,8 +18,10 @@ debug = true
 #panic = "abort"
 
 [features]
-default = ["browser"]
+default = ["browser", "client", "server"]
 browser = []
+client = []
+server = []
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

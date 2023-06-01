@@ -1,3 +1,6 @@
+#![cfg(any(feature="server", feature="client"))]
+#![allow(dead_code)]  // Temporary Allowance Until Fix For Separation Of Server/Client
+
 // https://medium.com/comsystoreply/28-days-of-rust-part-2-composition-over-inheritance-cab1b106534a
 
 use sdl2::rect::{Point, Rect};

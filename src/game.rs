@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 use std::thread;
 use std::thread::JoinHandle;
 use std::sync::{Mutex, OnceLock, MutexGuard};
@@ -23,25 +25,31 @@ extern "C" {
 #[repr(C)]
 pub struct MainLoopStruct {
     // Physics Messages Send
+    #[cfg(feature="server")]
     pub sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
     // pub sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
 
     // Render Messages Send
+    #[cfg(feature="client")]
     pub srtx: Mutex<Sender<()>>,  // Send To Render Thread From Main Thread
     // pub srrx: Mutex<Receiver<()>>,  // Receive From Main Thread In Render Thread
 
     // Physics Messages Receive
     // pub rptx: Mutex<Sender<()>>,  // Send To Main Thread From Physics Thread
+    #[cfg(feature="server")]
     pub rprx: Mutex<Receiver<()>>,  // Receive From Physics Thread In Main Thread
 
     // Render Messages Receive
     // pub rrtx: Mutex<Sender<()>>,  // Send To Main Thread From Render Thread
+    #[cfg(feature="client")]
     pub rrrx: Mutex<Receiver<()>>,  // Receive From Render Thread In Main Thread
 
     // Server Thread (Physics)
+    #[cfg(feature="server")]
     pub physics_thread: Mutex<JoinHandle<()>>,
 
     // Client Thread (Render)
+    #[cfg(feature="client")]
     pub render_thread: Mutex<JoinHandle<()>>
 }
 
@@ -59,30 +67,55 @@ pub fn start() {
      * The client can either run standalone (multiplayer)
      *   or run both at the same time (singleplayer).
     */
+    #[cfg(feature="server")]
     let (sptx, sprx) = mpsc::channel::<()>();  // Physics Messages Send
+
+    #[cfg(feature="client")]
     let (srtx, srrx) = mpsc::channel::<()>();  // Render Messages Send
 
+    #[cfg(feature="server")]
     let (rptx, rprx) = mpsc::channel::<()>();  // Physics Messages Receive
+
+    #[cfg(feature="client")]
     let (rrtx, rrrx) = mpsc::channel::<()>();  // Render Messages Receive
 
     // Treat As If Physical Server (Player Movement)
+    #[cfg(feature="server")]
     let physics_thread: JoinHandle<()> = thread::Builder::new().name("physics".to_string())
                     .spawn(|| physics::start(rptx, sprx)).unwrap();  // Server
 
     // Treat As If Physical Client (User Input)
+    #[cfg(feature="client")]
     let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
                     .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
 
     let loopstruct: MainLoopStruct = MainLoopStruct {
-        sptx: sptx.into(), srtx: srtx.into(),
-        rprx: rprx.into(), rrrx: rrrx.into(),
+        #[cfg(feature="server")]
+        sptx: sptx.into(),
+
+        #[cfg(feature="server")]
+        rprx: rprx.into(),
+
+        #[cfg(feature="client")]
+        srtx: srtx.into(),
+        
+        #[cfg(feature="client")]
+        rrrx: rrrx.into(),
+
+        #[cfg(feature="server")]
         physics_thread: physics_thread.into(),
+
+        #[cfg(feature="client")]
         render_thread: render_thread.into()
     };
 
     LOOPSTRUCT.set(loopstruct).unwrap();
 
     debug!("Starting Main Loop...");
+    /*
+     * Intentionally not targetting feature "browser" here
+     *   as emscripten is multi-platform.
+     */ 
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
         emscripten_set_main_loop(main_loop, -1, 1);
@@ -99,19 +132,34 @@ pub fn start() {
     debug!("Exiting Main Loop...");
 }
 
+#[cfg(any(feature="server", feature="client"))]
 fn is_finished(loopstruct: &MainLoopStruct) -> bool {
+    #[cfg(feature="server")]
     let physics_thread: MutexGuard<JoinHandle<()>> = loopstruct.physics_thread.lock().unwrap();
+
+    #[cfg(feature="client")]
     let render_thread: MutexGuard<JoinHandle<()>> = loopstruct.render_thread.lock().unwrap();
 
+    #[cfg(all(feature="server", feature="client"))]
     return physics_thread.is_finished() && render_thread.is_finished();
+
+    #[cfg(all(not(feature="client"), feature="server"))]
+    return physics_thread.is_finished();
+
+    #[cfg(all(not(feature="server"), feature="client"))]
+    return render_thread.is_finished();
 }
 
+#[cfg(feature="server")]
 fn is_physics_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     let receiver: MutexGuard<Receiver<()>> = loopstruct.rprx.lock().unwrap();
+
+    #[cfg(feature="client")]
     let sender: MutexGuard<Sender<()>> = loopstruct.srtx.lock().unwrap();
 
     match receiver.try_recv() {
         Ok(_) => {
+            #[cfg(feature="client")]
             sender.send(()).ok();
 
             return true;
@@ -122,13 +170,16 @@ fn is_physics_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     }
 }
 
+#[cfg(feature="client")]
 fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     let receiver: MutexGuard<Receiver<()>> = loopstruct.rrrx.lock().unwrap();
+
+    #[cfg(feature="server")]
     let sender: MutexGuard<Sender<()>> = loopstruct.sptx.lock().unwrap();
 
-    // debug!("Try Receive Render Thread Termination... {:?}", receiver.try_recv());
     match receiver.try_recv() {
         Ok(_) => {
+            #[cfg(feature="server")]
             sender.send(()).ok();
 
             return true;
@@ -140,17 +191,21 @@ fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
 }
 
 extern "C" fn main_loop() -> bool {
+    #[allow(unused_variables)]
     let loopstruct: &MainLoopStruct = LOOPSTRUCT.get().unwrap();
 
+    #[cfg(any(feature="server", feature="client"))]
     if is_finished(loopstruct) {
         info!("Stopping Game...");
         return true;
     }
 
+    #[cfg(feature="server")]
     if is_physics_thread_terminated(loopstruct) {
         debug!("Physics Thread Terminated...");
     }
 
+    #[cfg(feature="client")]
     if is_render_thread_terminated(loopstruct) {
         debug!("Render Thread Terminated...");
     }
