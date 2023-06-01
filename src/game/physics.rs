@@ -44,7 +44,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("Starting Physics Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop(physics_loop, -1, 1);
+        emscripten_set_main_loop(physics_loop, 60, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
@@ -74,9 +74,6 @@ fn should_terminate_thread(loopstruct: &PhysicsLoopStruct) -> bool {
 }
 
 extern "C" fn physics_loop() -> bool {
-    #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    debug!("Looping In Physics Thread...");
-
     let loopstruct: &PhysicsLoopStruct = LOOPSTRUCT.get().unwrap();
 
     if should_terminate_thread(loopstruct) {
@@ -91,6 +88,7 @@ extern "C" fn physics_loop() -> bool {
     }
 
     update(loopstruct);
+
     return false;
 }
 
@@ -98,5 +96,6 @@ fn update(_loopstruct: &PhysicsLoopStruct) {
     // debug!("Physics Update: {}", _loopstruct.i.load(Ordering::Relaxed));
 
     // Slow Down Physics (60 FPS)
+    #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
     thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
 }
