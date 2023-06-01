@@ -53,7 +53,7 @@ fn create_emscripten_wasm() {
                 -s SUPPORT_BIG_ENDIAN=1 \
                 -s ALLOW_MEMORY_GROWTH=1 \
                 -s USE_PTHREADS=1 \
-                -s PTHREAD_POOL_SIZE=2 \
+                -s PTHREAD_POOL_SIZE=3 \
                 -lSDL2 \
                 -lSDL2_image \
                 -lSDL2_ttf \

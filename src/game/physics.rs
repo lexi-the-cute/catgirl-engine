@@ -39,9 +39,10 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
 
     LOOPSTRUCT.set(loopstruct).unwrap();
 
+    debug!("Starting Physics Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop(physics_loop, -1, 0);
+        emscripten_set_main_loop(physics_loop, -1, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
@@ -52,6 +53,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
             break;
         }
     }
+    debug!("Exiting Physics Loop...");
 
     Ok(())
 }
