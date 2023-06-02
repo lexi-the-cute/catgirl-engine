@@ -9,5 +9,5 @@ cd ../../..
 mkdir -p target/examples
 pip3 install Cython
 
-cargo build --release --lib
+# cargo build --release --lib
 python3 examples/binding/python/main.py
