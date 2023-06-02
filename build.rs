@@ -96,8 +96,7 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
         " */";
     if language == Language::Cython {
         header =
-            "#!/usr/bin/env python3\n".to_owned() +
-            "# cython: language_level=3\n\n" +
+            "# cython: language_level=3\n\n".to_owned() +
             "# This file exists to help facilitate modding this catgirl game engine...\n" +
             "# These generated bindings are either public domain or Unlicense where public domain does not exist";
     }
