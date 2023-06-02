@@ -1,3 +1,5 @@
+#!/bin/sh
+
 echo "This currently doesn't work..."
 echo "Press enter to run anyway..."
 echo "For more info, see https://github.com/alexisart/catgirl-engine/issues/2"
