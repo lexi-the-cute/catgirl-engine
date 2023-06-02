@@ -1,4 +1,3 @@
-// extern crate cc;
 extern crate cbindgen;
 
 use std::env::{self, Vars};
@@ -97,7 +96,9 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
         " */";
     if language == Language::Cython {
         header =
-            "# This file exists to help facilitate modding this catgirl game engine...\n".to_owned() +
+            "#!/usr/bin/env python3\n".to_owned() +
+            "# cython: language_level=3\n\n" +
+            "# This file exists to help facilitate modding this catgirl game engine...\n" +
             "# These generated bindings are either public domain or Unlicense where public domain does not exist";
     }
 

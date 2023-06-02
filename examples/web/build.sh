@@ -1,3 +1,5 @@
+#!/bin/sh
+
 cd ../..
 mkdir -p target/libs
 
