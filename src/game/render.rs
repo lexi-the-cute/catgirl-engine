@@ -20,11 +20,13 @@ use sdl2::keyboard::Keycode;
 
 use crate::game::entity::player::{Player, Direction};
 
+/// cbindgen:ignore
+#[allow(unused_doc_comments)]
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
     #[allow(improper_ctypes)]  // Rust discord said linter is doing false positive here
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    pub fn emscripten_set_main_loop_arg(
+    fn emscripten_set_main_loop_arg(
         func: extern "C" fn(Box<&mut RenderLoopStruct>) -> bool,
         arg: Box<&mut RenderLoopStruct>,  // Either `&mut RLS` or `Box<&mut RLS>` should work according to Rust discord
         fps: std::os::raw::c_int,
@@ -33,24 +35,24 @@ extern "C" {
 }
 
 #[repr(C)]
-pub struct RenderLoopStruct<'a> {
-    pub receive: Receiver<()>,  // Receive From Main Thread In Render Thread
-    pub i: AtomicU8,  // Used for changing background color,
+struct RenderLoopStruct<'a> {
+    receive: Receiver<()>,  // Receive From Main Thread In Render Thread
+    i: AtomicU8,  // Used for changing background color,
 
     // SDL Related Vars
-    pub sdl_context: Sdl,
-    pub game_controller_subsystem: GameControllerSubsystem,
-    pub haptic_subsystem: HapticSubsystem,
-    pub video_subsystem: VideoSubsystem,
-    pub image_context: Sdl2ImageContext,
-    pub canvas: Canvas<Window>,
-    pub texture_creator: &'a TextureCreator<WindowContext>,
-    pub texture: Texture<'a>,
-    pub event_pump: EventPump,
+    sdl_context: Sdl,
+    game_controller_subsystem: GameControllerSubsystem,
+    haptic_subsystem: HapticSubsystem,
+    video_subsystem: VideoSubsystem,
+    image_context: Sdl2ImageContext,
+    canvas: Canvas<Window>,
+    texture_creator: &'a TextureCreator<WindowContext>,
+    texture: Texture<'a>,
+    event_pump: EventPump,
 
     // TODO: Move to Server (Physics) Thread
-    pub player: Player,
-    pub player_movement_speed: i32
+    player: Player,
+    player_movement_speed: i32
 }
 
 // This thread handles both rendering and input (aka the client)

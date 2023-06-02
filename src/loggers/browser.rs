@@ -1,14 +1,16 @@
 use std::os::raw::c_char;
 use log::{Record, Level, Metadata, SetLoggerError};
 
-pub struct ConsoleLogger;
+struct ConsoleLogger;
 
+/// cbindgen:ignore
+#[allow(unused_doc_comments)]
 extern "C" {
-    pub fn trace(message: *const c_char);
-    pub fn debug(message: *const c_char);
-    pub fn info(message: *const c_char);
-    pub fn warn(message: *const c_char);
-    pub fn error(message: *const c_char);
+    fn trace(message: *const c_char);
+    fn debug(message: *const c_char);
+    fn info(message: *const c_char);
+    fn warn(message: *const c_char);
+    fn error(message: *const c_char);
 }
 
 impl log::Log for ConsoleLogger {

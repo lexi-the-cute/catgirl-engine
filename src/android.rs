@@ -1,1 +1,1 @@
-pub mod bridge;
+mod bridge;
