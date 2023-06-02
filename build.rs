@@ -46,14 +46,15 @@ fn create_emscripten_wasm() {
     std::fs::create_dir_all(parent_dir).unwrap();
 
     // Flags to Make Emscripten Compile This Correctly (Combined With RUSTFLAGS)
-    println!("cargo:rustc-env=EMCC_CFLAGS=-O3 -s STRICT_JS=1 \
+    println!("cargo:rustc-env=EMCC_CFLAGS=-O3 -pthread -s STRICT_JS=1 -s ERROR_ON_UNDEFINED_SYMBOLS=0 \
                 -s ASSERTIONS=1 \
                 -s PTHREADS_DEBUG=0 \
                 -s ALLOW_BLOCKING_ON_MAIN_THREAD=0 \
                 -s SUPPORT_BIG_ENDIAN=1 \
                 -s ALLOW_MEMORY_GROWTH=1 \
-                -s USE_PTHREADS=1 \
                 -s PTHREAD_POOL_SIZE=3 \
+                -s OFFSCREEN_FRAMEBUFFER=1 \
+                -s OFFSCREENCANVAS_SUPPORT=1 \
                 -lSDL2 \
                 -lSDL2_image \
                 -lSDL2_ttf \

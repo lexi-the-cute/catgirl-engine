@@ -82,10 +82,17 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("Image Context Initialized...");
 
     let window: Window = video_subsystem.window("Alexis' Game Engine", 800, 600)
-                                        .position_centered().build().expect("Could Not Make a Window");
+                                        .position_centered()
+                                        .resizable()
+                                        .build()
+                                        .expect("Could Not Make a Window");
     debug!("Window Created...");
 
-    let mut canvas: Canvas<Window> = window.into_canvas().build().expect("Could Not Make a Canvas");
+    let mut canvas: Canvas<Window> = window.into_canvas()
+                                            .accelerated()
+                                            .present_vsync()
+                                            .build()
+                                            .expect("Could Not Make a Canvas");
     debug!("Canvas Created...");
 
     canvas.set_draw_color(Color::RGB(0, 255, 255));

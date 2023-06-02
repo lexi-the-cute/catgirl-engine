@@ -38,43 +38,40 @@
                             console.error("Unable to use multi-threading... Not starting engine!");
                         }
                     } catch(exceptionVariable) {
-                        // console.error("Crash Message: '" + UTF8ToString(exceptionVariable) + "'");
+                        // console.error("Crash Message: '" + exceptionVariable + "'");
                     }
                 },
-                print: function(text) {
-                    console.log(text);
+                canvas: document.getElementById("canvas"),
+                print: function(...args) {
+                    console.log(args[0]);
                 },
-                printErr: function(text) {
-                    console.error(text);
+                printErr: function(...args) {
+                    console.error(args[0]);
                 },
-                setStatus: function(text) {
-                    // console.debug("Status: '" + text + "'");
-                },
-                canvas: function() {
-                    var canvas = document.getElementById('canvas');
-
-                    // As a default initial behavior, pop up an alert when webgl context is lost. To make your
-                    // application robust, you may want to override this behavior before shipping!
-                    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
-                    canvas.addEventListener("webglcontextlost", (e) => { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
-
-                    return canvas;
+                setStatus: function(message) {
+                    console.debug("Status: '" + message + "'");
                 },
                 onFullScreen: function(isFullscreen) {
                     console.debug("Fullscreen: '" + isFullscreen + "'");
                 },
-                preRun: function() {
-                    // console.debug("preRun called...");
-                },
-                postRun: function() {
-                    // console.debug("postRun called...");
-                },
+                preRun: [
+                    function() {
+                        console.debug("preRun called...");
+                    }
+                ],
+                postRun: [
+                    function() {
+                        console.debug("postRun called...");
+                    }
+                ],
                 onExit: function(code) {
                     console.debug("Exit Code: '" + code + "'");
                 },
-                quit: function() {
-                    // This isn't accurate, don't use
-                    // console.debug("WebAssembly program has exited...");
+                quit: function(status, error) {
+                    if (status == 0)
+                        console.debug("Quit Status: '" + status + "' - Error: '" + error + "'");
+                    else
+                        console.error("Quit Status: '" + status + "' - Error: '" + error + "'");
                 },
                 preMainLoop: function() {
                     // console.debug("preMainLoop called...");
@@ -83,14 +80,6 @@
                     // console.debug("postMainLoop called...");
                 }
             };
-
-            // worker.onerror = (e) => {
-            //     console.error("Crash: " + " " + e.filename + ":" + e.lineno + ": " + e.message);
-            // };
-
-            // window.onerror = (e) => {
-            //     console.error("Crash: " + " " + e.filename + ":" + e.lineno + ": " + e.message);
-            // };
         </script>
         <script src="/main.js"></script>
     </body>
