@@ -5,16 +5,18 @@ use std::thread::JoinHandle;
 use std::sync::{Mutex, OnceLock, MutexGuard};
 use std::sync::mpsc::{self, Sender, Receiver};
 
-pub mod physics;
-pub mod render;
-pub mod entity;
+mod physics;
+mod render;
+mod entity;
 
 static LOOPSTRUCT: OnceLock<MainLoopStruct> = OnceLock::new();
 
+/// cbindgen:ignore
+#[allow(unused_doc_comments)]
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    pub fn emscripten_set_main_loop(
+    fn emscripten_set_main_loop(
         func: extern "C" fn() -> bool,
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
@@ -23,34 +25,34 @@ extern "C" {
 
 #[derive(Debug)]
 #[repr(C)]
-pub struct MainLoopStruct {
+struct MainLoopStruct {
     // Physics Messages Send
     #[cfg(feature="server")]
-    pub sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
-    // pub sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
+    sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
+    // sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
 
     // Render Messages Send
     #[cfg(feature="client")]
-    pub srtx: Mutex<Sender<()>>,  // Send To Render Thread From Main Thread
-    // pub srrx: Mutex<Receiver<()>>,  // Receive From Main Thread In Render Thread
+    srtx: Mutex<Sender<()>>,  // Send To Render Thread From Main Thread
+    // srrx: Mutex<Receiver<()>>,  // Receive From Main Thread In Render Thread
 
     // Physics Messages Receive
-    // pub rptx: Mutex<Sender<()>>,  // Send To Main Thread From Physics Thread
+    // rptx: Mutex<Sender<()>>,  // Send To Main Thread From Physics Thread
     #[cfg(feature="server")]
-    pub rprx: Mutex<Receiver<()>>,  // Receive From Physics Thread In Main Thread
+    rprx: Mutex<Receiver<()>>,  // Receive From Physics Thread In Main Thread
 
     // Render Messages Receive
-    // pub rrtx: Mutex<Sender<()>>,  // Send To Main Thread From Render Thread
+    // rrtx: Mutex<Sender<()>>,  // Send To Main Thread From Render Thread
     #[cfg(feature="client")]
-    pub rrrx: Mutex<Receiver<()>>,  // Receive From Render Thread In Main Thread
+    rrrx: Mutex<Receiver<()>>,  // Receive From Render Thread In Main Thread
 
     // Server Thread (Physics)
     #[cfg(feature="server")]
-    pub physics_thread: Mutex<JoinHandle<()>>,
+    physics_thread: Mutex<JoinHandle<()>>,
 
     // Client Thread (Render)
     #[cfg(feature="client")]
-    pub render_thread: Mutex<JoinHandle<()>>
+    render_thread: Mutex<JoinHandle<()>>
 }
 
 pub fn start() {

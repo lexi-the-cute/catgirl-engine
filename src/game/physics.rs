@@ -8,10 +8,12 @@ use std::time::Duration;
 
 static LOOPSTRUCT: OnceLock<PhysicsLoopStruct> = OnceLock::new();
 
+/// cbindgen:ignore
+#[allow(unused_doc_comments)]
 extern "C" {
     // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    pub fn emscripten_set_main_loop(
+    fn emscripten_set_main_loop(
         func: extern "C" fn() -> bool,
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
@@ -20,9 +22,9 @@ extern "C" {
 
 #[derive(Debug)]
 #[repr(C)]
-pub struct PhysicsLoopStruct {
-    pub receive: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
-    pub i: AtomicI8
+struct PhysicsLoopStruct {
+    receive: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
+    i: AtomicI8
 }
 
 // This thread handles physics (aka the server)
