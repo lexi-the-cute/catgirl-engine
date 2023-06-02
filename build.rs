@@ -90,8 +90,20 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
     .display()
     .to_string();
 
+    let mut header: String = 
+        "/*\n".to_owned() +
+        " * This file exists to help facilitate modding this catgirl game engine...\n" + 
+        " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" + 
+        " */";
+    if language == Language::Cython {
+        header =
+            "# This file exists to help facilitate modding this catgirl game engine...\n".to_owned() +
+            "# These generated bindings are either public domain or Unlicense where public domain does not exist";
+    }
+
     let config: Config = Config {
         namespace: Some(String::from("ffi")),
+        header: Some(String::from(header)),
         language: language,
         only_target_dependencies: true,
         no_includes: if language == Language::Cython { true } else { false },
