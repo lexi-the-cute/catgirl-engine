@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Linux GNU aarch64 (Deb)
 on: [push]
 jobs:
   Build-Linux-GNU-aarch64:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     environment: Linux
     env:
       CARGO_TERM_COLOR: always
