@@ -30,9 +30,6 @@ specs = "0.18.0"  # You can use * to tell Rust to pick a version
 rand = "0.8.5"
 rayon = "1.7.0"
 log = "0.4.17"
-android_logger = "0.13.1"
-pretty_env_logger = "0.4.0"
-lazy_static = "1.4.0"
 
 [dependencies.sdl2]
 git = "https://github.com/alexisart/rust-sdl2"
@@ -40,9 +37,18 @@ branch = "master"
 default-features = false
 features = ["image", "ttf"]  # mixer, hidapi at https://github.com/Rust-SDL2/rust-sdl2/blob/27cd1fd67c811e06b9d997a77bb6089a1b65070d/src/sdl2/lib.rs#L86
 
+[target.'cfg(any(unix,windows))'.dependencies]
+pretty_env_logger = "0.4.0"
+
+[target.'cfg(target_os="android")'.dependencies]
+android_logger = "0.13.1"
+
 [build-dependencies]
 cc = "1.0.79"
 cbindgen = "0.24.3"
+
+[target.'cfg(unix)'.build-dependencies]
+cargo-deb = "1.43.1"
 
 [package.metadata.deb]
 name = "catgirl-engine"
