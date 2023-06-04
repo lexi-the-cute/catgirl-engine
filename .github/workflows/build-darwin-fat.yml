@@ -69,16 +69,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/SDL_mixer/*.*') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # Cache Rust Target
-      - name: Cache Rust Target
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-rust-target-fat-darwin-macos-catgirl-engine
-        with:
-          path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
       # Make Libs Folder
       - name: Make Libs Folder
         run: mkdir -p ${{ github.workspace }}/target/libs

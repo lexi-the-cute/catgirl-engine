@@ -50,16 +50,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # Cache Rust Target
-      - name: Cache Rust Target
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-rust-target-x86_64-windows-gnu-catgirl-engine
-        with:
-          path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
       # Build Libs
       - name: Initialize CMake
         run: cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/.toolchains/TC-mingw-gcc-x86_64.cmake -S ${{ github.workspace }}/android/app/jni -B ${{ github.workspace }}/android/app/jni/build
