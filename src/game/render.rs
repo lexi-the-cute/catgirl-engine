@@ -107,7 +107,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
 
     // `assets/bardo.png` automatically translates to `/data/data/land.catgirl.engine/files/assets/bardo.png` on Android
     // Android returns an empty string for this particular asset error while the error works as intended on Linux
-    let texture: Texture = texture_creator.load_texture("assets/bardo.png").unwrap();
+    let texture: Texture = texture_creator.load_texture("assets/bardo.png")?;
     debug!("Texture Loaded...");
 
     let event_pump: EventPump = sdl_context.event_pump()?;
