@@ -41,16 +41,6 @@ jobs:
       - name: Setup Gradle Build Action (For Caching Builds)
         uses: gradle/gradle-build-action@v2
 
-      # Cache Rust Target
-      - name: Cache Rust Target
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-rust-target-android-catgirl-engine
-        with:
-          path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
       # Install Dependencies
       - name: Install APT Packages
         uses: nick-fields/retry@v2

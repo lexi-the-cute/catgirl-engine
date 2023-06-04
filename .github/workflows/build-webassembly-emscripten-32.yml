@@ -52,16 +52,6 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/android/app/jni/*/src') }}
           restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
 
-      # Cache Rust Target
-      - name: Cache Rust Target
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-rust-target-webassembly-emscripten-32-catgirl-engine
-        with:
-          path: ${{ github.workspace }}/target
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('${{ github.workspace }}/src') }}
-          restore-keys: ${{ runner.os }}-build-${{ env.cache-name }}-
-
       # Make Tools Directory
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
