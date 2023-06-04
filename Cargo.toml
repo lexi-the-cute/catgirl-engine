@@ -53,7 +53,7 @@ cargo-deb = "1.43.1"
 [package.metadata.deb]
 name = "catgirl-engine"
 provides = "catgirl-engine"
-replaces = "catgirl-engine"
+replaces = "catgirl-engine|catgirl-engine-server|catgirl-engine-client"
 section = "games"
 preserve-symlinks = true
 # This depends and assets is for packages which I don't include the dependencies with the engine
@@ -62,6 +62,11 @@ assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
     ["assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
+
+[package.metadata.deb.variants.server]
+name = "catgirl-engine-server"
+features = ["server"]
+default-features = false
 
 [package.metadata.deb.variants.gnu]
 name = "catgirl-engine"
