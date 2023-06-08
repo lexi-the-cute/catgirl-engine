@@ -50,7 +50,10 @@
                             console.error("Unable to use multi-threading... Not starting engine!");
                         }
                     } catch(exceptionVariable) {
-                        // console.error("Crash Message: '" + exceptionVariable + "'");
+                        // Unwind: https://github.com/emscripten-core/emscripten/issues/11682
+                        if (exceptionVariable != "unwind") {
+                            console.error("Crash Message: '" + exceptionVariable + "'");
+                        }
                     }
                 },
                 canvas: (function() {
