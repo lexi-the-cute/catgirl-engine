@@ -31,9 +31,21 @@
             var Module = {
                 onRuntimeInitialized: function() {
                     try {
+                        // FS.mkdir('/assets');
+                        // FS.writeFile('/assets/bardo.png', "test");
+                        
+                        // var blob = new Blob(['blob data']);
+                        // FS.mkdir('/assets');
+                        // FS.mount(WORKERFS, {
+                        //     files: ["/main.data"], // Array of File objects or FileList
+                        // }, '/assets');
+                        // console.error(FS.readdir("/"));
+
+                        // console.debug(GL);
+
                         if (crossOriginIsolated) {
                             // SharedArrayBuffer is available
-                            Module._SDL_main(); // SDL_main was exported
+                            _SDL_main(); // SDL_main was exported
                         } else {
                             console.error("Unable to use multi-threading... Not starting engine!");
                         }

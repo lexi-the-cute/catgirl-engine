@@ -29,6 +29,10 @@ files: dict = {
         "path": os.path.join(script_dir, "main.wasm"),
         "content-type": "application/wasm"
     },
+    "/main.data": {
+        "path": os.path.join(script_dir, "main.data"),
+        "content-type": "application/octet-stream"
+    },
     "/favicon.ico": {
         "base64": "AAABAAEAAQECAAEAAQA4AAAAFgAAACgAAAABAAAAAgAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8AAAAAAAAAAAAAAAAA",
         "content-type": "image/vnd.microsoft.icon"

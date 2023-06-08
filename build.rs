@@ -40,6 +40,9 @@ fn create_emscripten_wasm() {
     let output_file: String = parent_dir.join(format!("{}.{}", "main", "js"))
     .display()
     .to_string();
+    let assets_dir: String = assets_dir()
+    .display()
+    .to_string();
 
     // Create Parent Directories If Not Exists
     std::fs::create_dir_all(parent_dir).unwrap();
@@ -47,6 +50,7 @@ fn create_emscripten_wasm() {
     // Flags to Make Emscripten Compile This Correctly (Combined With RUSTFLAGS)
     // https://github.com/emscripten-core/emscripten/blob/main/src/settings.js
     println!("cargo:rustc-env=EMCC_CFLAGS=-O3 -pthread -s STRICT_JS=1 \
+                --preload-file '{assets_dir}' \
                 -s WASM=1 \
                 -s WASM_BIGINT=1 \
                 -s SUPPORT_BIG_ENDIAN=1 \
@@ -54,7 +58,7 @@ fn create_emscripten_wasm() {
                 -s SHARED_MEMORY=1 \
                 -s ABORT_ON_WASM_EXCEPTIONS=0 \
                 -s WASM_WORKERS=1 \
-                -s WASMFS=1 \
+                -s WASMFS=0 \
                 -s MINIMAL_RUNTIME_STREAMING_WASM_INSTANTIATION=1 \
                 -s TRUSTED_TYPES=1 \
                 -s ASSERTIONS=1 \
@@ -68,7 +72,9 @@ fn create_emscripten_wasm() {
                 -lSDL2 \
                 -lSDL2_image \
                 -lSDL2_ttf \
-                -s EXPORTED_FUNCTIONS=\"['_SDL_main', '_malloc']\"
+                -lworkerfs.js \
+                -s EXPORTED_FUNCTIONS=\"['_SDL_main', '_malloc']\" \
+                -s EXPORTED_RUNTIME_METHODS=\"['FS']\"
             ");
     
     println!("cargo:rustc-link-arg=-o{output_file}");
@@ -125,6 +131,12 @@ fn target_dir() -> PathBuf {
     } else {
         PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("target")
     }
+}
+
+fn assets_dir() -> PathBuf {
+    // PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("assets")
+
+    PathBuf::from("assets")
 }
 
 #[allow(dead_code)]
