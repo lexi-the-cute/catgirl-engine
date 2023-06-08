@@ -148,6 +148,10 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     };
 
     debug!("Starting Render Loop...");
+    /*
+     * Intentionally not targetting feature "browser" here
+     *   as emscripten is multi-platform.
+     */
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
         emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), 0, 1);
@@ -160,6 +164,9 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
             // Ending Loop
             break;
         }
+
+        // Slow Down Rendering (60 FPS)
+        thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
     debug!("Exiting Render Loop...");
 
@@ -247,10 +254,6 @@ extern "C" fn render_loop(loopstruct: Box<&mut RenderLoopStruct>) -> bool {
     loopstruct.i.store(i, Ordering::Relaxed);
 
     render(&mut loopstruct.canvas, Color::RGB(i, 64, 255-i), &loopstruct.texture, &loopstruct.player).unwrap();
-
-    // Slow Down Rendering (60 FPS)
-    #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
-    thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
 
     return false;
 }
