@@ -64,6 +64,7 @@ fn create_emscripten_wasm() {
                 -s PTHREAD_POOL_SIZE=3 \
                 -s OFFSCREEN_FRAMEBUFFER=1 \
                 -s OFFSCREENCANVAS_SUPPORT=1 \
+                -s FULL_ES3=1 \
                 -lSDL2 \
                 -lSDL2_image \
                 -lSDL2_ttf \
