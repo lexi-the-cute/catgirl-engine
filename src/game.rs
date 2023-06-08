@@ -117,10 +117,10 @@ pub fn start() {
     /*
      * Intentionally not targetting feature "browser" here
      *   as emscripten is multi-platform.
-     */ 
+     */
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop(main_loop, -1, 1);
+        emscripten_set_main_loop(main_loop, 0, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]

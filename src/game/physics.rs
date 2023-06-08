@@ -44,6 +44,10 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     LOOPSTRUCT.set(loopstruct).unwrap();
 
     debug!("Starting Physics Loop...");
+    /*
+     * Intentionally not targetting feature "browser" here
+     *   as emscripten is multi-platform.
+     */
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
         emscripten_set_main_loop(physics_loop, 60, 1);
@@ -56,6 +60,9 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
             // Ending Loop
             break;
         }
+
+        // Slow Down Physics (60 FPS)
+        thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
     debug!("Exiting Physics Loop...");
 
@@ -96,8 +103,4 @@ extern "C" fn physics_loop() -> bool {
 
 fn update(_loopstruct: &PhysicsLoopStruct) {
     // debug!("Physics Update: {}", _loopstruct.i.load(Ordering::Relaxed));
-
-    // Slow Down Physics (60 FPS)
-    #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
-    thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
 }
