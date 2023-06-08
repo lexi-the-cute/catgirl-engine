@@ -34,7 +34,7 @@ extern "C" {
     );
 
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    fn create_webgl_context();
+    fn create_webgl_context() -> i32;  // It's actually a EMSCRIPTEN_RESULT from <emscripten/html5.h>
 }
 
 #[repr(C)]
@@ -95,10 +95,9 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
 
     #[cfg(all(target_family="wasm", target_os="emscripten"))] {
         unsafe {
-            create_webgl_context();
+            let webgl_context_result: i32 = create_webgl_context();
+            debug!("WebGL Context Created With Value '{:?}'...", webgl_context_result);
         }
-
-        debug!("WebGL Context Created...");
     }
 
     let mut canvas: Canvas<Window> = window.into_canvas()
@@ -151,7 +150,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     debug!("Starting Render Loop...");
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     unsafe {
-        emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), 60, 1);
+        emscripten_set_main_loop_arg(render_loop, Box::from(&mut loopstruct), 0, 1);
     }
     
     #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
