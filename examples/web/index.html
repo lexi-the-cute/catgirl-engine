@@ -41,7 +41,19 @@
                         // console.error("Crash Message: '" + exceptionVariable + "'");
                     }
                 },
-                canvas: document.getElementById("canvas"),
+                canvas: (function() {
+                    var canvas = document.getElementById('canvas');
+
+                    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+                    canvas.addEventListener('webglcontextlost', function(e) {
+                            alert('WebGL context lost. You will need to reload the page.');
+                            e.preventDefault();
+                        },
+                        false
+                    );
+
+                    return canvas
+                })(),
                 print: function(...args) {
                     console.log(args[0]);
                 },

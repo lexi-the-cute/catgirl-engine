@@ -11,7 +11,7 @@ use sdl2::controller::{Button};
 use sdl2::rect::{Point, Rect};
 use sdl2::render::{Canvas, TextureCreator, Texture};
 
-use sdl2::video::{Window, WindowContext};
+use sdl2::video::{Window, WindowContext, GLContext};
 use sdl2::{VideoSubsystem, Sdl, EventPump, HapticSubsystem, GameControllerSubsystem};
 use sdl2::event::Event;
 use sdl2::pixels::Color;
@@ -32,6 +32,9 @@ extern "C" {
         fps: std::os::raw::c_int,
         simulate_infinite_loop: std::os::raw::c_int
     );
+
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    fn create_webgl_context();
 }
 
 #[repr(C)]
@@ -89,6 +92,14 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
                                         .build()
                                         .expect("Could Not Make a Window");
     debug!("Window Created...");
+
+    #[cfg(all(target_family="wasm", target_os="emscripten"))] {
+        unsafe {
+            create_webgl_context();
+        }
+
+        debug!("WebGL Context Created...");
+    }
 
     let mut canvas: Canvas<Window> = window.into_canvas()
                                             .accelerated()
