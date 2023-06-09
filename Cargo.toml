@@ -5,6 +5,7 @@ license = "zlib"
 version = "0.3.0"  # https://semver.org/ (Do not use 1.0.0 until first production release)
 categories = ["game-engines"]
 repository = "https://github.com/alexisart/CatgirlEngine"
+# documentation = "https://docs.catgirl.land/engine"  # These docs don't exist yet at time of writing
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
