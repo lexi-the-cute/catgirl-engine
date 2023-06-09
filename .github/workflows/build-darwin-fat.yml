@@ -256,7 +256,7 @@ jobs:
   Publish:
     if: ${{ success() && endsWith(github.event.head_commit.message, "--publish") }}
     needs: [Build]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: Darwin
     env:
       CARGO_TERM_COLOR: always
