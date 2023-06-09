@@ -13,6 +13,7 @@ fn main() {
     if target_family.contains("wasm") && target_os == "emscripten" {
         #[cfg(feature = "browser")]
         add_browser_support();
+        add_emscripten_support();
         create_emscripten_wasm();
     }
 
@@ -31,6 +32,19 @@ fn add_browser_support() {
     cc::Build::new()
         .file(lib_path.to_str().unwrap())
         .compile("browser");
+}
+
+#[allow(dead_code)]
+fn add_emscripten_support() {
+    let lib_path: PathBuf = PathBuf::from("c").join("emscripten.c");
+
+    // println!("cargo:rustc-link-search=/path/to/lib");
+    // println!("cargo:rustc-link-lib=SDL");
+    println!("cargo:rerun-if-changed={}", lib_path.to_str().unwrap());
+
+    cc::Build::new()
+        .file(lib_path.to_str().unwrap())
+        .compile("emscripten");
 }
 
 fn create_emscripten_wasm() {
