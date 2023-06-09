@@ -146,7 +146,7 @@ jobs:
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
   Publish:
-    if: ${{ success() && endsWith(github.event.head_commit.message, "--publish") }}
+    if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
     needs: [Build]
     runs-on: ubuntu-latest
     environment: Emscripten
@@ -170,6 +170,8 @@ jobs:
         with:
           name: CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip
 
+      - name: 🎉 Publish to catgirl.land
+        run: echo "🎉 Publish to catgirl.land"
       - name: 🎉 Publish to Itch.io
         run: echo "🎉 Publish to Itch.io"
       - name: 🎉 Publish to Github Releases
