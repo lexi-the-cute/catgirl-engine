@@ -2,7 +2,7 @@ name: Build For Android
 run-name: ${{ github.actor }} is building for Android
 on: [push]
 jobs:
-  Build-Android:
+  Build:
     runs-on: ubuntu-latest
     environment: Android
     env:
@@ -186,8 +186,6 @@ jobs:
             ${{ github.workspace }}/upload/mapping.txt
             ${{ github.workspace }}/upload/binding
 
-      # TODO: Upload to Play Store (and Github Releases) On Reading "Publish" in Commit Message
-
       # List Environment
       - name: List Environment
         run: env
@@ -201,3 +199,41 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
+  Publish:
+    if: ${{ success() && endsWith(github.event.head_commit.message, "--publish") }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Android
+    env:
+      ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+      ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+      ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+      CARGO_TERM_COLOR: always
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
+      # TODO: Upload to Play Store (and Itch.IO and Github Releases) On Reading "Publish" in Commit Message
+      # Upload APK
+      - name: Download APK (Release)
+        uses: actions/download-artifact@v3
+        with:
+          name: CatgirlEngine-Android-APK
+
+      # Download Bundle
+      - name: Download Bundle (Release)
+        uses: actions/download-artifact@v3
+        with:
+          name: CatgirlEngine-Android-Bundle
+
+      - name: 🎉 Publish to Play Store
+        run: echo "🎉 Publish to Play Store"
+      - name: 🎉 Publish to Itch.io
+        run: echo "🎉 Publish to Itch.io"
+      - name: 🎉 Publish to Github Releases
+        run: echo "🎉 Publish to Github Releases"

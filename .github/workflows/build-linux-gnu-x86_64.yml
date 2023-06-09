@@ -2,7 +2,7 @@ name: Build For Linux GNU x86_64 (Deb)
 run-name: ${{ github.actor }} is building for Linux GNU x86_64 (Deb)
 on: [push]
 jobs:
-  Build-Linux-GNU-x86-64:
+  Build:
     runs-on: ubuntu-20.04
     environment: Linux
     env:
@@ -112,8 +112,6 @@ jobs:
           name: CatgirlEngine-Linux-x86_64-GNU-Deb
           path: ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/debian/*.deb
 
-      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
-
       # List Environment
       - name: List Environment
         run: env
@@ -127,3 +125,32 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
+  Publish:
+    if: ${{ success() && endsWith(github.event.head_commit.message, "--publish") }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    env:
+      CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
+      RUST_BACKTRACE: full
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      
+      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+      # Download Engine
+      - name: Download Engine (Release)
+        uses: actions/download-artifact@v3
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-Deb
+
+      - name: 🎉 Publish to Itch.io
+        run: echo "🎉 Publish to Itch.io"
+      - name: 🎉 Publish to Github Releases
+        run: echo "🎉 Publish to Github Releases"
