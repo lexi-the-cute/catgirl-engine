@@ -322,4 +322,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler push ${{ github.workspace }}/CatgirlEngine-Darwin-Fat-DMG.zip catgirlland/catgirl-engine:osx-darwin-fat
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/CatgirlEngine-Darwin-Fat-DMG.zip catgirlland/catgirl-engine:osx-darwin-fat
