@@ -244,7 +244,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            exec.exec("cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\"' -f2").then(function (version) {
+            exec.exec("cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\"' -f2").then(function (version) {
               return github.rest.repos.createRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
