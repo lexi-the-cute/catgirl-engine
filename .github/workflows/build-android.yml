@@ -242,7 +242,7 @@ jobs:
         with:
           script: |
             const version = exec.exec("cat Cargo.toml | grep '^version' | head -n1 | cut -d'\"' -f2");
-            const result = github.rest.git.createRelease({
+            const result = github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               target_commitish: context.sha,
