@@ -9,7 +9,6 @@ jobs:
       ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
-      ITCH_IO_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
       CARGO_TERM_COLOR: always
     steps:
       # Setup Build Environment
@@ -206,10 +205,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Android
     env:
-      ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
-      ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
-      ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
-      CARGO_TERM_COLOR: always
+      BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -246,7 +242,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            exec.exec("cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\"' -f2").then(function (version) {
+            exec.exec("cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\"' -f2").then(function (version) {
               return github.rest.repos.createRelease({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -269,8 +265,6 @@ jobs:
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
-          mkdir -p $HOME/.config/itch
-          echo "$ITCH_IO_API_KEY" > $HOME/.config/itch/butler_creds
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
