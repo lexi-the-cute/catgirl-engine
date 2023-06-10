@@ -134,6 +134,10 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
+    permissions:
+      # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+      # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
+      contents: write
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -178,6 +182,7 @@ jobs:
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
+          mkdir -p $HOME/.config/itch
           echo "$ITCH_IO_API_KEY" > $HOME/.config/itch/butler_creds
           mkdir -p ${{ github.workspace }}/tools/butler
 
