@@ -9,6 +9,7 @@ jobs:
       ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+      ITCH_IO_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
       CARGO_TERM_COLOR: always
     steps:
       # Setup Build Environment
@@ -224,8 +225,7 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # TODO: Upload to Play Store (and Itch.IO and Github Releases) On Reading "Publish" in Commit Message
-      # Upload APK
+      # Download APK
       - name: Download APK (Release)
         uses: actions/download-artifact@v3
         with:
@@ -237,6 +237,7 @@ jobs:
         with:
           name: CatgirlEngine-Android-Bundle
 
+      # Create Tag and Publish to Github Releases
       - name: 👩‍💻 Publish to Github Releases
         uses: actions/github-script@v6
         with:
@@ -254,7 +255,24 @@ jobs:
               generate_release_notes: true
             });
 
+      # Publish to Play Store
       - name: 🏬 Publish to Play Store
         run: echo "🏬 Publish to Play Store"
+
+      # Install Butler (For Uploading to Itch.io)
+      - name: Install Butler (Upload to Itch.io)
+        run: |
+          # https://itch.io/docs/butler/pushing.html#channel-names
+          # Setup For Installation
+          echo "$ITCH_IO_API_KEY" > $HOME/.config/itch/butler_creds
+          mkdir -p ${{ github.workspace }}/tools/butler
+
+          # Install Butler
+          wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
+          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+
+      # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
-        run: echo "🎮 Publish to Itch.io"
+        run: |
+          # Upload App
+          butler push ${{ github.workspace }}/CatgirlEngine-Android-APK.zip catgirlland/catgirl-engine:android
