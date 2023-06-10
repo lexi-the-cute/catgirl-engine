@@ -170,9 +170,9 @@ jobs:
         with:
           name: CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip
 
-      - name: 🎉 Publish to catgirl.land
-        run: echo "🎉 Publish to catgirl.land"
-      - name: 🎉 Publish to Itch.io
-        run: echo "🎉 Publish to Itch.io"
-      - name: 🎉 Publish to Github Releases
-        run: echo "🎉 Publish to Github Releases"
+      - name: 🕸️ Publish to catgirl.land
+        run: echo "🕸️ Publish to catgirl.land"
+      - name: 🎮 Publish to Itch.io
+        run: echo "🎮 Publish to Itch.io"
+      - name: 👩‍💻 Publish to Github Releases
+        run: echo "👩‍💻 Publish to Github Releases"

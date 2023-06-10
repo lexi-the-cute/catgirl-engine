@@ -4,6 +4,21 @@
 def buildAsLibrary = project.hasProperty('BUILD_AS_LIBRARY');
 def buildAsApplication = !buildAsLibrary
 
+// ----------------------------------------
+// Read Version Info From Cargo.toml
+// ----------------------------------------
+// https://docs.oracle.com/javase/8/docs/api/java/io/File.html
+File cargoTomlLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "Cargo.toml")
+ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
+String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
+String cargoVersion = cargoVersionLine.split('"', 3)[1]
+String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
+int cargoVersionCode = Integer.parseInt(cargoVersionSplit[0]) * 1000 +
+                        Integer.parseInt(cargoVersionSplit[1]) * 100 +
+                        Integer.parseInt(cargoVersionSplit[2]) * 10
+println "Building Catgirl Engine v" + cargoVersion + " (" + cargoVersionCode + ")"
+// ----------------------------------------
+
 if (buildAsApplication) {
     apply plugin: 'com.android.application'
 } else {
@@ -19,8 +34,8 @@ android {
         }
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 3  // TODO: Copy this from Cargo.toml
-        versionName "0.3.0"  // TODO: Grab this value from Cargo.toml when compiling in build-android.yml
+        versionName cargoVersion
+        versionCode cargoVersionCode
         externalNativeBuild {
             cmake {
                 abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'

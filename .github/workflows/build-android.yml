@@ -231,9 +231,33 @@ jobs:
         with:
           name: CatgirlEngine-Android-Bundle
 
-      - name: 🎉 Publish to Play Store
-        run: echo "🎉 Publish to Play Store"
-      - name: 🎉 Publish to Itch.io
-        run: echo "🎉 Publish to Itch.io"
-      - name: 🎉 Publish to Github Releases
-        run: echo "🎉 Publish to Github Releases"
+      - name: Create Github Tag
+        run: |
+          export ref_version_name=${GITHUB_REF##*/}
+          export ENGINE_VERSION=`cat Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2`
+
+          echo "Ref Version $ref_version_name"
+          git tag $version_name release/$ENGINE_VERSION
+          git push origin --tags
+
+      - name: 👩‍💻 Publish to Github Releases
+        run: |
+          export ENGINE_VERSION=`cat Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2`
+
+          echo "👩‍💻 Publish to Github Releases"
+          gh api --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ GITHUB_REPOSITORY }}/releases \
+            -f tag_name="v$ENGINE_VERSION" \
+            -f target_commitish='master' \
+            -f name="v$ENGINE_VERSION" \
+            -f body='Auto description of the release' \
+            -F draft=false \
+            -F prerelease=false \
+            -F generate_release_notes=false
+
+      - name: 🏬 Publish to Play Store
+        run: echo "🏬 Publish to Play Store"
+      - name: 🎮 Publish to Itch.io
+        run: echo "🎮 Publish to Itch.io"
