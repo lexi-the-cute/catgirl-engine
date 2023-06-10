@@ -194,4 +194,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          butler push ${{ github.workspace }}/CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb.zip catgirlland/catgirl-engine:linux-gnu-aarch64
+          ${{ github.workspace }}/tools/butler push ${{ github.workspace }}/CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb.zip catgirlland/catgirl-engine:linux-gnu-aarch64
