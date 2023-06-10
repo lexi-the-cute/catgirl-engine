@@ -177,7 +177,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/artifacts/webassembly-emscripten-32
 
       # Create Tag and Publish to Github Releases
       # - name: 👩‍💻 Publish to Github Releases
@@ -212,7 +212,7 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip.zip catgirlland/catgirl-engine:win-linux-mac-webassembly-emscripten-32
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/webassembly-emscripten-32 catgirlland/catgirl-engine:win-linux-mac-webassembly-emscripten-32
 
       # Publish to Catgirl.land
       - name: 🕸️ Publish to catgirl.land
