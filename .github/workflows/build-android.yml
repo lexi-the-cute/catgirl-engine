@@ -230,6 +230,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: CatgirlEngine-Android-APK
+          path: ${{ github.workspace }}
 
       # Download Bundle
       - name: Download Bundle (Release)
@@ -238,7 +239,14 @@ jobs:
           name: CatgirlEngine-Android-Bundle
           path: ${{ github.workspace }}
 
-      # List Files
+      # Prepare App (Release)
+      - name: Prepare App (Release)
+        run: |
+          ls -liallh ${{ github.workspace }}
+          mkdir -p ${{ github.workspace }}/apk
+          unzip CatgirlEngine-Android-APK.zip -d ${{ github.workspace }}/apk
+
+      # Prepare Bundle (Release)
       - name: Prepare Bundle (Release)
         run: |
           ls -liallh ${{ github.workspace }}
@@ -283,4 +291,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/bundle/app-release.aab catgirlland/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/apk/app-release.apk catgirlland/catgirl-engine:android
