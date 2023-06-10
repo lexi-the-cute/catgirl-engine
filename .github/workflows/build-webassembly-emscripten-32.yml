@@ -215,7 +215,7 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler push ${{ github.workspace }}/CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip.zip catgirlland/catgirl-engine:win-linux-mac-webassembly-emscripten-32
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip.zip catgirlland/catgirl-engine:win-linux-mac-webassembly-emscripten-32
 
       # Publish to Catgirl.land
       - name: 🕸️ Publish to catgirl.land
