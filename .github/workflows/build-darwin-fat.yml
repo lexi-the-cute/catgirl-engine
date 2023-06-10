@@ -284,7 +284,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: CatgirlEngine-Darwin-Fat-DMG
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/artifacts/osx-darwin-fat
 
       # Create Tag and Publish to Github Releases
       # - name: 👩‍💻 Publish to Github Releases
@@ -319,4 +319,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/CatgirlEngine-Darwin-Fat-DMG.zip catgirlland/catgirl-engine:osx-darwin-fat
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/osx-darwin-fat catgirlland/catgirl-engine:osx-darwin-fat

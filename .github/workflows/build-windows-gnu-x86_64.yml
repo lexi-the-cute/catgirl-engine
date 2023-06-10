@@ -132,9 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Windows
     env:
-      CARGO_TERM_COLOR: always
-      WORKSPACE: ${{ github.workspace }}
-      RUST_BACKTRACE: full
+      BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -160,7 +158,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/artifacts/windows-gnu-x86_64
 
       # Create Tag and Publish to Github Releases
       # - name: 👩‍💻 Publish to Github Releases
@@ -185,8 +183,6 @@ jobs:
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
-          mkdir -p $HOME/.config/itch
-          echo "$BUTLER_API_KEY" > $HOME/.config/itch/butler_creds
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
@@ -197,4 +193,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/CatgirlEngine-Windows-x86_64-GNU-Zip.zip catgirlland/catgirl-engine:windows-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-gnu-x86_64 catgirlland/catgirl-engine:windows-gnu-x86_64
