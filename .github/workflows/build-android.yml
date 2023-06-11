@@ -250,9 +250,14 @@ jobs:
           name: CatgirlEngine-Android-Bundle
           path: ${{ github.workspace }}/artifacts/bundle
 
-      # Create Tag and Publish to Github Releases
-      - name: 👩‍💻 Publish to Github Releases
+      # Recreate APK Zip
+      - name: Recreate APK Zip (Release)
+        run: cd ${{ github.workspace }}/artifacts/apk; zip -9 -y -r ../CatgirlEngine-Android-APK.zip .
+
+      # Create Tag and Github Release
+      - name: 👩‍💻 Create Tag and Github Release
         uses: actions/github-script@v6
+        continue-on-error: true
         with:
           script: |
             const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
@@ -277,6 +282,34 @@ jobs:
               generate_release_notes: generate_release_notes
             });
 
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release
+        uses: actions/github-script@v6
+        continue-on-error: true
+        with:
+          script: |
+            const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
+
+            const version_string = "v" + stdout.trim();
+
+            const release = await github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: version_string
+            });
+
+            const name = "CatgirlEngine-Android-APK.zip";
+            const { data } = await exec.getExecOutput("cat ${{ github.workspace }}/artifacts/CatgirlEngine-Android-APK.zip");
+
+            return github.rest.repos.uploadReleaseAsset({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              
+              release_id: release.id,
+              name: name,
+              data: data
+            });
+
       # Setup Google Play Services Config
       - name: 
         run: |
@@ -295,6 +328,7 @@ jobs:
       # Publish to Play Store
       - name: 🏬 Publish to Play Store
         working-directory: android
+        continue-on-error: true
         run: |
           bundle exec fastlane supply init --track internal
           bundle exec fastlane android internal
