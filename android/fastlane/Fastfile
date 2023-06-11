@@ -3,7 +3,7 @@ platform :android do
     setup_ci if ENV['CI']
     # gradle(task: "clean bundleRelease")
     supply(
-      aab: "../artifacts/bundle/android-release.aab",
+      aab: "../artifacts/bundle/app-release.aab",
       json_key: "google_play_service_account_config.json",
       track: "internal",
       release_status: "draft",
@@ -20,7 +20,7 @@ platform :android do
     setup_ci if ENV['CI']
     # gradle(task: "clean bundleRelease")
     supply(
-      aab: "../artifacts/bundle/android-release.aab",
+      aab: "../artifacts/bundle/app-release.aab",
       json_key: "google_play_service_account_config.json",
       track: "alpha",
       # track_promote_to: "beta",
@@ -36,7 +36,7 @@ platform :android do
     setup_ci if ENV['CI']
     # gradle(task: "clean bundleRelease")
     supply(
-      aab: "../artifacts/bundle/android-release.aab",
+      aab: "../artifacts/bundle/app-release.aab",
       json_key: "google_play_service_account_config.json",
       track: "beta",
       # track_promote_to: "production",
@@ -52,7 +52,7 @@ platform :android do
     setup_ci if ENV['CI']
     # gradle(task: "clean bundleRelease")
     supply(
-      aab: "../artifacts/bundle/android-release.aab",
+      aab: "../artifacts/bundle/app-release.aab",
       json_key: "google_play_service_account_config.json",
       track: "production",
       skip_upload_aab: false,
