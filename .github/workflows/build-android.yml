@@ -244,7 +244,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"", options);
+            const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
 
             const version_string = "v" + output;
             const name = "Catgirl Engine " + version_string;
