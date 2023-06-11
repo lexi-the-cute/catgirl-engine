@@ -290,7 +290,7 @@ jobs:
         run: |
           # https://docs.fastlane.tools/getting-started/android/screenshots/
           sudo gem install bundler -NV  # No documentation, yes verbose
-          bundle install
+          sudo bundle install
 
       # Publish to Play Store
       - name: 🏬 Publish to Play Store
