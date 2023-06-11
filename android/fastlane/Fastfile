@@ -1,0 +1,66 @@
+platform :android do
+  lane :internal do
+    setup_ci if ENV['CI']
+    # gradle(task: "clean bundleRelease")
+    supply(
+      aab: "../artifacts/bundle/android-release.aab",
+      json_key: "google_play_service_account_config.json",
+      track: "internal",
+      release_status: "draft",
+      # track_promote_to: "alpha",
+      skip_upload_aab: false,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+  lane :alpha do
+    setup_ci if ENV['CI']
+    # gradle(task: "clean bundleRelease")
+    supply(
+      aab: "../artifacts/bundle/android-release.aab",
+      json_key: "google_play_service_account_config.json",
+      track: "alpha",
+      # track_promote_to: "beta",
+      skip_upload_aab: false,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+  lane :beta do
+    setup_ci if ENV['CI']
+    # gradle(task: "clean bundleRelease")
+    supply(
+      aab: "../artifacts/bundle/android-release.aab",
+      json_key: "google_play_service_account_config.json",
+      track: "beta",
+      # track_promote_to: "production",
+      skip_upload_aab: false,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+  lane :production do
+    setup_ci if ENV['CI']
+    # gradle(task: "clean bundleRelease")
+    supply(
+      aab: "../artifacts/bundle/android-release.aab",
+      json_key: "google_play_service_account_config.json",
+      track: "production",
+      skip_upload_aab: false,
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+  end
+end
