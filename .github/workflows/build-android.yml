@@ -289,7 +289,8 @@ jobs:
         working-directory: android
         run: |
           # https://docs.fastlane.tools/getting-started/android/screenshots/
-          sudo gem install fastlane -NV  # No documentation, yes verbose
+          sudo gem install bundler -NV  # No documentation, yes verbose
+          bundle install
 
       # Publish to Play Store
       - name: 🏬 Publish to Play Store
