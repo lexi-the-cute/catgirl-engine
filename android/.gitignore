@@ -34,3 +34,9 @@ google-services.json
 
 jniLibs/
 obj/
+
+# Fastlane
+google_play_service_account_config.json
+/fastlane/README.md
+/fastlane/report.xml
+/fastlane/metadata
