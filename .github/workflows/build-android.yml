@@ -284,7 +284,7 @@ jobs:
       - name: 🏬 Publish to Play Store
         working-directory: android
         run: |
-          # fastlane supply init --track internal
+          bundle exec fastlane supply init --track internal
           bundle exec fastlane android internal
 
       # Install Butler (For Uploading to Itch.io)
