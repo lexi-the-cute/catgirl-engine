@@ -288,6 +288,7 @@ jobs:
         continue-on-error: true
         with:
           script: |
+            const fs = require("fs");
             const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
 
             const version_string = "v" + stdout.trim();
@@ -299,19 +300,18 @@ jobs:
             });
 
             const name = "CatgirlEngine-Android-APK.zip";
-            const { data } = await exec.getExecOutput("cat ${{ github.workspace }}/artifacts/CatgirlEngine-Android-APK.zip");
+            const data = await fs.readFileSync("${{ github.workspace }}/artifacts/CatgirlEngine-Android-APK.zip");
 
             return github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              
               release_id: release.id,
               name: name,
               data: data
             });
 
       # Setup Google Play Services Config
-      - name: 
+      - name: Setup Google Play Services Config
         run: |
           echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_CONFIG }}" > ${{ github.workspace }}/android/google_play_service_account_config.json.base64
           base64 -d -i ${{ github.workspace }}/android/google_play_service_account_config.json.base64 > ${{ github.workspace }}/android/google_play_service_account_config.json

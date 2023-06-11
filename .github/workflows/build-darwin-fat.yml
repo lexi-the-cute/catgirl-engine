@@ -320,6 +320,7 @@ jobs:
         continue-on-error: true
         with:
           script: |
+            const fs = require("fs");
             const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
 
             const version_string = "v" + stdout.trim();
@@ -331,12 +332,11 @@ jobs:
             });
 
             const name = "catgirl-engine.dmg";
-            const { data } = await exec.getExecOutput("cat ${{ github.workspace }}/artifacts/osx-darwin-fat/catgirl-engine.dmg");
+            const data = await fs.readFileSync("${{ github.workspace }}/artifacts/osx-darwin-fat/catgirl-engine.dmg");
 
             return github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              
               release_id: release.id,
               name: name,
               data: data
