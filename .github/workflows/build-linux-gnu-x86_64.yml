@@ -159,6 +159,10 @@ jobs:
           name: CatgirlEngine-Linux-x86_64-GNU-Deb
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
 
+      # Rename Deb (Release)
+      - name: Rename Deb (Release)
+        run: mv ${{ github.workspace }}/artifacts/linux-gnu-x86_64/*.deb ${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine_amd64.deb
+
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
         uses: actions/github-script@v6
@@ -193,6 +197,7 @@ jobs:
         continue-on-error: true
         with:
           script: |
+            const fs = require("fs");
             const { stdout } = await exec.getExecOutput("/bin/bash -c \"cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'\\\"' -f2\"");
 
             const version_string = "v" + stdout.trim();
@@ -204,12 +209,11 @@ jobs:
             });
 
             const name = "catgirl-engine_amd64.deb";
-            const { data } = await exec.getExecOutput("cat ${{ github.workspace }}/artifacts/linux-gnu-x86_64/*.deb");
+            const data = await fs.readFileSync("${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine_amd64.deb");
 
             return github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              
               release_id: release.id,
               name: name,
               data: data
