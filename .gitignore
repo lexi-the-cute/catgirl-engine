@@ -2,6 +2,3 @@
 /build
 /tools
 /.cargo/config.toml
-/android/google_play_service_account_config.json
-/android/fastlane/README.md
-/android/fastlane/report.xml
