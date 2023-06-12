@@ -132,6 +132,7 @@ jobs:
     environment: Linux
     env:
       BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -186,7 +187,7 @@ jobs:
             -f body="$BODY" \
             -F draft="$DRAFT" \
             -F prerelease="$PRERELEASE" \
-            -F generate_release_notes="$GENERATE_RELEASE_NOTES"
+            -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
       
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release
