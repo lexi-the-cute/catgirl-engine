@@ -280,6 +280,17 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      # Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install jq  # coreutils gitsome
+
       # Download Engine
       - name: Download Engine (Release)
         uses: actions/download-artifact@v3
@@ -322,7 +333,7 @@ jobs:
           export NAME="catgirl-engine.dmg"
           export PATH="${{ github.workspace }}/artifacts/osx-darwin-fat/catgirl-engine.dmg"
 
-          export RELEASE_ID=`gh api \
+          export RELEASE_ID=`/usr/bin/gh api \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/releases/tags/v$VERSION | jq .id | tr -d '\n'`

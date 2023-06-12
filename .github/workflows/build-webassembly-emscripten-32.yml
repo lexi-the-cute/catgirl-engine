@@ -172,7 +172,17 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # TODO: Upload to Itch.io (and Github Releases) On Reading "Publish" in Commit Message
+      # Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install jq  # coreutils gitsome
+
       # Download Engine
       - name: Download Engine (Release)
         uses: actions/download-artifact@v3
