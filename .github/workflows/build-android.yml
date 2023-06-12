@@ -235,7 +235,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install ruby-bundler jq
+            sudo apt -y install ruby-bundler jq  # coreutils gitsome
 
       # Download APK
       - name: Download APK (Release)
