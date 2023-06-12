@@ -208,11 +208,7 @@ jobs:
 
           export NAME="catgirl-engine_amd64.deb"
           export PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine_amd64.deb"
-
-          export RELEASE_ID=`gh api \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/releases/tags/v$VERSION | jq .id | tr -d '\n'`
+          export RELEASE_ID=`gh api -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28" /repos/${{ github.repository }}/releases/tags/v$VERSION | jq .id | tr -d '\n'`
 
           gh api --method POST \
             -H "Accept: application/vnd.github+json" \
