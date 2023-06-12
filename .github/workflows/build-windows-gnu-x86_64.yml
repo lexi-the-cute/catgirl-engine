@@ -175,24 +175,23 @@ jobs:
           export PRERELEASE="true"
           export GENERATE_RELEASE_NOTES="true"
 
-          # export BRANCH=`git branch --show-current --format="%s" | tr -d '\n'`
-          export COMMIT=`git log -1 --oneline | cut -d' ' -f1 | tr -d '\n'`
+          export BRANCH=`git branch --show-current --format="%s" | tr -d '\n'`
+          # export COMMIT=`git log -1 --oneline | cut -d' ' -f1 | tr -d '\n'`
 
           gh api --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/releases \
-            -f tag_name='v$VERSION' \
-            -f target_commitish='$COMMIT' \
-            -f name='$VERSION_STRING' \
-            -f body='$BODY' \
-            -F draft=$DRAFT \
-            -F prerelease=$PRERELEASE \
-            -F generate_release_notes=$GENERATE_RELEASE_NOTES
+            -f tag_name="v$VERSION" \
+            -f target_commitish="$BRANCH" \
+            -f name="$VERSION_STRING" \
+            -f body="$BODY" \
+            -F draft="$DRAFT" \
+            -F prerelease="$PRERELEASE" \
+            -F generate_release_notes="$GENERATE_RELEASE_NOTES"
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release
-        uses: actions/github-script@v6
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export VERSION_STRING="Catgirl Engine v$VERSION"
@@ -209,7 +208,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/releases/$RELEASE_ID/assets?name=$NAME \
-            -f '@$PATH'
+            -f "@$PATH"
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)
