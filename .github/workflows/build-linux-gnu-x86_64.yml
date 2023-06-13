@@ -209,9 +209,11 @@ jobs:
           export NAME="catgirl-engine_amd64.deb"
           export PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine_amd64.deb"
 
-          # There's some really weird bug where the below line causes command not found errors in relation to 
-          gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /repos/${{ github.repository }}/releases/tags/v$VERSION | jq '.id' | tr -d '\n' > /tmp/release_id.txt
-          export RELEASE=`cat /tmp/release_id.txt`
+          gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' '/repos/${{ github.repository }}/releases/tags/v$VERSION'
+          gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' '/repos/${{ github.repository }}/releases/tags/v$VERSION' | jq '.id'
+          gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' '/repos/${{ github.repository }}/releases/tags/v$VERSION' | jq '.id' | tr -d '\n'
+
+          export RELEASE=`gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' '/repos/${{ github.repository }}/releases/tags/v$VERSION' | jq '.id' | tr -d '\n'`
 
           gh api --method POST \
             -H "Accept: application/vnd.github+json" \
