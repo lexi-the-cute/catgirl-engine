@@ -208,7 +208,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Windows-x86_64.zip"
           export DISPLAY_LABEL="x86_64 Windows Zip"
 
-          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)

@@ -331,7 +331,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/osx-darwin-fat/catgirl-engine.dmg"
           export DISPLAY_LABEL="OSX DMG"
 
-          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
           
 
 

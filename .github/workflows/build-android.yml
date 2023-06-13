@@ -288,7 +288,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android-APK.zip"
           export DISPLAY_LABEL="Android APK"
 
-          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
 
       # Setup Google Play Services Config
       - name: Setup Google Play Services Config
