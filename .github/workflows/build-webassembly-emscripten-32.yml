@@ -192,7 +192,7 @@ jobs:
 
       # Recreate Emscripten Zip
       - name: Recreate Emscripten Zip (Release)
-        run: cd ${{ github.workspace }}/artifacts/webassembly-emscripten-32; zip -9 -y -r ../CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip.zip .
+        run: cd ${{ github.workspace }}/artifacts/webassembly-emscripten-32; zip -9 -y -r ../CatgirlEngine-WebAssembly-Emscripten-32-bit.zip .
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -224,17 +224,11 @@ jobs:
       - name: 👩‍💻 Publish to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export VERSION_STRING="Catgirl Engine v$VERSION"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-WebAssembly-Emscripten-32-bit.zip"
+          export DISPLAY_LABEL="32 Bit Emscripten WebAssembly Zip"
 
-          export NAME="CatgirlEngine-WebAssembly-Emscripten-32-bit.zip"
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-WebAssembly-Emscripten-32-Zip.zip"
-          export RELEASE=`gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /repos/${{ github.repository }}/releases/tags/v$VERSION | jq '.id' | tr -d '\n'`
-
-          gh api --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/releases/$RELEASE/assets?name=$NAME \
-            -f "@$ARTIFACT_PATH"
+          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)
