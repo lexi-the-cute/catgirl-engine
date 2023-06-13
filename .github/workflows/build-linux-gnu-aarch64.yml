@@ -207,7 +207,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-aarch64/catgirl-engine_arm64.deb"
           export DISPLAY_LABEL="arm64 Raspberry Pi Deb"
 
-          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)

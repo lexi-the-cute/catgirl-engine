@@ -227,7 +227,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-WebAssembly-Emscripten-32-bit.zip"
           export DISPLAY_LABEL="32 Bit Emscripten WebAssembly Zip"
 
-          gh release upload v$VERSION $ARTIFACT_PATH#$DISPLAY_LABEL -R alexisart/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
           
 
       # Install Butler (For Uploading to Itch.io)
