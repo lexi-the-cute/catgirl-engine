@@ -1,10 +1,12 @@
 #include <emscripten/emscripten.h>
 #include <emscripten/html5.h>
 
+// This runs from the calling thread.
+// https://emscripten.org/docs/api_reference/html5.h.html
 EMSCRIPTEN_RESULT create_webgl_context() {
     EmscriptenWebGLContextAttributes attr;
-    // attr.explicitSwapControl = 0;
-    // attr.renderViaOffscreenBackBuffer = 0;
+    // attr.explicitSwapControl = 1;
+    // attr.renderViaOffscreenBackBuffer = 1;
     attr.proxyContextToMainThread = EMSCRIPTEN_WEBGL_CONTEXT_PROXY_FALLBACK;
 
     emscripten_webgl_init_context_attributes(&attr);
