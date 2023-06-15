@@ -7,7 +7,7 @@ use std::sync::mpsc::{Sender, Receiver};
 use std::thread;
 use std::time::Duration;
 
-use sdl2::controller::{Button};
+use sdl2::controller::Button;
 use sdl2::rect::{Point, Rect};
 use sdl2::render::{Canvas, TextureCreator, Texture};
 
@@ -19,6 +19,7 @@ use sdl2::image::{self, LoadTexture, InitFlag, Sdl2ImageContext};
 use sdl2::keyboard::Keycode;
 
 use crate::game::entity::player::{Player, Direction};
+use crate::utility::{browser, emscripten};
 
 /// cbindgen:ignore
 #[allow(unused_doc_comments)]
@@ -96,7 +97,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
     #[cfg(all(target_family="wasm", target_os="emscripten"))] {
         unsafe {
             let webgl_context_result: i32 = create_webgl_context();
-            debug!("WebGL Context Created With Value '{:?}'...", webgl_context_result);
+            debug!("WebGL Context Created With Value {:?}...", emscripten::read_emscripten_result(webgl_context_result));
         }
     }
 
@@ -146,6 +147,9 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         player,
         player_movement_speed: 20
     };
+
+    #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
+    browser::run_script("console.debug('GL.currentContext: ' + GL.currentContext);");
 
     debug!("Starting Render Loop...");
     /*
