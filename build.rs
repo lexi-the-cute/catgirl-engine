@@ -13,6 +13,7 @@ fn main() {
     if target_family.contains("wasm") && target_os == "emscripten" {
         #[cfg(feature = "browser")]
         add_browser_support();
+
         add_emscripten_support();
         create_emscripten_wasm();
     }

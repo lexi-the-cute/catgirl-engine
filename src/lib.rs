@@ -5,6 +5,7 @@ use sdl2::libc;
 mod game;
 mod android;
 mod loggers;
+mod utility;
 
 // Run as Library (e.g. Android and WebAssembly)
 #[no_mangle]

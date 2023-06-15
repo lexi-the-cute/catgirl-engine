@@ -223,10 +223,10 @@ fn setup_logger() {
                 .with_tag("CatgirlEngine")
     );
 
-    #[cfg(all(target_family="wasm", feature="browser"))]
+    #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
     crate::loggers::browser::init().unwrap();
 
-    #[cfg(not(any(target_os="android",target_family="wasm")))]
+    #[cfg(not(any(target_os="android", target_family="wasm")))]
     // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
     pretty_env_logger::init();
 }

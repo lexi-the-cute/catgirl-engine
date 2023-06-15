@@ -1,5 +1,9 @@
 use std::os::raw::c_char;
-use log::{Record, Level, Metadata, SetLoggerError};
+use log::{Record, Level, Metadata};
+
+#[allow(unused_imports)]
+#[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
+use log::SetLoggerError;
 
 struct ConsoleLogger;
 
@@ -38,6 +42,7 @@ impl log::Log for ConsoleLogger {
 }
 
 #[allow(dead_code)]
+#[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
 pub fn init() -> Result<(), SetLoggerError> {
     log::set_logger(&ConsoleLogger)?;
     log::set_max_level(log::LevelFilter::Trace);
