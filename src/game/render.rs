@@ -36,6 +36,9 @@ extern "C" {
 
     #[cfg(all(target_family="wasm", target_os="emscripten"))]
     fn create_webgl_context() -> i32;  // It's actually a EMSCRIPTEN_RESULT from <emscripten/html5.h>
+    
+    #[cfg(all(target_family="wasm", target_os="emscripten"))]
+    fn emscripten_webgl_get_current_context() -> i32; // It's actually a EMSCRIPTEN_WEBGL_CONTEXT_HANDLE from <emscripten/html5_webgl.h>
 }
 
 #[repr(C)]
@@ -98,8 +101,15 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         unsafe {
             let webgl_context_result: i32 = create_webgl_context();
             debug!("WebGL Context Created With Value {:?}...", emscripten::read_emscripten_result(webgl_context_result));
+
+            // In testing, this produces the same int as `GL.currentContext`
+            let webgl_context: i32 = emscripten_webgl_get_current_context();
+            debug!("WebGL Context '{:?}'...", webgl_context);
         }
     }
+
+    #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
+    browser::run_script("console.debug('GL.currentContext: ' + GL.currentContext);");
 
     let mut canvas: Canvas<Window> = window.into_canvas()
                                             .accelerated()
@@ -147,9 +157,6 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
         player,
         player_movement_speed: 20
     };
-
-    #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
-    browser::run_script("console.debug('GL.currentContext: ' + GL.currentContext);");
 
     debug!("Starting Render Loop...");
     /*
