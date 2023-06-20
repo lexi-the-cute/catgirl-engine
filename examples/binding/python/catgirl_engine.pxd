@@ -1,1 +1,0 @@
-../../../target/binding/catgirl_engine.pxd
