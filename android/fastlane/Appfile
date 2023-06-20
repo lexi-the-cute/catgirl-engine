@@ -1,2 +1,0 @@
-package_name("land.catgirl.engine")
-json_key_file("google_play_service_account_config.json")

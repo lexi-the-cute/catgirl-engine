@@ -1,88 +1,29 @@
 [package]
 name = "catgirl-engine"
-description = "A game engine for cool moddability and procedurally generated data"
-license = "Zlib"
-version = "0.3.0"  # https://semver.org/ (Do not use 1.0.0 until first production release)
-categories = ["game-engines"]
-repository = "https://github.com/alexisart/CatgirlEngine"
-# documentation = "https://docs.catgirl.land/engine"  # These docs don't exist yet at time of writing
-authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
+version = "0.4.0"
 edition = "2021"
 
-[lib]
-name = "main"
-crate-type = ["cdylib"]
-
-[profile.release]
-lto = true
-debug = true
-#panic = "abort"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
 default = ["browser", "client", "server"]
 browser = []
-client = []
+client = ["dep:winit"]
 server = []
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[build-dependencies]
+cc = "1.0.79"
+cbindgen = "0.24.5"
 
 [dependencies]
-specs = "0.18.0"  # You can use * to tell Rust to pick a version
-rand = "0.8.5"
-rayon = "1.7.0"
-log = "0.4.18"
+log = "0.4.19"
+winit = { version="0.28.6", optional=true }
 
-[dependencies.sdl2]
-version = "0.35.2"
-# git = "https://github.com/alexisart/rust-sdl2"
-# branch = "master"
-default-features = false
-features = ["image", "ttf"]  # mixer, hidapi at https://github.com/Rust-SDL2/rust-sdl2/blob/27cd1fd67c811e06b9d997a77bb6089a1b65070d/src/sdl2/lib.rs#L86
+[target.'cfg(unix)'.build-dependencies]
+cargo-deb = "1.44.0"
 
 [target.'cfg(any(unix,windows))'.dependencies]
 pretty_env_logger = "0.5.0"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "0.13.1"
-
-[build-dependencies]
-cc = "1.0.79"
-cbindgen = "0.24.5"
-
-[target.'cfg(unix)'.build-dependencies]
-cargo-deb = "1.43.1"
-
-[package.metadata.deb]
-name = "catgirl-engine"
-provides = "catgirl-engine"
-replaces = "catgirl-engine, catgirl-engine-server, catgirl-engine-client"
-section = "games"
-preserve-symlinks = true
-# This depends and assets is for packages which I don't include the dependencies with the engine
-depends = "$auto"
-assets = [
-    ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
-    ["assets/*", "/var/games/catgirl-engine/assets", "644"],
-]
-
-[package.metadata.deb.variants.server]
-name = "catgirl-engine-server"
-features = ["server"]
-default-features = false
-
-[package.metadata.deb.variants.gnu]
-name = "catgirl-engine"
-depends = "$auto, libsdl2-2.0-0 (>= 2.0.12)"  # SDL_Metal_DestroyView
-
-[package.metadata.deb.variants.raspberrypios]
-name = "catgirl-engine"
-depends = "$auto, libsdl2-2.0-0 (>= 2.0.12), libsdl2-image-2.0-0 (>= 2.0.5), libsdl2-ttf-2.0-0 (>= 2.0.15)"
-
-[package.metadata.deb.variants.musl]
-name = "catgirl-engine-musl"
-depends = "musl (>= 1.2.0)"
-assets = [
-    ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
-    ["target/libs/*", "/lib/x86_64-linux-musl/catgirl-engine", "755"],
-    ["assets/*", "/var/games/catgirl-engine/assets", "644"],
-]

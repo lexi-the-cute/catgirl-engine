@@ -1,8 +1,8 @@
 #[macro_use] extern crate log;
 
 mod game;
-mod loggers;
-mod utility;
+mod server;
+mod client;
 
 // Run as Executable (e.g. Linux)
 pub fn main() {

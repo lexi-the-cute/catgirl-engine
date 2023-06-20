@@ -1,58 +1,23 @@
-#![allow(unused_imports)]
-
-use std::thread;
-use std::thread::JoinHandle;
-use std::sync::{Mutex, OnceLock, MutexGuard};
 use std::sync::mpsc::{self, Sender, Receiver};
+use std::thread::{JoinHandle, Builder};
 
-mod physics;
-mod render;
-mod entity;
+use winit::event::{Event, WindowEvent};
+use winit::event_loop::{EventLoopBuilder, EventLoop};
+use winit::window::{WindowBuilder, Window};
 
-static LOOPSTRUCT: OnceLock<MainLoopStruct> = OnceLock::new();
+use crate::{client, server};
 
-/// cbindgen:ignore
-#[allow(unused_doc_comments)]
-extern "C" {
-    // emscripten_set_main_loop_arg(em_arg_callback_func func, void *arg, int fps, int simulate_infinite_loop)
-    #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    fn emscripten_set_main_loop(
-        func: extern "C" fn() -> bool,
-        fps: std::os::raw::c_int,
-        simulate_infinite_loop: std::os::raw::c_int
-    );
+struct ThreadsStruct {
+    #[cfg(feature="client")]
+    client: JoinHandle<()>,
+
+    #[cfg(feature="server")]
+    server: JoinHandle<()>
 }
 
-#[derive(Debug)]
-#[repr(C)]
-struct MainLoopStruct {
-    // Physics Messages Send
-    #[cfg(feature="server")]
-    sptx: Mutex<Sender<()>>,  // Send To Physics Thread From Main Thread
-    // sprx: Mutex<Receiver<()>>,  // Receive From Main Thread In Physics Thread
-
-    // Render Messages Send
-    #[cfg(feature="client")]
-    srtx: Mutex<Sender<()>>,  // Send To Render Thread From Main Thread
-    // srrx: Mutex<Receiver<()>>,  // Receive From Main Thread In Render Thread
-
-    // Physics Messages Receive
-    // rptx: Mutex<Sender<()>>,  // Send To Main Thread From Physics Thread
-    #[cfg(feature="server")]
-    rprx: Mutex<Receiver<()>>,  // Receive From Physics Thread In Main Thread
-
-    // Render Messages Receive
-    // rrtx: Mutex<Sender<()>>,  // Send To Main Thread From Render Thread
-    #[cfg(feature="client")]
-    rrrx: Mutex<Receiver<()>>,  // Receive From Render Thread In Main Thread
-
-    // Server Thread (Physics)
-    #[cfg(feature="server")]
-    physics_thread: Mutex<JoinHandle<()>>,
-
-    // Client Thread (Render)
-    #[cfg(feature="client")]
-    render_thread: Mutex<JoinHandle<()>>
+struct ChannelStruct {
+    sender: Sender<()>,
+    receiver: Receiver<()>
 }
 
 pub fn start() {
@@ -83,81 +48,65 @@ pub fn start() {
 
     // Treat As If Physical Server (Player Movement)
     #[cfg(feature="server")]
-    let physics_thread: JoinHandle<()> = thread::Builder::new().name("physics".to_string())
-                    .spawn(|| physics::start(rptx, sprx)).unwrap();  // Server
+    let physics_thread: JoinHandle<()> = Builder::new().name("physics".to_string())
+                    .spawn(|| server::start(rptx, sprx)).unwrap();  // Physics
 
     // Treat As If Physical Client (User Input)
     #[cfg(feature="client")]
-    let render_thread: JoinHandle<()> = thread::Builder::new().name("render".to_string())
-                    .spawn(|| render::start(rrtx, srrx)).unwrap();  // Client
-
-    let loopstruct: MainLoopStruct = MainLoopStruct {
-        #[cfg(feature="server")]
-        sptx: sptx.into(),
-
-        #[cfg(feature="server")]
-        rprx: rprx.into(),
-
-        #[cfg(feature="client")]
-        srtx: srtx.into(),
-        
-        #[cfg(feature="client")]
-        rrrx: rrrx.into(),
-
-        #[cfg(feature="server")]
-        physics_thread: physics_thread.into(),
-
-        #[cfg(feature="client")]
-        render_thread: render_thread.into()
-    };
-
-    LOOPSTRUCT.set(loopstruct).unwrap();
+    let render_thread: JoinHandle<()> = Builder::new().name("render".to_string())
+                    .spawn(|| client::start(rrtx, srrx)).unwrap();  // Render
 
     debug!("Starting Main Loop...");
-    /*
-     * Intentionally not targetting feature "browser" here
-     *   as emscripten is multi-platform.
-     */
-    #[cfg(all(target_family="wasm", target_os="emscripten"))]
-    unsafe {
-        emscripten_set_main_loop(main_loop, 0, 1);
-    }
-    
-    #[cfg(not(all(target_family="wasm", target_os="emscripten")))]
-    loop {
-        let exit_loop: bool = main_loop();
-        if exit_loop {
-            // Ending Loop
-            break;
-        }
-    }
-    debug!("Exiting Main Loop...");
+
+    let threads: ThreadsStruct = ThreadsStruct {
+        #[cfg(feature="client")]
+        client: render_thread,
+
+        #[cfg(feature="server")]
+        server: physics_thread
+    };
+
+    let server_channels: ChannelStruct = ChannelStruct {
+        sender: srtx,
+        receiver: rprx
+    };
+
+    let client_channels: ChannelStruct = ChannelStruct {
+        sender: sptx,
+        receiver: rrrx
+    };
+
+    #[cfg(not(feature="client"))]
+    headless_loop(threads, server_channels, client_channels);
+
+    #[cfg(feature="client")]
+    gui_loop(threads, server_channels, client_channels);
 }
 
 #[cfg(any(feature="server", feature="client"))]
-fn is_finished(loopstruct: &MainLoopStruct) -> bool {
+fn is_finished(threads: &ThreadsStruct) -> bool {
     #[cfg(feature="server")]
-    let physics_thread: MutexGuard<JoinHandle<()>> = loopstruct.physics_thread.lock().unwrap();
+    let server_thread: &JoinHandle<()> = &threads.server;
 
     #[cfg(feature="client")]
-    let render_thread: MutexGuard<JoinHandle<()>> = loopstruct.render_thread.lock().unwrap();
+    let client_thread: &JoinHandle<()> = &threads.client;
 
     #[cfg(all(feature="server", feature="client"))]
-    return physics_thread.is_finished() && render_thread.is_finished();
+    return server_thread.is_finished() && client_thread.is_finished();
 
     #[cfg(all(not(feature="client"), feature="server"))]
-    return physics_thread.is_finished();
+    return server_thread.is_finished();
 
     #[cfg(all(not(feature="server"), feature="client"))]
-    return render_thread.is_finished();
+    return client_thread.is_finished();
 }
 
 #[cfg(feature="server")]
-fn is_physics_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
-    let receiver: MutexGuard<Receiver<()>> = loopstruct.rprx.lock().unwrap();
+fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
+    let receiver: &Receiver<()> = &channels.receiver;
 
     #[cfg(feature="client")]
-    let sender: MutexGuard<Sender<()>> = loopstruct.srtx.lock().unwrap();
+    let sender: &Sender<()> = &channels.sender;
 
     match receiver.try_recv() {
         Ok(_) => {
@@ -173,11 +122,11 @@ fn is_physics_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
 }
 
 #[cfg(feature="client")]
-fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
-    let receiver: MutexGuard<Receiver<()>> = loopstruct.rrrx.lock().unwrap();
+fn is_render_thread_terminated(channels: &ChannelStruct) -> bool {
+    let receiver: &Receiver<()> = &channels.receiver;
 
     #[cfg(feature="server")]
-    let sender: MutexGuard<Sender<()>> = loopstruct.sptx.lock().unwrap();
+    let sender: &Sender<()> = &channels.sender;
 
     match receiver.try_recv() {
         Ok(_) => {
@@ -192,27 +141,87 @@ fn is_render_thread_terminated(loopstruct: &MainLoopStruct) -> bool {
     }
 }
 
-extern "C" fn main_loop() -> bool {
-    #[allow(unused_variables)]
-    let loopstruct: &MainLoopStruct = LOOPSTRUCT.get().unwrap();
+#[allow(dead_code)]
+fn headless_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
+    loop {
+        #[cfg(any(feature="server", feature="client"))]
+        if is_finished(&threads) {
+            info!("Stopping Game...");
+            break;
+        }
 
-    #[cfg(any(feature="server", feature="client"))]
-    if is_finished(loopstruct) {
-        info!("Stopping Game...");
-        return true;
+        #[cfg(feature="server")]
+        if is_physics_thread_terminated(&server_channels) {
+            debug!("Physics Thread Terminated...");
+        }
+    
+        #[cfg(feature="client")]
+        if is_render_thread_terminated(&client_channels) {
+            debug!("Render Thread Terminated...");
+        }
     }
+}
 
-    #[cfg(feature="server")]
-    if is_physics_thread_terminated(loopstruct) {
-        debug!("Physics Thread Terminated...");
-    }
+fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
+    let event_loop: EventLoop<()> = EventLoopBuilder::new().build();
 
-    #[cfg(feature="client")]
-    if is_render_thread_terminated(loopstruct) {
-        debug!("Render Thread Terminated...");
-    }
+    let builder: WindowBuilder = WindowBuilder::new();
+    let window: Window = builder.build(&event_loop).expect("Could not create window!");
 
-    return false;
+    event_loop.run(move |event, _, control_flow| {
+        // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
+        // dispatched any events. This is ideal for games and similar applications.
+        control_flow.set_poll();
+    
+        // ControlFlow::Wait pauses the event loop if no events are available to process.
+        // This is ideal for non-game applications that only update in response to user
+        // input, and uses significantly less power/CPU time than ControlFlow::Poll.
+        control_flow.set_wait();
+    
+        #[cfg(any(feature="server", feature="client"))]
+        if is_finished(&threads) {
+            info!("Stopping Game...");
+            control_flow.set_exit_with_code(0);
+        }
+
+        #[cfg(feature="server")]
+        if is_physics_thread_terminated(&server_channels) {
+            debug!("Physics Thread Terminated...");
+        }
+    
+        #[cfg(feature="client")]
+        if is_render_thread_terminated(&client_channels) {
+            debug!("Render Thread Terminated...");
+        }
+
+        match event {
+            Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            } => {
+                println!("The close button was pressed; stopping");
+                control_flow.set_exit();
+            },
+            Event::MainEventsCleared => {
+                // Application update code.
+    
+                // Queue a RedrawRequested event.
+                //
+                // You only need to call this if you've determined that you need to redraw, in
+                // applications which do not always need to. Applications that redraw continuously
+                // can just render here instead.
+                window.request_redraw();
+            },
+            Event::RedrawRequested(_) => {
+                // Redraw the application.
+                //
+                // It's preferable for applications that do not render continuously to render in
+                // this event rather than in MainEventsCleared, since rendering in here allows
+                // the program to gracefully handle redraws requested by the OS.
+            },
+            _ => ()
+        }
+    });
 }
 
 fn setup_logger() {
