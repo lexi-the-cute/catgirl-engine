@@ -1,11 +1,20 @@
-use std::sync::mpsc::{self, Sender, Receiver};
+use std::sync::mpsc::{self, Sender, Receiver, SendError};
 use std::thread::{JoinHandle, Builder};
 
-use winit::event::{Event, WindowEvent};
+#[cfg(feature="client")]
+use winit::event::{Event, WindowEvent, KeyboardInput, VirtualKeyCode};
+
+#[cfg(feature="client")]
 use winit::event_loop::{EventLoopBuilder, EventLoop};
+
+#[cfg(feature="client")]
 use winit::window::{WindowBuilder, Window};
 
-use crate::{client, server};
+#[cfg(feature="client")]
+use crate::client;
+
+#[cfg(feature="server")]
+use crate::server;
 
 struct ThreadsStruct {
     #[cfg(feature="client")]
@@ -16,8 +25,8 @@ struct ThreadsStruct {
 }
 
 struct ChannelStruct {
-    sender: Sender<()>,
-    receiver: Receiver<()>
+    sender: Option<Sender<()>>,
+    receiver: Option<Receiver<()>>
 }
 
 pub fn start() {
@@ -67,13 +76,31 @@ pub fn start() {
     };
 
     let server_channels: ChannelStruct = ChannelStruct {
-        sender: srtx,
-        receiver: rprx
+        #[cfg(feature="client")]
+        sender: Some(srtx),
+
+        #[cfg(not(feature="client"))]
+        sender: None,
+
+        #[cfg(feature="server")]
+        receiver: Some(rprx),
+
+        #[cfg(not(feature="server"))]
+        receiver: None,
     };
 
     let client_channels: ChannelStruct = ChannelStruct {
-        sender: sptx,
-        receiver: rrrx
+        #[cfg(feature="server")]
+        sender: Some(sptx),
+
+        #[cfg(not(feature="server"))]
+        sender: None,
+
+        #[cfg(feature="client")]
+        receiver: Some(rrrx),
+
+        #[cfg(not(feature="client"))]
+        receiver: None,
     };
 
     #[cfg(not(feature="client"))]
@@ -103,10 +130,10 @@ fn is_finished(threads: &ThreadsStruct) -> bool {
 
 #[cfg(feature="server")]
 fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
-    let receiver: &Receiver<()> = &channels.receiver;
+    let receiver: &Receiver<()> = &channels.receiver.as_ref().unwrap();
 
     #[cfg(feature="client")]
-    let sender: &Sender<()> = &channels.sender;
+    let sender: &Sender<()> = &channels.sender.as_ref().unwrap();
 
     match receiver.try_recv() {
         Ok(_) => {
@@ -123,10 +150,10 @@ fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
 
 #[cfg(feature="client")]
 fn is_render_thread_terminated(channels: &ChannelStruct) -> bool {
-    let receiver: &Receiver<()> = &channels.receiver;
+    let receiver: &Receiver<()> = &channels.receiver.as_ref().unwrap();
 
     #[cfg(feature="server")]
-    let sender: &Sender<()> = &channels.sender;
+    let sender: &Sender<()> = &channels.sender.as_ref().unwrap();
 
     match receiver.try_recv() {
         Ok(_) => {
@@ -142,27 +169,57 @@ fn is_render_thread_terminated(channels: &ChannelStruct) -> bool {
 }
 
 #[allow(dead_code)]
+#[cfg(feature="server")]
 fn headless_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
+    let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+    ctrlc::set_handler(move || {
+        let _: Result<(), SendError<()>> = ctrlc_sender.send(());
+    }).expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
+    
     loop {
         #[cfg(any(feature="server", feature="client"))]
         if is_finished(&threads) {
-            info!("Stopping Game...");
+            info!("Stopping Headess Server...");
             break;
         }
 
         #[cfg(feature="server")]
         if is_physics_thread_terminated(&server_channels) {
             debug!("Physics Thread Terminated...");
-        }
-    
-        #[cfg(feature="client")]
-        if is_render_thread_terminated(&client_channels) {
-            debug!("Render Thread Terminated...");
+            request_exit(&server_channels, &client_channels);
         }
     }
 }
 
+#[cfg(any(feature="server", feature="client"))]
+fn request_exit(_server_channels: &ChannelStruct, _client_channels: &ChannelStruct) {
+    // Yes, it's supposed to be _client_channels under the server tag and vice versa
+
+    // Send Exit to Server (Physics) Thread
+    #[cfg(feature="server")]
+    let _: Result<(), mpsc::SendError<()>> = _client_channels.sender.as_ref().unwrap().send(());
+
+    // Send Exit to Client (Render) Thread
+    #[cfg(feature="client")]
+    let _: Result<(), mpsc::SendError<()>> = _server_channels.sender.as_ref().unwrap().send(());
+}
+
+#[cfg(feature="client")]
 fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
+    #[cfg(feature="server")]
+    let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+
+    #[cfg(feature="client")]
+    let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
+
+    ctrlc::set_handler(move || {
+        #[cfg(feature="server")]
+        let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
+
+        #[cfg(feature="client")]
+        let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
+    }).expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
+
     let event_loop: EventLoop<()> = EventLoopBuilder::new().build();
 
     let builder: WindowBuilder = WindowBuilder::new();
@@ -173,10 +230,11 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
         // dispatched any events. This is ideal for games and similar applications.
         control_flow.set_poll();
     
+        // TODO: Determine if this should be selected depending on menus and pause state
         // ControlFlow::Wait pauses the event loop if no events are available to process.
         // This is ideal for non-game applications that only update in response to user
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
-        control_flow.set_wait();
+        // control_flow.set_wait();
     
         #[cfg(any(feature="server", feature="client"))]
         if is_finished(&threads) {
@@ -199,9 +257,22 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
                 event: WindowEvent::CloseRequested,
                 ..
             } => {
-                println!("The close button was pressed; stopping");
-                control_flow.set_exit();
+                debug!("The Close Button Was Pressed! Stopping...");
+                request_exit(&server_channels, &client_channels);
             },
+            Event::WindowEvent {
+                event: WindowEvent::KeyboardInput {
+                    input: KeyboardInput {
+                        virtual_keycode: Some(VirtualKeyCode::Escape),
+                        ..
+                    },
+                    ..
+                },
+                ..
+            } => {
+                debug!("The Escape Key Was Pressed! Stopping...");
+                request_exit(&server_channels, &client_channels);
+            }
             Event::MainEventsCleared => {
                 // Application update code.
     

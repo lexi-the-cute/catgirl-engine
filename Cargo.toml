@@ -16,6 +16,7 @@ cc = "1.0.79"
 cbindgen = "0.24.5"
 
 [dependencies]
+ctrlc = "3.4.0"
 log = "0.4.19"
 winit = { version="0.28.6", optional=true }
 
