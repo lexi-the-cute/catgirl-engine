@@ -29,10 +29,7 @@ struct ChannelStruct {
     receiver: Option<Receiver<()>>
 }
 
-pub fn start() {
-    // It's much easier to debug when one can see the log (logcat on Android)
-    setup_logger();
-
+pub fn start(_argc: isize, _argv: *const *const u8) -> isize {
     // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
 
@@ -108,6 +105,8 @@ pub fn start() {
 
     #[cfg(feature="client")]
     gui_loop(threads, server_channels, client_channels);
+
+    return 0;
 }
 
 #[cfg(any(feature="server", feature="client"))]
@@ -295,7 +294,7 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
     });
 }
 
-fn setup_logger() {
+pub fn setup_logger() {
     #[cfg(target_os="android")]
     android_logger::init_once(
         android_logger::Config::default()

@@ -32,7 +32,7 @@ fn run(rx: Receiver<()>) -> Result<(), String> {
             i = 0;
         }
 
-        debug!("{i}")
+        // debug!("{i}")
     }
 
     Ok(())
