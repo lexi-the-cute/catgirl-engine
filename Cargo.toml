@@ -11,14 +11,14 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-# [lib]
-# name = "main"
-# crate-type = ["cdylib"]
+[lib]
+name = "main"
+crate-type = ["cdylib"]
 
-# [profile.release]
-# lto = true
-# debug = true
-# #panic = "abort"
+[profile.release]
+lto = true
+debug = true
+#panic = "abort"
 
 [features]
 default = ["browser", "client", "server"]
