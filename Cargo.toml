@@ -1,9 +1,24 @@
 [package]
 name = "catgirl-engine"
-version = "0.4.0"
+description = "A game engine for cool moddability and procedurally generated data"
+license = "Zlib"
+version = "0.4.0"  # https://semver.org/ (Do not use 1.0.0 until first production release)
+categories = ["game-engines"]
+repository = "https://github.com/alexisart/CatgirlEngine"
+# documentation = "https://docs.catgirl.land/engine"  # These docs don't exist yet at time of writing
+authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+# [lib]
+# name = "main"
+# crate-type = ["cdylib"]
+
+# [profile.release]
+# lto = true
+# debug = true
+# #panic = "abort"
 
 [features]
 default = ["browser", "client", "server"]
@@ -28,3 +43,20 @@ pretty_env_logger = "0.5.0"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "0.13.1"
+
+[package.metadata.deb]
+name = "catgirl-engine"
+provides = "catgirl-engine"
+replaces = "catgirl-engine, catgirl-engine-server, catgirl-engine-client"
+section = "games"
+preserve-symlinks = true
+depends = "$auto"
+assets = [
+    ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
+    ["assets/*", "/var/games/catgirl-engine/assets", "644"],
+]
+
+[package.metadata.deb.variants.server]
+name = "catgirl-engine-server"
+features = ["server"]
+default-features = false

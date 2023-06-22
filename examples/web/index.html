@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8" />
+        <title>Catgirl Engine</title>
+        <!-- https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm -->
+
+        <style>
+            canvas.emscripten { border: 0px none; background-color: black; }
+        </style>
+    </head>
+    <body>
+        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
+        <script type="text/javascript">
+            /*
+             * There are many more modules which are checked in main.js.
+             * 
+             * This even includes some kind of handler command
+             * 
+             * worker.onmessage = (e) => {
+             *     var d = e['data'];
+             *     var cmd = d['cmd'];
+             *     ...
+             *     if (cmd === 'callHandler') {
+             *         Module[d['handler']](...d['args']);
+             *     }
+             *     ...
+             * }
+             */
+            var Module = {
+                onRuntimeInitialized: function() {
+                    try {
+                        // FS.mkdir('/assets');
+                        // FS.writeFile('/assets/bardo.png', "test");
+                        
+                        // var blob = new Blob(['blob data']);
+                        // FS.mkdir('/assets');
+                        // FS.mount(WORKERFS, {
+                        //     files: ["/main.data"], // Array of File objects or FileList
+                        // }, '/assets');
+                        // console.error(FS.readdir("/"));
+
+                        // console.debug(GL);
+
+                        if (crossOriginIsolated) {
+                            // SharedArrayBuffer is available
+                            _SDL_main(); // SDL_main was exported
+                        } else {
+                            console.error("Unable to use multi-threading... Not starting engine!");
+                        }
+                    } catch(exceptionVariable) {
+                        // Unwind: https://github.com/emscripten-core/emscripten/issues/11682
+                        if (exceptionVariable != "unwind") {
+                            console.error("Crash Message: '" + exceptionVariable + "'");
+                        }
+                    }
+                },
+                canvas: (function() {
+                    var canvas = document.getElementById('canvas');
+
+                    // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+                    canvas.addEventListener('webglcontextlost', function(e) {
+                            alert('WebGL context lost. You will need to reload the page.');
+                            e.preventDefault();
+                        },
+                        false
+                    );
+
+                    return canvas
+                })(),
+                print: function(...args) {
+                    console.log(args[0]);
+                },
+                printErr: function(...args) {
+                    console.error(args[0]);
+                },
+                setStatus: function(message) {
+                    // console.debug("Status: '" + message + "'");
+                },
+                onFullScreen: function(isFullscreen) {
+                    console.debug("Fullscreen: '" + isFullscreen + "'");
+                },
+                preRun: [
+                    function() {
+                        // console.debug("preRun called...");
+                    }
+                ],
+                postRun: [
+                    function() {
+                        // console.debug("postRun called...");
+                    }
+                ],
+                onExit: function(code) {
+                    console.debug("Exit Code: '" + code + "'");
+                },
+                quit: function(status, error) {
+                    if (status == 0)
+                        console.debug("Quit Status: '" + status + "' - Error: '" + error + "'");
+                    else
+                        console.error("Quit Status: '" + status + "' - Error: '" + error + "'");
+                },
+                preMainLoop: function() {
+                    // console.debug("preMainLoop called...");
+                },
+                postMainLoop: function() {
+                    // console.debug("postMainLoop called...");
+                }
+            };
+        </script>
+        <script src="/main.js"></script>
+    </body>
+</html>

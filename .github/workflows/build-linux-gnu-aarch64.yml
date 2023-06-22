@@ -1,0 +1,197 @@
+name: Build For Linux GNU aarch64 (Deb)
+run-name: ${{ github.actor }} is building for Linux GNU aarch64 (Deb)
+on: [push]
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+    environment: Linux
+    env:
+      CARGO_TERM_COLOR: always
+      WORKSPACE: ${{ github.workspace }}
+      RUST_BACKTRACE: full
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
+      # Install Rust
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
+      - name: Download Rust Installer
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+      - name: Make Rust Installer Executable
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+      - name: Install Rust
+        run: ${{ github.workspace }}/tools/rust.sh -y
+      - name: Load Cargo Environment
+        run: source "$HOME/.cargo/env"
+
+      # Toml Files Don't Take Variables, So We Have To Hardcode The File
+      - name: Setup Config.toml
+        run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
+
+      # Install Rust Nightly Toolchains
+      - name: Set Rust To The Nightly Toolchains
+        run: $HOME/.cargo/bin/rustup default nightly
+
+      # Add Build Targets
+      - name: Add aarch64 GNU Pi Build Target
+        run: $HOME/.cargo/bin/rustup target add aarch64-unknown-linux-gnu
+
+      # Install Deb Packager
+      - name: Install Deb Packager
+        run: $HOME/.cargo/bin/cargo install -j 4 cargo-deb
+
+      # Compile Program
+      - name: Build Program (Deb)
+        run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu
+
+      # Test Program
+      # - name: Test Program
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=aarch64-unknown-linux-gnu --bins --tests --benches --examples
+
+      # Display Export Directory
+      - name: Display Export Directory
+        run: ls -liallh ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian
+
+      # Upload Engine
+      - name: Upload Engine (Release)
+        uses: actions/upload-artifact@v3
+        with:
+          name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
+          path: ${{ github.workspace }}/target/aarch64-unknown-linux-gnu/debian/*.deb
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
+  Publish:
+    if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    env:
+      BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    permissions:
+      # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+      # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
+      contents: write
+    steps:
+      # Setup Build Environment
+      - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: 🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!
+        run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
+        run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      # Install Dependencies
+      - name: Install APT Packages
+        uses: nick-fields/retry@v2
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install jq  # coreutils gitsome
+
+      # Download Engine
+      - name: Download Engine (Release)
+        uses: actions/download-artifact@v3
+        with:
+          name: CatgirlEngine-Linux-aarch64-GNU-RaspberryPiOS-Deb
+          path: ${{ github.workspace }}/artifacts/linux-gnu-aarch64
+
+      # Rename Deb (Release)
+      - name: Rename Deb (Release)
+        run: mv ${{ github.workspace }}/artifacts/linux-gnu-aarch64/*.deb ${{ github.workspace }}/artifacts/linux-gnu-aarch64/catgirl-engine_arm64.deb
+
+      # Create Tag and Github Release
+      - name: 👩‍💻 Create Tag and Github Release
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export VERSION_STRING="Catgirl Engine v$VERSION"
+          export BODY="Autogenerated Release From Github Actions..."
+
+          export DRAFT="false"
+          export PRERELEASE="true"
+          export GENERATE_RELEASE_NOTES="true"
+
+          export BRANCH=`git branch --show-current --format="%s" | tr -d '\n'`
+          # export COMMIT=`git log -1 --oneline | cut -d' ' -f1 | tr -d '\n'`
+
+          gh api --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/releases \
+            -f tag_name="v$VERSION" \
+            -f target_commitish="$BRANCH" \
+            -f name="$VERSION_STRING" \
+            -f body="$BODY" \
+            -F draft="$DRAFT" \
+            -F prerelease="$PRERELEASE" \
+            -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
+      
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-aarch64/catgirl-engine_arm64.deb"
+          export DISPLAY_LABEL="arm64 Raspberry Pi Deb"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
+
+      # Install Butler (For Uploading to Itch.io)
+      - name: Install Butler (Upload to Itch.io)
+        run: |
+          # https://itch.io/docs/butler/pushing.html#channel-names
+          # Setup For Installation
+          mkdir -p ${{ github.workspace }}/tools/butler
+
+          # Install Butler
+          wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
+          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+
+      # Publish to Itch.io
+      - name: 🎮 Publish to Itch.io
+        run: |
+          # Upload App
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-aarch64 catgirlland/catgirl-engine:linux-gnu-aarch64
