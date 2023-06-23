@@ -1,6 +1,29 @@
 plugins {
-    id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+}
+
+def buildAsLibrary = project.hasProperty('BUILD_AS_LIBRARY');
+def buildAsApplication = !buildAsLibrary
+
+// ----------------------------------------
+// Read Version Info From Cargo.toml
+// ----------------------------------------
+// https://docs.oracle.com/javase/8/docs/api/java/io/File.html
+File cargoTomlLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "Cargo.toml")
+ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
+String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
+String cargoVersion = cargoVersionLine.split('"', 3)[1]
+String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
+int cargoVersionCode = Integer.parseInt(cargoVersionSplit[0]) * 1000 +
+                        Integer.parseInt(cargoVersionSplit[1]) * 100 +
+                        Integer.parseInt(cargoVersionSplit[2]) * 10
+println "Building Catgirl Engine v" + cargoVersion + " (" + cargoVersionCode + ")"
+// ----------------------------------------
+
+if (buildAsApplication) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
 }
 
 android {
@@ -8,31 +31,48 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "land.catgirl.engine"
+        if (buildAsApplication) {
+            applicationId "land.catgirl.engine"
+        }
+
         minSdk 30
         targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        versionName cargoVersion
+        versionCode cargoVersionCode
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
+            storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
+            keyAlias "key0"
+            keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     buildFeatures {
         prefab true
     }
+
     externalNativeBuild {
         cmake {
             path file('src/main/cpp/CMakeLists.txt')
@@ -42,7 +82,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
