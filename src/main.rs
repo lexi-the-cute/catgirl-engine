@@ -12,5 +12,5 @@ pub fn main(_argc: isize, _argv: *const *const u8) -> isize {
     game::setup_logger();
     debug!("Launched as binary...");
 
-    return game::start(_argc, _argv);
+    return game::launch(_argc, _argv);
 }

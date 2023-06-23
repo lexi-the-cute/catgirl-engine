@@ -1,6 +1,9 @@
 use std::sync::mpsc::{self, Sender, Receiver, SendError};
 use std::thread::{JoinHandle, Builder};
 
+#[cfg(target_os = "android")]
+use std::sync::OnceLock;
+
 #[cfg(feature="client")]
 use winit::event::{Event, WindowEvent, KeyboardInput, VirtualKeyCode};
 
@@ -10,11 +13,20 @@ use winit::event_loop::{EventLoopBuilder, EventLoop};
 #[cfg(feature="client")]
 use winit::window::{WindowBuilder, Window};
 
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
+
+#[cfg(target_os = "android")]
+use winit::platform::android::EventLoopBuilderExtAndroid;
+
 #[cfg(feature="client")]
 use crate::client;
 
 #[cfg(feature="server")]
 use crate::server;
+
+#[cfg(target_os = "android")]
+static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
 struct ThreadsStruct {
     #[cfg(feature="client")]
@@ -29,7 +41,30 @@ struct ChannelStruct {
     receiver: Option<Receiver<()>>
 }
 
-pub fn start(_argc: isize, _argv: *const *const u8) -> isize {
+pub fn launch(_argc: isize, _argv: *const *const u8) -> isize {
+    // Handle Command Line Arguments Here
+    // ...
+
+    match start() {
+        Ok(_) => {
+            return 0;
+        }
+        Err(_error) => {
+            return -1;
+        }
+    }
+}
+
+#[cfg(all(target_os="android", feature="client"))]
+pub fn start_android(app: AndroidApp) -> Result<(), String> {
+    let _app: &AndroidApp = ANDROID_APP.get_or_init(|| {
+        app
+    });
+
+    return start();
+}
+
+pub fn start() -> Result<(), String> {
     // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
 
@@ -106,7 +141,7 @@ pub fn start(_argc: isize, _argv: *const *const u8) -> isize {
     #[cfg(feature="client")]
     gui_loop(threads, server_channels, client_channels);
 
-    return 0;
+    Ok(())
 }
 
 #[cfg(any(feature="server", feature="client"))]
@@ -219,7 +254,11 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
         let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
     }).expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
 
+    #[cfg(not(target_os = "android"))]
     let event_loop: EventLoop<()> = EventLoopBuilder::new().build();
+
+    #[cfg(target_os = "android")]
+    let event_loop: EventLoop<()> = EventLoopBuilder::new().with_android_app(ANDROID_APP.get().unwrap().to_owned()).build();
 
     let builder: WindowBuilder = WindowBuilder::new();
     let window: Window = builder.build(&event_loop).expect("Could not create window!");
@@ -295,17 +334,18 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
 }
 
 pub fn setup_logger() {
-    #[cfg(target_os="android")]
-    android_logger::init_once(
-        android_logger::Config::default()
-                .with_max_level(log::LevelFilter::Trace)
-                .with_tag("CatgirlEngine")
-    );
-
-    #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
-    crate::loggers::browser::init().unwrap();
-
-    #[cfg(not(any(target_os="android", target_family="wasm")))]
-    // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
-    pretty_env_logger::init();
+    if cfg!(target_os="android") {
+        #[cfg(target_os="android")]
+        android_logger::init_once(
+            android_logger::Config::default()
+                    .with_max_level(log::LevelFilter::Trace)
+                    .with_tag("CatgirlEngine")
+        );
+    } else if cfg!(all(target_family="wasm", target_os="emscripten", feature="browser")) {
+        #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
+        crate::loggers::browser::init().unwrap();
+    } else {
+        // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
+        pretty_env_logger::init();
+    }
 }

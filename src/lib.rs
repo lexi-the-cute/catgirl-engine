@@ -2,6 +2,9 @@
 
 #[macro_use] extern crate log;
 
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
+
 use core::ffi::{c_char, c_int};
 
 mod game;
@@ -9,9 +12,7 @@ mod server;
 mod client;
 
 // Run as Library (e.g. Android and WebAssembly)
-#[start]
 #[no_mangle]
-#[allow(non_snake_case)]
 pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
@@ -20,5 +21,14 @@ pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     let _argc: isize = argc.try_into().unwrap();
     let _argv: *const *const u8 = argv as *const *const u8;
 
-    return game::start(_argc, _argv).try_into().unwrap();
+    return game::launch(_argc, _argv).try_into().unwrap();
+}
+
+#[no_mangle]
+#[cfg(all(target_os="android", feature="client"))]
+pub fn android_main(app: AndroidApp) {
+    game::setup_logger();
+    debug!("Launched as Android app...");
+
+    let _ = game::start_android(app);
 }
