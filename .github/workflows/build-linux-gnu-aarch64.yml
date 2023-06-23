@@ -35,6 +35,11 @@ jobs:
             sudo apt update
             sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "linux-rust-gnu-aarch64"
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools

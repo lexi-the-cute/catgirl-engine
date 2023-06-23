@@ -1,0 +1,25 @@
+# https://doc.rust-lang.org/cargo/reference/config.html?highlight=alias#configuration-format
+
+[target.x86_64-unknown-linux-gnu]
+linker = "/usr/bin/x86_64-linux-gnu-gcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/x86_64-linux-gnu,-rpath,/usr/lib/x86_64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
+
+[target.aarch64-unknown-linux-gnu]
+linker = "/usr/bin/aarch64-linux-gnu-gcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/aarch64-linux-gnu,-rpath,/usr/lib/aarch64-linux-gnu,-rpath-link,$WORKSPACE/target/libs"]
+
+[target.x86_64-apple-darwin]
+linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+rustflags = ["-Clink-arg=--target=x86_64-apple-macos", "-Clink-arg=-Wl,-F$WORKSPACE/build/sdk/System/Library/Frameworks,-framework,CoreAudio,-framework,CoreFoundation,-framework,CoreGraphics,-framework,ImageIO,-framework,CoreServices"]
+
+[target.aarch64-apple-darwin]
+linker = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
+rustflags = ["-Clink-arg=--target=aarch64-apple-macos", "-Clink-arg=-Wl,-F$WORKSPACE/build/sdk/System/Library/Frameworks,-framework,CoreAudio,-framework,CoreFoundation,-framework,CoreGraphics,-framework,ImageIO,-framework,CoreServices"]
+
+[target.x86_64-pc-windows-gnu]
+linker = "/usr/bin/x86_64-w64-mingw32-gcc-posix"
+rustflags = ["-L$WORKSPACE/target/libs"]
+
+[target.wasm32-unknown-emscripten]
+linker = "$WORKSPACE/tools/emsdk/upstream/emscripten/emcc"
+rustflags = ["-L$WORKSPACE/target/libs", "-Ctarget-feature=+atomics,+bulk-memory,+mutable-globals"]

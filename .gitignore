@@ -1,4 +1,5 @@
 /target
 /build
 /tools
+/gen
 /.cargo/config.toml

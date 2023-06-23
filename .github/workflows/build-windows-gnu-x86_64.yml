@@ -24,6 +24,11 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "windows-rust-gnu-x86_64"
+
       # Install Dependencies
       - name: Install APT Packages
         uses: nick-fields/retry@v2

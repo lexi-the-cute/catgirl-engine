@@ -1,0 +1,5 @@
+[app]
+name = "catgirl-engine"
+stylized-name = "Catgirl Engine"
+domain = "engine.catgirl.land"
+template-pack = "winit"
