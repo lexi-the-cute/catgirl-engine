@@ -9,8 +9,6 @@ jobs:
       ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
-      CARGO_APK_RELEASE_KEYSTORE: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
-      CARGO_APK_RELEASE_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
       CARGO_TERM_COLOR: always
     steps:
       # Setup Build Environment
@@ -80,6 +78,16 @@ jobs:
           ls -liallh /usr/local/lib/android/sdk/ndk
           cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
           ln -sf `pwd` ../current
+
+      # Create Symlink for Clang
+      - name: Create Symlink For NDK
+        working-directory: /usr/local/lib/android/sdk/ndk
+        run: |
+          export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$DESIRED_API-clang++ ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-clang++
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$DESIRED_API-clang ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-clang
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$DESIRED_API-clang++ ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-clang++
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$DESIRED_API-clang ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-clang++
 
       # Create config.toml File
       - name: Create config.toml File
