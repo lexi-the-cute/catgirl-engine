@@ -72,13 +72,13 @@ android {
     buildFeatures {
         prefab true
     }
+}
 
-    externalNativeBuild {
-        cmake {
-            path file('src/main/cpp/CMakeLists.txt')
-            version '3.22.1'
-        }
-    }
+apply plugin: "com.github.willir.rust.cargo-ndk-android"
+
+cargoNdk {
+    targets = ["arm64", "arm", "x86", "x86_64"]
+    module = ".."
 }
 
 dependencies {

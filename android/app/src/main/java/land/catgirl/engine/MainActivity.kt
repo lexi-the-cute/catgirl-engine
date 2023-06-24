@@ -1,7 +1,7 @@
 package land.catgirl.engine
 
+import android.content.res.AssetManager
 import android.os.Bundle
-import android.view.View
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.androidgamesdk.GameActivity
