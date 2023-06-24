@@ -2,6 +2,8 @@
 
 use std::sync::mpsc::{Sender, Receiver};
 
+pub mod browser;
+
 // This thread handles both rendering and input (aka the client)
 pub fn start(tx: Sender<()>, rx: Receiver<()>) {
     run(rx).map_err(|err: String| {

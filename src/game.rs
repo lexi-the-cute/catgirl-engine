@@ -1,5 +1,8 @@
-use std::sync::mpsc::{self, Sender, Receiver, SendError};
+use std::sync::mpsc::{self, Sender, Receiver};
 use std::thread::{JoinHandle, Builder};
+
+#[cfg(not(target_family = "wasm"))]
+use std::sync::mpsc::SendError;
 
 #[cfg(target_os = "android")]
 use std::sync::OnceLock;
@@ -55,6 +58,7 @@ pub fn launch(_argc: isize, _argv: *const *const u8) -> isize {
     }
 }
 
+#[allow(dead_code)]
 #[cfg(all(target_os="android", feature="client"))]
 pub fn start_android(app: AndroidApp) -> Result<(), String> {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| {
@@ -205,10 +209,12 @@ fn is_render_thread_terminated(channels: &ChannelStruct) -> bool {
 #[allow(dead_code)]
 #[cfg(feature="server")]
 fn headless_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
-    let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
-    ctrlc::set_handler(move || {
-        let _: Result<(), SendError<()>> = ctrlc_sender.send(());
-    }).expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
+    #[cfg(not(target_family = "wasm"))] {
+        let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+        ctrlc::set_handler(move || {
+            let _: Result<(), SendError<()>> = ctrlc_sender.send(());
+        }).expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
+    }
     
     loop {
         #[cfg(any(feature="server", feature="client"))]
@@ -240,19 +246,21 @@ fn request_exit(_server_channels: &ChannelStruct, _client_channels: &ChannelStru
 
 #[cfg(feature="client")]
 fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
-    #[cfg(feature="server")]
-    let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
-
-    #[cfg(feature="client")]
-    let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
-
-    ctrlc::set_handler(move || {
+    #[cfg(not(target_family = "wasm"))] {
         #[cfg(feature="server")]
-        let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
+        let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
 
         #[cfg(feature="client")]
-        let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
-    }).expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
+        let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
+
+        ctrlc::set_handler(move || {
+            #[cfg(feature="server")]
+            let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
+
+            #[cfg(feature="client")]
+            let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
+        }).expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
+    }
 
     #[cfg(not(target_os = "android"))]
     let event_loop: EventLoop<()> = EventLoopBuilder::new().build();
@@ -341,9 +349,9 @@ pub fn setup_logger() {
                     .with_max_level(log::LevelFilter::Trace)
                     .with_tag("CatgirlEngine")
         );
-    } else if cfg!(all(target_family="wasm", target_os="emscripten", feature="browser")) {
-        #[cfg(all(target_family="wasm", target_os="emscripten", feature="browser"))]
-        crate::loggers::browser::init().unwrap();
+    } else if cfg!(all(target_family="wasm", feature="browser")) {
+        #[cfg(all(target_family="wasm", feature="browser"))]
+        crate::client::browser::init().unwrap();
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
