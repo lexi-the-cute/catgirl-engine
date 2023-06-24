@@ -80,14 +80,14 @@ jobs:
           ln -sf `pwd` ../current
 
       # Create Symlink for Clang
-      - name: Create Symlink For NDK
+      - name: Create Symlink For Clang
         working-directory: /usr/local/lib/android/sdk/ndk
         run: |
           export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$DESIRED_API-clang++ ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-clang++
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$DESIRED_API-clang ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-clang
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$DESIRED_API-clang++ ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-clang++
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$DESIRED_API-clang ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-clang++
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$DESIRED_API-clang++ /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-clang++
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$DESIRED_API-clang /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-clang
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$DESIRED_API-clang++ /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-clang++
+          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$DESIRED_API-clang /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-clang++
 
       # Create config.toml File
       - name: Create config.toml File
@@ -95,36 +95,6 @@ jobs:
           export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
           sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml.1
           sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.1 > ${{ github.workspace }}/.cargo/config.toml
-
-      # Build Engine As Library
-      - name: Build CatgirlEngine For aarch64
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target aarch64-linux-android --release --lib
-      - name: Build CatgirlEngine For armv7
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target armv7-linux-androideabi --release --lib
-      - name: Build CatgirlEngine For i686
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target i686-linux-android --release --lib
-      - name: Build CatgirlEngine For x86_64
-        run: RUST_BACKTRACE=full $HOME/.cargo/bin/cargo build -j 4 --verbose --target x86_64-linux-android --release --lib
-
-      # Create Directories For Storing Engine in App
-      - name: Create Directory To Store CatgirlEngine In App For aarch64
-        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a
-      - name: Create Directory To Store CatgirlEngine In App For armv7
-        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a
-      - name: Create Directory To Store CatgirlEngine In App For i686
-        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/x86
-      - name: Create Directory To Store CatgirlEngine In App For x86_64
-        run: mkdir -p ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64
-
-      # Copy Engine To App
-      - name: Store CatgirlEngine In App For aarch64
-        run: cp -av ${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/arm64-v8a/libmain.so
-      - name: Store CatgirlEngine In App For armv7
-        run: cp -av ${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/armeabi-v7a/libmain.so
-      - name: Store CatgirlEngine In App For i686
-        run: cp -av ${{ github.workspace }}/target/i686-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86/libmain.so
-      - name: Store CatgirlEngine In App For x86_64
-        run: cp -av ${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so ${{ github.workspace }}/android/app/src/main/jniLibs/x86_64/libmain.so
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK
