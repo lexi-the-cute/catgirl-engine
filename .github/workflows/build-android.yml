@@ -83,6 +83,10 @@ jobs:
       - name: Add x86_64 Android Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
 
+      # Workaround Cargo Gradle Plugin Bug
+      - name: Workaround Cargo Gradle Plugin Bug
+        run: touch ${{ github.workspace }}/android/local.properties
+
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
