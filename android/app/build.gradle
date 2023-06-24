@@ -14,9 +14,11 @@ ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
 String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
 String cargoVersion = cargoVersionLine.split('"', 3)[1]
 String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
-int cargoVersionCode = Integer.parseInt(cargoVersionSplit[0]) * 1000 +
-                        Integer.parseInt(cargoVersionSplit[1]) * 100 +
-                        Integer.parseInt(cargoVersionSplit[2]) * 10
+
+// TODO: Figure out how to deal with 0.40.0 and 4.0.0
+int cargoVersionCode = Integer.parseInt(cargoVersionSplit[0]) * 1000000 +
+                        Integer.parseInt(cargoVersionSplit[1]) * 1000 +
+                        Integer.parseInt(cargoVersionSplit[2]) * 1
 println "Building Catgirl Engine v" + cargoVersion + " (" + cargoVersionCode + ")"
 // ----------------------------------------
 
@@ -74,11 +76,12 @@ android {
     }
 }
 
-apply plugin: "com.github.willir.rust.cargo-ndk-android"
+apply plugin: 'com.github.willir.rust.cargo-ndk-android'
 
 cargoNdk {
     targets = ["arm64", "arm", "x86", "x86_64"]
     module = ".."
+    extraCargoBuildArguments = ["--lib"]
 }
 
 dependencies {
