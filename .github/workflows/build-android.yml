@@ -25,6 +25,17 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      # Setup Java
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
+      - name: Setup Gradle Build Action (For Caching Builds)
+        uses: gradle/gradle-build-action@v2
+
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
@@ -70,31 +81,6 @@ jobs:
         run: $HOME/.cargo/bin/rustup target add i686-linux-android
       - name: Add x86_64 Android Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
-
-      # Create Symlink for NDK
-      - name: Create Symlink For NDK
-        working-directory: /usr/local/lib/android/sdk/ndk
-        run: |
-          ls -liallh /usr/local/lib/android/sdk/ndk
-          cd /usr/local/lib/android/sdk/ndk/`ls -1v /usr/local/lib/android/sdk/ndk | tail -n1`
-          ln -sf `pwd` ../current
-
-      # Create Symlink for Clang
-      - name: Create Symlink For Clang
-        working-directory: /usr/local/lib/android/sdk/ndk
-        run: |
-          export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$DESIRED_API-clang++ /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android-clang++
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$DESIRED_API-clang /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android-clang
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$DESIRED_API-clang++ /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-clang++
-          ln -s /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$DESIRED_API-clang /usr/local/lib/android/sdk/ndk/current/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-clang++
-
-      # Create config.toml File
-      - name: Create config.toml File
-        run: |
-          export DESIRED_API=`grep "compileSdkVersion " ${{ github.workspace }}/android/app/build.gradle | rev | cut -d' ' -f1 | rev`
-          sed "s/{android-version}/$DESIRED_API/g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml.1
-          sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.1 > ${{ github.workspace }}/.cargo/config.toml
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK
