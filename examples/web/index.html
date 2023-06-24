@@ -6,11 +6,11 @@
         <!-- https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm -->
 
         <style>
-            canvas.emscripten { border: 0px none; background-color: black; }
+            canvas.window { border: 0px none; background-color: black; }
         </style>
     </head>
     <body>
-        <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+        <canvas class="window" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
 
         <script type="text/javascript">
             /*
@@ -50,10 +50,7 @@
                             console.error("Unable to use multi-threading... Not starting engine!");
                         }
                     } catch(exceptionVariable) {
-                        // Unwind: https://github.com/emscripten-core/emscripten/issues/11682
-                        if (exceptionVariable != "unwind") {
-                            console.error("Crash Message: '" + exceptionVariable + "'");
-                        }
+                        console.error("Crash Message: '" + exceptionVariable + "'");
                     }
                 },
                 canvas: (function() {

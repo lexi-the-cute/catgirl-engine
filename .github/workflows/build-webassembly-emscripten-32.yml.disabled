@@ -74,7 +74,7 @@ jobs:
 
       # Add Build Targets
       - name: Add Wasm32 Emscripten Build Target
-        run: $HOME/.cargo/bin/rustup target add wasm32-unknown-emscripten  # asmjs-unknown-emscripten also exists
+        run: $HOME/.cargo/bin/rustup target add wasm32-unknown-emscripten  # asmjs-unknown-emscripten also exists and wasm32-unknown-unknown
 
       # Compile Program
       - name: Build Program

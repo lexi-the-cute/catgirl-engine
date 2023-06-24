@@ -210,6 +210,8 @@ dependencies = [
  "ctrlc",
  "log",
  "pretty_env_logger",
+ "wasm-bindgen",
+ "web-sys",
  "winit",
 ]
 
