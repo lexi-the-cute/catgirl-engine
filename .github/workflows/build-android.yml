@@ -113,7 +113,7 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/release/apk/catgirl-engine.apk ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
