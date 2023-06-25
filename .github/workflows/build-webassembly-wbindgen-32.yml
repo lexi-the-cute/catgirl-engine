@@ -50,7 +50,7 @@ jobs:
         run: $HOME/.cargo/bin/rustup default nightly
 
       # Add Build Targets
-      - name: Add x86_64 GNU Build Target
+      - name: Add 32 Bit Wasm Build Target
         run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown  # wasm64-unknown-unknown
 
       # Install Wasm Packager
