@@ -44,6 +44,7 @@ struct ChannelStruct {
     receiver: Option<Receiver<()>>
 }
 
+#[cfg(not(target_os="android"))]
 pub fn launch(_argc: isize, _argv: *const *const u8) -> isize {
     // Handle Command Line Arguments Here
     // ...

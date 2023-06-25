@@ -5,16 +5,19 @@
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-use wasm_bindgen::{prelude::wasm_bindgen, JsError};
-
+#[cfg(not(target_os="android"))]
 use core::ffi::{c_char, c_int};
+
+#[cfg(target_family="wasm")]
+use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 mod game;
 mod server;
 mod client;
 
-// Run as Library (e.g. Android and WebAssembly)
+// Run as Library
 #[no_mangle]
+#[cfg(not(target_os="android"))]
 pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
@@ -28,6 +31,7 @@ pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
 // TODO: Get working in browser and possibly wasmtime (https://wasmtime.dev/)
 #[wasm_bindgen(start)]
+#[cfg(target_family="wasm")]
 fn wasm_start() -> Result<(), JsError> {
     game::setup_logger();
     debug!("Launched as WebAssembly library...");

@@ -1,5 +1,6 @@
 extern crate cbindgen;
 
+use std::collections::HashMap;
 use std::env::{self, Vars};
 use std::path::PathBuf;
 use cbindgen::{Config, Language};
@@ -123,18 +124,44 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
             "# These generated bindings are either public domain or Unlicense where public domain does not exist";
     }
 
+    let defines: HashMap<String, String> = get_bindgen_defines();
+
     let config: Config = Config {
         namespace: Some(String::from("ffi")),
         header: Some(String::from(header)),
         language: language,
         only_target_dependencies: true,
         no_includes: if language == Language::Cython { true } else { false },
+        defines: defines,
         ..Default::default()
     };
 
     cbindgen::generate_with_config(&crate_directory, config)
         .unwrap()
         .write_to_file(&output_file);
+}
+
+fn get_bindgen_defines() -> HashMap<String, String> {
+    let mut defines: HashMap<String, String> = HashMap::new();
+
+    // Features
+    defines.insert("feature = browser".to_string(), "DEFINE_BROWSER_FEATURE".to_string());
+    defines.insert("feature = client".to_string(), "DEFINE_CLIENT_FEATURE".to_string());
+    defines.insert("feature = server".to_string(), "DEFINE_SERVER_FEATURE".to_string());
+
+    // Basic OS Targets
+    defines.insert("target_os = android".to_string(), "DEFINE_ANDROID_OS".to_string());
+    defines.insert("target_os = windows".to_string(), "DEFINE_WINDOWS_OS".to_string());
+    defines.insert("target_os = macos".to_string(), "DEFINE_MACOS_OS".to_string());
+    defines.insert("target_os = ios".to_string(), "DEFINE_IOS_OS".to_string());
+    defines.insert("target_os = linux".to_string(), "DEFINE_LINUX_OS".to_string());
+    
+    // Basic Family Targets
+    defines.insert("target_family = wasm".to_string(), "DEFINE_WASM_FAMILY".to_string());
+    defines.insert("target_family = unix".to_string(), "DEFINE_UNIX_FAMILY".to_string());
+    defines.insert("target_family = windows".to_string(), "DEFINE_WINDOWS_FAMILY".to_string());
+
+    return defines;
 }
 
 /// Find the location of the `target/` directory. Note that this may be 
