@@ -1,10 +1,10 @@
-name: Build For Linux GNU x86_64 (Deb)
-run-name: ${{ github.actor }} is building for Linux GNU x86_64 (Deb)
+name: Build For WebAssembly WBindGen 32 Bit (Zip)
+run-name: ${{ github.actor }} is building for WebAssembly WBindGen 32 Bit (Zip)
 on: [push]
 jobs:
   Build:
     runs-on: ubuntu-20.04
-    environment: Linux
+    environment: WebAssembly
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -60,11 +60,11 @@ jobs:
       # Compile Program
       - name: Build Program (WasmPack)
         run: |
-          mkdir -p ${{ github.repository }}/target/wasm-output
-          $HOME/.cargo/bin/wasm-pack build --target web --no-pack --no-typescript --out-name main --out-dir "${{ github.repository }}/target/wasm-output" --release
+          mkdir -p ${{ github.workspace }}/target/wasm-output
+          $HOME/.cargo/bin/wasm-pack build --target web --no-pack --no-typescript --out-name main --out-dir "${{ github.workspace }}/target/wasm-output" --release
 
-          cp -av ${{ github.repository }}/examples/web/index.html ${{ github.repository }}/target/wasm-output
-          cp -av ${{ github.repository }}/examples/web/start.py ${{ github.repository }}/target/wasm-output
+          cp -av ${{ github.workspace }}/examples/web/index.html ${{ github.workspace }}/target/wasm-output
+          cp -av ${{ github.workspace }}/examples/web/start.py ${{ github.workspace }}/target/wasm-output
 
       # Test Program
       # - name: Test Program
@@ -72,14 +72,14 @@ jobs:
 
       # Display Export Directory
       - name: Display Export Directory
-        run: ls -liallh ${{ github.repository }}/target/wasm-output
+        run: ls -liallh ${{ github.workspace }}/target/wasm-output
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v3
         with:
           name: CatgirlEngine-WebAssembly-32-WasmPack-Web
-          path: ${{ github.repository }}/target/wasm-output/*
+          path: ${{ github.workspace }}/target/wasm-output/*
 
       # List Environment
       - name: List Environment
