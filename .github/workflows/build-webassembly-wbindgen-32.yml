@@ -60,9 +60,15 @@ jobs:
       # Compile Program
       - name: Build Program (WasmPack)
         run: |
+          # Setup and Generate Wasm Files
           mkdir -p ${{ github.workspace }}/target/wasm-output
           $HOME/.cargo/bin/wasm-pack build --target web --no-pack --no-typescript --out-name main --out-dir "${{ github.workspace }}/target/wasm-output" --release
 
+          # Cleanup After Wasm-Pack Generation
+          rm ${{ github.workspace }}/target/wasm-output/.gitignore
+          mv ${{ github.workspace }}/target/wasm-output/main_bg.wasm ${{ github.workspace }}/target/wasm-output/main.wasm
+
+          # Copy Over Manually Created Files
           cp -av ${{ github.workspace }}/examples/web/index.html ${{ github.workspace }}/target/wasm-output
           cp -av ${{ github.workspace }}/examples/web/start.py ${{ github.workspace }}/target/wasm-output
 
