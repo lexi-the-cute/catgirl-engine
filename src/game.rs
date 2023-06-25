@@ -8,7 +8,7 @@ use std::sync::mpsc::SendError;
 use std::sync::OnceLock;
 
 #[cfg(feature="client")]
-use winit::event::{Event, WindowEvent, KeyboardInput, VirtualKeyCode};
+use winit::event::{Event, WindowEvent, KeyEvent};
 
 #[cfg(feature="client")]
 use winit::event_loop::{EventLoopBuilder, EventLoop};
@@ -246,6 +246,8 @@ fn request_exit(_server_channels: &ChannelStruct, _client_channels: &ChannelStru
 
 #[cfg(feature="client")]
 fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_channels: ChannelStruct) {
+    use winit::keyboard;
+
     #[cfg(not(target_family = "wasm"))] {
         #[cfg(feature="server")]
         let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
@@ -308,8 +310,8 @@ fn gui_loop(threads: ThreadsStruct, server_channels: ChannelStruct, client_chann
             },
             Event::WindowEvent {
                 event: WindowEvent::KeyboardInput {
-                    input: KeyboardInput {
-                        virtual_keycode: Some(VirtualKeyCode::Escape),
+                    event: KeyEvent {
+                        logical_key: keyboard::Key::Escape,
                         ..
                     },
                     ..

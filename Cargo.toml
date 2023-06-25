@@ -34,7 +34,8 @@ cbindgen = "0.24.5"
 log = "0.4.19"
 pretty_env_logger = "0.5.0"
 wasm-bindgen = "0.2.87"
-winit = { version = "0.28.6", optional = true }
+# winit = { version = "0.28.6", optional = true }
+winit = { git = "https://github.com/alexisart/winit.git", optional = true }
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
 ctrlc = "3.4.0"
@@ -44,7 +45,8 @@ cargo-deb = "1.44.0"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "0.13.1"
-winit = { version = "0.28.6", features = ["android-game-activity"] }
+# winit = { version = "0.28.6", features = ["android-game-activity"] }
+winit = { git = "https://github.com/alexisart/winit.git", features = ["android-game-activity"] }
 
 [target.'cfg(target_family="wasm")'.dependencies]
 web-sys = { version = "0.3.64", features = ["console"] }

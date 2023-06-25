@@ -5,7 +5,7 @@
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 use core::ffi::{c_char, c_int};
 
@@ -27,12 +27,15 @@ pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     return game::launch(_argc, _argv).try_into().unwrap();
 }
 
+// TODO: Get working in browser and possibly wasmtime (https://wasmtime.dev/)
 #[wasm_bindgen(start)]
-fn start() -> Result<(), String> {
+fn start() -> Result<(), JsError> {
     game::setup_logger();
     debug!("Launched as WebAssembly library...");
 
-    return game::start();
+    let _: Result<(), String> = game::start();
+
+    Ok(())
 }
 
 #[no_mangle]
@@ -41,5 +44,5 @@ pub fn android_main(app: AndroidApp) {
     game::setup_logger();
     debug!("Launched as Android app...");
 
-    let _ = game::start_android(app);
+    let _: Result<(), String> = game::start_android(app);
 }

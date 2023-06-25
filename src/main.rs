@@ -8,7 +8,7 @@ mod client;
 
 // Run as Executable (e.g. Linux)
 #[start]
-pub fn main(_argc: isize, _argv: *const *const u8) -> isize {
+fn main(_argc: isize, _argv: *const *const u8) -> isize {
     game::setup_logger();
     debug!("Launched as binary...");
 
