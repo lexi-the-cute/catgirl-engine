@@ -1,17 +1,10 @@
 #!/bin/sh
 
-cd ../..
-mkdir -p target/libs
-
-# Build SDL
-emcmake cmake -G Ninja -S android/app/jni -B android/app/jni/build -DBUILD_SHARED_LIBS=off
-emcmake ninja -C android/app/jni/build
-
-mkdir -p target/libs
-cp -av android/app/jni/build/*/*.a target/libs
-ls -liallh target/libs
+# Install Wasm-Pack
+# cargo install wasm-pack
 
 # Build Catgirl Engine
-cargo build --target wasm32-unknown-emscripten --release --lib
+wasm-pack build --target web --no-pack --no-typescript --out-name main -d `pwd` --release
 
+# Start Server
 python3 start.py

@@ -21,10 +21,6 @@ files: dict = {
         "path": os.path.join(script_dir, "main.worker.js"),
         "content-type": "text/javascript"
     },
-    "/main.ww.js": {
-        "path": os.path.join(script_dir, "main.ww.js"),
-        "content-type": "text/javascript"
-    },
     "/main.wasm": {
         "path": os.path.join(script_dir, "main.wasm"),
         "content-type": "application/wasm"
