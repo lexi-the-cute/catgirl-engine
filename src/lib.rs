@@ -15,7 +15,6 @@ mod client;
 
 // Run as Library (e.g. Android and WebAssembly)
 #[no_mangle]
-#[wasm_bindgen]
 pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
@@ -29,7 +28,7 @@ pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
 // TODO: Get working in browser and possibly wasmtime (https://wasmtime.dev/)
 #[wasm_bindgen(start)]
-fn start() -> Result<(), JsError> {
+fn wasm_start() -> Result<(), JsError> {
     game::setup_logger();
     debug!("Launched as WebAssembly library...");
 
