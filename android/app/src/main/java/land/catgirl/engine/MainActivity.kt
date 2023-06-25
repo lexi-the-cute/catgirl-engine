@@ -1,7 +1,5 @@
 package land.catgirl.engine
 
-import android.content.res.AssetManager
-import android.os.Bundle
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.androidgamesdk.GameActivity
@@ -20,10 +18,6 @@ class MainActivity : GameActivity() {
         if (hasFocus) {
             hideSystemUi()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     private fun hideSystemUi() {
