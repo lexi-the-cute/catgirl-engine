@@ -36,7 +36,7 @@ dependencies = [
 [[package]]
 name = "android-activity"
 version = "0.4.1"
-source = "git+https://github.com/alexisart/android-activity.git#dd966325152d47126878ac4af164e90a35c70601"
+source = "git+https://github.com/alexisart/android-activity.git?rev=a1a1b40#a1a1b408b2241f183e5d97de4820c7ebce4a2205"
 dependencies = [
  "android-properties",
  "bitflags 1.3.2",
@@ -1688,7 +1688,7 @@ checksum = "1a515f5799fe4961cb532f983ce2b23082366b898e52ffbce459c86f67c8378a"
 [[package]]
 name = "winit"
 version = "0.28.6"
-source = "git+https://github.com/alexisart/winit.git#a5cf8c550e9e8d5c18d66712761f14e7c3414679"
+source = "git+https://github.com/alexisart/winit.git?rev=a271ec4#a271ec45565d9899b06379c36bff4225ec0cb88d"
 dependencies = [
  "android-activity",
  "atomic-waker",
