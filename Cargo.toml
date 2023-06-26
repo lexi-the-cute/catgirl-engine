@@ -13,7 +13,7 @@ edition = "2021"
 
 [lib]
 name = "main"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 
 [profile.release]
 lto = true
@@ -31,12 +31,13 @@ cc = "1.0.79"
 cbindgen = "0.24.5"
 
 [dependencies]
+cfg-if = "1.0.0"
 log = "0.4.19"
 pretty_env_logger = "0.5.0"
-wasm-bindgen = "0.2.87"
 # winit = { version = "0.28.6", optional = true }
 winit = { git = "https://github.com/alexisart/winit.git", rev = "45d6295", optional = true }
 # winit = { path = "../winit", optional = true }
+wgpu = "0.16.1"
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
 ctrlc = "3.4.0"
@@ -51,7 +52,16 @@ winit = { git = "https://github.com/alexisart/winit.git", rev = "45d6295", featu
 # winit = { path = "../winit", features = ["android-game-activity"] }
 
 [target.'cfg(target_family="wasm")'.dependencies]
-web-sys = { version = "0.3.64", features = ["console"] }
+console_error_panic_hook = "0.1.7"
+wasm-bindgen = "0.2.87"
+wgpu = { version = "0.16.1", features = ["webgl"]}
+wasm-bindgen-futures = "0.4.37"
+web-sys = { version = "0.3.64", features = [
+    "console",
+    "Document",
+    "Window",
+    "Element"
+]}
 
 [package.metadata.deb]
 name = "catgirl-engine"
