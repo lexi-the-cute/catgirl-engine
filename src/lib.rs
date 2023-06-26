@@ -3,11 +3,11 @@
 #[macro_use]
 extern crate log;
 
-#[cfg(target_os = "android")]
-use winit::platform::android::activity::AndroidApp;
-
 #[cfg(not(target_os = "android"))]
 use core::ffi::{c_char, c_int};
+
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::{prelude::wasm_bindgen, JsError};

@@ -1,6 +1,9 @@
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread::{Builder, JoinHandle};
 
+#[cfg(target_family = "wasm")]
+use std::panic::set_hook;
+
 #[cfg(not(target_family = "wasm"))]
 use std::sync::mpsc::SendError;
 
@@ -374,7 +377,10 @@ pub fn setup_logger() {
         );
     } else if cfg!(all(target_family = "wasm", feature = "browser")) {
         #[cfg(all(target_family = "wasm", feature = "browser"))]
-        crate::client::browser::init().unwrap();
+        {
+            std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+            crate::client::browser::init().unwrap();
+        }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
