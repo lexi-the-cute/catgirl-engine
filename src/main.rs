@@ -1,10 +1,11 @@
 #![feature(start)]
 
-#[macro_use] extern crate log;
+#[macro_use]
+extern crate log;
 
+mod client;
 mod game;
 mod server;
-mod client;
 
 // Run as Executable (e.g. Linux)
 #[start]

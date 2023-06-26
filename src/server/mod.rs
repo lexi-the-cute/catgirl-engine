@@ -1,12 +1,14 @@
-#![cfg(feature="server")]
+#![cfg(feature = "server")]
 
-use std::sync::mpsc::{Sender, Receiver};
+use std::sync::mpsc::{Receiver, Sender};
 
 // This thread handles physics (aka the server)
 pub fn start(tx: Sender<()>, rx: Receiver<()>) {
-    run(rx).map_err(|err: String| {
-        error!("Server (Physics) Crash: {:?}", err);
-    }).ok();
+    run(rx)
+        .map_err(|err: String| {
+            error!("Server (Physics) Crash: {:?}", err);
+        })
+        .ok();
 
     tx.send(()).ok();
 }

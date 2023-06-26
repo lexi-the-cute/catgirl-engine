@@ -1,27 +1,28 @@
 #![feature(start)]
 
-#[macro_use] extern crate log;
+#[macro_use]
+extern crate log;
 
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-#[cfg(not(target_os="android"))]
+#[cfg(not(target_os = "android"))]
 use core::ffi::{c_char, c_int};
 
-#[cfg(target_family="wasm")]
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
+mod client;
 mod game;
 mod server;
-mod client;
 
 // Run as Library
 #[no_mangle]
-#[cfg(not(target_os="android"))]
-pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+#[cfg(not(target_os = "android"))]
+pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
-    
+
     // This is to convert from C Main Args to Rust Main Args
     let _argc: isize = argc.try_into().unwrap();
     let _argv: *const *const u8 = argv as *const *const u8;
@@ -31,7 +32,7 @@ pub extern fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
 // TODO: Get working in browser and possibly wasmtime (https://wasmtime.dev/)
 #[wasm_bindgen(start)]
-#[cfg(target_family="wasm")]
+#[cfg(target_family = "wasm")]
 fn wasm_start() -> Result<(), JsError> {
     game::setup_logger();
     debug!("Launched as WebAssembly library...");
@@ -42,7 +43,7 @@ fn wasm_start() -> Result<(), JsError> {
 }
 
 #[no_mangle]
-#[cfg(all(target_os="android", feature="client"))]
+#[cfg(all(target_os = "android", feature = "client"))]
 pub fn android_main(app: AndroidApp) {
     game::setup_logger();
     debug!("Launched as Android app...");
