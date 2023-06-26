@@ -100,9 +100,10 @@ pub fn start() -> Result<(), String> {
 
     #[cfg(target_family = "wasm")]
     {
-        let message: String = "Currently this will crash when trying to load a thread. ".to_string() +
-        "It is possible to use threads on the web, via web workers. " +
-        "I'll be looking at different methods of implementing threading...";
+        let message: String = "Currently this will crash when trying to load a thread. "
+            .to_string()
+            + "It is possible to use threads on the web, via web workers. "
+            + "I'll be looking at different methods of implementing threading...";
 
         warn!("{}", message);
     }
