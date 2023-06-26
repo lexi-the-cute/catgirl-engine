@@ -1,9 +1,9 @@
 extern crate cbindgen;
 
+use cbindgen::{Config, Language};
 use std::collections::HashMap;
 use std::env::{self, Vars};
 use std::path::PathBuf;
-use cbindgen::{Config, Language};
 
 fn main() {
     // For some reason, the cfg!() macros won't cooperate, so Alexis is doing this herself
@@ -92,7 +92,7 @@ fn main() {
 //                 -s EXPORTED_FUNCTIONS=\"['_SDL_main', '_malloc']\" \
 //                 -s EXPORTED_RUNTIME_METHODS=\"['FS']\"
 //             ");
-    
+
 //     println!("cargo:rustc-link-arg=-o{output_file}");
 // }
 
@@ -102,18 +102,28 @@ fn create_bindings() {
 
     create_binding("h", Language::C, &package_name, &crate_directory);
     create_binding("hpp", Language::Cxx, &package_name, &crate_directory);
-    create_binding("pxd", Language::Cython, &package_name.replace("-", "_"), &crate_directory);
+    create_binding(
+        "pxd",
+        Language::Cython,
+        &package_name.replace("-", "_"),
+        &crate_directory,
+    );
 }
 
-fn create_binding(extension: &str, language: Language, package_name: &String, crate_directory: &String) {
+fn create_binding(
+    extension: &str,
+    language: Language,
+    package_name: &String,
+    crate_directory: &String,
+) {
     let output_file: String = target_dir()
-    .join("binding")
-    .join(format!("{}.{}", package_name, extension))
-    .display()
-    .to_string();
+        .join("binding")
+        .join(format!("{}.{}", package_name, extension))
+        .display()
+        .to_string();
 
-    let mut header: String = 
-        "/*\n".to_owned() +
+    let mut header: String = "".to_owned() +
+        "/*\n" +
         " * This file exists to help facilitate modding this catgirl game engine...\n" + 
         " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" + 
         " */";
@@ -131,7 +141,11 @@ fn create_binding(extension: &str, language: Language, package_name: &String, cr
         header: Some(String::from(header)),
         language: language,
         only_target_dependencies: true,
-        no_includes: if language == Language::Cython { true } else { false },
+        no_includes: if language == Language::Cython {
+            true
+        } else {
+            false
+        },
         defines: defines,
         ..Default::default()
     };
@@ -145,27 +159,57 @@ fn get_bindgen_defines() -> HashMap<String, String> {
     let mut defines: HashMap<String, String> = HashMap::new();
 
     // Features
-    defines.insert("feature = browser".to_string(), "DEFINE_BROWSER_FEATURE".to_string());
-    defines.insert("feature = client".to_string(), "DEFINE_CLIENT_FEATURE".to_string());
-    defines.insert("feature = server".to_string(), "DEFINE_SERVER_FEATURE".to_string());
+    defines.insert(
+        "feature = browser".to_string(),
+        "DEFINE_BROWSER_FEATURE".to_string(),
+    );
+    defines.insert(
+        "feature = client".to_string(),
+        "DEFINE_CLIENT_FEATURE".to_string(),
+    );
+    defines.insert(
+        "feature = server".to_string(),
+        "DEFINE_SERVER_FEATURE".to_string(),
+    );
 
     // Basic OS Targets
-    defines.insert("target_os = android".to_string(), "DEFINE_ANDROID_OS".to_string());
-    defines.insert("target_os = windows".to_string(), "DEFINE_WINDOWS_OS".to_string());
-    defines.insert("target_os = macos".to_string(), "DEFINE_MACOS_OS".to_string());
+    defines.insert(
+        "target_os = android".to_string(),
+        "DEFINE_ANDROID_OS".to_string(),
+    );
+    defines.insert(
+        "target_os = windows".to_string(),
+        "DEFINE_WINDOWS_OS".to_string(),
+    );
+    defines.insert(
+        "target_os = macos".to_string(),
+        "DEFINE_MACOS_OS".to_string(),
+    );
     defines.insert("target_os = ios".to_string(), "DEFINE_IOS_OS".to_string());
-    defines.insert("target_os = linux".to_string(), "DEFINE_LINUX_OS".to_string());
-    
+    defines.insert(
+        "target_os = linux".to_string(),
+        "DEFINE_LINUX_OS".to_string(),
+    );
+
     // Basic Family Targets
-    defines.insert("target_family = wasm".to_string(), "DEFINE_WASM_FAMILY".to_string());
-    defines.insert("target_family = unix".to_string(), "DEFINE_UNIX_FAMILY".to_string());
-    defines.insert("target_family = windows".to_string(), "DEFINE_WINDOWS_FAMILY".to_string());
+    defines.insert(
+        "target_family = wasm".to_string(),
+        "DEFINE_WASM_FAMILY".to_string(),
+    );
+    defines.insert(
+        "target_family = unix".to_string(),
+        "DEFINE_UNIX_FAMILY".to_string(),
+    );
+    defines.insert(
+        "target_family = windows".to_string(),
+        "DEFINE_WINDOWS_FAMILY".to_string(),
+    );
 
     return defines;
 }
 
-/// Find the location of the `target/` directory. Note that this may be 
-/// overridden by `cmake`, so we also need to check the `CARGO_TARGET_DIR` 
+/// Find the location of the `target/` directory. Note that this may be
+/// overridden by `cmake`, so we also need to check the `CARGO_TARGET_DIR`
 /// variable.
 fn target_dir() -> PathBuf {
     if let Ok(target) = env::var("CARGO_TARGET_DIR") {

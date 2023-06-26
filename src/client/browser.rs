@@ -1,7 +1,7 @@
-#![cfg(all(target_family="wasm", feature="browser"))]
+#![cfg(all(target_family = "wasm", feature = "browser"))]
 
-use log::{Record, Level, Metadata};
 use log::SetLoggerError;
+use log::{Level, Metadata, Record};
 
 use wasm_bindgen::JsValue;
 use web_sys::console;
@@ -20,9 +20,9 @@ impl log::Log for ConsoleLogger {
                 Level::Debug => console::debug_1 as fn(&JsValue),
                 Level::Info => console::info_1 as fn(&JsValue),
                 Level::Warn => console::warn_1 as fn(&JsValue),
-                Level::Error => console::error_1 as fn(&JsValue)
+                Level::Error => console::error_1 as fn(&JsValue),
             };
-    
+
             let message: String = format!("{}", record.args());
             let message_js: JsValue = message.into();
             console_log(&message_js);
