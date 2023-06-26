@@ -1,5 +1,10 @@
 use std::sync::mpsc::{self, Receiver, Sender};
+
+// #[cfg(not(target_family = "wasm"))]
 use std::thread::{Builder, JoinHandle};
+
+// #[cfg(target_family = "wasm")]
+// use wasm_thread as thread;
 
 #[cfg(target_family = "wasm")]
 use std::panic::set_hook;
@@ -92,6 +97,15 @@ pub fn start() -> Result<(), String> {
 
     #[cfg(feature = "client")]
     let (rrtx, rrrx) = mpsc::channel::<()>(); // Render Messages Receive
+
+    #[cfg(target_family = "wasm")]
+    {
+        let message: String = "Currently this will crash when trying to load a thread. ".to_string() +
+        "It is possible to use threads on the web, via web workers. " +
+        "I'll be looking at different methods of implementing threading...";
+
+        warn!("{}", message);
+    }
 
     // Treat As If Physical Server (Player Movement)
     #[cfg(feature = "server")]
@@ -378,7 +392,7 @@ pub fn setup_logger() {
     } else if cfg!(all(target_family = "wasm", feature = "browser")) {
         #[cfg(all(target_family = "wasm", feature = "browser"))]
         {
-            std::panic::set_hook(Box::new(console_error_panic_hook::hook));
+            set_hook(Box::new(console_error_panic_hook::hook));
             crate::client::browser::init().unwrap();
         }
     } else {
