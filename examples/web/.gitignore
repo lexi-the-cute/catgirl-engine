@@ -1,2 +1,4 @@
+.gitignore.bak
+
 main.js
 main.wasm
