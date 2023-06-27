@@ -35,11 +35,6 @@ jobs:
             sudo apt update
             sudo apt -y install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
 
-      # Setup Rust Build Caching
-      - uses: Swatinem/rust-cache@v2
-        with:
-          prefix-key: "linux-rust-gnu-aarch64"
-
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -59,6 +54,11 @@ jobs:
       # Install Rust Nightly Toolchains
       - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
+
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "linux-rust-gnu-aarch64"
 
       # Add Build Targets
       - name: Add aarch64 GNU Pi Build Target

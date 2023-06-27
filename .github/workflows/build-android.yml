@@ -37,11 +37,6 @@ jobs:
       - name: Setup Gradle Build Action (For Caching Builds)
         uses: gradle/gradle-build-action@v2
 
-      # Setup Rust Build Caching
-      - uses: Swatinem/rust-cache@v2
-        with:
-          prefix-key: "android-rust"
-
       # Install Dependencies
       - name: Install APT Packages
         uses: nick-fields/retry@v2
@@ -72,6 +67,11 @@ jobs:
       # Install Rust Nightly Toolchains
       - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
+
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "android-rust"
 
       # Add Build Targets
       - name: Add armv7 Android Build Target

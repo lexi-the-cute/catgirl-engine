@@ -24,11 +24,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Setup Rust Build Caching
-      - uses: Swatinem/rust-cache@v2
-        with:
-          prefix-key: "webassembly-rust-wbindgen-32"
-
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -49,6 +44,11 @@ jobs:
       - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
 
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "webassembly-rust-wbindgen-32"
+
       # Download Rust Source Code
       - name: Download Rust Source Code
         run: $HOME/.cargo/bin/rustup component add rust-src --toolchain nightly
@@ -68,9 +68,9 @@ jobs:
           mkdir -p ${{ github.workspace }}/target/wasm-output
 
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-unknown --release --lib -Z build-std=panic_abort,std
-          $HOME/.cargo/bin/wasm-bindgen -j 4 --verbose --target no-modules --no-typescript --keep-debug --out-dir "${{ github.workspace }}/target/wasm-output" --out-name main "${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm"
-          $HOME/.cargo/bin/wasm-opt -j 4 --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main.wasm"
-          $HOME/.cargo/bin/wasm-opt -j 4 --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --strip-debug --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
+          $HOME/.cargo/bin/wasm-bindgen --verbose --target no-modules --no-typescript --keep-debug --out-dir "${{ github.workspace }}/target/wasm-output" --out-name main "${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm"
+          $HOME/.cargo/bin/wasm-opt --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main.wasm"
+          $HOME/.cargo/bin/wasm-opt --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --strip-debug --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
 
           # Cleanup After Wasm-Bindgen Generation
           rm ${{ github.workspace }}/target/wasm-output/main_bg.wasm
