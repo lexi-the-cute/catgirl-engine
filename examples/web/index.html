@@ -18,7 +18,16 @@
             // import init, { wasm_start } from '/main.js';
 
             async function run() {
-                await init();
+                try {
+                    if (crossOriginIsolated) {
+                        // SharedArrayBuffer is available
+                        await init();
+                    } else {
+                        console.error("Unable to use multi-threading... Not starting engine!");
+                    }
+                } catch(exceptionVariable) {
+                    console.error("Crash Message: '" + exceptionVariable + "'");
+                }
             };
             run();
         </script>

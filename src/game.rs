@@ -384,11 +384,16 @@ fn gui_loop(
 
 pub fn setup_logger() {
     if cfg!(target_os = "android") {
+        // Limited Filter: trace,android_activity=debug,winit=debug
+        // Stronger Filter: trace,android_activity=off,winit=off
+
         #[cfg(target_os = "android")]
         android_logger::init_once(
             android_logger::Config::default()
                 .with_max_level(log::LevelFilter::Trace)
-                .with_tag("CatgirlEngine"),
+                .with_tag("CatgirlEngine")
+                .with_filter(android_logger::FilterBuilder::new()
+                .parse("trace,android_activity=off,winit=off").build()),
         );
     } else if cfg!(all(target_family = "wasm", feature = "browser")) {
         #[cfg(all(target_family = "wasm", feature = "browser"))]
