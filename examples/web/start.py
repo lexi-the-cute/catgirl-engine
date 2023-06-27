@@ -29,6 +29,10 @@ files: dict = {
         "path": os.path.join(script_dir, "main.wasm"),
         "content-type": "application/wasm"
     },
+    "/main_no_debug.wasm": {
+        "path": os.path.join(script_dir, "main_no_debug.wasm"),
+        "content-type": "application/wasm"
+    },
     "/main.data": {
         "path": os.path.join(script_dir, "main.data"),
         "content-type": "application/octet-stream"

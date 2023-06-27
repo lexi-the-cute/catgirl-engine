@@ -53,24 +53,31 @@ jobs:
       - name: Add 32 Bit Wasm Build Target
         run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown  # wasm64-unknown-unknown
 
-      # Install Wasm Packager
-      - name: Install Wasm Packager
-        run: $HOME/.cargo/bin/cargo install -j 4 wasm-pack
+      # Install Wasm Build Tools
+      - name: Install Wasm Build Tools
+        run: $HOME/.cargo/bin/cargo install -j 4 wasm-opt wasm-bindgen-cli twiggy
 
       # Compile Program
-      - name: Build Program (WasmPack)
+      - name: Build Program (Wasm-Bindgen)
         run: |
           # Setup and Generate Wasm Files
           mkdir -p ${{ github.workspace }}/target/wasm-output
-          $HOME/.cargo/bin/wasm-pack build --target web --no-pack --no-typescript --out-name main --out-dir "${{ github.workspace }}/target/wasm-output" --release
 
-          # Cleanup After Wasm-Pack Generation
-          rm ${{ github.workspace }}/target/wasm-output/.gitignore
-          mv ${{ github.workspace }}/target/wasm-output/main_bg.wasm ${{ github.workspace }}/target/wasm-output/main.wasm
+          $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-unknown --release --lib -Z build-std=panic_abort,std
+          $HOME/.cargo/bin/wasm-bindgen -j 4 --verbose --target no-modules --no-typescript --keep-debug --out-dir "${{ github.workspace }}/target/wasm-output" --out-name main "${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm"
+          $HOME/.cargo/bin/wasm-opt -j 4 --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main.wasm"
+          $HOME/.cargo/bin/wasm-opt -j 4 --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --strip-debug --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
+
+          # Cleanup After Wasm-Bindgen Generation
+          rm ${{ github.workspace }}/target/wasm-output/main_bg.wasm
 
           # Copy Over Manually Created Files
           cp -av ${{ github.workspace }}/examples/web/index.html ${{ github.workspace }}/target/wasm-output
           cp -av ${{ github.workspace }}/examples/web/start.py ${{ github.workspace }}/target/wasm-output
+
+      # Profile Code Size
+      - name: Profile Code Size
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/wasm-output/main.wasm"
 
       # Test Program
       # - name: Test Program

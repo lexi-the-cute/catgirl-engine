@@ -91,6 +91,10 @@ jobs:
       - name: Workaround Cargo Gradle Plugin Bug
         run: touch ${{ github.workspace }}/android/local.properties
 
+      # Install Code Size Profiler
+      - name: Install Code Size Profiler
+        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android

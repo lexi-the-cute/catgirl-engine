@@ -17,7 +17,7 @@ crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 
 [profile.release]
 lto = true
-debug = true
+debug = true  # Setting to false significantly reduces code size
 #panic = "abort"
 
 [features]
