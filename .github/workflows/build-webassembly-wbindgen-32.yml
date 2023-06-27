@@ -68,9 +68,9 @@ jobs:
           mkdir -p ${{ github.workspace }}/target/wasm-output
 
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target wasm32-unknown-unknown --release --lib -Z build-std=panic_abort,std
-          $HOME/.cargo/bin/wasm-bindgen --verbose --target no-modules --no-typescript --keep-debug --out-dir "${{ github.workspace }}/target/wasm-output" --out-name main "${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm"
-          $HOME/.cargo/bin/wasm-opt --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main.wasm"
-          $HOME/.cargo/bin/wasm-opt --verbose -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --strip-debug --enable-threads --enable-mutable-globals --enable-bulk-memory --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
+          $HOME/.cargo/bin/wasm-bindgen --target no-modules --no-typescript --keep-debug --out-dir "${{ github.workspace }}/target/wasm-output" --out-name main "${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm"
+          $HOME/.cargo/bin/wasm-opt -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --enable-threads --enable-mutable-globals --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main.wasm"
+          $HOME/.cargo/bin/wasm-opt -Oz "${{ github.workspace }}/target/wasm-output/main_bg.wasm" --strip-debug --enable-threads --enable-mutable-globals --enable-exception-handling --output "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
 
           # Cleanup After Wasm-Bindgen Generation
           rm ${{ github.workspace }}/target/wasm-output/main_bg.wasm
@@ -80,8 +80,12 @@ jobs:
           cp -av ${{ github.workspace }}/examples/web/start.py ${{ github.workspace }}/target/wasm-output
 
       # Profile Code Size
-      - name: Profile Code Size
+      - name: Profile Code Size (Debug Info)
         run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/wasm-output/main.wasm"
+
+      # Profile Code Size
+      - name: Profile Code Size (No Debug Info)
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/wasm-output/main_no_debug.wasm"
 
       # Test Program
       # - name: Test Program
