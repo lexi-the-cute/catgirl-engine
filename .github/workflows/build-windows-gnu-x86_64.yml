@@ -64,9 +64,17 @@ jobs:
       - name: Add x86_64 GNU Windows Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-pc-windows-gnu
 
+      # Install Code Size Profiler
+      - name: Install Code Size Profiler
+        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+
       # Compile Program
       - name: Build Program
         run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine
+
+      # Profile Code Size
+      - name: Profile Code Size
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/catgirl-engine.exe"
 
       # Test Program
       # - name: Test Program

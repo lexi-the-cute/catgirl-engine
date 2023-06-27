@@ -13,15 +13,17 @@
     <body>
         <canvas class="window" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
 
-        <script type="module">
-            import init from '/main.js';
-            // import init, { wasm_start } from '/main.js';
-
+        <script src="./main.js"></script>
+        <script>
             async function run() {
+                const {init} = wasm_bindgen;
+
                 try {
                     if (crossOriginIsolated) {
                         // SharedArrayBuffer is available
-                        await init();
+                        await wasm_bindgen();
+
+                        init();
                     } else {
                         console.error("Unable to use multi-threading... Not starting engine!");
                     }
@@ -31,6 +33,5 @@
             };
             run();
         </script>
-        <script src="/main.js"></script>
     </body>
 </html>

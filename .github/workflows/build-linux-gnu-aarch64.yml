@@ -68,9 +68,17 @@ jobs:
       - name: Install Deb Packager
         run: $HOME/.cargo/bin/cargo install -j 4 cargo-deb
 
+      # Install Code Size Profiler
+      - name: Install Code Size Profiler
+        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+
       # Compile Program
       - name: Build Program (Deb)
         run: $HOME/.cargo/bin/cargo deb --target=aarch64-unknown-linux-gnu
+
+      # Profile Code Size
+      - name: Profile Code Size
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/aarch64-unknown-linux-gnu/release/catgirl-engine"
 
       # Test Program
       # - name: Test Program

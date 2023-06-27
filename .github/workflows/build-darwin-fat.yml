@@ -61,6 +61,10 @@ jobs:
           mkdir -p ${{ github.workspace }}/build
           ln -sf $(xcrun --sdk macosx --show-sdk-path) ${{ github.workspace }}/build/sdk
 
+      # Install Code Size Profiler
+      - name: Install Code Size Profiler
+        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+
       # Compile Program
       - name: Build Program (x86_64)
         run: |
@@ -84,6 +88,18 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/target/fat-apple-darwin/release
           lipo -create ${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine ${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine -output ${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine
+
+      # Profile Code Size
+      - name: Profile Code Size (x86_64)
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-apple-darwin/release/catgirl-engine"
+
+      # Profile Code Size
+      - name: Profile Code Size (x86_64)
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/aarch64-apple-darwin/release/catgirl-engine"
+
+      # Profile Code Size
+      - name: Profile Code Size (Fat)
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/fat-apple-darwin/release/catgirl-engine"
 
       # Prepare App
       - name: Prepare App
