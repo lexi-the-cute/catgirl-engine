@@ -3,7 +3,9 @@
 # Install Wasm-Pack
 # cargo install wasm-pack
 
-rm .gitignore.bak
+if [[ -f ".gitignore.bak" ]]; then
+    rm .gitignore.bak
+fi
 cp .gitignore .gitignore.bak
 
 # Build Catgirl Engine
