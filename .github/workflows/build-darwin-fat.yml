@@ -24,11 +24,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Setup Rust Build Caching
-      - uses: Swatinem/rust-cache@v2
-        with:
-          prefix-key: "darwin-rust"
-
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -48,6 +43,11 @@ jobs:
       # Install Rust Nightly Toolchains 
       - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
+
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          prefix-key: "darwin-rust"
 
       # Add Build Targets (No PowerPC or i686 For Now)
       - name: Add x86_64 Darwin Build Target
