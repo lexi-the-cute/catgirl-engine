@@ -4,8 +4,10 @@ description = "A game engine for cool moddability and procedurally generated dat
 license = "Zlib"
 version = "0.4.0"  # https://semver.org/ (Do not use 1.0.0 until first production release)
 categories = ["game-engines"]
-repository = "https://github.com/alexisart/CatgirlEngine"
-# documentation = "https://docs.catgirl.land/engine"  # These docs don't exist yet at time of writing
+repository = "https://github.com/alexisart/catgirl-engine.git"
+documentation = "https://docs.rs/catgirl-engine"
+homepage = "https://github.com/alexisart/catgirl-engine"
+# readme = "ReadMe.md"
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
@@ -30,6 +32,9 @@ server = []
 cc = "1.0.79"
 cbindgen = "0.24.5"
 
+[target.'cfg(unix)'.build-dependencies]
+cargo-deb = "1.44.0"
+
 [dependencies]
 cfg-if = "1.0.0"
 log = "0.4.19"
@@ -41,9 +46,6 @@ wgpu = "0.16.1"
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
 ctrlc = "3.4.0"
-
-[target.'cfg(unix)'.build-dependencies]
-cargo-deb = "1.44.0"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "0.13.1"
@@ -62,6 +64,9 @@ web-sys = { version = "0.3.64", features = [
     "Window",
     "Element"
 ]}
+
+[target.'cfg(target_family="wasm")'.workspace]
+members = ["wasm_threads"]
 
 [package.metadata.deb]
 name = "catgirl-engine"
