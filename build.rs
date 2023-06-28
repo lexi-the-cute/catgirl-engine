@@ -205,6 +205,15 @@ fn get_bindgen_defines() -> HashMap<String, String> {
         "DEFINE_WINDOWS_FAMILY".to_string(),
     );
 
+    defines.insert(
+        "target = wasm32-unknown-unknown".to_string(),
+        "DEFINE_WASM32_UNKNOWN_UNKNOWN".to_string(),
+    );
+    defines.insert(
+        "target = wasm64-unknown-unknown".to_string(),
+        "DEFINE_WASM64_UNKNOWN_UNKNOWN".to_string(),
+    );
+
     return defines;
 }
 
