@@ -1,5 +1,7 @@
 [package]
 name = "wasm_threads"
+description = "A helper crate to catgirl-engine for facilitating Web Worker/SharedArrayBuffer threads on WebAssembly"
+license = "Zlib"
 version = "0.1.0"
 edition = "2021"
 
