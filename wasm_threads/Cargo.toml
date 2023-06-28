@@ -3,6 +3,12 @@ name = "wasm_threads"
 description = "A helper crate to catgirl-engine for facilitating Web Worker/SharedArrayBuffer threads on WebAssembly"
 license = "Zlib"
 version = "0.1.0"
+categories = ["wasm"]
+repository = "https://github.com/alexisart/catgirl-engine.git"
+documentation = "https://docs.rs/wasm_threads"
+homepage = "https://github.com/alexisart/catgirl-engine/tree/rewrite/wasm_threads"
+# readme = "ReadMe.md"
+authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
