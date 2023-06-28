@@ -1,10 +1,10 @@
 use std::sync::mpsc::{self, Receiver, Sender};
 
-// #[cfg(not(target_family = "wasm"))]
+#[cfg(not(target_family = "wasm"))]
 use std::thread::{Builder, JoinHandle};
 
-// #[cfg(target_family = "wasm")]
-// use wasm_thread as thread;
+#[cfg(target_family = "wasm")]
+use wasm_threads::thread::{Builder, JoinHandle};
 
 #[cfg(target_family = "wasm")]
 use std::panic::set_hook;
@@ -392,8 +392,11 @@ pub fn setup_logger() {
             android_logger::Config::default()
                 .with_max_level(log::LevelFilter::Trace)
                 .with_tag("CatgirlEngine")
-                .with_filter(android_logger::FilterBuilder::new()
-                .parse("trace,android_activity=off,winit=off").build()),
+                .with_filter(
+                    android_logger::FilterBuilder::new()
+                        .parse("trace,android_activity=off,winit=off")
+                        .build(),
+                ),
         );
     } else if cfg!(all(target_family = "wasm", feature = "browser")) {
         #[cfg(all(target_family = "wasm", feature = "browser"))]

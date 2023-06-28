@@ -299,6 +299,7 @@ dependencies = [
  "pretty_env_logger",
  "wasm-bindgen",
  "wasm-bindgen-futures",
+ "wasm_threads",
  "web-sys",
  "wgpu",
  "winit",
@@ -1894,6 +1895,13 @@ name = "wasm-bindgen-shared"
 version = "0.2.87"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca6ad05a4870b2bf5fe995117d3728437bd27d7cd5f06f13c17443ef369775a1"
+
+[[package]]
+name = "wasm_threads"
+version = "0.1.0"
+dependencies = [
+ "wasm-bindgen",
+]
 
 [[package]]
 name = "wayland-backend"

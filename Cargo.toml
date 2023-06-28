@@ -28,6 +28,9 @@ browser = []
 client = ["dep:winit"]
 server = []
 
+[workspace]
+members = ["wasm_threads"]
+
 [build-dependencies]
 cc = "1.0.79"
 cbindgen = "0.24.5"
@@ -54,8 +57,9 @@ winit = { git = "https://github.com/alexisart/winit.git", rev = "45d6295", featu
 # winit = { path = "../winit", features = ["android-game-activity"] }
 
 [target.'cfg(target_family="wasm")'.dependencies]
-console_error_panic_hook = "0.1.7"
 wasm-bindgen = "0.2.87"
+wasm_threads = { path = "wasm_threads" }
+console_error_panic_hook = "0.1.7"
 wgpu = { version = "0.16.1", features = ["webgl"]}
 wasm-bindgen-futures = "0.4.37"
 web-sys = { version = "0.3.64", features = [
@@ -64,9 +68,6 @@ web-sys = { version = "0.3.64", features = [
     "Window",
     "Element"
 ]}
-
-[target.'cfg(target_family="wasm")'.workspace]
-members = ["wasm_threads"]
 
 [package.metadata.deb]
 name = "catgirl-engine"
