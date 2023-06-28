@@ -13,4 +13,10 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+name = "wasm_threads"
+crate-type = ["lib"]  # https://doc.rust-lang.org/reference/linkage.html#linkage
+
 [dependencies]
+# [target.'cfg(target_family="wasm")'.dependencies]
+wasm-bindgen = "*"
