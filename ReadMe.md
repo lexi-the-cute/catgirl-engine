@@ -12,7 +12,7 @@
 sudo apt update
 
 # Install Required Packages
-sudo apt install git gcc libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+sudo apt install git gcc
 
 # Install Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -20,11 +20,17 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # Run Cargo Environment Setup Script
 source "$HOME/.cargo/env"
 
+# Download Nightly Toolchain
+rustup default nightly
+
+# Download Nightly Rust's Source Code
+rustup component add rust-src --toolchain nightly
+
 # Download This Repo
-git clone https://github.com/alexisart/CatgirlEngine --recurse-submodules
+git clone https://github.com/alexisart/catgirl-engine --recurse-submodules
 
 # Switch To Project Root
-cd CatgirlEngine
+cd catgirl-engine
 ```
 
 # Build
@@ -43,12 +49,36 @@ catgirl-engine
 
 ## Android
 
-The Android build process can be read from [./.github/workflows/build-android.yml](.github/workflows/build-android.yml)
+```bash
+# Assuming In Project Root "catgirl-engine" From Debian x86_64
+
+# Install Java If Not Already Installed
+sudo apt -y install openjdk-17-jre-headless
+
+# Add Build Targets Once
+rustup target add armv7-linux-androideabi
+rustup target add aarch64-linux-android
+rustup target add i686-linux-android
+rustup target add x86_64-linux-android
+
+# Install Cargo-NDK Once
+cargo install cargo-ndk
+
+# Workaround Cargo Gradle Plugin Bug Once
+touch android/local.properties
+
+# Build Android APK
+cd android
+./gradlew assembleDebug
+
+# Copy Android APK To Project Root
+cp app/build/outputs/apk/debug/*.apk ..
+```
+
+## Others
+
+Other build process can be read from the files stored in [./.github/workflows](.github/workflows/). Most build files build on x86_64 Ubuntu with the exception of Mac OSX which builds on 64 Bit OSX.
 
 # Running
-
-You may want to use [different drivers](https://wiki.libsdl.org/SDL2/FAQUsingSDL) depending on circumstances or preference.
-
-For example, on (Debian) Linux, SDL defaults to `SDL_VIDEODRIVER=x11 SDL_AUDIODRIVER=pulseaudio path/to/engine`.
 
 If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=debug path/to/engine`.
