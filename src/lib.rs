@@ -9,7 +9,7 @@ use core::ffi::{c_char, c_int};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-#[cfg(any(target = "wasm32-unknown-unknown", target = "wasm64-unknown-unknown"))]
+#[cfg(any(all(target_arch = "wasm32", target_os="unknown"), all(target_arch = "wasm64", target_os="unknown")))]
 use wasm_bindgen::{prelude::wasm_bindgen, JsError};
 
 mod client;
@@ -32,7 +32,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
 // TODO: Get working in browser and possibly wasmtime (https://wasmtime.dev/)
 #[wasm_bindgen(start)]
-#[cfg(any(target = "wasm32-unknown-unknown", target = "wasm64-unknown-unknown"))]
+#[cfg(any(all(target_arch = "wasm32", target_os="unknown"), all(target_arch = "wasm64", target_os="unknown")))]
 fn wasm_start() -> Result<(), JsError> {
     game::setup_logger();
     debug!("Launched as WebAssembly library...");
