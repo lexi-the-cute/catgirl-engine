@@ -1,3 +1,5 @@
+cargo-features = ["per-package-target"]
+
 [package]
 name = "wasm_threads"
 description = "A helper crate to catgirl-engine for facilitating Web Worker/SharedArrayBuffer threads on WebAssembly"
@@ -11,6 +13,11 @@ homepage = "https://github.com/alexisart/catgirl-engine/tree/rewrite/wasm_thread
 authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
 edition = "2021"
 
+# Unstable Features - https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=wasm#per-package-target
+# Info on Target - https://doc.rust-lang.org/beta/nightly-rustc/rustc_target/spec/wasm32_unknown_unknown/index.html
+default-target = "wasm32-unknown-unknown"
+forced-target = "wasm32-unknown-unknown"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [lib]
@@ -19,4 +26,15 @@ crate-type = ["lib"]  # https://doc.rust-lang.org/reference/linkage.html#linkage
 
 [dependencies]
 # [target.'cfg(target_family="wasm")'.dependencies]
-wasm-bindgen = "*"
+# wasm-bindgen = "*"
+
+[package.metadata.docs.rs]
+default-target = "wasm32-unknown-unknown"
+targets = ["wasm32-unknown-unknown", "wasm64-unknown-unknown"]
+
+# No Support For:
+# wasm32-unknown-emscripten
+# asmjs-unknown-emscripten
+# wasm32-wasi
+
+# Target List Found At: https://doc.rust-lang.org/beta/nightly-rustc/rustc_target/spec/index.html
