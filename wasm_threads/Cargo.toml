@@ -27,7 +27,12 @@ crate-type = ["lib"]  # https://doc.rust-lang.org/reference/linkage.html#linkage
 
 [dependencies]
 # [target.'cfg(target_family="wasm")'.dependencies]
-# wasm-bindgen = "*"
+log = "*"
+wasm-bindgen = "*"
+js-sys = "*"
+web-sys = { version = "*", features = [
+    "Worker"
+]}
 
 [package.metadata.docs.rs]
 default-target = "wasm32-unknown-unknown"
