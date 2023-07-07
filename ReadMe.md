@@ -1,7 +1,15 @@
+<!-- # What's This About -->
+
+# What's This Repo
+
+<!-- Future explanation of repo here... -->
+
+This repo is both hosted on [Github][github-repo] and [Codeberg][codeberg-repo].
+
 # Download
 
-* [Itch.io](https://catgirlland.itch.io/catgirl-engine)
-* [Google Play](https://play.google.com/store/apps/details?id=land.catgirl.engine)
+* [Itch.io][itchio-download]
+* [Google Play][google-play-download]
 
 # Setup Build Environment
 
@@ -82,3 +90,8 @@ Other build process can be read from the files stored in [./.github/workflows](.
 # Running
 
 If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=debug path/to/engine`.
+
+[github-repo]: https://github.com/alexisart/catgirl-engine
+[coderberg-repo]: https://codeberg.org/alexis/catgirl-engine
+[itchio-download]: https://catgirlland.itch.io/catgirl-engine
+[google-play-download]: https://play.google.com/store/apps/details?id=land.catgirl.engine
