@@ -4,7 +4,7 @@
 
 <!-- Future explanation of repo here... -->
 
-This repo is both hosted on [Github][github-repo] and [Codeberg][codeberg-repo].
+This repo is hosted on [my Forgejo instance][forgejo-repo], [Codeberg][codeberg-repo], [Github][github-repo].
 
 # Download
 
@@ -91,7 +91,8 @@ Other build process can be read from the files stored in [./.github/workflows](.
 
 If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=debug path/to/engine`.
 
-[github-repo]: https://github.com/alexisart/catgirl-engine
+[forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
+[github-repo]: https://github.com/lexi-the-cute/catgirl-engine
 [coderberg-repo]: https://codeberg.org/alexis/catgirl-engine
 [itchio-download]: https://catgirlland.itch.io/catgirl-engine
 [google-play-download]: https://play.google.com/store/apps/details?id=land.catgirl.engine
