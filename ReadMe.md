@@ -93,6 +93,6 @@ If you want to display more log messages, on Android, use logcat. On Linux, run 
 
 [forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
-[coderberg-repo]: https://codeberg.org/alexis/catgirl-engine
+[codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
 [itchio-download]: https://catgirlland.itch.io/catgirl-engine
 [google-play-download]: https://play.google.com/store/apps/details?id=land.catgirl.engine
