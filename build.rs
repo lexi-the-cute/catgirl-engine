@@ -68,10 +68,6 @@ fn get_bindgen_defines() -> HashMap<String, String> {
 
     // Features
     defines.insert(
-        "feature = browser".to_string(),
-        "DEFINE_BROWSER_FEATURE".to_string(),
-    );
-    defines.insert(
         "feature = client".to_string(),
         "DEFINE_CLIENT_FEATURE".to_string(),
     );
@@ -101,25 +97,12 @@ fn get_bindgen_defines() -> HashMap<String, String> {
 
     // Basic Family Targets
     defines.insert(
-        "target_family = wasm".to_string(),
-        "DEFINE_WASM_FAMILY".to_string(),
-    );
-    defines.insert(
         "target_family = unix".to_string(),
         "DEFINE_UNIX_FAMILY".to_string(),
     );
     defines.insert(
         "target_family = windows".to_string(),
         "DEFINE_WINDOWS_FAMILY".to_string(),
-    );
-
-    defines.insert(
-        "target = wasm32-unknown-unknown".to_string(),
-        "DEFINE_WASM32_UNKNOWN_UNKNOWN".to_string(),
-    );
-    defines.insert(
-        "target = wasm64-unknown-unknown".to_string(),
-        "DEFINE_WASM64_UNKNOWN_UNKNOWN".to_string(),
     );
 
     return defines;
@@ -135,12 +118,6 @@ fn target_dir() -> PathBuf {
         PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("target")
     }
 }
-
-// fn assets_dir() -> PathBuf {
-//     // PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("assets")
-
-//     PathBuf::from("assets")
-// }
 
 #[allow(dead_code)]
 fn print_environment_vars() {

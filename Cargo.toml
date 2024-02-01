@@ -2,14 +2,14 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.4.2"  # https://semver.org/ (Do not use 1.0.0 until first production release)
+version = "0.4.2"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/alexisart/catgirl-engine.git"
 documentation = "https://docs.rs/catgirl-engine"
 homepage = "https://github.com/alexisart/catgirl-engine"
 readme = "ReadMe.md"
-authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Mastodon URL
+authors = ["Alexis <@alexis@alexisart.me>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -24,13 +24,9 @@ debug = true  # Setting to false significantly reduces code size
 #panic = "abort"
 
 [features]
-default = ["browser", "client", "server"]
-browser = []
+default = ["client", "server"]
 client = ["dep:winit"]
 server = []
-
-[workspace]
-members = ["wasm_threads"]
 
 [build-dependencies]
 cc = "1.0.83"
@@ -45,26 +41,11 @@ log = "0.4.20"
 pretty_env_logger = "0.5.0"
 winit = { version = "0.29.10", optional = true }
 wgpu = "0.19.1"
-
-[target.'cfg(not(target_family="wasm"))'.dependencies]
 ctrlc = "3.4.2"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "0.13.3"
 winit = { version = "0.29.10", features = ["android-game-activity"] }
-
-[target.'cfg(any(all(target_arch="wasm32", target_os="unknown"), all(target_arch="wasm64", target_os="unknown")))'.dependencies]
-wasm-bindgen = "0.2.90"
-wasm_threads = { path = "wasm_threads" }
-console_error_panic_hook = "0.1.7"
-wgpu = { version = "0.19.1", features = ["webgl"]}
-wasm-bindgen-futures = "0.4.40"
-web-sys = { version = "0.3.67", features = [
-    "console",
-    "Document",
-    "Window",
-    "Element"
-]}
 
 [package.metadata.deb]
 name = "catgirl-engine"
