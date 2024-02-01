@@ -139,6 +139,7 @@ fn headless_loop(
 ) {
     let ctrlc_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
     ctrlc::set_handler(move || {
+        debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
         let _: Result<(), SendError<()>> = ctrlc_sender.send(());
     })
     .expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
@@ -176,7 +177,7 @@ fn gui_loop(
     let ctrlc_physics_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
 
     ctrlc::set_handler(move || {
-        #[cfg(feature = "server")]
+        debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
         let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
     })
     .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
