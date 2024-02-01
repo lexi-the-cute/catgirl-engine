@@ -9,7 +9,6 @@ use core::ffi::{c_char, c_int};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-mod client;
 mod game;
 mod server;
 

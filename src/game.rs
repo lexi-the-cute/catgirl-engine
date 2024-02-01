@@ -10,9 +10,6 @@ use winit::event_loop::{EventLoop, EventLoopBuilder};
 #[cfg(feature = "client")]
 use winit::window::{Window, WindowBuilder};
 
-#[cfg(feature = "client")]
-use crate::client;
-
 #[cfg(feature = "server")]
 use crate::server;
 
@@ -29,9 +26,6 @@ use winit::platform::android::EventLoopBuilderExtAndroid;
 static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
 struct ThreadsStruct {
-    #[cfg(feature = "client")]
-    client: JoinHandle<()>,
-
     #[cfg(feature = "server")]
     server: JoinHandle<()>,
 }
@@ -70,7 +64,7 @@ pub fn start() -> Result<(), String> {
 
     /* This is a server/client model
      *
-     * The server will only be loaded on a standalone server.
+     * The server will be solely loaded on a standalone server.
      *
      * The client can either run standalone (multiplayer)
      *   or run both at the same time (singleplayer).
@@ -78,14 +72,8 @@ pub fn start() -> Result<(), String> {
     #[cfg(feature = "server")]
     let (sptx, sprx) = mpsc::channel::<()>(); // Physics Messages Send
 
-    #[cfg(feature = "client")]
-    let (srtx, srrx) = mpsc::channel::<()>(); // Render Messages Send
-
     #[cfg(feature = "server")]
     let (rptx, rprx) = mpsc::channel::<()>(); // Physics Messages Receive
-
-    #[cfg(feature = "client")]
-    let (rrtx, rrrx) = mpsc::channel::<()>(); // Render Messages Receive
 
     // Treat As If Physical Server (Player Movement)
     #[cfg(feature = "server")]
@@ -94,56 +82,23 @@ pub fn start() -> Result<(), String> {
         .spawn(|| server::start(rptx, sprx))
         .unwrap(); // Physics
 
-    // Treat As If Physical Client (User Input)
-    #[cfg(feature = "client")]
-    let render_thread: JoinHandle<()> = Builder::new()
-        .name("render".to_string())
-        .spawn(|| client::start(rrtx, srrx))
-        .unwrap(); // Render
-
     debug!("Starting Main Loop...");
 
     let threads: ThreadsStruct = ThreadsStruct {
-        #[cfg(feature = "client")]
-        client: render_thread,
-
         #[cfg(feature = "server")]
         server: physics_thread,
     };
 
-    let server_channels: ChannelStruct = ChannelStruct {
-        #[cfg(feature = "client")]
-        sender: Some(srtx),
-
-        #[cfg(not(feature = "client"))]
-        sender: None,
-
-        #[cfg(feature = "server")]
-        receiver: Some(rprx),
-
-        #[cfg(not(feature = "server"))]
-        receiver: None,
-    };
-
-    let client_channels: ChannelStruct = ChannelStruct {
-        #[cfg(feature = "server")]
+    let channels: ChannelStruct = ChannelStruct {
         sender: Some(sptx),
-
-        #[cfg(not(feature = "server"))]
-        sender: None,
-
-        #[cfg(feature = "client")]
-        receiver: Some(rrrx),
-
-        #[cfg(not(feature = "client"))]
-        receiver: None,
+        receiver: Some(rprx),
     };
 
     #[cfg(not(feature = "client"))]
-    headless_loop(threads, server_channels, client_channels);
+    headless_loop(threads, channels);
 
     #[cfg(feature = "client")]
-    gui_loop(threads, server_channels, client_channels);
+    gui_loop(threads, channels);
 
     Ok(())
 }
@@ -153,17 +108,7 @@ fn is_finished(threads: &ThreadsStruct) -> bool {
     #[cfg(feature = "server")]
     let server_thread: &JoinHandle<()> = &threads.server;
 
-    #[cfg(feature = "client")]
-    let client_thread: &JoinHandle<()> = &threads.client;
-
-    #[cfg(all(feature = "server", feature = "client"))]
-    return server_thread.is_finished() && client_thread.is_finished();
-
-    #[cfg(all(not(feature = "client"), feature = "server"))]
     return server_thread.is_finished();
-
-    #[cfg(all(not(feature = "server"), feature = "client"))]
-    return client_thread.is_finished();
 }
 
 #[cfg(feature = "server")]
@@ -186,87 +131,53 @@ fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
     }
 }
 
-#[cfg(feature = "client")]
-fn is_render_thread_terminated(channels: &ChannelStruct) -> bool {
-    let receiver: &Receiver<()> = &channels.receiver.as_ref().unwrap();
-
-    #[cfg(feature = "server")]
-    let sender: &Sender<()> = &channels.sender.as_ref().unwrap();
-
-    match receiver.try_recv() {
-        Ok(_) => {
-            #[cfg(feature = "server")]
-            sender.send(()).ok();
-
-            return true;
-        }
-        Err(_) => {
-            return false;
-        }
-    }
-}
-
 #[allow(dead_code)]
 #[cfg(feature = "server")]
 fn headless_loop(
     threads: ThreadsStruct,
-    server_channels: ChannelStruct,
-    client_channels: ChannelStruct,
+    channels: ChannelStruct
 ) {
-    let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+    let ctrlc_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
     ctrlc::set_handler(move || {
         let _: Result<(), SendError<()>> = ctrlc_sender.send(());
     })
     .expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
 
     loop {
-        #[cfg(any(feature = "server", feature = "client"))]
         if is_finished(&threads) {
-            info!("Stopping Headess Server...");
+            info!("Stopping Headless Server...");
             break;
         }
 
-        #[cfg(feature = "server")]
-        if is_physics_thread_terminated(&server_channels) {
+        if is_physics_thread_terminated(&channels) {
             debug!("Physics Thread Terminated...");
-            request_exit(&server_channels, &client_channels);
+            request_exit(&channels);
         }
     }
 }
 
 #[cfg(any(feature = "server", feature = "client"))]
-fn request_exit(_server_channels: &ChannelStruct, _client_channels: &ChannelStruct) {
+fn request_exit(_channels: &ChannelStruct) {
     // Yes, it's supposed to be _client_channels under the server tag and vice versa
 
     // Send Exit to Server (Physics) Thread
     #[cfg(feature = "server")]
-    let _: Result<(), mpsc::SendError<()>> = _client_channels.sender.as_ref().unwrap().send(());
-
-    // Send Exit to Client (Render) Thread
-    #[cfg(feature = "client")]
-    let _: Result<(), mpsc::SendError<()>> = _server_channels.sender.as_ref().unwrap().send(());
+    let _: Result<(), mpsc::SendError<()>> = _channels.sender.as_ref().unwrap().send(());
 }
 
 #[cfg(feature = "client")]
 fn gui_loop(
     threads: ThreadsStruct,
-    server_channels: ChannelStruct,
-    client_channels: ChannelStruct,
+    channels: ChannelStruct
 ) {
     use winit::keyboard::{self, NamedKey};
 
     #[cfg(feature = "server")]
-    let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
-
-    #[cfg(feature = "client")]
-    let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
+    let ctrlc_physics_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
 
     ctrlc::set_handler(move || {
         #[cfg(feature = "server")]
         let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
-
-        #[cfg(feature = "client")]
-        let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
     })
     .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
 
@@ -304,13 +215,8 @@ fn gui_loop(
         }
 
         #[cfg(feature = "server")]
-        if is_physics_thread_terminated(&server_channels) {
+        if is_physics_thread_terminated(&channels) {
             debug!("Physics Thread Terminated...");
-        }
-
-        #[cfg(feature = "client")]
-        if is_render_thread_terminated(&client_channels) {
-            debug!("Render Thread Terminated...");
         }
 
         match event {
@@ -319,7 +225,7 @@ fn gui_loop(
                 ..
             } => {
                 debug!("The Close Button Was Pressed! Stopping...");
-                request_exit(&server_channels, &client_channels);
+                request_exit(&channels);
             }
             Event::WindowEvent {
                 event:
@@ -334,7 +240,7 @@ fn gui_loop(
                 ..
             } => {
                 debug!("The Escape Key Was Pressed! Stopping...");
-                request_exit(&server_channels, &client_channels);
+                request_exit(&channels);
             }
             Event::AboutToWait => {
                 // Application update code.
