@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.4.1"  # https://semver.org/ (Do not use 1.0.0 until first production release)
+version = "0.4.2"  # https://semver.org/ (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/alexisart/catgirl-engine.git"
@@ -33,35 +33,33 @@ server = []
 members = ["wasm_threads"]
 
 [build-dependencies]
-cc = "1.0.79"
-cbindgen = "0.24.5"
+cc = "1.0.83"
+cbindgen = "0.26.0"
 
 [target.'cfg(unix)'.build-dependencies]
-cargo-deb = "1.44.0"
+cargo-deb = "2.0.4"
 
 [dependencies]
 cfg-if = "1.0.0"
-log = "0.4.19"
+log = "0.4.20"
 pretty_env_logger = "0.5.0"
-# winit = { version = "0.28.6", optional = true }
-winit = { git = "https://github.com/alexisart/winit.git", rev = "45d6295", optional = true }
-wgpu = "0.16.1"
+winit = { version = "0.29.10", optional = true }
+wgpu = "0.19.1"
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
-ctrlc = "3.4.0"
+ctrlc = "3.4.2"
 
 [target.'cfg(target_os="android")'.dependencies]
-android_logger = "0.13.1"
-# winit = { version = "0.28.6", features = ["android-game-activity"] }
-winit = { git = "https://github.com/alexisart/winit.git", rev = "45d6295", features = ["android-game-activity"] }
+android_logger = "0.13.3"
+winit = { version = "0.29.10", features = ["android-game-activity"] }
 
 [target.'cfg(any(all(target_arch="wasm32", target_os="unknown"), all(target_arch="wasm64", target_os="unknown")))'.dependencies]
-wasm-bindgen = "0.2.87"
+wasm-bindgen = "0.2.90"
 wasm_threads = { path = "wasm_threads" }
 console_error_panic_hook = "0.1.7"
-wgpu = { version = "0.16.1", features = ["webgl"]}
-wasm-bindgen-futures = "0.4.37"
-web-sys = { version = "0.3.64", features = [
+wgpu = { version = "0.19.1", features = ["webgl"]}
+wasm-bindgen-futures = "0.4.40"
+web-sys = { version = "0.3.67", features = [
     "console",
     "Document",
     "Window",

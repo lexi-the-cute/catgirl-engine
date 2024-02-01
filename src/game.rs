@@ -277,7 +277,7 @@ fn gui_loop(
     server_channels: ChannelStruct,
     client_channels: ChannelStruct,
 ) {
-    use winit::keyboard;
+    use winit::keyboard::{self, NamedKey};
 
     #[cfg(not(target_family = "wasm"))]
     {
@@ -298,22 +298,25 @@ fn gui_loop(
     }
 
     #[cfg(not(target_os = "android"))]
-    let event_loop: EventLoop<()> = EventLoopBuilder::new().build();
+    let event_loop: EventLoop<()> = EventLoopBuilder::new()
+        .build()
+        .expect("Could not create an event loop!");
 
     #[cfg(target_os = "android")]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
         .with_android_app(ANDROID_APP.get().unwrap().to_owned())
-        .build();
+        .build()
+        .expect("Could not create an event loop!");
 
     let builder: WindowBuilder = WindowBuilder::new();
     let window: Window = builder
         .build(&event_loop)
         .expect("Could not create window!");
 
-    event_loop.run(move |event, _, control_flow| {
+    let _ = event_loop.run(move |event, window_target| {
         // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
         // dispatched any events. This is ideal for games and similar applications.
-        control_flow.set_poll();
+        window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
 
         // TODO: Determine if this should be selected depending on menus and pause state
         // ControlFlow::Wait pauses the event loop if no events are available to process.
@@ -324,7 +327,7 @@ fn gui_loop(
         #[cfg(any(feature = "server", feature = "client"))]
         if is_finished(&threads) {
             info!("Stopping Game...");
-            control_flow.set_exit_with_code(0);
+            window_target.exit()
         }
 
         #[cfg(feature = "server")]
@@ -350,7 +353,7 @@ fn gui_loop(
                     WindowEvent::KeyboardInput {
                         event:
                             KeyEvent {
-                                logical_key: keyboard::Key::Escape,
+                                logical_key: keyboard::Key::Named(NamedKey::Escape),
                                 ..
                             },
                         ..
@@ -360,7 +363,7 @@ fn gui_loop(
                 debug!("The Escape Key Was Pressed! Stopping...");
                 request_exit(&server_channels, &client_channels);
             }
-            Event::MainEventsCleared => {
+            Event::AboutToWait => {
                 // Application update code.
 
                 // Queue a RedrawRequested event.
@@ -369,13 +372,6 @@ fn gui_loop(
                 // applications which do not always need to. Applications that redraw continuously
                 // can just render here instead.
                 window.request_redraw();
-            }
-            Event::RedrawRequested(_) => {
-                // Redraw the application.
-                //
-                // It's preferable for applications that do not render continuously to render in
-                // this event rather than in MainEventsCleared, since rendering in here allows
-                // the program to gracefully handle redraws requested by the OS.
             }
             _ => (),
         }
