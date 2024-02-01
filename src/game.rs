@@ -1,19 +1,5 @@
-use std::sync::mpsc::{self, Receiver, Sender};
-
-#[cfg(not(target_family = "wasm"))]
+use std::sync::mpsc::{self, Receiver, Sender, SendError};
 use std::thread::{Builder, JoinHandle};
-
-#[cfg(target_family = "wasm")]
-use wasm_threads::thread::{Builder, JoinHandle};
-
-#[cfg(target_family = "wasm")]
-use std::panic::set_hook;
-
-#[cfg(not(target_family = "wasm"))]
-use std::sync::mpsc::SendError;
-
-#[cfg(target_os = "android")]
-use std::sync::OnceLock;
 
 #[cfg(feature = "client")]
 use winit::event::{Event, KeyEvent, WindowEvent};
@@ -24,17 +10,20 @@ use winit::event_loop::{EventLoop, EventLoopBuilder};
 #[cfg(feature = "client")]
 use winit::window::{Window, WindowBuilder};
 
-#[cfg(target_os = "android")]
-use winit::platform::android::activity::AndroidApp;
-
-#[cfg(target_os = "android")]
-use winit::platform::android::EventLoopBuilderExtAndroid;
-
 #[cfg(feature = "client")]
 use crate::client;
 
 #[cfg(feature = "server")]
 use crate::server;
+
+#[cfg(target_os = "android")]
+use std::sync::OnceLock;
+
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
+
+#[cfg(target_os = "android")]
+use winit::platform::android::EventLoopBuilderExtAndroid;
 
 #[cfg(target_os = "android")]
 static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
@@ -97,16 +86,6 @@ pub fn start() -> Result<(), String> {
 
     #[cfg(feature = "client")]
     let (rrtx, rrrx) = mpsc::channel::<()>(); // Render Messages Receive
-
-    #[cfg(target_family = "wasm")]
-    {
-        let message: String = "Currently this will crash when trying to load a thread. "
-            .to_string()
-            + "It is possible to use threads on the web, via web workers. "
-            + "I'll be looking at different methods of implementing threading...";
-
-        warn!("{}", message);
-    }
 
     // Treat As If Physical Server (Player Movement)
     #[cfg(feature = "server")]
@@ -234,14 +213,11 @@ fn headless_loop(
     server_channels: ChannelStruct,
     client_channels: ChannelStruct,
 ) {
-    #[cfg(not(target_family = "wasm"))]
-    {
-        let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
-        ctrlc::set_handler(move || {
-            let _: Result<(), SendError<()>> = ctrlc_sender.send(());
-        })
-        .expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
-    }
+    let ctrlc_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+    ctrlc::set_handler(move || {
+        let _: Result<(), SendError<()>> = ctrlc_sender.send(());
+    })
+    .expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
 
     loop {
         #[cfg(any(feature = "server", feature = "client"))]
@@ -279,23 +255,20 @@ fn gui_loop(
 ) {
     use winit::keyboard::{self, NamedKey};
 
-    #[cfg(not(target_family = "wasm"))]
-    {
+    #[cfg(feature = "server")]
+    let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+
+    #[cfg(feature = "client")]
+    let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
+
+    ctrlc::set_handler(move || {
         #[cfg(feature = "server")]
-        let ctrlc_physics_sender: Sender<()> = client_channels.sender.as_ref().unwrap().clone();
+        let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
 
         #[cfg(feature = "client")]
-        let ctrlc_render_sender: Sender<()> = server_channels.sender.as_ref().unwrap().clone();
-
-        ctrlc::set_handler(move || {
-            #[cfg(feature = "server")]
-            let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
-
-            #[cfg(feature = "client")]
-            let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
-        })
-        .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
-    }
+        let _: Result<(), SendError<()>> = ctrlc_render_sender.send(());
+    })
+    .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
 
     #[cfg(not(target_os = "android"))]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
@@ -394,12 +367,6 @@ pub fn setup_logger() {
                         .build(),
                 ),
         );
-    } else if cfg!(all(target_family = "wasm", feature = "browser")) {
-        #[cfg(all(target_family = "wasm", feature = "browser"))]
-        {
-            set_hook(Box::new(console_error_panic_hook::hook));
-            crate::client::browser::init().unwrap();
-        }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
