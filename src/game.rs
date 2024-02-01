@@ -298,7 +298,7 @@ fn gui_loop(
         // control_flow.set_wait();
 
         #[cfg(any(feature = "server", feature = "client"))]
-        if is_finished(&threads) {
+        if is_finished(&threads) && !window_target.exiting() {
             info!("Stopping Game...");
             window_target.exit()
         }
