@@ -208,7 +208,7 @@ fn gui_loop(
         // ControlFlow::Wait pauses the event loop if no events are available to process.
         // This is ideal for non-game applications that only update in response to user
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
-        // control_flow.set_wait();
+        // window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
         #[cfg(any(feature = "server", feature = "client"))]
         if is_finished(&threads) && !window_target.exiting() {
