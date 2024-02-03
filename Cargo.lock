@@ -316,6 +316,7 @@ dependencies = [
  "log",
  "piccolo",
  "pretty_env_logger",
+ "serde_json",
  "wgpu",
  "winit",
 ]
