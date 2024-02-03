@@ -36,9 +36,10 @@ struct ChannelStruct {
 }
 
 #[cfg(not(target_os = "android"))]
-pub fn launch(_argc: isize, _argv: *const *const u8) -> isize {
+pub fn launch() -> isize {
     // Handle Command Line Arguments Here
-    // ...
+    let args: Vec<String> = std::env::args().collect();
+    debug!("Args: {:?}", args);
 
     match start() {
         Ok(_) => {

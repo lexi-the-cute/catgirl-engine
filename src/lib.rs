@@ -1,5 +1,3 @@
-#![feature(start)]
-
 #[macro_use]
 extern crate log;
 
@@ -23,7 +21,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     let _argc: isize = argc.try_into().unwrap();
     let _argv: *const *const u8 = argv as *const *const u8;
 
-    return game::launch(_argc, _argv).try_into().unwrap();
+    return game::launch().try_into().unwrap();
 }
 
 #[no_mangle]
