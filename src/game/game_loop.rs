@@ -2,15 +2,6 @@ use super::{ThreadsStruct, ChannelStruct};
 use std::sync::mpsc::{Receiver, Sender, SendError};
 use std::thread::JoinHandle;
 
-#[cfg(feature = "client")]
-use winit::event::{Event, KeyEvent, WindowEvent};
-
-#[cfg(feature = "client")]
-use winit::event_loop::{EventLoop, EventLoopBuilder};
-
-#[cfg(feature = "client")]
-use winit::window::{Window, WindowBuilder};
-
 #[cfg(feature = "server")]
 pub(crate) fn headless_loop(
     threads: ThreadsStruct,
@@ -42,7 +33,13 @@ pub(crate) fn gui_loop(
     threads: ThreadsStruct,
     channels: ChannelStruct
 ) {
+    use winit::event::{Event, KeyEvent, WindowEvent};
+    use winit::event_loop::{EventLoop, EventLoopBuilder};
+    use winit::window::{Window, WindowBuilder};
     use winit::keyboard::{self, NamedKey};
+
+    #[cfg(target_os = "android")]
+    use winit::platform::android::EventLoopBuilderExtAndroid;  // Necessary for with_android_app
 
     #[cfg(feature = "server")]
     let ctrlc_physics_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
@@ -60,7 +57,7 @@ pub(crate) fn gui_loop(
 
     #[cfg(target_os = "android")]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
-        .with_android_app(ANDROID_APP.get().unwrap().to_owned())
+        .with_android_app(super::ANDROID_APP.get().unwrap().to_owned())
         .build()
         .expect("Could not create an event loop!");
 
@@ -80,7 +77,6 @@ pub(crate) fn gui_loop(
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
         // window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
-        #[cfg(any(feature = "server", feature = "client"))]
         if is_finished(&threads) && !window_target.exiting() {
             info!("Stopping Game...");
             window_target.exit()

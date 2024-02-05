@@ -1,7 +1,6 @@
 #[macro_use]
 extern crate log;
 
-#[cfg(not(target_os = "android"))]
 use core::ffi::{c_char, c_int};
 
 #[cfg(target_os = "android")]
