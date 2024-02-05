@@ -3,7 +3,7 @@
 use std::sync::mpsc::{Receiver, Sender};
 
 // This thread handles physics (aka the server)
-pub fn start(tx: Sender<()>, rx: Receiver<()>) {
+pub(crate) fn start(tx: Sender<()>, rx: Receiver<()>) {
     run(rx)
         .map_err(|err: String| {
             error!("Server (Physics) Crash: {:?}", err);
