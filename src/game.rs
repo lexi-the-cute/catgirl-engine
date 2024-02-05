@@ -13,10 +13,7 @@ use std::sync::OnceLock;
 use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_os = "android")]
-use winit::platform::android::EventLoopBuilderExtAndroid;
-
-#[cfg(target_os = "android")]
-static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
+pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
 pub struct ThreadsStruct {
     #[cfg(feature = "server")]
@@ -36,7 +33,6 @@ fn parse_args() {
     // let mut args = Args::new("");
 }
 
-#[cfg(not(target_os = "android"))]
 pub(crate) fn launch() -> isize {
     parse_args();
 
