@@ -7,7 +7,6 @@ pub(crate) fn headless_loop(
     threads: ThreadsStruct,
     channels: ChannelStruct
 ) {
-
     let ctrlc_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
     ctrlc::set_handler(move || {
         debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
@@ -112,6 +111,8 @@ pub(crate) fn gui_loop(
             }
             Event::AboutToWait => {
                 // Application update code.
+
+                
 
                 // Queue a RedrawRequested event.
                 //
