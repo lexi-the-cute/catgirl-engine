@@ -12,7 +12,6 @@ mod server;
 
 // Run as Library
 #[no_mangle]
-#[cfg(not(target_os = "android"))]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
