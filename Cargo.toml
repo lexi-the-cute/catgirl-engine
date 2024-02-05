@@ -25,7 +25,7 @@ debug = true  # Setting to false significantly reduces code size
 
 [features]
 default = ["client", "server"]
-client = ["dep:winit", "dep:wgpu", "dep:egui"]
+client = ["dep:winit", "dep:wgpu", "dep:egui", "dep:egui-wgpu"]
 server = []
 
 # Used for customizing building of docs.rs binary
@@ -33,30 +33,29 @@ server = []
 features = ["default"]
 
 [build-dependencies]
-cc = "1.0.83"
-cbindgen = "0.26.0"
+cc = "*"
+cbindgen = "*"
 
 [target.'cfg(unix)'.build-dependencies]
-cargo-deb = "2.0.4"
+cargo-deb = "*"
 
 [dependencies]
-cfg-if = "1.0.0"
-log = {version = "0.4.20", features = ["std", "serde"]}
-pretty_env_logger = "0.5.0"
-winit = { version = "0.29.10", optional = true, features = ["serde"] }
-wgpu = { version = "0.19.1", optional = true }
-egui = { version = "0.25.0", optional = true, features = ["serde", "persistence"] }
-egui-winit = { version = "0.25.0", features = ["serde"] }
-# egui-wgpu = "0.25.0"  # Causes dependency issues when adding via cargo
-piccolo = "0.3.1"
-ctrlc = "3.4.2"
-serde_json = "1.0.113"
-clap = "4.4.18"
-toml-config = { version = "0.4.0" }  # features = ["serde-serialization"]
+cfg-if = "*"
+log = {version = "*", features = ["std", "serde"]}
+pretty_env_logger = "*"
+winit = { version = "*", optional = true, features = ["serde"] }
+wgpu = { version = "*", optional = true }
+egui = { version = "*", optional = true, features = ["serde", "persistence"] }
+egui-wgpu = { version = "*", optional = true }  # Causes dependency issues when adding via cargo
+piccolo = "*"
+ctrlc = "*"
+serde_json = "*"
+clap = "*"
+toml-config = { version = "*" }  # features = ["serde-serialization"]
 
 [target.'cfg(target_os="android")'.dependencies]
-android_logger = "0.13.3"
-winit = { version = "0.29.10", features = ["serde", "android-game-activity"] }
+android_logger = "*"
+winit = { version = "*", features = ["serde", "android-game-activity"] }
 
 [package.metadata.deb]
 name = "catgirl-engine"

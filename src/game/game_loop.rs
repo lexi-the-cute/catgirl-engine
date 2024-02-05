@@ -65,6 +65,8 @@ pub(crate) fn gui_loop(
         .build(&event_loop)
         .expect("Could not create window!");
 
+    // let ctx: &Context = &egui::Context::default();
+
     let _ = event_loop.run(move |event, window_target| {
         // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
         // dispatched any events. This is ideal for games and similar applications.
@@ -111,8 +113,15 @@ pub(crate) fn gui_loop(
             }
             Event::AboutToWait => {
                 // Application update code.
+                // let input = egui::RawInput::default();
+                // ctx.begin_frame(input);
 
-                
+                // egui::CentralPanel::default().show(&ctx, |ui| {
+                //     ui.label("Hello egui!");
+                // });
+
+                // let full_output = ctx.end_frame();
+                // Context::set_immediate_viewport_renderer(&window_target);
 
                 // Queue a RedrawRequested event.
                 //
