@@ -43,7 +43,7 @@ cargo-deb = "*"
 cfg-if = "*"
 log = {version = "*", features = ["std", "serde"]}
 pretty_env_logger = "*"
-winit = { version = "*", optional = true, features = ["serde"] }
+winit = { version = "*", optional = true, features = ["serde", "rwh_05"] }
 wgpu = { version = "*", optional = true }
 egui = { version = "*", optional = true, features = ["serde", "persistence"] }
 egui-wgpu = { version = "*", optional = true }  # Causes dependency issues when adding via cargo
@@ -52,10 +52,12 @@ ctrlc = "*"
 serde_json = "*"
 clap = "*"
 toml-config = { version = "*" }  # features = ["serde-serialization"]
+pollster = "*"
+
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "*"
-winit = { version = "*", features = ["serde", "android-game-activity"] }
+winit = { version = "*", features = ["serde", "rwh_05", "android-game-activity"] }
 
 [package.metadata.deb]
 name = "catgirl-engine"

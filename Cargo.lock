@@ -422,6 +422,7 @@ dependencies = [
  "egui-wgpu",
  "log 0.4.20",
  "piccolo",
+ "pollster",
  "pretty_env_logger",
  "serde_json",
  "toml-config",
@@ -1412,6 +1413,7 @@ dependencies = [
  "log 0.4.20",
  "ndk-sys",
  "num_enum",
+ "raw-window-handle 0.5.2",
  "raw-window-handle 0.6.0",
  "thiserror",
 ]
@@ -1633,6 +1635,12 @@ dependencies = [
  "tracing",
  "windows-sys 0.52.0",
 ]
+
+[[package]]
+name = "pollster"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "22686f4785f02a4fcc856d3b3bb19bf6c8160d103f7a99cc258bddd0251dc7f2"
 
 [[package]]
 name = "ppv-lite86"
@@ -2901,6 +2909,7 @@ dependencies = [
  "once_cell",
  "orbclient",
  "percent-encoding",
+ "raw-window-handle 0.5.2",
  "raw-window-handle 0.6.0",
  "redox_syscall 0.3.5",
  "rustix",
