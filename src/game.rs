@@ -17,12 +17,12 @@ pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
 pub struct ThreadsStruct {
     #[cfg(feature = "server")]
-    server: JoinHandle<()>,
+    server: JoinHandle<()>
 }
 
 pub struct ChannelStruct {
     sender: Option<Sender<()>>,
-    receiver: Option<Receiver<()>>,
+    receiver: Option<Receiver<()>>
 }
 
 fn parse_args() {
@@ -105,12 +105,12 @@ fn start() -> Result<(), String> {
 
     let threads: ThreadsStruct = ThreadsStruct {
         #[cfg(feature = "server")]
-        server: physics_thread,
+        server: physics_thread
     };
 
     let channels: ChannelStruct = ChannelStruct {
         sender: Some(sptx),
-        receiver: Some(rprx),
+        receiver: Some(rprx)
     };
 
     // TODO: Implement check with command line args and/or config
