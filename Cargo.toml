@@ -25,7 +25,7 @@ debug = true  # Setting to false significantly reduces code size
 
 [features]
 default = ["client", "server"]
-client = ["dep:winit", "dep:wgpu", "dep:egui", "dep:egui-wgpu"]
+client = ["dep:winit", "dep:wgpu"]
 server = []
 
 # Used for customizing building of docs.rs binary
@@ -43,10 +43,10 @@ cargo-deb = "*"
 cfg-if = "*"
 log = {version = "*", features = ["std", "serde"]}
 pretty_env_logger = "*"
-winit = { version = "*", optional = true, features = ["serde", "rwh_05"] }
+winit = { version = "*", optional = true, features = ["serde"] }
 wgpu = { version = "*", optional = true }
-egui = { version = "*", optional = true, features = ["serde", "persistence"] }
-egui-wgpu = { version = "*", optional = true }  # Causes dependency issues when adding via cargo
+# egui = { version = "*", optional = true, features = ["serde", "persistence"] }
+# egui-wgpu = { version = "*", optional = true }
 piccolo = "*"
 ctrlc = "*"
 serde_json = "*"
@@ -57,7 +57,7 @@ pollster = "*"
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "*"
-winit = { version = "*", features = ["serde", "rwh_05", "android-game-activity"] }
+winit = { version = "*", features = ["serde", "android-game-activity"] }
 
 [package.metadata.deb]
 name = "catgirl-engine"
