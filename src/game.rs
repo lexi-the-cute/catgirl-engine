@@ -15,6 +15,12 @@ use winit::platform::android::activity::AndroidApp;
 #[cfg(target_os = "android")]
 pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
+// Constants
+pub const NAME: &str = "Catgirl Engine";
+
+#[allow(dead_code)]
+pub const TAG: &str = "CatgirlEngine";
+
 pub struct ThreadsStruct {
     #[cfg(feature = "server")]
     server: JoinHandle<()>
@@ -64,7 +70,7 @@ pub(crate) fn setup_logger() {
         android_logger::init_once(
             android_logger::Config::default()
                 .with_max_level(log::LevelFilter::Trace)
-                .with_tag("CatgirlEngine")
+                .with_tag(TAG)
                 .with_filter(
                     android_logger::FilterBuilder::new()
                         .parse("trace,android_activity=off,winit=off")
@@ -77,9 +83,20 @@ pub(crate) fn setup_logger() {
     }
 }
 
+fn set_panic_hook() {
+    std::panic::set_hook(Box::new(|info| {
+        if let Some(string) = info.payload().downcast_ref::<String>() {
+            error!("Caught panic: {:?}", string);
+        }
+    }));
+}
+
 fn start() -> Result<(), String> {
     // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
+
+    debug!("Setting panic hook...");
+    set_panic_hook();
 
     /* This is a server/client model
      *

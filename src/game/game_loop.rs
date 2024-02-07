@@ -74,6 +74,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
     // https://github.com/gfx-rs/wgpu/discussions/5213
     // https://doc.rust-lang.org/std/sync/struct.Arc.html
     let window_arc: Arc<Window> = Arc::new(builder
+        .with_title(super::NAME)
         .build(&event_loop)
         .expect("Could not create window!"));
 
@@ -86,12 +87,16 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
     // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
     // https://crates.io/crates/pollster
     debug!("Grabbing wgpu adapter...");
-    let adapter: Adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default())).unwrap();
+    let adapter: Adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
+        .expect("Could not grab WGPU adapter!");
 
     // Handle to the surface on which to draw on (e.g. a window)
     // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
+    // This fails on Android
+    // Could not create surface!: CreateSurfaceError { inner: RawHandle(Unavailable) }
     debug!("Creating wgpu surface...");
-    let surface: Surface = instance.create_surface(window_arc.clone()).unwrap();
+    let surface: Surface = instance.create_surface(window_arc.clone())
+        .expect("Could not create surface!");
 
     // Describe's a device
     // For use with adapter's request device
@@ -101,7 +106,8 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 
     // Opens a connection to the graphics device (e.g. GPU)
     debug!("Opening connection with graphics device (e.g. GPU)...");
-    let (device, queue) = pollster::block_on(adapter.request_device(&device_descriptor, None)).unwrap();
+    let (device, queue) = pollster::block_on(adapter.request_device(&device_descriptor, None))
+        .expect("Could not open a connection with the graphics device!");
 
     debug!("Starting event loop...");
     let _ = event_loop.run(move |event, window_target| {
@@ -166,13 +172,15 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // Configure a surface for drawing on
                 // Needs to be updated to account for window resizing
                 let size: PhysicalSize<u32> = window_arc.as_ref().inner_size();
-                surface.configure(&device, &surface.get_default_config(&adapter, size.width, size.height).unwrap());
+                surface.configure(&device, &surface.get_default_config(&adapter, size.width, size.height)
+                    .expect("Could not get surface default config!"));
 
                 // Get a texture to draw onto the surface
                 // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
                 // https://stackoverflow.com/a/4262634
                 // This segfaults when resizing window if no render commands are executed
-                let output: SurfaceTexture = surface.get_current_texture().unwrap();
+                let output: SurfaceTexture = surface.get_current_texture()
+                    .expect("Could not get a texture to draw on!");
 
                 // Handle to the TextureView object which describes the texture and related metadata
                 // https://docs.rs/wgpu/latest/wgpu/struct.TextureView.html
