@@ -1,4 +1,5 @@
 use super::{ThreadsStruct, ChannelStruct};
+use std::sync::Arc;
 use std::sync::mpsc::{Receiver, Sender, SendError};
 use std::thread::JoinHandle;
 
@@ -27,6 +28,7 @@ pub(crate) fn headless_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 #[cfg(feature = "client")]
 pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
     use wgpu::{Adapter, CommandEncoder, DeviceDescriptor, Instance, RenderPass, RenderPassDescriptor, Surface, SurfaceTexture, TextureView};
+    use winit::dpi::PhysicalSize;
     use winit::event::{Event, KeyEvent, WindowEvent};
     use winit::event_loop::{EventLoop, EventLoopBuilder};
     use winit::window::{Window, WindowBuilder};
@@ -51,6 +53,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
     .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
 
     // Create the main loop
+    debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
         .build()
@@ -62,34 +65,45 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
         .build()
         .expect("Could not create an event loop!");
 
-    // Create a window
+    // Create a window builder
+    debug!("Creating window...");
     let builder: WindowBuilder = WindowBuilder::new();
-    let window: Window = builder
+
+    // Create window in an Atomically Reference Counted object
+    // This is to allow retaining a handle to the window after passing it to create_surface
+    // https://github.com/gfx-rs/wgpu/discussions/5213
+    // https://doc.rust-lang.org/std/sync/struct.Arc.html
+    let window_arc: Arc<Window> = Arc::new(builder
         .build(&event_loop)
-        .expect("Could not create window!");
+        .expect("Could not create window!"));
 
     // Context for all WGPU objects
     // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
+    debug!("Creating wgpu instance...");
     let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
 
     // Handle to graphics device (e.g. GPU)
     // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
     // https://crates.io/crates/pollster
+    debug!("Grabbing wgpu adapter...");
     let adapter: Adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default())).unwrap();
 
     // Handle to the surface on which to draw on (e.g. a window)
-    // TODO: Find replacement for rwh_05 as it is due to be replaced!
     // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
-    let surface: Surface = unsafe { instance.create_surface(&window).unwrap() };
+    debug!("Creating wgpu surface...");
+    let surface: Surface = instance.create_surface(window_arc.clone()).unwrap();
 
     // Describe's a device
     // For use with adapter's request device
     // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
+    debug!("Describing wgpu device...");
     let device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
 
     // Opens a connection to the graphics device (e.g. GPU)
+    debug!("Opening connection with graphics device (e.g. GPU)...");
     let (device, queue) = pollster::block_on(adapter.request_device(&device_descriptor, None)).unwrap();
 
+    debug!("Starting event loop...");
     let _ = event_loop.run(move |event, window_target| {
         /* Update Order
          *
@@ -151,7 +165,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
             Event::WindowEvent { event: WindowEvent::RedrawRequested, .. } => {
                 // Configure a surface for drawing on
                 // Needs to be updated to account for window resizing
-                let size = window.inner_size();
+                let size: PhysicalSize<u32> = window_arc.as_ref().inner_size();
                 surface.configure(&device, &surface.get_default_config(&adapter, size.width, size.height).unwrap());
 
                 // Get a texture to draw onto the surface
@@ -168,25 +182,27 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // https://docs.rs/wgpu/latest/wgpu/struct.CommandEncoder.html
                 let mut encoder: CommandEncoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
 
-                // A list of commands to render via the encoder
-                // https://docs.rs/wgpu/latest/wgpu/struct.RenderPass.html
-                {
-                    // Command to render
-                    // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
-                    let render_pass_descriptor: RenderPassDescriptor = wgpu::RenderPassDescriptor {
-                        label: Some("Render Pass"),
-                        color_attachments: &[Some(wgpu::RenderPassColorAttachment {
-                            view: &view,
-                            resolve_target: None,
-                            // Royal Purple - 104, 71, 141
-                            ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color { r: 104.0/255.0, g: 71.0/255.0, b: 141.0/255.0, a: 1.0 }), store: wgpu::StoreOp::Store },
-                        })],
-                        depth_stencil_attachment: None,
-                        timestamp_writes: None,
-                        occlusion_query_set: None
-                    };
+                // Command to render
+                // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
+                let render_pass_descriptor: RenderPassDescriptor = wgpu::RenderPassDescriptor {
+                    label: Some("Render Pass"),
+                    color_attachments: &[Some(wgpu::RenderPassColorAttachment {
+                        view: &view,
+                        resolve_target: None,
+                        // Royal Purple - 104, 71, 141
+                        ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color { r: 104.0/255.0, g: 71.0/255.0, b: 141.0/255.0, a: 1.0 }), store: wgpu::StoreOp::Store },
+                    })],
+                    depth_stencil_attachment: None,
+                    timestamp_writes: None,
+                    occlusion_query_set: None
+                };
 
+                // Block expression for ending the borrow of encoder
+                // https://doc.rust-lang.org/reference/expressions/block-expr.html
+                // https://doc.rust-lang.org/beta/rust-by-example/scope/borrow.html
+                {
                     // Render command
+                    // https://docs.rs/wgpu/latest/wgpu/struct.RenderPass.html
                     let _render_pass: RenderPass = encoder.begin_render_pass(&render_pass_descriptor);
                 }
 
