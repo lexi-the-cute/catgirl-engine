@@ -2,6 +2,7 @@ pub mod game_loop;
 
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread::{Builder, JoinHandle};
+use clap::Parser;
 
 #[cfg(feature = "server")]
 use crate::server;
@@ -31,17 +32,19 @@ pub struct ChannelStruct {
     receiver: Option<Receiver<()>>
 }
 
-fn parse_args() {
-    // Handle Command Line Arguments Here
-    let args: Vec<String> = std::env::args().collect();
-    debug!("Args: {:?}", args);
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Args {
+    // Server
+    #[arg(short, long, default_value_t = false)]
+    server: bool
+}
 
-    // let mut args = Args::new("");
+pub fn get_args() -> Args {
+    return Args::parse();
 }
 
 pub(crate) fn launch() -> isize {
-    parse_args();
-
     match start() {
         Ok(_) => {
             return 0;
@@ -54,8 +57,6 @@ pub(crate) fn launch() -> isize {
 
 #[cfg(all(target_os = "android", feature = "client"))]
 pub(crate) fn start_android(app: AndroidApp) -> Result<(), String> {
-    parse_args();
-
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
 
     return start();
@@ -131,8 +132,7 @@ fn start() -> Result<(), String> {
     };
 
     // TODO: Implement check with command line args and/or config
-    let test = false;
-    if cfg!(not(feature = "client")) || test {
+    if cfg!(not(feature = "client")) || get_args().server {
         game_loop::headless_loop(threads, channels);
     } else {
         game_loop::gui_loop(threads, channels);
