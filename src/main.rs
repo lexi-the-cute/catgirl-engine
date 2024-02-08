@@ -9,6 +9,7 @@ mod server;
 
 // Run as Executable (e.g. Linux)
 fn main() {
+    game::get_args();
     game::setup_logger();
     debug!("Launched as binary...");
 

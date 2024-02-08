@@ -50,7 +50,7 @@ wgpu = { version = "*", optional = true }
 piccolo = "*"
 ctrlc = "*"
 serde_json = "*"
-clap = "*"
+clap = { version = "*", features = ["derive"] }
 toml-config = { version = "*" }  # features = ["serde-serialization"]
 pollster = "*"
 

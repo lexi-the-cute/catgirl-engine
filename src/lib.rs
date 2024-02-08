@@ -11,13 +11,11 @@ mod server;
 
 // Run as Library
 #[no_mangle]
-pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
+    // Rust obtains these args without me having to do anything special
+    game::get_args();
     game::setup_logger();
     debug!("Launched as library...");
-
-    // This is to convert from C Main Args to Rust Main Args
-    let _argc: isize = argc.try_into().unwrap();
-    let _argv: *const *const u8 = argv as *const *const u8;
 
     return game::launch().try_into().unwrap();
 }
@@ -25,6 +23,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 #[no_mangle]
 #[cfg(all(target_os = "android", feature = "client"))]
 pub fn android_main(app: AndroidApp) {
+    game::get_args();
     game::setup_logger();
     debug!("Launched as Android app...");
 
