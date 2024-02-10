@@ -27,6 +27,7 @@ debug = true  # Setting to false significantly reduces code size
 default = ["client", "server"]
 client = ["dep:winit", "dep:wgpu"]
 server = []
+tracing-subscriber = ["dep:tracing-subscriber"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -41,8 +42,9 @@ cargo-deb = "*"
 
 [dependencies]
 cfg-if = "*"
-log = {version = "*", features = ["std", "serde"]}
 pretty_env_logger = "*"
+tracing = { version = "*", features = ["log"] }
+tracing-subscriber = { version = "*", optional = true }
 winit = { version = "*", optional = true, features = ["serde"] }
 wgpu = { version = "*", optional = true }
 # egui = { version = "*", optional = true, features = ["serde", "persistence"] }
@@ -51,9 +53,8 @@ piccolo = "*"
 ctrlc = "*"
 serde_json = "*"
 clap = { version = "*", features = ["derive"] }
-toml-config = { version = "*" }  # features = ["serde-serialization"]
+toml-config = { version = "*" }
 pollster = "*"
-
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = "*"

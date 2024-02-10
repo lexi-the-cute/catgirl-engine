@@ -84,6 +84,22 @@ pub(crate) fn setup_logger() {
     }
 }
 
+#[cfg(feature = "tracing-subscriber")]
+pub(crate) fn setup_tracer() {
+    // Construct a subscriber to print formatted traces to stdout
+    let subscriber: tracing_subscriber::FmtSubscriber = tracing_subscriber::FmtSubscriber::builder()
+        .with_max_level(tracing::Level::DEBUG)
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_ids(true)
+        .with_thread_names(true)
+        .with_target(false)
+        .finish();
+
+    // Process future traces
+    tracing::subscriber::set_global_default(subscriber).unwrap();
+}
+
 fn set_panic_hook() {
     std::panic::set_hook(Box::new(|info| {
         if let Some(string) = info.payload().downcast_ref::<String>() {
@@ -131,7 +147,6 @@ fn start() -> Result<(), String> {
         receiver: Some(rprx)
     };
 
-    // TODO: Implement check with command line args and/or config
     if cfg!(not(feature = "client")) || get_args().server {
         game_loop::headless_loop(threads, channels);
     } else {
