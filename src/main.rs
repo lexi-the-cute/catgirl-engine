@@ -1,14 +1,14 @@
-// Explanation for main(...) args - https://doc.rust-lang.org/beta/unstable-book/language-features/start.html
-// *const reference - https://doc.rust-lang.org/std/primitive.pointer.html
-
 #[macro_use]
-extern crate log;
+extern crate tracing;
 
 mod game;
 mod server;
 
 // Run as Executable (e.g. Linux)
 fn main() {
+    #[cfg(feature = "tracing-subscriber")]
+    game::setup_tracer();
+
     game::get_args();
     game::setup_logger();
     debug!("Launched as binary...");

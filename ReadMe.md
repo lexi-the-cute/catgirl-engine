@@ -89,7 +89,9 @@ Other build process can be read from the files stored in [./.github/workflows](.
 
 # Running
 
-If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=debug path/to/engine`.
+If you want to display more log messages, on Android, use logcat. On Linux, run `RUST_LOG=catgirl_engine=debug path/to/engine` or `RUST_LOG=debug path/to/engine`.
+
+If you want to use traces, you can either setup your own tracing subscriber if importing as a library, or turn on the tracing-subscriber feature (for either the binary or library).
 
 [forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
