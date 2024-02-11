@@ -70,7 +70,7 @@ pub(crate) fn setup_logger() {
         #[cfg(target_os = "android")]
         android_logger::init_once(
             android_logger::Config::default()
-                .with_max_level(log::LevelFilter::Trace)
+                .with_max_level(tracing::log::LevelFilter::Trace)
                 .with_tag(TAG)
                 .with_filter(
                     android_logger::FilterBuilder::new()
