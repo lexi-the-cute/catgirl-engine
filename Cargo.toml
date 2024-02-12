@@ -18,10 +18,25 @@ edition = "2021"
 name = "main"
 crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 
+# Optimize for faster build times
+[profile.dev]
+lto = false
+debug = true
+opt-level = 0
+incremental = true
+
+# Optimize for speed while still allowing debugging information
+[profile.dev.package."*"]
+debug = true
+opt-level = 3
+incremental = true
+
+# Optimize for speed and remove debug information for size
 [profile.release]
 lto = true
-debug = true  # Setting to false significantly reduces code size
-#panic = "abort"
+debug = false  # Setting to false significantly reduces code size (last test was 286 MB to 13 MB)
+opt-level = 3
+incremental = false
 
 [features]
 default = ["client", "server"]
