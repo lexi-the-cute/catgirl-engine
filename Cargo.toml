@@ -50,6 +50,7 @@ wgpu = { version = "*", optional = true }
 # egui = { version = "*", optional = true, features = ["serde", "persistence"] }
 # egui-wgpu = { version = "*", optional = true }
 piccolo = "*"
+rhai = { version = "*", features = ["serde"] }
 ctrlc = "*"
 serde_json = "*"
 clap = { version = "*", features = ["derive"] }

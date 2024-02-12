@@ -40,6 +40,7 @@ pub struct Args {
     server: bool
 }
 
+#[no_mangle]
 pub fn get_args() -> Args {
     return Args::parse();
 }
