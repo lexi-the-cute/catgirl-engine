@@ -27,7 +27,7 @@ pub(crate) fn headless_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 
 #[cfg(feature = "client")]
 pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
-    use wgpu::{Adapter, CommandEncoder, DeviceDescriptor, Instance, RenderPass, RenderPassDescriptor, Surface, SurfaceTexture, TextureView};
+    use wgpu::{Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass, RenderPassDescriptor, Surface, SurfaceTexture, TextureView};
     use winit::dpi::PhysicalSize;
     use winit::event::{Event, KeyEvent, WindowEvent};
     use winit::event_loop::{EventLoop, EventLoopBuilder};
@@ -65,50 +65,11 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
         .build()
         .expect("Could not create an event loop!");
 
-    // Create a window builder
-    debug!("Creating window...");
-    let builder: WindowBuilder = WindowBuilder::new();
-
-    // Create window in an Atomically Reference Counted object
-    // This is to allow retaining a handle to the window after passing it to create_surface
-    // https://github.com/gfx-rs/wgpu/discussions/5213
-    // https://doc.rust-lang.org/std/sync/struct.Arc.html
-    let window_arc: Arc<Window> = Arc::new(builder
-        .with_title(super::NAME)
-        .build(&event_loop)
-        .expect("Could not create window!"));
-
-    // Context for all WGPU objects
-    // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
-    debug!("Creating wgpu instance...");
-    let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
-
-    // Handle to graphics device (e.g. GPU)
-    // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
-    // https://crates.io/crates/pollster
-    debug!("Grabbing wgpu adapter...");
-    let adapter: Adapter = pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
-        .expect("Could not grab WGPU adapter!");
-
-    // Handle to the surface on which to draw on (e.g. a window)
-    // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
-    // This fails on Android
-    // Could not create surface!: CreateSurfaceError { inner: RawHandle(Unavailable) }
-    debug!("Creating wgpu surface...");
-    let surface: Surface = instance.create_surface(window_arc.clone())
-        .expect("Could not create surface!");
-
-    // Describe's a device
-    // For use with adapter's request device
-    // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
-    debug!("Describing wgpu device...");
-    let device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
-
-    // Opens a connection to the graphics device (e.g. GPU)
-    debug!("Opening connection with graphics device (e.g. GPU)...");
-    let (device, queue) = pollster::block_on(adapter.request_device(&device_descriptor, None))
-        .expect("Could not open a connection with the graphics device!");
-
+    let mut window_arc: Option<Arc<Window>> = None;
+    let mut adapter: Option<Adapter> = None;
+    let mut surface: Option<Surface> = None;
+    let mut device: Option<Device> = None;
+    let mut queue: Option<Queue> = None;
     debug!("Starting event loop...");
     let _ = event_loop.run(move |event, window_target| {
         /* Update Order
@@ -145,6 +106,55 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 request_exit(&channels);
             }
 
+            Event::Resumed => {
+                debug!("Resuming application...");
+
+                // Create window in an Atomically Reference Counted object
+                // This is to allow retaining a handle to the window after passing it to create_surface
+                // https://github.com/gfx-rs/wgpu/discussions/5213
+                // https://doc.rust-lang.org/std/sync/struct.Arc.html
+                debug!("Creating window...");
+                window_arc = Some(Arc::new(WindowBuilder::new()
+                    .with_title(super::NAME)
+                    .build(&window_target)
+                    .expect("Could not create window!")));
+
+                // Context for all WGPU objects
+                // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
+                debug!("Creating wgpu instance...");
+                let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
+
+                // Handle to graphics device (e.g. GPU)
+                // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
+                // https://crates.io/crates/pollster
+                debug!("Grabbing wgpu adapter...");
+                adapter = Some(pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
+                    .expect("Could not grab WGPU adapter!"));
+
+                // Handle to the surface on which to draw on (e.g. a window)
+                // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
+                debug!("Creating wgpu surface...");
+                surface = Some(instance.create_surface(window_arc.as_ref().unwrap().clone())
+                    .expect("Could not create surface!"));
+
+                // Describe's a device
+                // For use with adapter's request device
+                // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
+                debug!("Describing wgpu device...");
+                let device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
+
+                // Opens a connection to the graphics device (e.g. GPU)
+                debug!("Opening connection with graphics device (e.g. GPU)...");
+                let (_device, _queue) = pollster::block_on(adapter.as_ref().unwrap().request_device(&device_descriptor, None))
+                    .expect("Could not open a connection with the graphics device!");
+                device = Some(_device);
+                queue = Some(_queue);
+            }
+
+            Event::Suspended => {
+                debug!("Suspending application...");
+            }
+
             // Keyboard keys were pressed
             // TODO: Offload to separate function with key mapping config
             // processInput()
@@ -171,7 +181,13 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
             Event::WindowEvent { event: WindowEvent::RedrawRequested, .. } => {
                 // Configure a surface for drawing on
                 // Needs to be updated to account for window resizing
-                let size: PhysicalSize<u32> = window_arc.as_ref().inner_size();
+                let window: &Window = window_arc.as_ref().unwrap().as_ref();
+                let device: &Device = device.as_ref().unwrap();
+                let surface: &Surface = surface.as_ref().unwrap();
+                let adapter: &Adapter = adapter.as_ref().unwrap();
+                let queue: &Queue = queue.as_ref().unwrap();
+
+                let size: PhysicalSize<u32> = window.inner_size();
                 surface.configure(&device, &surface.get_default_config(&adapter, size.width, size.height)
                     .expect("Could not get surface default config!"));
 
@@ -198,6 +214,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                         view: &view,
                         resolve_target: None,
                         // Royal Purple - 104, 71, 141
+                        // TODO: Fix so color is shown accurately
                         ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color { r: 104.0/255.0, g: 71.0/255.0, b: 141.0/255.0, a: 1.0 }), store: wgpu::StoreOp::Store },
                     })],
                     depth_stencil_attachment: None,
@@ -216,17 +233,6 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 
                 queue.submit(std::iter::once(encoder.finish()));
                 output.present();
-                
-                // Application update code.
-                // let input = egui::RawInput::default();
-                // ctx.begin_frame(input);
-
-                // egui::CentralPanel::default().show(&ctx, |ui| {
-                //     ui.label("Hello egui!");
-                // });
-
-                // let full_output = ctx.end_frame();
-                // Context::set_immediate_viewport_renderer(&window_target);
             }
 
             // Last event to ever be executed on shutdown
