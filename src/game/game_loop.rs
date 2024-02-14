@@ -141,7 +141,15 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // For use with adapter's request device
                 // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
                 debug!("Describing wgpu device...");
-                let device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
+                let mut device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
+
+                // TODO: Research limits and how to automatically
+                //   determine the best settings for the device
+                debug!("Setting WGPU limits...");
+                let mut limits: wgpu::Limits = wgpu::Limits::default();
+                limits.max_texture_dimension_1d = 4096;
+                limits.max_texture_dimension_2d = 4096;
+                device_descriptor.required_limits = limits;
 
                 // Opens a connection to the graphics device (e.g. GPU)
                 debug!("Opening connection with graphics device (e.g. GPU)...");

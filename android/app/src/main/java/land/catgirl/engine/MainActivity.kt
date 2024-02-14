@@ -11,8 +11,8 @@ class MainActivity : GameActivity() {
     val TAG: String = "CatgirlEngineApp";
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // The GameActivity class creates a layout for you
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         Log.d(TAG, "Started Main Activity...")
     }
