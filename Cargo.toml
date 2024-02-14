@@ -16,7 +16,7 @@ edition = "2021"
 
 [lib]
 name = "main"
-crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
+crate-type = ["cdylib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 
 # Optimize for faster build times
 [profile.dev]
