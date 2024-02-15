@@ -218,7 +218,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                     let _render_pass: RenderPass = encoder.begin_render_pass(&render_pass_descriptor);
                 }
 
-                queue.submit(std::iter::once(encoder.finish()));
+                queue.submit(core::iter::once(encoder.finish()));
                 output.present();
             }
 
