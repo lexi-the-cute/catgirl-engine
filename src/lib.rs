@@ -21,7 +21,14 @@ pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
 
-    game::launch().try_into().unwrap()
+    match game::start() {
+        Err(error) => {
+            error!("{:?}", error);
+
+            -1
+        },
+        _ => 0
+    }
 }
 
 #[no_mangle]
@@ -34,5 +41,8 @@ pub fn android_main(app: AndroidApp) {
     game::setup_logger();
     debug!("Launched as Android app...");
 
-    let _: Result<(), String> = game::start_android(app);
+    match game::start_android(app) {
+        Err(error) => error!("{:?}", error),
+        _ => ()
+    }
 }

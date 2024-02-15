@@ -14,5 +14,8 @@ fn main() {
     game::setup_logger();
     debug!("Launched as binary...");
 
-    game::launch();
+    match game::start() {
+        Err(error) => error!("{:?}", error),
+        _ => ()
+    }
 }

@@ -42,17 +42,6 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
-pub(crate) fn launch() -> isize {
-    match start() {
-        Ok(_) => {
-            0
-        }
-        Err(_error) => {
-            -1
-        }
-    }
-}
-
 #[cfg(all(target_os = "android", feature = "client"))]
 pub(crate) fn start_android(app: AndroidApp) -> Result<(), String> {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
@@ -95,7 +84,12 @@ pub(crate) fn setup_tracer() {
         .finish();
 
     // Process future traces
-    tracing::subscriber::set_global_default(subscriber).unwrap();
+    match tracing::subscriber::set_global_default(subscriber) {
+        Err(error) => {
+            warn!("Failed to set the tracing subscriber as the global default... Message: {:?}", error)
+        },
+        _ => ()
+    }
 }
 
 fn set_panic_hook() {
@@ -106,7 +100,7 @@ fn set_panic_hook() {
     }));
 }
 
-fn start() -> Result<(), String> {
+pub fn start() -> Result<(), String> {
     // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
 
