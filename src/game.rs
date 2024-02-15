@@ -39,16 +39,16 @@ pub struct Args {
 
 #[no_mangle]
 pub fn get_args() -> Args {
-    return Args::parse();
+    Args::parse()
 }
 
 pub(crate) fn launch() -> isize {
     match start() {
         Ok(_) => {
-            return 0;
+            0
         }
         Err(_error) => {
-            return -1;
+            -1
         }
     }
 }
@@ -57,7 +57,7 @@ pub(crate) fn launch() -> isize {
 pub(crate) fn start_android(app: AndroidApp) -> Result<(), String> {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
 
-    return start();
+    start()
 }
 
 pub(crate) fn setup_logger() {
