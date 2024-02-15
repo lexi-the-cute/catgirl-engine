@@ -122,13 +122,9 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 debug!("Describing wgpu device...");
                 let mut device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
 
-                // TODO: Research limits and how to automatically
-                //   determine the best settings for the device
+                // Set limits to make this run on more devices
                 debug!("Setting WGPU limits...");
-                let mut limits: wgpu::Limits = wgpu::Limits::default();
-                limits.max_texture_dimension_1d = 4096;
-                limits.max_texture_dimension_2d = 4096;
-                device_descriptor.required_limits = limits;
+                let limits: wgpu::Limits = wgpu::Limits::downlevel_webgl2_defaults();
 
                 // Opens a connection to the graphics device (e.g. GPU)
                 debug!("Opening connection with graphics device (e.g. GPU)...");
