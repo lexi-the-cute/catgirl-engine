@@ -1,11 +1,6 @@
-pub mod game_loop;
-
 use std::sync::mpsc::{self, Receiver, Sender};
 use std::thread::{Builder, JoinHandle};
 use clap::Parser;
-
-#[cfg(feature = "server")]
-use crate::server;
 
 #[cfg(target_os = "android")]
 use std::sync::OnceLock;
@@ -22,14 +17,16 @@ pub const NAME: &str = "Catgirl Engine";
 #[allow(dead_code)]
 pub const TAG: &str = "CatgirlEngine";
 
+// TODO: Replace this...
 pub struct ThreadsStruct {
     #[cfg(feature = "server")]
-    server: JoinHandle<()>
+    pub server: JoinHandle<()>
 }
 
+// TODO: Replace this...
 pub struct ChannelStruct {
-    sender: Option<Sender<()>>,
-    receiver: Option<Receiver<()>>
+    pub sender: Option<Sender<()>>,
+    pub receiver: Option<Receiver<()>>
 }
 
 #[derive(Parser, Debug)]
@@ -133,7 +130,7 @@ fn start() -> Result<(), String> {
     #[cfg(feature = "server")]
     let physics_thread: JoinHandle<()> = Builder::new()
         .name("physics".to_string())
-        .spawn(|| server::start(rptx, sprx))
+        .spawn(|| crate::common::physics::start(rptx, sprx))
         .unwrap(); // Physics
 
     debug!("Starting Main Loop...");
@@ -149,9 +146,9 @@ fn start() -> Result<(), String> {
     };
 
     if cfg!(not(feature = "client")) || get_args().server {
-        game_loop::headless_loop(threads, channels);
+        crate::common::game_loop::headless_loop(threads, channels);
     } else {
-        game_loop::gui_loop(threads, channels);
+        crate::client::game_loop::gui_loop(threads, channels);
     }
 
     Ok(())

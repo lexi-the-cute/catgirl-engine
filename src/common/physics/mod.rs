@@ -1,5 +1,3 @@
-#![cfg(feature = "server")]
-
 use std::sync::mpsc::{Receiver, Sender};
 
 // This thread handles physics (aka the server)

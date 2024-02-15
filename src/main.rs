@@ -2,7 +2,8 @@
 extern crate tracing;
 
 mod game;
-mod server;
+mod common;
+mod client;
 
 // Run as Executable (e.g. Linux)
 fn main() {
