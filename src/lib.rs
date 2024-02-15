@@ -21,7 +21,7 @@ pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
     game::setup_logger();
     debug!("Launched as library...");
 
-    return game::launch().try_into().unwrap();
+    game::launch().try_into().unwrap()
 }
 
 #[no_mangle]

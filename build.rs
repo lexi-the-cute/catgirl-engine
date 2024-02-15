@@ -105,7 +105,7 @@ fn get_bindgen_defines() -> HashMap<String, String> {
         "DEFINE_WINDOWS_FAMILY".to_string(),
     );
 
-    return defines;
+    defines
 }
 
 /// Find the location of the `target/` directory. Note that this may be

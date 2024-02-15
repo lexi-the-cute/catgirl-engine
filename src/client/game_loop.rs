@@ -245,7 +245,7 @@ fn is_finished(threads: &ThreadsStruct) -> bool {
     #[cfg(feature = "server")]
     let server_thread: &JoinHandle<()> = &threads.server;
 
-    return server_thread.is_finished();
+    server_thread.is_finished()
 }
 
 #[cfg(feature = "server")]
@@ -260,10 +260,10 @@ fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
             #[cfg(feature = "client")]
             sender.send(()).ok();
 
-            return true;
+            true
         }
         Err(_) => {
-            return false;
+            false
         }
     }
 }
