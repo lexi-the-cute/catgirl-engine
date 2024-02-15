@@ -20,14 +20,6 @@ class MainActivity : GameActivity() {
         hideSystemUi()
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-
-//        if (hasFocus) {
-//            hideSystemUi()
-//        }
-    }
-
     private fun hideSystemUi() {
         Log.d(TAG, "Hiding System UI...")
 
