@@ -40,7 +40,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 
     #[cfg(target_os = "android")]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
-        .with_android_app(super::ANDROID_APP.get().unwrap().to_owned())
+        .with_android_app(crate::game::ANDROID_APP.get().unwrap().to_owned())
         .build()
         .expect("Could not create an event loop!");
 
@@ -125,6 +125,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // Set limits to make this run on more devices
                 debug!("Setting WGPU limits...");
                 let limits: wgpu::Limits = wgpu::Limits::downlevel_webgl2_defaults();
+                device_descriptor.required_limits = limits;
 
                 // Opens a connection to the graphics device (e.g. GPU)
                 debug!("Opening connection with graphics device (e.g. GPU)...");
