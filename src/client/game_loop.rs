@@ -1,29 +1,8 @@
-use super::{ThreadsStruct, ChannelStruct};
+use crate::game::{ThreadsStruct, ChannelStruct};
+
 use std::sync::Arc;
 use std::sync::mpsc::{Receiver, Sender, SendError};
 use std::thread::JoinHandle;
-
-#[cfg(feature = "server")]
-pub(crate) fn headless_loop(threads: ThreadsStruct, channels: ChannelStruct) {
-    let ctrlc_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
-    ctrlc::set_handler(move || {
-        debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
-        let _: Result<(), SendError<()>> = ctrlc_sender.send(());
-    })
-    .expect("Could not create Interrupt Handler on Headless Loop (e.g. Ctrl+C)...");
-
-    loop {
-        if is_finished(&threads) {
-            info!("Stopping Headless Server...");
-            break;
-        }
-
-        if is_physics_thread_terminated(&channels) {
-            debug!("Physics Thread Terminated...");
-            request_exit(&channels);
-        }
-    }
-}
 
 #[cfg(feature = "client")]
 pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
@@ -115,7 +94,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // https://doc.rust-lang.org/std/sync/struct.Arc.html
                 debug!("Creating window...");
                 window_arc = Some(Arc::new(WindowBuilder::new()
-                    .with_title(super::NAME)
+                    .with_title(crate::game::NAME)
                     .build(&window_target)
                     .expect("Could not create window!")));
 

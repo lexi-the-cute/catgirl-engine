@@ -7,7 +7,8 @@ use core::ffi::{c_char, c_int};
 use winit::platform::android::activity::AndroidApp;
 
 mod game;
-mod server;
+mod common;
+mod client;
 
 // Run as Library
 #[no_mangle]
