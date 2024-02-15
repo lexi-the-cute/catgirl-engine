@@ -1,3 +1,3 @@
 #![cfg(feature = "server")]
-pub mod game_loop;
-pub mod physics;
+pub(crate) mod game_loop;
+pub(crate) mod physics;
