@@ -6,8 +6,22 @@ use std::env::{self, Vars};
 use std::path::PathBuf;
 
 fn main() {
+    // Set custom rust flags for platform dependent building
+    set_rustflags();
+
     // Bindings are only usable when building libs
     create_bindings();
+}
+
+fn set_rustflags() {
+    // -rdynamic allows exporting symbols even when compiled as an executable
+    // https://stackoverflow.com/a/57595625
+    // let arch: String = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
+    let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
+
+    if family != "wasm" {
+        println!("cargo:rustc-link-arg=-rdynamic");
+    }
 }
 
 fn create_bindings() {
