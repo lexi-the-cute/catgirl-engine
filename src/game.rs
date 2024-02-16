@@ -120,6 +120,7 @@ pub fn start() -> Result<(), String> {
      * The client can either run standalone (multiplayer)
      *   or run both at the same time (singleplayer).
      */
+    // https://sotrh.github.io/learn-wgpu/beginner/tutorial1-window/#more-code
     #[cfg(feature = "server")]
     let (sptx, sprx) = mpsc::channel::<()>(); // Physics Messages Send
 
