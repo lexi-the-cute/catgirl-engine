@@ -5,7 +5,11 @@ use std::thread::JoinHandle;
 
 #[cfg(feature = "server")]
 pub(crate) fn headless_loop(threads: ThreadsStruct, channels: ChannelStruct) {
+    #[cfg(not(target_family = "wasm"))]
     let ctrlc_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
+
+    // Allows handling properly shutting down with SIGINT
+    #[cfg(not(target_family = "wasm"))]
     ctrlc::set_handler(move || {
         debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
         let _: Result<(), SendError<()>> = ctrlc_sender.send(());

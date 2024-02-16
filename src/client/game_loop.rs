@@ -22,9 +22,11 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
     // https://zdgeier.com/wgpuintro.html
     // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
     #[cfg(feature = "server")]
+    #[cfg(not(target_family = "wasm"))]
     let ctrlc_physics_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
 
     // Allows handling properly shutting down with SIGINT
+    #[cfg(not(target_family = "wasm"))]
     ctrlc::set_handler(move || {
         debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
         let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());

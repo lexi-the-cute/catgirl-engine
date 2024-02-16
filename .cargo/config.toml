@@ -2,6 +2,5 @@
 # https://github.com/rust-windowing/winit/issues/1818
 
 [build]
-# -rdynamic allows exporting symbols even when compiled as an executable
-# https://stackoverflow.com/a/57595625
-rustflags = ["-C", "link-args=-rdynamic"]
+rustflags = []
+rustdocflags = []

@@ -65,6 +65,12 @@ pub(crate) fn setup_logger() {
                         .build(),
                 ),
         );
+    } else if cfg!(target_arch = "wasm32") {
+        #[cfg(target_arch = "wasm32")]
+        match console_log::init_with_level(tracing::log::Level::Debug) {
+            Err(_) => warn!("Failed to initialize console logger..."),
+            _ => ()
+        }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         pretty_env_logger::init();
