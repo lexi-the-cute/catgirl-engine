@@ -6,15 +6,6 @@ use server;
 
 use clap::Parser;
 
-#[cfg(target_os = "android")]
-use std::sync::OnceLock;
-
-#[cfg(target_os = "android")]
-use winit::platform::android::activity::AndroidApp;
-
-#[cfg(target_os = "android")]
-pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
-
 // Constants
 #[cfg(target_os = "android")]
 pub const TAG: &str = "CatgirlEngine";
@@ -30,13 +21,6 @@ pub struct Args {
 #[no_mangle]
 pub fn get_args() -> Args {
     Args::parse()
-}
-
-#[cfg(all(target_os = "android", feature = "client"))]
-pub(crate) fn start_android(app: AndroidApp) -> Result<(), String> {
-    let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
-
-    start()
 }
 
 pub(crate) fn setup_logger() {

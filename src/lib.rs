@@ -42,7 +42,8 @@ pub fn android_main(app: AndroidApp) {
     game::setup_logger();
     debug!("Launched as Android app...");
 
-    match game::start_android(app) {
+    client::game_loop::store_android_app(app);
+    match game::start() {
         Err(error) => error!("{:?}", error),
         _ => ()
     }

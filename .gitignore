@@ -2,3 +2,5 @@
 /build
 /tools
 /gen
+/pkg
+/examples/wasm/pkg
