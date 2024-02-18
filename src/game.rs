@@ -1,5 +1,9 @@
-use std::sync::mpsc::{self, Receiver, Sender};
-use std::thread::{Builder, JoinHandle};
+#[cfg(feature = "client")]
+use client;
+
+#[cfg(feature = "server")]
+use server;
+
 use clap::Parser;
 
 #[cfg(target_os = "android")]
@@ -12,22 +16,8 @@ use winit::platform::android::activity::AndroidApp;
 pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
 
 // Constants
-pub const NAME: &str = "Catgirl Engine";
-
-#[allow(dead_code)]
+#[cfg(target_os = "android")]
 pub const TAG: &str = "CatgirlEngine";
-
-// TODO: Replace this...
-pub struct ThreadsStruct {
-    #[cfg(feature = "server")]
-    pub server: JoinHandle<()>
-}
-
-// TODO: Replace this...
-pub struct ChannelStruct {
-    pub sender: Option<Sender<()>>,
-    pub receiver: Option<Receiver<()>>
-}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -113,44 +103,23 @@ pub fn start() -> Result<(), String> {
     debug!("Setting panic hook...");
     set_panic_hook();
 
-    /* This is a server/client model
-     *
-     * The server will be solely loaded on a standalone server.
-     *
-     * The client can either run standalone (multiplayer)
-     *   or run both at the same time (singleplayer).
-     */
-    // https://sotrh.github.io/learn-wgpu/beginner/tutorial1-window/#more-code
-    #[cfg(feature = "server")]
-    let (sptx, sprx) = mpsc::channel::<()>(); // Physics Messages Send
-
-    #[cfg(feature = "server")]
-    let (rptx, rprx) = mpsc::channel::<()>(); // Physics Messages Receive
-
-    // Treat As If Physical Server (Player Movement)
-    #[cfg(feature = "server")]
-    let physics_thread: JoinHandle<()> = Builder::new()
-        .name("physics".to_string())
-        .spawn(|| crate::common::physics::start(rptx, sprx))
-        .unwrap(); // Physics
+    // Allows handling properly shutting down with SIGINT
+    #[cfg(not(target_family = "wasm"))]
+    {
+        debug!("Setting SIGINT hook...");
+        ctrlc::set_handler(move || {
+            debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
+            std::process::exit(0);
+        }).expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
+    }
 
     debug!("Starting Main Loop...");
 
-    let threads: ThreadsStruct = ThreadsStruct {
-        #[cfg(feature = "server")]
-        server: physics_thread
-    };
-
-    let channels: ChannelStruct = ChannelStruct {
-        sender: Some(sptx),
-        receiver: Some(rprx)
-    };
-
+    #[cfg(feature = "server")]
     if cfg!(not(feature = "client")) || get_args().server {
-        crate::common::game_loop::headless_loop(threads, channels);
-    } else {
-        crate::client::game_loop::gui_loop(threads, channels);
+        return server::game_loop::game_loop();
     }
 
-    Ok(())
+    #[cfg(feature = "client")]
+    return client::game_loop::game_loop();
 }

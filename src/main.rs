@@ -2,9 +2,8 @@
 extern crate tracing;
 
 mod game;
-mod common;
-mod client;
 
+// TODO: Split client, server, and common into 3 different crates
 // Run as Executable (e.g. Linux)
 fn main() {
     #[cfg(feature = "tracing-subscriber")]

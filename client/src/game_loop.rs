@@ -1,11 +1,9 @@
-use crate::game::{ThreadsStruct, ChannelStruct};
-
 use std::sync::Arc;
-use std::sync::mpsc::{Receiver, Sender, SendError};
-use std::thread::JoinHandle;
 
-#[cfg(feature = "client")]
-pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
+// http://gameprogrammingpatterns.com/game-loop.html
+// https://zdgeier.com/wgpuintro.html
+// https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
+pub fn game_loop() -> Result<(), String> {
     use wgpu::{Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass, RenderPassDescriptor, Surface, SurfaceTexture, TextureView};
     use winit::dpi::PhysicalSize;
     use winit::event::{Event, KeyEvent, WindowEvent};
@@ -15,23 +13,6 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
 
     #[cfg(target_os = "android")]
     use winit::platform::android::EventLoopBuilderExtAndroid;  // Necessary for with_android_app
-
-    // Grab the handle for sending messages to the server
-    // TODO: Relocate and move to function to handle both single/multiplayer
-    // http://gameprogrammingpatterns.com/game-loop.html
-    // https://zdgeier.com/wgpuintro.html
-    // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
-    #[cfg(feature = "server")]
-    #[cfg(not(target_family = "wasm"))]
-    let ctrlc_physics_sender: Sender<()> = channels.sender.as_ref().unwrap().clone();
-
-    // Allows handling properly shutting down with SIGINT
-    #[cfg(not(target_family = "wasm"))]
-    ctrlc::set_handler(move || {
-        debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
-        let _: Result<(), SendError<()>> = ctrlc_physics_sender.send(());
-    })
-    .expect("Could not create Interrupt Handler on Gui Loop (e.g. Ctrl+C)...");
 
     // Create the main loop
     debug!("Creating event loop...");
@@ -70,21 +51,11 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
         // window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
-        if is_finished(&threads) && !window_target.exiting() {
-            info!("Stopping Game...");
-            window_target.exit()
-        }
-
-        #[cfg(feature = "server")]
-        if is_physics_thread_terminated(&channels) {
-            debug!("Physics Thread Terminated...");
-        }
-
         match event {
             // The close button was pressed
             Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
                 debug!("The Close Button Was Pressed! Stopping...");
-                request_exit(&channels);
+                window_target.exit();
             }
 
             Event::Resumed => {
@@ -96,7 +67,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 // https://doc.rust-lang.org/std/sync/struct.Arc.html
                 debug!("Creating window...");
                 window_arc = Some(Arc::new(WindowBuilder::new()
-                    .with_title(crate::game::NAME)
+                    .with_title("Catgirl Engine")
                     .build(&window_target)
                     .expect("Could not create window!")));
 
@@ -162,7 +133,7 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
                 ..
             } => {
                 debug!("The Escape Key Was Pressed! Stopping...");
-                request_exit(&channels);
+                window_target.exit();
             }
 
             // Called every time the engine needs to refresh a frame
@@ -234,39 +205,6 @@ pub(crate) fn gui_loop(threads: ThreadsStruct, channels: ChannelStruct) {
             _ => ()
         }
     });
-}
 
-fn request_exit(_channels: &ChannelStruct) {
-    // Yes, it's supposed to be _client_channels under the server tag and vice versa
-
-    // Send Exit to Server (Physics) Thread
-    #[cfg(feature = "server")]
-    let _: Result<(), SendError<()>> = _channels.sender.as_ref().unwrap().send(());
-}
-
-fn is_finished(threads: &ThreadsStruct) -> bool {
-    #[cfg(feature = "server")]
-    let server_thread: &JoinHandle<()> = &threads.server;
-
-    server_thread.is_finished()
-}
-
-#[cfg(feature = "server")]
-fn is_physics_thread_terminated(channels: &ChannelStruct) -> bool {
-    let receiver: &Receiver<()> = &channels.receiver.as_ref().unwrap();
-
-    #[cfg(feature = "client")]
-    let sender: &Sender<()> = &channels.sender.as_ref().unwrap();
-
-    match receiver.try_recv() {
-        Ok(_) => {
-            #[cfg(feature = "client")]
-            sender.send(()).ok();
-
-            true
-        }
-        Err(_) => {
-            false
-        }
-    }
+    Ok(())
 }
