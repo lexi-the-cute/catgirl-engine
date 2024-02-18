@@ -1,5 +1,19 @@
 use std::sync::Arc;
 
+#[cfg(target_os = "android")]
+use winit::platform::android::activity::AndroidApp;
+
+#[cfg(target_os = "android")]
+use std::sync::OnceLock;
+
+#[cfg(target_os = "android")]
+pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
+
+#[cfg(target_os = "android")]
+pub fn store_android_app(app: AndroidApp) {
+    let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
+}
+
 // http://gameprogrammingpatterns.com/game-loop.html
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
@@ -23,7 +37,7 @@ pub fn game_loop() -> Result<(), String> {
 
     #[cfg(target_os = "android")]
     let event_loop: EventLoop<()> = EventLoopBuilder::new()
-        .with_android_app(crate::game::ANDROID_APP.get().unwrap().to_owned())
+        .with_android_app(ANDROID_APP.get().unwrap().to_owned())
         .build()
         .expect("Could not create an event loop!");
 
