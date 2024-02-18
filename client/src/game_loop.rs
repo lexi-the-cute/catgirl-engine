@@ -82,6 +82,7 @@ pub fn game_loop() -> Result<(), String> {
                 debug!("Creating window...");
                 window_arc = Some(Arc::new(WindowBuilder::new()
                     .with_title("Catgirl Engine")
+                    .with_window_icon(Some(super::get_icon()))
                     .build(&window_target)
                     .expect("Could not create window!")));
 

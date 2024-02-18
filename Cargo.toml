@@ -94,7 +94,7 @@ preserve-symlinks = true
 depends = "$auto"
 assets = [
     ["target/release/catgirl-engine", "/usr/games/catgirl-engine", "755"],
-    ["assets/*", "/var/games/catgirl-engine/assets", "644"],
+    ["client/assets/*", "/var/games/catgirl-engine/assets", "644"],
 ]
 
 [package.metadata.deb.variants.server]
