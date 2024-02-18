@@ -12,6 +12,7 @@ wgpu = { version = "~0.19", default-features = false }
 # egui = { version = "*" }
 # egui-wgpu = { version = "*" }
 pollster = "~0.3"
+image = "~0.24"
 
 [target.'cfg(not(target_arch="wasm32"))'.dependencies]
 wgpu = { version = "~0.19", default-features = true }
