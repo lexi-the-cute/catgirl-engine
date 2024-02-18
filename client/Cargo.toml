@@ -1,0 +1,23 @@
+[package]
+name = "client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tracing = { version = "~0.1", features = ["log"] }
+winit = { version = "~0.29" }
+wgpu = { version = "~0.19", default-features = false }
+# egui = { version = "*" }
+# egui-wgpu = { version = "*" }
+pollster = "~0.3"
+
+[target.'cfg(not(target_arch="wasm32"))'.dependencies]
+wgpu = { version = "~0.19", default-features = true }
+
+[target.'cfg(target_os="android")'.dependencies]
+winit = { version = "~0.29", default-features = true, features = ["android-game-activity"] }
+
+[target.'cfg(target_arch="wasm32")'.dependencies]
+wgpu = { version = "~0.19", features = ["webgl"] }

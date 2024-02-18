@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate tracing;
 
+mod game;
+
 use core::ffi::{c_char, c_int};
 
 #[cfg(target_os = "android")]
@@ -8,10 +10,6 @@ use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_arch="wasm32")]
 use wasm_bindgen::prelude::*;
-
-mod game;
-mod common;
-mod client;
 
 // Run as Library
 #[no_mangle]
