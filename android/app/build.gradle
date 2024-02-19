@@ -12,7 +12,7 @@ def buildAsApplication = !buildAsLibrary
 File cargoTomlLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "Cargo.toml")
 ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
 String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
-String cargoVersion = cargoVersionLine.split('"', 3)[1]
+String cargoVersion = cargoVersionLine.split("\"", 3)[1]
 String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
 
 // TODO: Figure out how to deal with 0.40.0 and 4.0.0
@@ -30,15 +30,15 @@ if (buildAsApplication) {
 
 android {
     namespace 'land.catgirl.engine'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         if (buildAsApplication) {
             applicationId "land.catgirl.engine"
         }
 
-        minSdk 30
-        targetSdk 33
+        minSdk 34
+        targetSdk 34
         versionName cargoVersion
         versionCode cargoVersionCode
 
@@ -46,19 +46,24 @@ android {
     }
 
     signingConfigs {
-       release {
-           storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
-           storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
-           keyAlias "key0"
-           keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
-       }
+        // The if statement is to tell IDEs to shut up about the release key
+        if (System.env.ANDROID_RELEASE_KEY_PATH) {
+            release {
+                storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
+                storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
+                keyAlias "key0"
+                keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled true
-           signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            if (System.env.ANDROID_RELEASE_KEY_PATH)
+                signingConfig signingConfigs.release
         }
     }
 
@@ -85,11 +90,11 @@ cargoNdk {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.games:games-activity:2.0.2'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

@@ -9,19 +9,17 @@ import com.google.androidgamesdk.GameActivity
 
 
 class MainActivity : GameActivity() {
-    val TAG: String = "CatgirlEngineApp";
-
     override fun onCreate(savedInstanceState: Bundle?) {
         // The GameActivity class creates a layout for you
         super.onCreate(savedInstanceState)
 
-        Log.d(TAG, "Started Main Activity...")
+        Log.d(Companion.TAG, "Started Main Activity...")
 
         hideSystemUi()
     }
 
     private fun hideSystemUi() {
-        Log.d(TAG, "Hiding System UI...")
+        Log.d(Companion.TAG, "Hiding System UI...")
 
         // Log.v(TAG, "Decor View: ${window.decorView}; Tag: ${window.decorView.tag}")
         val controller = WindowInsetsControllerCompat(window, window.decorView)
@@ -46,5 +44,7 @@ class MainActivity : GameActivity() {
        init {
            System.loadLibrary("main")
        }
+
+       const val TAG: String = "CatgirlEngineApp"
    }
 }
