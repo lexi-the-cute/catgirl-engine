@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use futures::future;
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
@@ -93,9 +94,9 @@ pub fn game_loop() -> Result<(), String> {
 
                 // Handle to graphics device (e.g. GPU)
                 // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
-                // https://crates.io/crates/pollster
+                // https://crates.io/crates/futures
                 debug!("Grabbing wgpu adapter...");
-                adapter = Some(pollster::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
+                adapter = Some(futures::executor::block_on(instance.request_adapter(&wgpu::RequestAdapterOptions::default()))
                     .expect("Could not grab WGPU adapter!"));
 
                 // Handle to the surface on which to draw on (e.g. a window)
@@ -121,7 +122,7 @@ pub fn game_loop() -> Result<(), String> {
 
                 // Opens a connection to the graphics device (e.g. GPU)
                 debug!("Opening connection with graphics device (e.g. GPU)...");
-                let (_device, _queue) = pollster::block_on(adapter.as_ref().unwrap().request_device(&device_descriptor, None))
+                let (_device, _queue) = futures::executor::block_on(adapter.as_ref().unwrap().request_device(&device_descriptor, None))
                     .expect("Could not open a connection with the graphics device!");
                 device = Some(_device);
                 queue = Some(_queue);
