@@ -1,3 +1,4 @@
+// TODO: Rewrite as Kotlin DSL - https://developer.android.com/build/migrate-to-kotlin-dsl
 plugins {
     id 'org.jetbrains.kotlin.android'
 }
