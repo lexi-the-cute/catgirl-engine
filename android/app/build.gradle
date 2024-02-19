@@ -38,7 +38,7 @@ android {
             applicationId "land.catgirl.engine"
         }
 
-        minSdk 34
+        minSdk 30
         targetSdk 34
         versionName cargoVersion
         versionCode cargoVersionCode
@@ -47,24 +47,19 @@ android {
     }
 
     signingConfigs {
-        // The if statement is to tell IDEs to shut up about the release key
-        if (System.env.ANDROID_RELEASE_KEY_PATH) {
-            release {
-                storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
-                storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
-                keyAlias "key0"
-                keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
-            }
+        release {
+            storeFile file(System.env.ANDROID_RELEASE_KEY_PATH)
+            storePassword System.env.ANDROID_RELEASE_STORE_PASSWORD
+            keyAlias "key0"
+            keyPassword System.env.ANDROID_RELEASE_KEY_PASSWORD
         }
     }
 
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            if (System.env.ANDROID_RELEASE_KEY_PATH)
-                signingConfig signingConfigs.release
         }
     }
 
@@ -91,11 +86,14 @@ cargoNdk {
 }
 
 dependencies {
+    // https://maven.google.com/web/index.html?q=androidx.games#androidx.games:games-activity
+    implementation 'androidx.games:games-activity:2.0.2'
+
+    // https://mvnrepository.com
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.games:games-activity:2.0.2'
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
