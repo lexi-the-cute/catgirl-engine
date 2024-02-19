@@ -358,7 +358,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.5.0"
+version = "0.6.0"
 dependencies = [
  "android_logger",
  "cargo-deb",
@@ -497,6 +497,7 @@ name = "client"
 version = "0.1.0"
 dependencies = [
  "futures",
+ "futures-channel",
  "image",
  "tracing",
  "wasm-bindgen-futures",

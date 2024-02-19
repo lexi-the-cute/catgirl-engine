@@ -94,6 +94,7 @@ pub fn game_loop() -> Result<(), String> {
                 // Handle to graphics device (e.g. GPU)
                 // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
                 // https://crates.io/crates/futures
+                // TODO: Implement asynchronously with wasm-bindgen-futures::spawn_local(...) and futures-channel::mpsc
                 debug!("Grabbing wgpu adapter...");
                 let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
                 adapter = Some(futures::executor::block_on(adapter_future)
@@ -121,6 +122,7 @@ pub fn game_loop() -> Result<(), String> {
                 device_descriptor.required_limits = limits;
 
                 // Opens a connection to the graphics device (e.g. GPU)
+                // TODO: Implement asynchronously with wasm-bindgen-futures::spawn_local(...) and futures-channel::mpsc
                 debug!("Opening connection with graphics device (e.g. GPU)...");
                 let device_future = adapter.as_ref().unwrap().request_device(&device_descriptor, None);
                 let (_device, _queue) = futures::executor::block_on(device_future)
