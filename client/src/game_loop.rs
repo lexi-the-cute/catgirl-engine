@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use futures::future;
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
