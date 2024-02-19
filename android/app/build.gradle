@@ -57,7 +57,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false  // until fix for com.android.application 8.1.0+ minify breakage
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
