@@ -33,7 +33,7 @@ fn create_bindings() {
     create_binding(
         "pxd",
         Language::Cython,
-        &package_name.replace("-", "_"),
+        &package_name.replace('-', "_"),
         &crate_directory,
     );
 }
@@ -52,8 +52,8 @@ fn create_binding(
 
     let mut header: String = "".to_owned() +
         "/*\n" +
-        " * This file exists to help facilitate modding this catgirl game engine...\n" + 
-        " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" + 
+        " * This file exists to help facilitate modding this catgirl game engine...\n" +
+        " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" +
         " */";
     if language == Language::Cython {
         header =
@@ -66,15 +66,15 @@ fn create_binding(
 
     let mut config: Config = cbindgen::Config::default();
     config.namespace = Some(String::from("ffi"));
-    config.header = Some(String::from(header));
+    config.header = Some(header);
     config.language = language;
     config.only_target_dependencies = true;
     config.no_includes = language == Language::Cython;
     config.defines = defines;
 
-    cbindgen::generate_with_config(&crate_directory, config)
+    cbindgen::generate_with_config(crate_directory, config)
         .unwrap()
-        .write_to_file(&output_file);
+        .write_to_file(output_file);
 }
 
 fn get_bindgen_defines() -> HashMap<String, String> {

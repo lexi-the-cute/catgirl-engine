@@ -8,7 +8,7 @@ use core::ffi::{c_char, c_int};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-#[cfg(target_arch="wasm32")]
+#[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 
 // Run as Library
@@ -27,8 +27,8 @@ pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
             error!("{:?}", error);
 
             -1
-        },
-        _ => 0
+        }
+        _ => 0,
     }
 }
 
@@ -43,15 +43,14 @@ pub fn android_main(app: AndroidApp) {
     debug!("Launched as Android app...");
 
     client::game_loop::store_android_app(app);
-    match game::start() {
-        Err(error) => error!("{:?}", error),
-        _ => ()
+    if let Err(error) = game::start() {
+        error!("{:?}", error)
     }
 }
 
 #[no_mangle]
 #[cfg(target_arch = "wasm32")]
-#[cfg_attr(target_arch="wasm32", wasm_bindgen(start))]
+#[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
 pub fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
@@ -63,8 +62,7 @@ pub fn wasm_start() {
     game::setup_logger();
     debug!("Launched as Wasm library...");
 
-    match game::start() {
-        Err(error) => error!("{:?}", error),
-        _ => ()
+    if let Err(error) = game::start() {
+        error!("{:?}", error)
     }
 }

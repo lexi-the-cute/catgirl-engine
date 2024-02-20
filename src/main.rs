@@ -13,8 +13,7 @@ fn main() {
     game::setup_logger();
     debug!("Launched as binary...");
 
-    match game::start() {
-        Err(error) => error!("{:?}", error),
-        _ => ()
+    if let Err(error) = game::start() {
+        error!("{:?}", error)
     }
 }
