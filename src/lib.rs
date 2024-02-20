@@ -18,7 +18,12 @@ pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
     game::setup_tracer();
 
     // Rust obtains these args without me having to do anything special
-    game::get_args();
+    // Print version and copyright info
+    if game::get_args().version {
+        game::print_version();
+        return 0;
+    }
+
     game::setup_logger();
     debug!("Launched as library...");
 
@@ -38,7 +43,12 @@ pub fn android_main(app: AndroidApp) {
     #[cfg(feature = "tracing-subscriber")]
     game::setup_tracer();
 
-    game::get_args();
+    // Print version and copyright info
+    if game::get_args().version {
+        game::print_version();
+        return ();
+    }
+
     game::setup_logger();
     debug!("Launched as Android app...");
 
@@ -58,7 +68,12 @@ pub fn wasm_start() {
     #[cfg(feature = "tracing-subscriber")]
     game::setup_tracer();
 
-    game::get_args();
+    // Print version and copyright info
+    if game::get_args().version {
+        game::print_version();
+        return ();
+    }
+
     game::setup_logger();
     debug!("Launched as Wasm library...");
 

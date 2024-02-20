@@ -9,7 +9,12 @@ fn main() {
     #[cfg(feature = "tracing-subscriber")]
     game::setup_tracer();
 
-    game::get_args();
+    // Print version and copyright info
+    if game::get_args().version {
+        game::print_version();
+        return ();
+    }
+
     game::setup_logger();
     debug!("Launched as binary...");
 

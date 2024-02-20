@@ -9,8 +9,16 @@ fn main() {
     // Set custom rust flags for platform dependent building
     set_rustflags();
 
+    // Write copyright info to file
+    write_copyright();
+
     // Bindings are only usable when building libs
     create_bindings();
+}
+
+fn write_copyright() {
+    let copyright_file = target_dir().join("copyright.txt");
+    let _ = std::fs::write(copyright_file, "test").unwrap();
 }
 
 fn set_rustflags() {
