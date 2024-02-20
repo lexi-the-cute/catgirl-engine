@@ -1,5 +1,6 @@
 extern crate cbindgen;
 
+use build_info_build::DependencyDepth;
 use cbindgen::{Config, Language};
 use std::collections::HashMap;
 use std::env::{self, Vars};
@@ -9,16 +10,11 @@ fn main() {
     // Set custom rust flags for platform dependent building
     set_rustflags();
 
-    // Write copyright info to file
-    write_copyright();
+    // Generate build info
+    build_info_build::build_script().collect_dependencies(DependencyDepth::Full);
 
     // Bindings are only usable when building libs
     create_bindings();
-}
-
-fn write_copyright() {
-    let copyright_file = target_dir().join("copyright.txt");
-    let _ = std::fs::write(copyright_file, "test").unwrap();
 }
 
 fn set_rustflags() {
