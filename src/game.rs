@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 
@@ -27,37 +29,20 @@ pub fn get_args() -> Args {
 
 // TODO: Implement non-recursively
 fn print_dependencies(info: &BuildInfo) {
-    let mut full_list: Vec<CrateInfo> = vec![];
+    let mut all_deps = BTreeMap::new();
 
-    let mut dependencies: Vec<CrateInfo> = info.crate_info.dependencies.clone();
-    loop {
-        let dep_option: Option<CrateInfo> = dependencies.pop();
-        if dep_option.is_none() {
-            break;
-        }
+    let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
 
-        let dep: CrateInfo = dep_option.unwrap();
-        let mut exists: bool = false;
-        for full in full_list.iter() {
-            if dep.name == full.name {
-                exists = true;
-            }
-        }
-
-        if !exists {
-            full_list.push(dep.clone());
-
-            for subdep in dep.dependencies {
-                dependencies.push(subdep.clone());
-            }
+    while let Some(dep) = stack.pop() {
+        if all_deps.insert(dep.name.as_str(), dep).is_none() {
+            stack.extend(&dep.dependencies);
         }
     }
 
-    full_list.sort_by_key(|k| k.name.clone());
-    for dep in full_list.iter() {
+    for (name, dep) in all_deps.iter() {
         println!(
             "{} v{} - License {}",
-            dep.name,
+            name,
             dep.version,
             dep.license.as_ref().unwrap()
         )
