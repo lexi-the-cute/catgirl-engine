@@ -63,8 +63,8 @@ cbindgen = "~0"
 cargo-deb = "~2"
 
 [dependencies]
-client = { path = "client", optional = true }
-server = { path = "server", optional = true }
+client = { package = "catgirl-engine-client", path = "client", optional = true }
+server = { package = "catgirl-engine-server", path = "server", optional = true }
 build-info = "~0.0"
 cfg-if = "~1"
 pretty_env_logger = "~0"

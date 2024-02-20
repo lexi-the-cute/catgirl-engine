@@ -1,5 +1,5 @@
 [package]
-name = "server"
+name = "catgirl-engine-server"
 license = "Zlib"
 version = "0.1.0"
 edition = "2021"
