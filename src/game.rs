@@ -26,67 +26,42 @@ pub fn get_args() -> Args {
 }
 
 // TODO: Implement non-recursively
-// fn print_dependencies(info: &BuildInfo) {
-//     let mut dependency_list: Vec<&build_info::CrateInfo> = vec![];
-//     let mut temp_dependency_list = vec![info.crate_info.dependencies.iter()];
-
-//     let loop_dependencies: bool = true;
-//     while loop_dependencies {
-//         let next: Option<&build_info::CrateInfo> = temp_dependency_list.pop().unwrap().next();
-
-//         if next.is_none() {
-//             break;
-//         }
-
-//         let dep: &build_info::CrateInfo = next.unwrap();
-//         dependency_list.push(dep);
-//         temp_dependency_list.push(dep.dependencies.iter())
-//     }
-
-//     for dep in dependency_list.iter() {
-//         println!("{} v{} - License {}", dep.name, dep.version, dep.license.as_ref().unwrap())
-//     }
-// }
-
-// Recursive implementation
 fn print_dependencies(info: &BuildInfo) {
-    let crate_info = &info.crate_info;
+    let mut full_list: Vec<CrateInfo> = vec![];
 
-    let dependency_list = recurse_dependencies(crate_info);
+    let mut dependencies: Vec<CrateInfo> = info.crate_info.dependencies.clone();
+    loop {
+        let dep_option: Option<CrateInfo> = dependencies.pop();
+        if dep_option.is_none() {
+            break;
+        }
 
-    for dep in dependency_list.iter() {
+        let dep: CrateInfo = dep_option.unwrap();
+        let mut exists: bool = false;
+        for full in full_list.iter() {
+            if dep.name == full.name {
+                exists = true;
+            }
+        }
+
+        if !exists {
+            full_list.push(dep.clone());
+
+            for subdep in dep.dependencies {
+                dependencies.push(subdep.clone());
+            }
+        }
+    }
+
+    full_list.sort_by_key(|k| k.name.clone());
+    for dep in full_list.iter() {
         println!(
             "{} v{} - License {}",
             dep.name,
             dep.version,
             dep.license.as_ref().unwrap()
-        );
+        )
     }
-}
-
-// TODO: Work on this when not tired
-fn recurse_dependencies(crate_info: &CrateInfo) -> Vec<&CrateInfo> {
-    let mut dependency_list: Vec<&CrateInfo> = vec![];
-
-    for dep in crate_info.dependencies.iter() {
-        let mut exists: bool = false;
-        for entry in &dependency_list {
-            if entry.name == dep.name {
-                exists = true;
-                break;
-            }
-        }
-
-        if !exists {
-            dependency_list.push(dep);
-        }
-
-        // for entry in recurse_dependencies(dep) {
-
-        // }
-    }
-
-    dependency_list.clone()
 }
 
 pub(crate) fn print_version() {
