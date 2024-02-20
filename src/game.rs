@@ -27,18 +27,18 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
-// TODO: Implement non-recursively
 fn print_dependencies(info: &BuildInfo) {
     let mut all_deps = BTreeMap::new();
-
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
 
+    // Add each dependency only once
     while let Some(dep) = stack.pop() {
         if all_deps.insert(dep.name.as_str(), dep).is_none() {
             stack.extend(&dep.dependencies);
         }
     }
 
+    // Loop through dependency list to print
     for (name, dep) in all_deps.iter() {
         println!(
             "{} v{} - License {}",
