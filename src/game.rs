@@ -5,16 +5,25 @@ use clap::Parser;
 pub const TAG: &str = "CatgirlEngine";
 
 #[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-pub struct Args {
-    // Server
+#[command(author, about, long_about = None)]
+pub(crate) struct Args {
+    /// Start the engine in dedicated server mode
     #[arg(short, long, default_value_t = false)]
     server: bool,
+
+    /// Display version and copyright info
+    #[arg(short, long, default_value_t = false)]
+    pub(crate) version: bool,
 }
 
 #[no_mangle]
 pub fn get_args() -> Args {
     Args::parse()
+}
+
+pub(crate) fn print_version() {
+    let version = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/target/copyright.txt"));
+    println!("{}", version);
 }
 
 pub(crate) fn setup_logger() {
