@@ -18,15 +18,18 @@ pub fn store_android_app(app: AndroidApp) {
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
 pub fn game_loop() -> Result<(), String> {
-    use wgpu::{Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass, RenderPassDescriptor, Surface, SurfaceTexture, TextureView};
+    use wgpu::{
+        Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass,
+        RenderPassDescriptor, Surface, SurfaceTexture, TextureView,
+    };
     use winit::dpi::PhysicalSize;
     use winit::event::{Event, KeyEvent, WindowEvent};
     use winit::event_loop::{EventLoop, EventLoopBuilder};
-    use winit::window::{Window, WindowBuilder};
     use winit::keyboard::{self, NamedKey};
+    use winit::window::{Window, WindowBuilder};
 
     #[cfg(target_os = "android")]
-    use winit::platform::android::EventLoopBuilderExtAndroid;  // Necessary for with_android_app
+    use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
 
     // Create the main loop
     debug!("Creating event loop...");
@@ -67,7 +70,10 @@ pub fn game_loop() -> Result<(), String> {
 
         match event {
             // The close button was pressed
-            Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => {
+            Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            } => {
                 debug!("The Close Button Was Pressed! Stopping...");
                 window_target.exit();
             }
@@ -80,11 +86,13 @@ pub fn game_loop() -> Result<(), String> {
                 // https://github.com/gfx-rs/wgpu/discussions/5213
                 // https://doc.rust-lang.org/std/sync/struct.Arc.html
                 debug!("Creating window...");
-                window_arc = Some(Arc::new(WindowBuilder::new()
-                    .with_title("Catgirl Engine")
-                    .with_window_icon(Some(super::get_icon()))
-                    .build(&window_target)
-                    .expect("Could not create window!")));
+                window_arc = Some(Arc::new(
+                    WindowBuilder::new()
+                        .with_title("Catgirl Engine")
+                        .with_window_icon(Some(super::get_icon()))
+                        .build(window_target)
+                        .expect("Could not create window!"),
+                ));
 
                 // Context for all WGPU objects
                 // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
@@ -96,15 +104,21 @@ pub fn game_loop() -> Result<(), String> {
                 // https://crates.io/crates/futures
                 // TODO: Implement asynchronously with wasm-bindgen-futures::spawn_local(...) and futures-channel::mpsc
                 debug!("Grabbing wgpu adapter...");
-                let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
-                adapter = Some(futures::executor::block_on(adapter_future)
-                    .expect("Could not grab WGPU adapter!"));
+                let adapter_future =
+                    instance.request_adapter(&wgpu::RequestAdapterOptions::default());
+                adapter = Some(
+                    futures::executor::block_on(adapter_future)
+                        .expect("Could not grab WGPU adapter!"),
+                );
 
                 // Handle to the surface on which to draw on (e.g. a window)
                 // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
                 debug!("Creating wgpu surface...");
-                surface = Some(instance.create_surface(window_arc.as_ref().unwrap().clone())
-                    .expect("Could not create surface!"));
+                surface = Some(
+                    instance
+                        .create_surface(window_arc.as_ref().unwrap().clone())
+                        .expect("Could not create surface!"),
+                );
 
                 // Describe's a device
                 // For use with adapter's request device
@@ -115,16 +129,21 @@ pub fn game_loop() -> Result<(), String> {
                 // Set limits to make this run on more devices
                 // TODO: Research how to dynamically set limits for the running device
                 debug!("Setting WGPU limits...");
-                let mut limits: wgpu::Limits = wgpu::Limits::default();
-                limits.max_texture_dimension_1d = 4096;
-                limits.max_texture_dimension_2d = 4096;
+                let limits: wgpu::Limits = wgpu::Limits {
+                    max_texture_dimension_1d: 4096,
+                    max_texture_dimension_2d: 4096,
+                    ..Default::default()
+                };
 
                 device_descriptor.required_limits = limits;
 
                 // Opens a connection to the graphics device (e.g. GPU)
                 // TODO: Implement asynchronously with wasm-bindgen-futures::spawn_local(...) and futures-channel::mpsc
                 debug!("Opening connection with graphics device (e.g. GPU)...");
-                let device_future = adapter.as_ref().unwrap().request_device(&device_descriptor, None);
+                let device_future = adapter
+                    .as_ref()
+                    .unwrap()
+                    .request_device(&device_descriptor, None);
                 let (_device, _queue) = futures::executor::block_on(device_future)
                     .expect("Could not open a connection with the graphics device!");
 
@@ -159,7 +178,10 @@ pub fn game_loop() -> Result<(), String> {
             // Called every time the engine needs to refresh a frame
             // TODO: Offload to separate function
             // render()
-            Event::WindowEvent { event: WindowEvent::RedrawRequested, .. } => {
+            Event::WindowEvent {
+                event: WindowEvent::RedrawRequested,
+                ..
+            } => {
                 // Configure a surface for drawing on
                 // Needs to be updated to account for window resizing
                 let window: &Window = window_arc.as_ref().unwrap().as_ref();
@@ -169,23 +191,31 @@ pub fn game_loop() -> Result<(), String> {
                 let queue: &Queue = queue.as_ref().unwrap();
 
                 let size: PhysicalSize<u32> = window.inner_size();
-                surface.configure(&device, &surface.get_default_config(&adapter, size.width, size.height)
-                    .expect("Could not get surface default config!"));
+                surface.configure(
+                    device,
+                    &surface
+                        .get_default_config(adapter, size.width, size.height)
+                        .expect("Could not get surface default config!"),
+                );
 
                 // Get a texture to draw onto the surface
                 // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
                 // https://stackoverflow.com/a/4262634
                 // This segfaults when resizing window if no render commands are executed
-                let output: SurfaceTexture = surface.get_current_texture()
+                let output: SurfaceTexture = surface
+                    .get_current_texture()
                     .expect("Could not get a texture to draw on!");
 
                 // Handle to the TextureView object which describes the texture and related metadata
                 // https://docs.rs/wgpu/latest/wgpu/struct.TextureView.html
-                let view: TextureView = output.texture.create_view(&wgpu::TextureViewDescriptor::default());
+                let view: TextureView = output
+                    .texture
+                    .create_view(&wgpu::TextureViewDescriptor::default());
 
                 // Used for encoding instructions to the GPU
                 // https://docs.rs/wgpu/latest/wgpu/struct.CommandEncoder.html
-                let mut encoder: CommandEncoder = device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
+                let mut encoder: CommandEncoder =
+                    device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
 
                 // Command to render
                 // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
@@ -196,11 +226,19 @@ pub fn game_loop() -> Result<(), String> {
                         resolve_target: None,
                         // Royal Purple - 104, 71, 141
                         // TODO: Fix so color is shown accurately
-                        ops: wgpu::Operations { load: wgpu::LoadOp::Clear(wgpu::Color { r: 104.0/255.0, g: 71.0/255.0, b: 141.0/255.0, a: 1.0 }), store: wgpu::StoreOp::Store },
+                        ops: wgpu::Operations {
+                            load: wgpu::LoadOp::Clear(wgpu::Color {
+                                r: 104.0 / 255.0,
+                                g: 71.0 / 255.0,
+                                b: 141.0 / 255.0,
+                                a: 1.0,
+                            }),
+                            store: wgpu::StoreOp::Store,
+                        },
                     })],
                     depth_stencil_attachment: None,
                     timestamp_writes: None,
-                    occlusion_query_set: None
+                    occlusion_query_set: None,
                 };
 
                 // Block expression for ending the borrow of encoder
@@ -209,7 +247,8 @@ pub fn game_loop() -> Result<(), String> {
                 {
                     // Render command
                     // https://docs.rs/wgpu/latest/wgpu/struct.RenderPass.html
-                    let _render_pass: RenderPass = encoder.begin_render_pass(&render_pass_descriptor);
+                    let _render_pass: RenderPass =
+                        encoder.begin_render_pass(&render_pass_descriptor);
                 }
 
                 queue.submit(core::iter::once(encoder.finish()));
@@ -222,7 +261,7 @@ pub fn game_loop() -> Result<(), String> {
             }
 
             // All unnamed events
-            _ => ()
+            _ => (),
         }
     });
 

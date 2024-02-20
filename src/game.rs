@@ -1,9 +1,3 @@
-#[cfg(feature = "client")]
-use client;
-
-#[cfg(feature = "server")]
-use server;
-
 use clap::Parser;
 
 // Constants
@@ -15,7 +9,7 @@ pub const TAG: &str = "CatgirlEngine";
 pub struct Args {
     // Server
     #[arg(short, long, default_value_t = false)]
-    server: bool
+    server: bool,
 }
 
 #[no_mangle]
@@ -41,9 +35,8 @@ pub(crate) fn setup_logger() {
         );
     } else if cfg!(target_arch = "wasm32") {
         #[cfg(target_arch = "wasm32")]
-        match console_log::init_with_level(tracing::log::Level::Debug) {
-            Err(_) => warn!("Failed to initialize console logger..."),
-            _ => ()
+        if let Err(error) = console_log::init_with_level(tracing::log::Level::Debug) {
+            warn!("Failed to initialize console logger...")
         }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
@@ -54,21 +47,22 @@ pub(crate) fn setup_logger() {
 #[cfg(feature = "tracing-subscriber")]
 pub(crate) fn setup_tracer() {
     // Construct a subscriber to print formatted traces to stdout
-    let subscriber: tracing_subscriber::FmtSubscriber = tracing_subscriber::FmtSubscriber::builder()
-        .with_max_level(tracing::Level::DEBUG)
-        .with_file(true)
-        .with_line_number(true)
-        .with_thread_ids(true)
-        .with_thread_names(true)
-        .with_target(false)
-        .finish();
+    let subscriber: tracing_subscriber::FmtSubscriber =
+        tracing_subscriber::FmtSubscriber::builder()
+            .with_max_level(tracing::Level::DEBUG)
+            .with_file(true)
+            .with_line_number(true)
+            .with_thread_ids(true)
+            .with_thread_names(true)
+            .with_target(false)
+            .finish();
 
     // Process future traces
-    match tracing::subscriber::set_global_default(subscriber) {
-        Err(error) => {
-            warn!("Failed to set the tracing subscriber as the global default... Message: {:?}", error)
-        },
-        _ => ()
+    if let Err(error) = tracing::subscriber::set_global_default(subscriber) {
+        warn!(
+            "Failed to set the tracing subscriber as the global default... Message: {:?}",
+            error
+        )
     }
 }
 
@@ -94,7 +88,8 @@ pub fn start() -> Result<(), String> {
         ctrlc::set_handler(move || {
             debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
             std::process::exit(0);
-        }).expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
+        })
+        .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
     }
 
     debug!("Starting Main Loop...");

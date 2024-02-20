@@ -5,6 +5,7 @@ repos:
     rev: v3.2.0
     hooks:
     -   id: trailing-whitespace
+    -   id: end-of-file-fixer
     -   id: check-yaml
     -   id: check-added-large-files
 -   repo: https://github.com/EmbarkStudios/cargo-deny
@@ -12,3 +13,10 @@ repos:
     hooks:
     -   id: cargo-deny
         args: ["--all-features", "check", "licenses"]
+-   repo: https://github.com/backplane/pre-commit-rust-hooks
+    rev: v1.1.0
+    hooks:
+    -   id: fmt
+    -   id: check
+    -   id: clippy
+    -   id: test
