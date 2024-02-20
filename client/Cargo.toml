@@ -1,5 +1,5 @@
 [package]
-name = "client"
+name = "catgirl-engine-client"
 license = "Zlib"
 version = "0.1.0"
 edition = "2021"

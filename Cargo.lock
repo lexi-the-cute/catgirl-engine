@@ -486,23 +486,44 @@ dependencies = [
  "build-info",
  "build-info-build",
  "cargo-deb",
+ "catgirl-engine-client",
+ "catgirl-engine-server",
  "cbindgen",
  "cc",
  "cfg-if",
  "clap 4.5.1",
- "client",
  "console_error_panic_hook",
  "console_log",
  "ctrlc",
  "getrandom",
  "pretty_env_logger",
- "server",
  "tracing",
  "tracing-subscriber",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
  "winit",
+]
+
+[[package]]
+name = "catgirl-engine-client"
+version = "0.1.0"
+dependencies = [
+ "futures",
+ "futures-channel",
+ "image",
+ "tracing",
+ "wasm-bindgen-futures",
+ "wgpu",
+ "winit",
+]
+
+[[package]]
+name = "catgirl-engine-server"
+version = "0.1.0"
+dependencies = [
+ "rhai",
+ "tracing",
 ]
 
 [[package]]
@@ -628,19 +649,6 @@ name = "clap_lex"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98cc8fbded0c607b7ba9dd60cd98df59af97e84d24e49c8557331cfc26d301ce"
-
-[[package]]
-name = "client"
-version = "0.1.0"
-dependencies = [
- "futures",
- "futures-channel",
- "image",
- "tracing",
- "wasm-bindgen-futures",
- "wgpu",
- "winit",
-]
 
 [[package]]
 name = "codespan-reporting"
@@ -2328,14 +2336,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eb3622f419d1296904700073ea6cc23ad690adbd66f13ea683df73298736f0c1"
 dependencies = [
  "serde",
-]
-
-[[package]]
-name = "server"
-version = "0.1.0"
-dependencies = [
- "rhai",
- "tracing",
 ]
 
 [[package]]
