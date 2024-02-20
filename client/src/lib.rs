@@ -13,6 +13,7 @@ pub(crate) fn get_icon() -> Icon {
         env!("CARGO_MANIFEST_DIR"),
         "/assets/vanilla/texture/logo/logo.png"
     ));
+
     // let image_bytes = include_bytes!("../assets/vanilla/texture/logo/logo.png");
     let image = image::load_from_memory(image_bytes)
         .expect("Could not get asset...")

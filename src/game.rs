@@ -1,8 +1,12 @@
+use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 
 // Constants
 #[cfg(target_os = "android")]
 pub const TAG: &str = "CatgirlEngine";
+
+// Generate build_info() function at compile time
+build_info::build_info!(fn build_info);
 
 #[derive(Parser, Debug)]
 #[command(author, about, long_about = None)]
@@ -21,9 +25,91 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
+// TODO: Implement non-recursively
+// fn print_dependencies(info: &BuildInfo) {
+//     let mut dependency_list: Vec<&build_info::CrateInfo> = vec![];
+//     let mut temp_dependency_list = vec![info.crate_info.dependencies.iter()];
+
+//     let loop_dependencies: bool = true;
+//     while loop_dependencies {
+//         let next: Option<&build_info::CrateInfo> = temp_dependency_list.pop().unwrap().next();
+
+//         if next.is_none() {
+//             break;
+//         }
+
+//         let dep: &build_info::CrateInfo = next.unwrap();
+//         dependency_list.push(dep);
+//         temp_dependency_list.push(dep.dependencies.iter())
+//     }
+
+//     for dep in dependency_list.iter() {
+//         println!("{} v{} - License {}", dep.name, dep.version, dep.license.as_ref().unwrap())
+//     }
+// }
+
+// Recursive implementation
+fn print_dependencies(info: &BuildInfo) {
+    let crate_info = &info.crate_info;
+
+    let dependency_list = recurse_dependencies(crate_info);
+
+    for dep in dependency_list.iter() {
+        println!(
+            "{} v{} - License {}",
+            dep.name,
+            dep.version,
+            dep.license.as_ref().unwrap()
+        );
+    }
+}
+
+// TODO: Work on this when not tired
+fn recurse_dependencies(crate_info: &CrateInfo) -> Vec<&CrateInfo> {
+    let mut dependency_list: Vec<&CrateInfo> = vec![];
+
+    for dep in crate_info.dependencies.iter() {
+        let mut exists: bool = false;
+        for entry in &dependency_list {
+            if entry.name == dep.name {
+                exists = true;
+                break;
+            }
+        }
+
+        if !exists {
+            dependency_list.push(dep);
+        }
+
+        // for entry in recurse_dependencies(dep) {
+
+        // }
+    }
+
+    dependency_list.clone()
+}
+
 pub(crate) fn print_version() {
-    let version = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/target/copyright.txt"));
-    println!("{}", version);
+    let info: &BuildInfo = build_info();
+
+    // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
+    // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
+    println!(
+        "{} v{} built with {} at {}",
+        info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
+    );
+
+    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+    println!(
+        "Copyright (C) {} {} - {} License",
+        info.timestamp.year(),
+        info.crate_info.authors[0],
+        info.crate_info.license.as_ref().unwrap()
+    );
+    println!();
+
+    // Print all dependencies
+    print_dependencies(info);
 }
 
 pub(crate) fn setup_logger() {

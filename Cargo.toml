@@ -55,6 +55,7 @@ members = [
 ]
 
 [build-dependencies]
+build-info-build = "~0.0"
 cc = "~1.0"
 cbindgen = "~0"
 
@@ -64,6 +65,7 @@ cargo-deb = "~2"
 [dependencies]
 client = { path = "client", optional = true }
 server = { path = "server", optional = true }
+build-info = "~0.0"
 cfg-if = "~1"
 pretty_env_logger = "~0"
 tracing = { version = "~0.1", features = ["log"] }
