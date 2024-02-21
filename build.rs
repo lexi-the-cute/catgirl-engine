@@ -11,10 +11,27 @@ fn main() {
     set_rustflags();
 
     // Generate build info
-    build_info_build::build_script().collect_dependencies(DependencyDepth::Full);
+    generate_build_info();
 
     // Bindings are only usable when building libs
     create_bindings();
+}
+
+fn matches_environment_var(key: &str, value: &str) -> bool {
+    let environment_var: Result<String, env::VarError> = env::var(key);
+    environment_var.is_ok() && environment_var.unwrap() == value
+}
+
+fn generate_build_info() {
+    let mut depth: DependencyDepth = DependencyDepth::Depth(8);
+
+    // Custom environment variable to speed up writing code
+    let rust_analyzer: bool = matches_environment_var("RUST_ANALYZER", "true");
+    if rust_analyzer {
+        depth = DependencyDepth::None;
+    }
+
+    build_info_build::build_script().collect_dependencies(depth);
 }
 
 fn set_rustflags() {
@@ -139,7 +156,7 @@ fn target_dir() -> PathBuf {
 
 #[allow(dead_code)]
 fn print_environment_vars() {
-    let vars: Vars = std::env::vars();
+    let vars: Vars = env::vars();
 
     for (key, var) in vars {
         println!("cargo:warning=EV: {key}: {var}");

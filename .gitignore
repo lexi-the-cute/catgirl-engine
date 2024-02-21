@@ -4,3 +4,4 @@
 /gen
 /pkg
 /examples/wasm/pkg
+.ra-target/
