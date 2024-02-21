@@ -61,6 +61,9 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.release
+        }
     }
 
     compileOptions {
@@ -83,6 +86,15 @@ cargoNdk {
     targets = ["arm64", "arm", "x86", "x86_64"]
     module = ".."
     extraCargoBuildArguments = ["--lib"]
+
+    buildTypes {
+        release {
+            buildType = "release"
+        }
+        debug {
+            buildType = "debug"
+        }
+    }
 }
 
 dependencies {
