@@ -27,26 +27,18 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
-fn print_dependencies(info: &BuildInfo) {
-    let mut all_deps = BTreeMap::new();
+pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
+    let mut dependencies: BTreeMap<&str, &CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
 
     // Add each dependency only once
     while let Some(dep) = stack.pop() {
-        if all_deps.insert(dep.name.as_str(), dep).is_none() {
+        if dependencies.insert(dep.name.as_str(), dep).is_none() {
             stack.extend(&dep.dependencies);
         }
     }
 
-    // Loop through dependency list to print
-    for (name, dep) in all_deps.iter() {
-        println!(
-            "{} v{} - License {}",
-            name,
-            dep.version,
-            dep.license.as_ref().unwrap()
-        )
-    }
+    dependencies
 }
 
 pub(crate) fn print_version() {
@@ -69,7 +61,15 @@ pub(crate) fn print_version() {
     println!();
 
     // Print all dependencies
-    print_dependencies(info);
+    // Loop through dependency list to print
+    for (name, dep) in get_dependencies(info) {
+        println!(
+            "{} v{} - License {}",
+            name,
+            dep.version,
+            dep.license.as_ref().unwrap()
+        )
+    }
 }
 
 pub(crate) fn setup_logger() {
