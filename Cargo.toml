@@ -78,8 +78,3 @@ wasm-bindgen = "~0.2"
 wasm-bindgen-futures = "~0.4"
 web-sys = { version = "~0.3", features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", features = ["js"] }
-
-[package.metadata.deb.variants.server]
-name = "catgirl-engine-server"
-features = ["server"]
-default-features = false
