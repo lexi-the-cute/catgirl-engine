@@ -12,7 +12,7 @@ fn main() {
     // Print version and copyright info
     if game::get_args().version {
         game::print_version();
-        return ();
+        return;
     }
 
     game::setup_logger();

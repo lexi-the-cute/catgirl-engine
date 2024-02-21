@@ -2,5 +2,21 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "rust-analyzer.linkedProjects": [
         "./client/Cargo.toml"
-    ]
+    ],
+    "rust-analyzer.server.extraEnv": {
+        "RUST_ANALYZER": "true",
+        "CARGO_TARGET_DIR": "./.ra-target"
+    },
+    "rust-analyzer.runnables.extraEnv": {
+        "RUST_ANALYZER": "true",
+        "CARGO_TARGET_DIR": "./.ra-target"
+    },
+    "rust-analyzer.check.extraEnv": {
+        "RUST_ANALYZER": "true",
+        "CARGO_TARGET_DIR": "./.ra-target"
+    },
+    "rust-analyzer.cargo.extraEnv": {
+        "RUST_ANALYZER": "true",
+        "CARGO_TARGET_DIR": "./.ra-target"
+    }
 }
