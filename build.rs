@@ -37,7 +37,6 @@ fn generate_build_info() {
 fn set_rustflags() {
     // -rdynamic allows exporting symbols even when compiled as an executable
     // https://stackoverflow.com/a/57595625
-    // let arch: String = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
     let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
 
     if family != "wasm" {

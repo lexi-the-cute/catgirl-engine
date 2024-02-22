@@ -8,7 +8,7 @@ use core::ffi::{c_char, c_int};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
-#[cfg(target_arch = "wasm32")]
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::*;
 
 // Run as Library
@@ -59,8 +59,8 @@ pub fn android_main(app: AndroidApp) {
 }
 
 #[no_mangle]
-#[cfg(target_arch = "wasm32")]
-#[cfg_attr(target_arch = "wasm32", wasm_bindgen(start))]
+#[cfg(target_family = "wasm")]
+#[cfg_attr(target_family = "wasm", wasm_bindgen(start))]
 pub fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));

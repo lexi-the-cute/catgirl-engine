@@ -88,8 +88,8 @@ pub(crate) fn setup_logger() {
                         .build(),
                 ),
         );
-    } else if cfg!(target_arch = "wasm32") {
-        #[cfg(target_arch = "wasm32")]
+    } else if cfg!(target_family = "wasm") {
+        #[cfg(target_family = "wasm")]
         if let Err(error) = console_log::init_with_level(tracing::log::Level::Debug) {
             warn!("Failed to initialize console logger...")
         }
