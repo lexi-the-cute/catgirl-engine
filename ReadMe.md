@@ -35,7 +35,7 @@ rustup default stable
 rustup component add rust-src --toolchain stable
 
 # Download This Repo
-git clone https://github.com/alexisart/catgirl-engine --recurse-submodules
+git clone https://github.com/lexi-the-cute/catgirl-engine
 
 # Switch To Project Root
 cd catgirl-engine
