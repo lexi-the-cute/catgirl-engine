@@ -98,44 +98,44 @@ jobs:
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
-        run: ${{ github.workspace }}/android/gradlew assembleRelease
+        run: ${{ github.workspace }}/android/gradlew assembleDebug
 
       # Build Engine As AAB
       - name: Build CatgirlEngine AAB
         working-directory: ${{ github.workspace }}/android
-        run: ${{ github.workspace }}/android/gradlew bundleRelease
+        run: ${{ github.workspace }}/android/gradlew bundleDebug
 
       # Profile Code Size
       - name: Profile Code Size (aarch64)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so"
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/aarch64-linux-android/debug/libmain.so"
 
       # Profile Code Size
       - name: Profile Code Size (armv7)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so"
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/armv7-linux-androideabi/debug/libmain.so"
 
       # Profile Code Size
       - name: Profile Code Size (i686)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/i686-linux-android/release/libmain.so"
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/i686-linux-android/debug/libmain.so"
 
       # Profile Code Size
       - name: Profile Code Size (x86_64)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so"      
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-linux-android/debug/libmain.so"
 
       # Display APK Directory
       - name: Display APK Directory (Release)
-        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/release
+        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/debug
 
       # Display Bundle Directory
       - name: Display Bundle Directory (Release)
-        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
+        run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/debug
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/android/app/build/outputs/mapping/release/mapping.txt ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/debug/app-debug.apk ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/bundle/debug/app-debug.aab ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/android/app/build/outputs/mapping/debug/mapping.txt ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
 
       # Upload APK
@@ -144,7 +144,7 @@ jobs:
         with:
           name: CatgirlEngine-Android-APK
           path: |
-            ${{ github.workspace }}/upload/app-release.apk
+            ${{ github.workspace }}/upload/app-debug.apk
             ${{ github.workspace }}/upload/mapping.txt
             ${{ github.workspace }}/upload/binding
 
@@ -154,7 +154,7 @@ jobs:
         with:
           name: CatgirlEngine-Android-Bundle
           path: |
-            ${{ github.workspace }}/upload/app-release.aab
+            ${{ github.workspace }}/upload/app-debug.aab
             ${{ github.workspace }}/upload/mapping.txt
             ${{ github.workspace }}/upload/binding
 
@@ -244,14 +244,14 @@ jobs:
           gh api --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/releases \
+            /repos/${{ github.repository }}/debugs \
             -f tag_name="v$VERSION" \
             -f target_commitish="$BRANCH" \
             -f name="$VERSION_STRING" \
             -f body="$BODY" \
             -F draft="$DRAFT" \
-            -F prerelease="$PRERELEASE" \
-            -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
+            -F predebug="$PRERELEASE" \
+            -F generate_debug_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release
@@ -260,30 +260,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android-APK.zip"
           export DISPLAY_LABEL="Android APK"
 
-          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R alexisart/catgirl-engine
-
-      # Setup Google Play Services Config
-      - name: Setup Google Play Services Config
-        run: |
-          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_CONFIG }}" > ${{ github.workspace }}/android/google_play_service_account_config.json.base64
-          base64 -d -i ${{ github.workspace }}/android/google_play_service_account_config.json.base64 > ${{ github.workspace }}/android/google_play_service_account_config.json
-          rm ${{ github.workspace }}/android/google_play_service_account_config.json.base64
-
-      # Install Fastlane (For Uploading to Play Store)
-      - name: Install Fastlane (Upload to Play Store)
-        working-directory: android
-        run: |
-          # https://docs.fastlane.tools/getting-started/android/screenshots/
-          sudo gem install bundler -NV  # No documentation, yes verbose
-          sudo bundle install
-
-      # Publish to Play Store
-      - name: 🏬 Publish to Play Store
-        working-directory: android
-        continue-on-error: true
-        run: |
-          bundle exec fastlane supply init --track internal
-          bundle exec fastlane android internal
+          gh debug upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)
@@ -300,4 +277,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/app-release.apk catgirlland/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/app-debug.apk catgirlland/catgirl-engine:android
