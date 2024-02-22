@@ -39,9 +39,13 @@ fn set_rustflags() {
     // https://stackoverflow.com/a/57595625
     let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
 
-    if family != "wasm" {
+    if family == "unix" {
         println!("cargo:rustc-link-arg=-rdynamic");
-    }
+    } /*else if family == "windows" {
+          println!("cargo:rustc-link-arg=-Wl,--export-all-symbols");
+      } else if family == "wasm" {
+          println!("cargo:rustc-link-arg=-Wl,--export-dynamic");
+      }*/
 }
 
 fn create_bindings() {
