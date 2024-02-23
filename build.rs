@@ -41,7 +41,7 @@ fn set_rustflags() {
     let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
 
     if family == "unix" {
-        // println!("cargo:rustc-link-arg=-rdynamic");
+        println!("cargo:rustc-link-arg=-rdynamic");
     } /*else if family == "windows" {
           println!("cargo:rustc-link-arg=-Wl,--export-all-symbols");
       } else if family == "wasm" {
