@@ -90,6 +90,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
 
       # Upload Engine
       - name: Upload Engine (Release)
