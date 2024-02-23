@@ -28,10 +28,10 @@ codegen-units = 256
 
 # Optimize for speed and remove debug information for size
 [profile.release]
-lto = true
+lto = false
 debug = false  # Setting to false significantly reduces code size (last test was 286 MB to 13 MB)
 opt-level = 3
-incremental = false
+incremental = true
 
 [features]
 default = ["client", "server"]

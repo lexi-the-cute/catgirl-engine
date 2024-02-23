@@ -94,21 +94,21 @@ jobs:
       # Install Code Size Profiler
       - name: Install Code Size Profiler
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo install -j 4 twiggy
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           ${{ github.workspace }}/android/gradlew assembleRelease
 
       # Build Engine As AAB
       - name: Build CatgirlEngine AAB
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Profile Code Size
@@ -138,11 +138,12 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
-          mkdir -p ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/profdata
           mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Upload APK
       - name: Upload APK (Release)

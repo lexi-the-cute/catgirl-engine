@@ -63,13 +63,13 @@ jobs:
       # Install Code Size Profiler
       - name: Install Code Size Profiler
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo install -j 4 twiggy
 
       # Compile Program
       - name: Build Program
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --timings
 
       # Profile Code Size
@@ -80,7 +80,7 @@ jobs:
       - name: Test Program
         run: |
           # export LD_LIBRARY_PATH=${{ github.workspace }}/target/libs:$LD_LIBRARY_PATH
-          export RUSTFLAGS="-Z threads=`nproc --all`"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples --timings
 
       # Display Export Directory
@@ -90,10 +90,11 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
-          mkdir -p ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/profdata
           mv ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Upload Engine
       - name: Upload Engine (Release)
