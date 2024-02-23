@@ -64,14 +64,14 @@ jobs:
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
-      # Install Rust Stable Toolchains
-      - name: Set Rust To The Stable Toolchains
+      # Install Rust Nightly Toolchains
+      - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
-          prefix-key: "android-rust"
+          shared-key: "android-rust"
 
       # Add Build Targets
       - name: Add armv7 Android Build Target
