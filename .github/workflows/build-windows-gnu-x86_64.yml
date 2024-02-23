@@ -70,7 +70,7 @@ jobs:
 
       # Compile Program
       - name: Build Program
-        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine
+        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings
 
       # Profile Code Size
       - name: Profile Code Size
@@ -78,7 +78,7 @@ jobs:
 
       # Test Program
       # - name: Test Program
-      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-pc-windows-gnu --bins --tests --benches --examples
+      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-pc-windows-gnu --bins --tests --benches --examples --timings
 
       # Display Export Directory
       - name: Display Export Directory
