@@ -136,6 +136,7 @@ jobs:
           mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
 
       # Upload APK
       - name: Upload APK (Release)
@@ -145,6 +146,7 @@ jobs:
           path: |
             ${{ github.workspace }}/upload/app-release.apk
             ${{ github.workspace }}/upload/binding
+            ${{ github.workspace }}/upload/cargo-timings
 
       # Upload Bundle
       - name: Upload Bundle (Release)
@@ -154,6 +156,7 @@ jobs:
           path: |
             ${{ github.workspace }}/upload/app-release.aab
             ${{ github.workspace }}/upload/binding
+            ${{ github.workspace }}/upload/cargo-timings
 
       # List Environment
       - name: List Environment

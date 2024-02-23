@@ -88,6 +88,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
 
       # Upload Engine
       - name: Upload Engine (Release)
@@ -188,7 +189,7 @@ jobs:
       - name: 👩‍💻 Publish to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64/CatgirlEngine-Linux-GNU-x86_64.zip"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.zip"
           export DISPLAY_LABEL="x86_64"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
