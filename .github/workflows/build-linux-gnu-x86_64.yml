@@ -64,13 +64,13 @@ jobs:
       - name: Install Code Size Profiler
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo install -j 4 twiggy
+          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
       # Compile Program
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --timings
+          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --timings
 
       # Profile Code Size
       - name: Profile Code Size
@@ -81,7 +81,7 @@ jobs:
         run: |
           # export LD_LIBRARY_PATH=${{ github.workspace }}/target/libs:$LD_LIBRARY_PATH
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples --timings
+          $HOME/.cargo/bin/cargo test -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples --timings
 
       # Display Export Directory
       - name: Display Export Directory
