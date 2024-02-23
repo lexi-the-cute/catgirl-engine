@@ -66,7 +66,7 @@ jobs:
 
       # Install Rust Stable Toolchains
       - name: Set Rust To The Stable Toolchains
-        run: $HOME/.cargo/bin/rustup default stable
+        run: $HOME/.cargo/bin/rustup default nightly
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
@@ -93,17 +93,23 @@ jobs:
 
       # Install Code Size Profiler
       - name: Install Code Size Profiler
-        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo install -j 4 twiggy
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
-        run: ${{ github.workspace }}/android/gradlew assembleRelease
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          ${{ github.workspace }}/android/gradlew assembleRelease
 
       # Build Engine As AAB
       - name: Build CatgirlEngine AAB
         working-directory: ${{ github.workspace }}/android
-        run: ${{ github.workspace }}/android/gradlew bundleRelease
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Profile Code Size
       - name: Profile Code Size (aarch64)

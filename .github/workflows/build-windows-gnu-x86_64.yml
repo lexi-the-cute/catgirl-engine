@@ -53,7 +53,7 @@ jobs:
 
       # Install Rust Stable Toolchains
       - name: Set Rust To The Stable Toolchains
-        run: $HOME/.cargo/bin/rustup default stable
+        run: $HOME/.cargo/bin/rustup default nightly
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
@@ -66,11 +66,15 @@ jobs:
 
       # Install Code Size Profiler
       - name: Install Code Size Profiler
-        run: $HOME/.cargo/bin/cargo install -j 4 twiggy
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo install -j 4 twiggy
 
       # Compile Program
       - name: Build Program
-        run: $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo build -j 4 --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings
 
       # Profile Code Size
       - name: Profile Code Size
@@ -78,7 +82,9 @@ jobs:
 
       # Test Program
       # - name: Test Program
-      #   run: $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-pc-windows-gnu --bins --tests --benches --examples --timings
+      #   run: |
+      #     export RUSTFLAGS="-Z threads=`nproc --all`"
+      #     $HOME/.cargo/bin/cargo test -j 4 --verbose --target=x86_64-pc-windows-gnu --bins --tests --benches --examples --timings
 
       # Display Export Directory
       - name: Display Export Directory

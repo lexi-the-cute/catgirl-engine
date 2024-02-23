@@ -50,31 +50,31 @@ members = [
 ]
 
 [build-dependencies]
-build-info-build = "~0.0"
-cc = "~1.0"
-cbindgen = "~0"
+build-info-build = { version = "~0.0", default-features = false }
+cc = { version = "~1.0", default-features = false }
+cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
 client = { package = "catgirl-engine-client", path = "client", optional = true }
 server = { package = "catgirl-engine-server", path = "server", optional = true }
-build-info = "~0.0"
-cfg-if = "~1"
-pretty_env_logger = "~0"
-tracing = { version = "~0.1", features = ["log"] }
-tracing-subscriber = { version = "~0.3", optional = true }
-clap = { version = "~4", features = ["derive"] }
+build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
+cfg-if = { version = "~1", default-features = false }
+pretty_env_logger = { version = "~0", default-features = false }
+tracing = { version = "~0.1", default-features = false, features = ["log"] }
+tracing-subscriber = { version = "~0.3", default-features = false, optional = true }
+clap = { version = "~4", default-features = false, features = ["std", "derive"] }
 
 [target.'cfg(not(target_arch="wasm32"))'.dependencies]
-ctrlc = "~3"
+ctrlc = { version = "~3", default-features = false }
 
 [target.'cfg(target_os="android")'.dependencies]
-android_logger = "~0.13"
-winit = { version = "~0.29", features = ["android-game-activity"] }
+android_logger = { version = "~0.13", default-features = false }
+winit = { version = "~0.29", default-features = false, features = ["android-game-activity"] }
 
 [target.'cfg(target_arch="wasm32")'.dependencies]
-console_error_panic_hook = "~0.1"
-console_log = "~1"
-wasm-bindgen = "~0.2"
-wasm-bindgen-futures = "~0.4"
-web-sys = { version = "~0.3", features = ["Document", "Window", "Element"] }
-getrandom = { version = "~0.2", features = ["js"] }
+console_error_panic_hook = { version = "~0.1", default-features = false }
+console_log = { version = "~1", default-features = false }
+wasm-bindgen = { version = "~0.2", default-features = false }
+wasm-bindgen-futures = { version = "~0.4", default-features = false }
+web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
+getrandom = { version = "~0.2", default-features = false, features = ["js"] }
