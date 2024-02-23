@@ -95,7 +95,7 @@ jobs:
       - name: Install Code Size Profiler
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo install -j 4 twiggy
+          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK
