@@ -58,11 +58,17 @@ pub(crate) fn print_version() {
         info.crate_info.authors[0],
         info.crate_info.license.as_ref().unwrap()
     );
-    println!();
+
+    let dependencies: BTreeMap<&str, &CrateInfo> = get_dependencies(info);
+
+    // Only add newline if there are dependencies to print
+    if !dependencies.is_empty() {
+        println!();
+    }
 
     // Print all dependencies
     // Loop through dependency list to print
-    for (name, dep) in get_dependencies(info) {
+    for (name, dep) in dependencies {
         println!(
             "{} v{} - License {}",
             name,

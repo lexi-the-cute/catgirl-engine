@@ -20,7 +20,7 @@ jobs:
       - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
         run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
@@ -28,18 +28,18 @@ jobs:
 
       # Setup Java
       - name: Setup Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
       # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
       - name: Setup Gradle Build Action (For Caching Builds)
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       # Install Dependencies
       - name: Install APT Packages
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 3
           timeout_minutes: 60
@@ -146,7 +146,7 @@ jobs:
 
       # Upload APK
       - name: Upload APK (Release)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Android-APK
           path: |
@@ -156,7 +156,7 @@ jobs:
 
       # Upload Bundle
       - name: Upload Bundle (Release)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Android-Bundle
           path: |
@@ -198,7 +198,7 @@ jobs:
       - name: 🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}.
         run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
@@ -206,7 +206,7 @@ jobs:
 
       # Install Dependencies
       - name: Install APT Packages
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 3
           timeout_minutes: 60
@@ -217,14 +217,14 @@ jobs:
 
       # Download APK
       - name: Download APK (Release)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Android-APK
           path: ${{ github.workspace }}/artifacts/apk
 
       # Download Bundle
       - name: Download Bundle (Release)
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Android-Bundle
           path: ${{ github.workspace }}/artifacts/bundle
