@@ -62,7 +62,7 @@ cfg-if = { version = "~1", default-features = false }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 tracing-subscriber = { version = "~0.3", default-features = false, optional = true }
-clap = { version = "~4", default-features = false, features = ["std", "derive"] }
+clap = { version = "~4", features = ["derive"] }
 
 [target.'cfg(not(target_arch="wasm32"))'.dependencies]
 ctrlc = { version = "~3", default-features = false }
