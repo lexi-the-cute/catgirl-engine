@@ -24,7 +24,6 @@ fn matches_environment_var(key: &str, value: &str) -> bool {
 
 fn generate_build_info() {
     let mut depth: DependencyDepth = DependencyDepth::Depth(8);
-    depth = DependencyDepth::None;
 
     // Custom environment variable to speed up writing code
     let rust_analyzer: bool = matches_environment_var("RUST_ANALYZER", "true");
@@ -41,7 +40,7 @@ fn set_rustflags() {
     let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
 
     if family == "unix" {
-        println!("cargo:rustc-link-arg=-rdynamic");
+        // println!("cargo:rustc-link-arg=-rdynamic");
     } /*else if family == "windows" {
           println!("cargo:rustc-link-arg=-Wl,--export-all-symbols");
       } else if family == "wasm" {
