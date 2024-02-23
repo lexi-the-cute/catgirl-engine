@@ -23,7 +23,9 @@ fn matches_environment_var(key: &str, value: &str) -> bool {
 }
 
 fn generate_build_info() {
-    let mut depth: DependencyDepth = DependencyDepth::Depth(8);
+    // https://github.com/danielschemmel/build-info/issues/17
+    // https://github.com/danielschemmel/build-info/issues/18
+    let mut depth: DependencyDepth = DependencyDepth::Depth(1); // Set to 0
 
     // Custom environment variable to speed up writing code
     let rust_analyzer: bool = matches_environment_var("RUST_ANALYZER", "true");
