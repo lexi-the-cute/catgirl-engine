@@ -284,4 +284,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/app-release.apk catgirlland/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/app-release.apk fomxgorl/catgirl-engine:android
