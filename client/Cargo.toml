@@ -14,14 +14,14 @@ wgpu = { version = "~0.19", default-features = false }
 # egui-wgpu = { version = "*" }
 image = { version = "~0.24" }
 
-[target.'cfg(not(target_arch="wasm32"))'.dependencies]
+[target.'cfg(not(target_family="wasm"))'.dependencies]
 wgpu = { version = "~0.19", default-features = true }
 futures = { version = "~0.3", default-features = false, features = ["executor"] }
 
 [target.'cfg(target_os="android")'.dependencies]
 winit = { version = "~0.29", features = ["android-game-activity"] }
 
-[target.'cfg(target_arch="wasm32")'.dependencies]
+[target.'cfg(target_family="wasm")'.dependencies]
 wgpu = { version = "~0.19", default-features = false, features = ["webgl"] }
 wasm-bindgen-futures = { version = "~0.4", default-features = false }
 futures-channel = { version = "~0.3", default-features = false }
