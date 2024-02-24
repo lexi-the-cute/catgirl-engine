@@ -1,7 +1,7 @@
 The zlib/libpng License
 =======================
 
-Copyright (c) `2023` `Alexis <@alexis@catgirl.land>`
+Copyright (c) `2023-2024` `Alexis <@alexis@catgirl.land>`
 
 This software is provided 'as-is', without any express or implied warranty. In
 no event will the authors be held liable for any damages arising from the use of
