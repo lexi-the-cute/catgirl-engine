@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.8.2"  # https://semver.org (Do not use 1.0.0 until first production release)
+version = "0.8.3"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -21,17 +21,17 @@ crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 # Optimize for faster build times
 [profile.dev]
 lto = false
-debug = false
+debug = true
 opt-level = 0
 incremental = true
 codegen-units = 256
 
 # Optimize for speed and remove debug information for size
 [profile.release]
-lto = false
+lto = true
 debug = false  # Setting to false significantly reduces code size (last test was 286 MB to 13 MB)
 opt-level = 3
-incremental = true
+incremental = false
 
 [features]
 default = ["client", "server"]
