@@ -96,5 +96,5 @@ If you want to use traces, you can either setup your own tracing subscriber if i
 [forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
 [codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
-[itchio-download]: https://catgirlland.itch.io/catgirl-engine
+[itchio-download]: https://fomxgorl.itch.io/catgirl-engine
 [google-play-download]: https://play.google.com/store/apps/details?id=land.catgirl.engine

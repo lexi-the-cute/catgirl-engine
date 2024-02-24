@@ -215,4 +215,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64 catgirlland/catgirl-engine:linux-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64 fomxgorl/catgirl-engine:linux-gnu-x86_64
