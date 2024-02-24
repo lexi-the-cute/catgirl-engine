@@ -33,6 +33,11 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
 
     // Add each dependency only once
     while let Some(dep) = stack.pop() {
+        if dep.name.starts_with("catgirl-engine") {
+            // If one of my own crates, remove from results
+            continue;
+        }
+
         if dependencies.insert(dep.name.as_str(), dep).is_none() {
             stack.extend(&dep.dependencies);
         }
@@ -161,5 +166,5 @@ pub fn start() -> Result<(), String> {
     }
 
     #[cfg(feature = "client")]
-    return client::game_loop::game_loop();
+    client::game_loop::game_loop()
 }
