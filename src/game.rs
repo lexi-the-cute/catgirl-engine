@@ -148,7 +148,7 @@ pub fn start() -> Result<(), String> {
     set_panic_hook();
 
     // Allows handling properly shutting down with SIGINT
-    #[cfg(not(target_family = "wasm"))]
+    #[cfg(any(target_family = "unix", target_family = "windows"))]
     {
         debug!("Setting SIGINT hook...");
         ctrlc::set_handler(move || {
