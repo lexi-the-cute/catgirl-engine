@@ -207,6 +207,7 @@ pub fn game_loop() -> Result<(), String> {
                 event: WindowEvent::RedrawRequested,
                 ..
             } => {
+                // TODO: https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
                 // Configure a surface for drawing on
                 let device: &Device = device.as_ref().unwrap();
                 let surface: &Surface = surface.as_ref().unwrap();
