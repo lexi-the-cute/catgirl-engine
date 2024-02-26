@@ -1,7 +1,16 @@
 use std::sync::Arc;
 
+use winit::dpi::PhysicalSize;
+use winit::event::{Event, KeyEvent, WindowEvent};
+use winit::event_loop::{EventLoop, EventLoopBuilder};
+use winit::keyboard::{self, NamedKey};
+use winit::window::{Window, WindowBuilder};
+
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
+
+#[cfg(target_os = "android")]
+use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
 
 #[cfg(target_os = "android")]
 use std::sync::OnceLock;
@@ -22,14 +31,6 @@ pub fn game_loop() -> Result<(), String> {
         Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass,
         RenderPassDescriptor, Surface, SurfaceTexture, TextureView,
     };
-    use winit::dpi::PhysicalSize;
-    use winit::event::{Event, KeyEvent, WindowEvent};
-    use winit::event_loop::{EventLoop, EventLoopBuilder};
-    use winit::keyboard::{self, NamedKey};
-    use winit::window::{Window, WindowBuilder};
-
-    #[cfg(target_os = "android")]
-    use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
 
     // Create the main loop
     debug!("Creating event loop...");
@@ -173,20 +174,14 @@ pub fn game_loop() -> Result<(), String> {
                 window_target.exit();
             }
 
-            // Called every time the engine needs to refresh a frame
-            // TODO: Offload to separate function
-            // render()
             Event::WindowEvent {
-                event: WindowEvent::RedrawRequested,
+                event: WindowEvent::Resized(_),
                 ..
             } => {
-                // Configure a surface for drawing on
-                // Needs to be updated to account for window resizing
                 let window: &Window = window_arc.as_ref().unwrap().as_ref();
                 let device: &Device = device.as_ref().unwrap();
                 let surface: &Surface = surface.as_ref().unwrap();
                 let adapter: &Adapter = adapter.as_ref().unwrap();
-                let queue: &Queue = queue.as_ref().unwrap();
 
                 let size: PhysicalSize<u32> = window.inner_size();
                 surface.configure(
@@ -195,6 +190,27 @@ pub fn game_loop() -> Result<(), String> {
                         .get_default_config(adapter, size.width, size.height)
                         .expect("Could not get surface default config!"),
                 );
+            }
+
+            // Can be used to pause the game
+            Event::WindowEvent {
+                event: WindowEvent::Focused(_focused),
+                ..
+            } => {
+                // debug!("Focused: {_focused}");
+            }
+
+            // Called every time the engine needs to refresh a frame
+            // TODO: Offload to separate function
+            // render()
+            Event::WindowEvent {
+                event: WindowEvent::RedrawRequested,
+                ..
+            } => {
+                // Configure a surface for drawing on
+                let device: &Device = device.as_ref().unwrap();
+                let surface: &Surface = surface.as_ref().unwrap();
+                let queue: &Queue = queue.as_ref().unwrap();
 
                 // Get a texture to draw onto the surface
                 // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
