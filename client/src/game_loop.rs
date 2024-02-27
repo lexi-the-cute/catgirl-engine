@@ -1,10 +1,18 @@
 use std::sync::Arc;
 
+#[cfg(target_os = "android")]
+use std::sync::OnceLock;
+
 use winit::dpi::PhysicalSize;
 use winit::event::{Event, KeyEvent, WindowEvent};
 use winit::event_loop::{EventLoop, EventLoopBuilder};
 use winit::keyboard::{self, NamedKey};
 use winit::window::{Window, WindowBuilder};
+
+use wgpu::{
+    Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass,
+    RenderPassDescriptor, Surface, SurfaceTexture, TextureView,
+};
 
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
@@ -13,10 +21,100 @@ use winit::platform::android::activity::AndroidApp;
 use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
 
 #[cfg(target_os = "android")]
-use std::sync::OnceLock;
-
-#[cfg(target_os = "android")]
 pub(crate) static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
+
+pub(crate) struct WindowState<'a> {
+    instance: Instance,
+    adapter: Adapter,
+    surface: Surface<'a>,
+    device: Device,
+    queue: Queue,
+    window: Arc<Window>,
+}
+
+impl WindowState<'_> {
+    pub(crate) fn new(window: Window) -> Self {
+        let window_arc: Arc<Window> = Arc::new(window);
+
+        // Context for all WGPU objects
+        // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
+        debug!("Creating wgpu instance...");
+        let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
+
+        // Handle to graphics device (e.g. GPU)
+        // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
+        // https://crates.io/crates/futures
+        debug!("Grabbing wgpu adapter...");
+        let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
+        let adapter: Adapter =
+            futures::executor::block_on(adapter_future).expect("Could not grab WGPU adapter!");
+
+        // Describe's a device
+        // For use with adapter's request device
+        // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
+        debug!("Describing wgpu device...");
+        let mut device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
+
+        // Set limits to make this run on more devices
+        // TODO: Research how to dynamically set limits for the running device
+        debug!("Setting WGPU limits...");
+        let limits: wgpu::Limits = wgpu::Limits {
+            max_texture_dimension_1d: 4096,
+            max_texture_dimension_2d: 4096,
+            ..Default::default()
+        };
+
+        device_descriptor.required_limits = limits;
+
+        // Opens a connection to the graphics device (e.g. GPU)
+        debug!("Opening connection with graphics device (e.g. GPU)...");
+        let device_future = adapter.request_device(&device_descriptor, None);
+        let (device, queue) = futures::executor::block_on(device_future)
+            .expect("Could not open a connection with the graphics device!");
+
+        debug!("Creating wgpu surface...");
+        let surface: Surface<'_> = instance
+            .create_surface(window_arc.clone())
+            .expect("Could not create surface!");
+
+        let size: PhysicalSize<u32> = window_arc.clone().inner_size();
+        surface.configure(
+            &device,
+            &surface
+                .get_default_config(&adapter, size.width, size.height)
+                .expect("Could not get surface default config!"),
+        );
+
+        Self {
+            instance,
+            adapter,
+            surface,
+            device,
+            queue,
+            window: window_arc,
+        }
+    }
+
+    pub(crate) fn recreate_surface(&mut self) {
+        // Handle to the surface on which to draw on (e.g. a window)
+        // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
+        debug!("Creating wgpu surface...");
+        let surface: Surface<'_> = self
+            .instance
+            .create_surface(self.window.clone())
+            .expect("Could not create surface!");
+
+        let size: PhysicalSize<u32> = self.window.clone().inner_size();
+        surface.configure(
+            &self.device,
+            &surface
+                .get_default_config(&self.adapter, size.width, size.height)
+                .expect("Could not get surface default config!"),
+        );
+
+        self.surface = surface;
+    }
+}
 
 #[cfg(target_os = "android")]
 pub fn store_android_app(app: AndroidApp) {
@@ -27,11 +125,6 @@ pub fn store_android_app(app: AndroidApp) {
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
 pub fn game_loop() -> Result<(), String> {
-    use wgpu::{
-        Adapter, CommandEncoder, Device, DeviceDescriptor, Instance, Queue, RenderPass,
-        RenderPassDescriptor, Surface, SurfaceTexture, TextureView,
-    };
-
     // Create the main loop
     debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
@@ -45,11 +138,7 @@ pub fn game_loop() -> Result<(), String> {
         .build()
         .expect("Could not create an event loop!");
 
-    let mut window_arc: Option<Arc<Window>> = None;
-    let mut adapter: Option<Adapter> = None;
-    let mut surface: Option<Surface> = None;
-    let mut device: Option<Device> = None;
-    let mut queue: Option<Queue> = None;
+    let mut window_state: Option<WindowState> = None;
     debug!("Starting event loop...");
     let _ = event_loop.run(move |event, window_target| {
         /* Update Order
@@ -86,68 +175,18 @@ pub fn game_loop() -> Result<(), String> {
                 // This is to allow retaining a handle to the window after passing it to create_surface
                 // https://github.com/gfx-rs/wgpu/discussions/5213
                 // https://doc.rust-lang.org/std/sync/struct.Arc.html
-                debug!("Creating window...");
-                window_arc = Some(Arc::new(
-                    WindowBuilder::new()
+                if window_state.is_none() {
+                    debug!("Creating window...");
+                    let window = WindowBuilder::new()
                         .with_title("Catgirl Engine")
                         .with_window_icon(Some(super::get_icon()))
                         .build(window_target)
-                        .expect("Could not create window!"),
-                ));
+                        .expect("Could not create window!");
 
-                // Context for all WGPU objects
-                // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
-                debug!("Creating wgpu instance...");
-                let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
-
-                // Handle to graphics device (e.g. GPU)
-                // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
-                // https://crates.io/crates/futures
-                debug!("Grabbing wgpu adapter...");
-                let adapter_future =
-                    instance.request_adapter(&wgpu::RequestAdapterOptions::default());
-                adapter = Some(
-                    futures::executor::block_on(adapter_future)
-                        .expect("Could not grab WGPU adapter!"),
-                );
-
-                // Handle to the surface on which to draw on (e.g. a window)
-                // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
-                debug!("Creating wgpu surface...");
-                surface = Some(
-                    instance
-                        .create_surface(window_arc.as_ref().unwrap().clone())
-                        .expect("Could not create surface!"),
-                );
-
-                // Describe's a device
-                // For use with adapter's request device
-                // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
-                debug!("Describing wgpu device...");
-                let mut device_descriptor: DeviceDescriptor = wgpu::DeviceDescriptor::default();
-
-                // Set limits to make this run on more devices
-                // TODO: Research how to dynamically set limits for the running device
-                debug!("Setting WGPU limits...");
-                let limits: wgpu::Limits = wgpu::Limits {
-                    max_texture_dimension_1d: 4096,
-                    max_texture_dimension_2d: 4096,
-                    ..Default::default()
-                };
-
-                device_descriptor.required_limits = limits;
-
-                // Opens a connection to the graphics device (e.g. GPU)
-                debug!("Opening connection with graphics device (e.g. GPU)...");
-                let device_future = adapter
-                    .as_ref()
-                    .unwrap()
-                    .request_device(&device_descriptor, None);
-                let (_device, _queue) = futures::executor::block_on(device_future)
-                    .expect("Could not open a connection with the graphics device!");
-
-                device = Some(_device);
-                queue = Some(_queue);
+                    window_state = Some(WindowState::new(window));
+                } else {
+                    window_state.as_mut().unwrap().recreate_surface();
+                }
             }
 
             Event::Suspended => {
@@ -178,10 +217,11 @@ pub fn game_loop() -> Result<(), String> {
                 event: WindowEvent::Resized(_),
                 ..
             } => {
-                let window: &Window = window_arc.as_ref().unwrap().as_ref();
-                let device: &Device = device.as_ref().unwrap();
-                let surface: &Surface = surface.as_ref().unwrap();
-                let adapter: &Adapter = adapter.as_ref().unwrap();
+                let window_state: &WindowState<'_> = window_state.as_ref().unwrap();
+                let window: &Window = &window_state.window;
+                let device: &Device = &window_state.device;
+                let surface: &Surface = &window_state.surface;
+                let adapter: &Adapter = &window_state.adapter;
 
                 let size: PhysicalSize<u32> = window.inner_size();
                 surface.configure(
@@ -209,9 +249,10 @@ pub fn game_loop() -> Result<(), String> {
             } => {
                 // TODO: https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
                 // Configure a surface for drawing on
-                let device: &Device = device.as_ref().unwrap();
-                let surface: &Surface = surface.as_ref().unwrap();
-                let queue: &Queue = queue.as_ref().unwrap();
+                let window_state: &WindowState<'_> = window_state.as_ref().unwrap();
+                let device: &Device = &window_state.device;
+                let surface: &Surface = &window_state.surface;
+                let queue: &Queue = &window_state.queue;
 
                 // Get a texture to draw onto the surface
                 // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
