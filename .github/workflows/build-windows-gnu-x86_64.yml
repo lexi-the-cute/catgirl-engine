@@ -70,6 +70,15 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
+      # Test Minimal Dependency Versions
+      # https://doc.rust-lang.org/cargo/reference/resolver.html
+      # https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=version#direct-minimal-versions
+      - name: Test Minimal Dependency Versions
+        continue-on-error: true
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --bin catgirl-engine --timings -Z direct-minimal-versions
+
       # Compile Program
       - name: Build Program
         run: |

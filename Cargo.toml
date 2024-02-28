@@ -50,14 +50,14 @@ members = [
 ]
 
 [build-dependencies]
-build-info-build = { version = "~0.0", default-features = false }
+build-info-build = { version = "^0.0.35", default-features = false }
 cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
 client = { version = "0.2.0", package = "catgirl-engine-client", path = "client", optional = true }
 server = { version = "0.2.0", package = "catgirl-engine-server", path = "server", optional = true }
-build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
+build-info = { version = "^0.0.35", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
@@ -75,6 +75,6 @@ winit = { version = "~0.29", default-features = false, features = ["android-game
 console_error_panic_hook = { version = "~0.1", default-features = false }
 console_log = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = false }
-wasm-bindgen-futures = { version = "~0.4", default-features = false }
+wasm-bindgen-futures = { version = "^0.4.40", default-features = false }
 web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", default-features = false, features = ["js"] }
