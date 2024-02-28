@@ -55,8 +55,8 @@ cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-client = { package = "catgirl-engine-client", path = "client", optional = true }
-server = { package = "catgirl-engine-server", path = "server", optional = true }
+client = { package = "catgirl-engine-client", path = "client", version = "0.2.0", optional = true }
+server = { package = "catgirl-engine-server", path = "server", version = "0.2.0", optional = true }
 build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 pretty_env_logger = { version = "~0", default-features = false }
