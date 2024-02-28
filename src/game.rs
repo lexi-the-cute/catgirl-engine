@@ -162,9 +162,9 @@ pub fn start() -> Result<(), String> {
 
     #[cfg(feature = "server")]
     if cfg!(not(feature = "client")) || get_args().server {
-        return server::game_loop::game_loop();
+        return server::game::game_loop();
     }
 
     #[cfg(feature = "client")]
-    client::game_loop::game_loop()
+    client::game::game_loop()
 }
