@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.9.1"  # https://semver.org (Do not use 1.0.0 until first production release)
+version = "0.9.2"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -55,8 +55,8 @@ cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-client = { package = "catgirl-engine-client", path = "client", version = "0.2.0", optional = true }
-server = { package = "catgirl-engine-server", path = "server", version = "0.2.0", optional = true }
+client = { version = "0.2.0", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.2.0", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 pretty_env_logger = { version = "~0", default-features = false }
