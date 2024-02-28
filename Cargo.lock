@@ -451,7 +451,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-client"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "futures",
  "futures-channel",
@@ -464,7 +464,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-server"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "rhai",
  "tracing",
