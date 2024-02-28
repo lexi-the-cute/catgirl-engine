@@ -12,6 +12,7 @@ build_info::build_info!(fn build_info);
 
 #[derive(Parser, Debug)]
 #[command(author, about, long_about = None)]
+/// List of possible command line arguments
 pub(crate) struct Args {
     /// Start the engine in dedicated server mode
     #[arg(short, long, default_value_t = false)]
@@ -23,10 +24,12 @@ pub(crate) struct Args {
 }
 
 #[no_mangle]
+/// Retrieve parsed out command line arguments
 pub fn get_args() -> Args {
     Args::parse()
 }
 
+/// Get the list of dependencies used in the engine
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
     let mut dependencies: BTreeMap<&str, &CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -46,6 +49,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
     dependencies
 }
 
+/// Print the version of the engine and its dependencies
 pub(crate) fn print_version() {
     let info: &BuildInfo = build_info();
 
@@ -83,6 +87,7 @@ pub(crate) fn print_version() {
     }
 }
 
+/// Setup the logger for the current platform
 pub(crate) fn setup_logger() {
     if cfg!(target_os = "android") {
         // Limited Filter: trace,android_activity=debug,winit=debug
@@ -111,6 +116,7 @@ pub(crate) fn setup_logger() {
 }
 
 #[cfg(feature = "tracing-subscriber")]
+/// Setup the tracing subscriber to monitor the tracer
 pub(crate) fn setup_tracer() {
     // Construct a subscriber to print formatted traces to stdout
     let subscriber: tracing_subscriber::FmtSubscriber =
@@ -132,6 +138,7 @@ pub(crate) fn setup_tracer() {
     }
 }
 
+/// Setup a hook to catch panics for logging before shutdown
 fn set_panic_hook() {
     std::panic::set_hook(Box::new(|info| {
         if let Some(string) = info.payload().downcast_ref::<String>() {
@@ -140,6 +147,7 @@ fn set_panic_hook() {
     }));
 }
 
+/// Determines if client or server and starts the engine
 pub fn start() -> Result<(), String> {
     // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
