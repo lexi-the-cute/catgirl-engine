@@ -8,7 +8,7 @@ categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
 documentation = "https://docs.rs/catgirl-engine-client"
 homepage = "https://github.com/lexi-the-cute/catgirl-engine"
-readme = "../ReadMe.md"
+readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
