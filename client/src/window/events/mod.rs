@@ -156,10 +156,12 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
     output.present();
 }
 
+/// Exiting loop
 pub(crate) fn exiting_loop() {
     // debug!("Winit loop is exiting...");
 }
 
+/// Catches previously unhandled events
 pub(crate) fn unhandled_event(_event: Event<()>) {
     // debug!("Unhandled event: {:?}", _event);
 }

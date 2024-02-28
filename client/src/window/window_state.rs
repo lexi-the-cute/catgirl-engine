@@ -4,16 +4,29 @@ use winit::{dpi::PhysicalSize, window::Window};
 
 use wgpu::{Adapter, Device, DeviceDescriptor, Instance, Queue, Surface};
 
+/// Struct used for storing the state of a window
 pub struct WindowState<'a> {
+    /// Context for WGPU objects
     pub instance: Instance,
+
+    /// Handle to the graphics device (e.g. the gpu)
     pub adapter: Adapter,
+
+    /// The surface on which to draw graphics on
     pub surface: Surface<'a>,
+
+    /// Connection to the graphics device provided by the adapter
     pub device: Device,
+
+    /// Queue in which to send commands to the graphics device
     pub queue: Queue,
+
+    /// Handle to the window which holds the drawable surface
     pub window: Arc<Window>,
 }
 
 impl WindowState<'_> {
+    /// Used to initialize a new window and setup the graphics
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
@@ -76,6 +89,7 @@ impl WindowState<'_> {
         }
     }
 
+    /// Recreate the surface after it has been destroyed (e.g. used on Android)
     pub fn recreate_surface(&mut self) {
         // Handle to the surface on which to draw on (e.g. a window)
         // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html

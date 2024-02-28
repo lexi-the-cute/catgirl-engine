@@ -9,6 +9,7 @@ use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_
 // http://gameprogrammingpatterns.com/game-loop.html
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
+/// Client game loop
 pub fn game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
