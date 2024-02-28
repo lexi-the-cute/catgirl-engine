@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo Stashing all uncommited data
+echo Stashing all uncommitted data
 git add --all
 git stash
 
@@ -31,5 +31,9 @@ git checkout HEAD -- ./client/Cargo.toml
 
 echo Resetting server version
 git checkout HEAD -- ./server/Cargo.toml
+
+echo Resetting dependency versions
+git checkout HEAD -- ./Cargo.toml
+git checkout HEAD -- ./Cargo.lock
 
 git stash pop
