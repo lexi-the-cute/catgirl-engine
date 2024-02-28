@@ -5,7 +5,7 @@ git add --all
 git stash
 
 export VERSION=`cat ./Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-echo Publish catgirl-enging v$VERSION
+echo Publish catgirl-engine v$VERSION
 
 echo Replacing version number in catgirl-engine-client with catgirl-engine version
 sed -i "s/^version = \"[0-9.]*\"/version = \"$VERSION\"/" ./client/Cargo.toml
