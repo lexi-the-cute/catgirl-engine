@@ -14,8 +14,8 @@ echo Replacing version number in catgirl-engine-server with catgirl-engine versi
 sed -i "s/^version = \"[0-9.]*\"/version = \"$VERSION\"/" ./server/Cargo.toml
 
 echo Replacing version number in catgirl-engine dependencies with catgirl-engine version
-sed "s/^client = { version = \"[0-9.]*\"/client = { version = \"$VERSION\"/" ./Cargo.toml
-sed "s/^server = { version = \"[0-9.]*\"/server = { version = \"$VERSION\"/" ./Cargo.toml
+sed -i "s/^client = { version = \"[0-9.]*\"/client = { version = \"$VERSION\"/" ./Cargo.toml
+sed -i "s/^server = { version = \"[0-9.]*\"/server = { version = \"$VERSION\"/" ./Cargo.toml
 
 echo Publishing catgirl-engine-client
 cargo publish -p catgirl-engine-client --allow-dirty
