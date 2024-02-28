@@ -52,7 +52,7 @@ pub fn android_main(app: AndroidApp) {
     game::setup_logger();
     debug!("Launched as Android app...");
 
-    client::game_loop::store_android_app(app);
+    client::game::store_android_app(app);
     if let Err(error) = game::start() {
         error!("{:?}", error)
     }

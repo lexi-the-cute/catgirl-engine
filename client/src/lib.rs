@@ -5,9 +5,10 @@ use winit::window::Icon;
 #[macro_use]
 extern crate tracing;
 
-pub mod game_loop;
+pub mod game;
+pub mod window;
 
-pub(crate) fn get_icon() -> Icon {
+pub fn get_icon() -> Icon {
     // TODO: Implement proper asset finding and loading
     let image_bytes = include_bytes!(concat!(
         env!("CARGO_MANIFEST_DIR"),
