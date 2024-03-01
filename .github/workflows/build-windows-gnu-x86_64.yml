@@ -84,11 +84,11 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
-          mv ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/x86_64-pc-windows-gnu/doc ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
+          cp -a ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
+          tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-pc-windows-gnu/doc/
+          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Upload Engine
       - name: Upload Engine (Release)
