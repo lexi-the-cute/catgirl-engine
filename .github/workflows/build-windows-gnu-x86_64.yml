@@ -64,11 +64,11 @@ jobs:
       - name: Add x86_64 GNU Windows Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-pc-windows-gnu
 
-      # Build Docs
-      - name: Build Docs
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
-          $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=x86_64-pc-windows-gnu --release --lib --workspace
+      # # Build Docs
+      # - name: Build Docs
+      #   run: |
+      #     export RUSTFLAGS="-Z threads=`nproc --all`"
+      #     $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=x86_64-pc-windows-gnu --release --lib --workspace
 
       # Compile Program
       - name: Build Program
@@ -85,7 +85,8 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
           cp -a ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
-          tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-pc-windows-gnu/doc/
+          #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-pc-windows-gnu/doc/
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
