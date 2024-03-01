@@ -17,7 +17,9 @@ pub fn store_android_app(app: AndroidApp) {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
 }
 
-/// Shortcut to game_loop::game_loop()
+/// Shortcut to [`game_loop::game_loop()`]
+///
+/// [`game_loop::game_loop()`]: crate::game::game_loop::game_loop()
 pub fn game_loop() -> Result<(), String> {
     game_loop::game_loop()
 }

@@ -9,7 +9,7 @@
 extern crate tracing;
 
 /// Prepare the game engine for running
-mod setup;
+pub mod setup;
 
 // Run as Executable (e.g. Linux)
 fn main() {

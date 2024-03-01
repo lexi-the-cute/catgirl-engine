@@ -60,37 +60,17 @@ jobs:
       - name: Add x86_64 GNU Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-gnu
 
-      # Install Code Size Profiler
-      - name: Install Code Size Profiler
+      # Build Docs
+      - name: Build Docs
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
-
-      # Test Minimal Dependency Versions
-      # https://doc.rust-lang.org/cargo/reference/resolver.html
-      # https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=version#direct-minimal-versions
-      - name: Test Minimal Dependency Versions
-        continue-on-error: true
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bin catgirl-engine --timings -Z direct-minimal-versions
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=x86_64-unknown-linux-gnu --release --lib --workspace
 
       # Compile Program
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
           $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --timings
-
-      # Profile Code Size
-      - name: Profile Code Size
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine"
-
-      # Test Program
-      - name: Test Program
-        run: |
-          # export LD_LIBRARY_PATH=${{ github.workspace }}/target/libs:$LD_LIBRARY_PATH
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/cargo test -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples --timings
 
       # Display Export Directory
       - name: Display Export Directory
@@ -101,6 +81,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
           mv ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload
+          mv ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
           mv ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
@@ -111,6 +92,32 @@ jobs:
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-Zip
           path: ${{ github.workspace }}/upload/*
+
+      # Test Minimal Dependency Versions
+      # https://doc.rust-lang.org/cargo/reference/resolver.html
+      # https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=version#direct-minimal-versions
+      - name: Test Minimal Dependency Versions
+        continue-on-error: true
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo build -j `nproc --all` --target=x86_64-unknown-linux-gnu --bin catgirl-engine -Z direct-minimal-versions
+
+      # Install Code Size Profiler
+      - name: Install Code Size Profiler
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
+
+      # Profile Code Size
+      - name: Profile Code Size
+        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine"
+
+      # Test Program
+      - name: Test Program
+        run: |
+          # export LD_LIBRARY_PATH=${{ github.workspace }}/target/libs:$LD_LIBRARY_PATH
+          export RUSTFLAGS="-Z threads=`nproc --all`"
+          $HOME/.cargo/bin/cargo test -j `nproc --all` --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
 
       # List Environment
       - name: List Environment

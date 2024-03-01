@@ -7,7 +7,7 @@
 extern crate tracing;
 
 /// Prepare the game engine for running
-mod setup;
+pub mod setup;
 
 use core::ffi::{c_char, c_int};
 
