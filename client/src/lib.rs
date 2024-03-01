@@ -3,10 +3,6 @@
 #![warn(missing_docs)]
 #![warn(clippy::missing_docs_in_private_items)]
 
-#[cfg(test)]
-/// Handles testing the client side code
-mod test;
-
 use winit::window::Icon;
 
 #[macro_use]

@@ -87,9 +87,9 @@ pub(crate) fn resized_window(window_state: &WindowState, _size: PhysicalSize<u32
     );
 }
 
-/// The window was either focused or lost focus
-pub(crate) fn changed_focus(_focused: bool) {
-    // debug!("Focused: {_focused}");
+/// The window was either just focused or lost focus
+pub(crate) fn changed_focus(focused: bool) {
+    trace!("Window focused: {focused}");
 }
 
 /// Redraw surface
@@ -158,10 +158,31 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 
 /// Exiting loop
 pub(crate) fn exiting_loop() {
-    // debug!("Winit loop is exiting...");
+    trace!("Winit loop is exiting...");
+}
+
+/// New events have arrived
+pub(crate) fn new_events() {
+    // Currently only exists to remove from unhandled_event logging
+}
+
+/// About to wait for new events to arrive
+pub(crate) fn about_to_wait_event() {
+    // Currently only exists to remove from unhandled_event logging
 }
 
 /// Catches previously unhandled events
-pub(crate) fn unhandled_event(_event: Event<()>) {
-    // debug!("Unhandled event: {:?}", _event);
+pub(crate) fn unhandled_event(event: Event<()>) {
+    trace!("Unhandled event: {:?}", event);
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use crate::window::events::suspended_window;
+//
+//     #[test]
+//     fn test_get_icon() -> () {
+//         // we don't currently have anything we can test, so...
+//         assert!(suspended_window())
+//     }
+// }

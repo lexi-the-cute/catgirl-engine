@@ -3,10 +3,6 @@
 #![warn(missing_docs)]
 #![warn(clippy::missing_docs_in_private_items)]
 
-#[cfg(test)]
-/// Handles testing the code
-mod test;
-
 #[macro_use]
 extern crate tracing;
 
