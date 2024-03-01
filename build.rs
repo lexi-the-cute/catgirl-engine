@@ -90,6 +90,18 @@ fn create_binding(
 
     let defines: HashMap<String, String> = get_bindgen_defines();
 
+    // Ensures including the workspace crates
+    let workspace_crates = vec![
+        format!("{package_name}-client"),
+        format!("{package_name}-server"),
+    ];
+    let parse_config: cbindgen::ParseConfig = cbindgen::ParseConfig {
+        parse_deps: true,
+        include: Some(workspace_crates.clone()),
+        extra_bindings: workspace_crates,
+        ..Default::default()
+    };
+
     let mut config: Config = cbindgen::Config::default();
     config.namespace = Some(String::from("ffi"));
     config.header = Some(header);
@@ -97,6 +109,7 @@ fn create_binding(
     config.only_target_dependencies = true;
     config.no_includes = language == Language::Cython;
     config.defines = defines;
+    config.parse = parse_config;
 
     cbindgen::generate_with_config(crate_directory, config)
         .unwrap()
