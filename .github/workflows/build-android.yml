@@ -118,11 +118,11 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
-          mv ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
+          #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Upload APK
       - name: Upload APK (Release)
