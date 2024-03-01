@@ -13,14 +13,14 @@ build_info::build_info!(fn build_info);
 #[derive(Parser, Debug)]
 #[command(author, about, long_about = None)]
 /// List of possible command line arguments
-pub(crate) struct Args {
+pub struct Args {
     /// Start the engine in dedicated server mode
     #[arg(short, long, default_value_t = false)]
-    server: bool,
+    pub server: bool,
 
     /// Display version and copyright info
     #[arg(short, long, default_value_t = false)]
-    pub(crate) version: bool,
+    pub version: bool,
 }
 
 #[no_mangle]
@@ -30,7 +30,7 @@ pub fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
-pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
+pub fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
     let mut dependencies: BTreeMap<&str, &CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
 
