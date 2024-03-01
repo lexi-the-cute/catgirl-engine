@@ -149,7 +149,6 @@ fn set_panic_hook() {
 
 /// Determines if client or server and starts the engine
 pub fn start() -> Result<(), String> {
-    // let (tx, rx) = mpsc::channel();
     info!("Starting Game...");
 
     debug!("Setting panic hook...");
