@@ -426,7 +426,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.9.4"
+version = "0.10.0"
 dependencies = [
  "android_logger",
  "build-info",
