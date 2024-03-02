@@ -10,7 +10,7 @@ pub fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> (f64, f64, f64) {
     let g: f64 = f64::from(green) / 255.0;
     let b: f64 = f64::from(blue) / 255.0;
 
-    let convert_color = |value: f64| {
+    let convert_color = |value: f64| -> f64 {
         if 0.04045 >= value {
             value / 12.92
         } else {
