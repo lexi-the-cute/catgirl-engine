@@ -1,8 +1,8 @@
 [package]
-name = "catgirl-engine-server"
+name = "catgirl-engine-utils"
 description = "Server side part of the catgirl-engine crate"
 license = "Zlib"
-version = "0.2.0"
+version = "0.0.1"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -12,9 +12,5 @@ readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-utils = { version = "0.0.1", package = "catgirl-engine-utils", path = "../utils" }
-tracing = { version = "~0.1", default-features = false, features = ["log"] }
-rhai = { version = "~1", default-features = false, features = ["serde"] }
+clap = { version = "~4", features = ["derive"] }

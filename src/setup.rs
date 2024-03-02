@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
+use utils::args::Args;
 
 // Constants
 #[cfg(target_os = "android")]
@@ -9,19 +10,6 @@ pub const TAG: &str = "CatgirlEngine";
 
 // Generate build_info() function at compile time
 build_info::build_info!(fn build_info);
-
-#[derive(Parser, Debug)]
-#[command(author, about, long_about = None)]
-/// List of possible command line arguments
-pub struct Args {
-    /// Start the engine in dedicated server mode
-    #[arg(short, long, default_value_t = false)]
-    pub server: bool,
-
-    /// Display version and copyright info
-    #[arg(short, long, default_value_t = false)]
-    pub version: bool,
-}
 
 #[no_mangle]
 /// Retrieve parsed out command line arguments
