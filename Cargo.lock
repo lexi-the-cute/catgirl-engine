@@ -426,13 +426,14 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.10.1"
+version = "0.11.0"
 dependencies = [
  "android_logger",
  "build-info",
  "build-info-build",
  "catgirl-engine-client",
  "catgirl-engine-server",
+ "catgirl-engine-utils",
  "cbindgen",
  "cc",
  "cfg-if",
@@ -454,6 +455,7 @@ dependencies = [
 name = "catgirl-engine-client"
 version = "0.2.0"
 dependencies = [
+ "catgirl-engine-utils",
  "futures",
  "futures-channel",
  "image",
@@ -467,8 +469,16 @@ dependencies = [
 name = "catgirl-engine-server"
 version = "0.2.0"
 dependencies = [
+ "catgirl-engine-utils",
  "rhai",
  "tracing",
+]
+
+[[package]]
+name = "catgirl-engine-utils"
+version = "0.0.1"
+dependencies = [
+ "clap",
 ]
 
 [[package]]
