@@ -85,6 +85,7 @@ If you want to use traces, you can either setup your own tracing subscriber if i
 * [Root][catgirl-engine-docs]
 * [Client][catgirl-engine-client-docs]
 * [Server][catgirl-engine-server-docs]
+* [Utils][catgirl-engine-utils-docs]
 
 [forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
@@ -93,3 +94,4 @@ If you want to use traces, you can either setup your own tracing subscriber if i
 [catgirl-engine-docs]: https://docs.rs/catgirl-engine/latest/main
 [catgirl-engine-client-docs]: https://docs.rs/catgirl-engine-client/latest/catgirl_engine_client
 [catgirl-engine-server-docs]: https://docs.rs/catgirl-engine-server/latest/catgirl_engine_server
+[catgirl-engine-utils-docs]: https://docs.rs/catgirl-engine-utils/latest/catgirl_engine_utils
