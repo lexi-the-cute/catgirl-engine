@@ -6,7 +6,7 @@ use utils::args::Args;
 
 // Constants
 #[cfg(target_os = "android")]
-pub const TAG: &str = "CatgirlEngine";
+pub(crate) const TAG: &str = "CatgirlEngine";
 
 // Generate build_info() function at compile time
 build_info::build_info!(fn build_info);
