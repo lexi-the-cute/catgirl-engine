@@ -14,6 +14,9 @@ pub mod game;
 /// Handles the client window
 pub mod window;
 
+/// Handles the rendering code
+pub mod render;
+
 /// Retrieve the icon stored in the binary at build time
 pub fn get_icon() -> Icon {
     // TODO: Implement proper asset finding and loading
