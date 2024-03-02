@@ -1,15 +1,10 @@
-<!-- # What's This About -->
-
 # What's This Repo
-
-<!-- Future explanation of repo here... -->
 
 This repo is hosted on [my Forgejo instance][forgejo-repo], [Codeberg][codeberg-repo], [Github][github-repo].
 
 # Download
 
 * [Itch.io][itchio-download]
-* [Google Play][google-play-download]
 
 # Setup Build Environment
 
@@ -43,16 +38,11 @@ cd catgirl-engine
 
 # Build
 
-## Debian x86_64
+## Desktop
 
 ```bash
 # Compile Program
-cargo run --release
-
-# For Installing As Deb
-cargo install cargo-deb
-cargo deb --install
-catgirl-engine
+cargo run
 ```
 
 ## Android
@@ -64,10 +54,7 @@ catgirl-engine
 sudo apt -y install openjdk-17-jre-headless
 
 # Add Build Targets Once
-rustup target add armv7-linux-androideabi
-rustup target add aarch64-linux-android
-rustup target add i686-linux-android
-rustup target add x86_64-linux-android
+rustup target add armv7-linux-androideabi aarch64-linux-android i686-linux-android x86_64-linux-android
 
 # Install Cargo-NDK Once
 cargo install cargo-ndk
@@ -93,8 +80,16 @@ If you want to display more log messages, on Android, use logcat. On Linux, run 
 
 If you want to use traces, you can either setup your own tracing subscriber if importing as a library, or turn on the tracing-subscriber feature (for either the binary or library).
 
+# Docs
+
+* [Root][catgirl-engine-docs]
+* [Client][catgirl-engine-client-docs]
+* [Server][catgirl-engine-server-docs]
+
 [forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
 [codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
 [itchio-download]: https://fomxgorl.itch.io/catgirl-engine
-[google-play-download]: https://play.google.com/store/apps/details?id=land.catgirl.engine
+[catgirl-engine-docs]: https://docs.rs/catgirl-engine/latest/main
+[catgirl-engine-client-docs]: https://docs.rs/catgirl-engine-client/latest/catgirl_engine_client
+[catgirl-engine-server-docs]: https://docs.rs/catgirl-engine-server/latest/catgirl_engine_server
