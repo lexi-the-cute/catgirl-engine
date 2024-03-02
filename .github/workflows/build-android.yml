@@ -224,12 +224,12 @@ jobs:
           name: CatgirlEngine-Android-APK
           path: ${{ github.workspace }}/artifacts/apk
 
-      # Download Bundle
-      - name: Download Bundle (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Android-Bundle
-          path: ${{ github.workspace }}/artifacts/bundle
+      # # Download Bundle
+      # - name: Download Bundle (Release)
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: CatgirlEngine-Android-Bundle
+      #     path: ${{ github.workspace }}/artifacts/bundle
 
       # Recreate APK Zip
       - name: Recreate APK Zip (Release)
