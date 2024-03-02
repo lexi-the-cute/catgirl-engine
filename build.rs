@@ -94,6 +94,7 @@ fn create_binding(
     let workspace_crates = vec![
         format!("{package_name}-client"),
         format!("{package_name}-server"),
+        format!("{package_name}-utils"),
     ];
     let parse_config: cbindgen::ParseConfig = cbindgen::ParseConfig {
         parse_deps: true,
