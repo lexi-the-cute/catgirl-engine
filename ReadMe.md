@@ -2,6 +2,16 @@
 
 This repo is hosted on [my Forgejo instance][forgejo-repo], [Codeberg][codeberg-repo], [Github][github-repo].
 
+# Why Yet Another Engine
+
+This game engine is designed around moddability. This will allow people to make different games based on it, which should hypothetically all be compatible with each other. In order to enforce the spirit of the design, the game built into the engine will itself be a mod.
+
+The engine will also allow transferring items and other entities between single player and multiplayer including transferring modded items from a modded server to a vanilla client.
+
+Hypothetically, if a person develops a different game, like a horror game, it should be possible to join the server for that game from any other game made on the engine including the built in game.
+
+I'm also considering the idea of inter-server communication, but for now, communication happens through the client transferring items and entities.
+
 # Download
 
 * [Itch.io][itchio-download]
