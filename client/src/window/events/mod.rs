@@ -119,6 +119,10 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
     let mut encoder: CommandEncoder =
         device.create_command_encoder(&wgpu::CommandEncoderDescriptor::default());
 
+    // Color to render
+    // Royal Purple - 104, 71, 141
+    let (r, g, b) = crate::render::srgb_to_linear_srgb(104, 71, 141);
+
     // Command to render
     // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
     let render_pass_descriptor: RenderPassDescriptor = wgpu::RenderPassDescriptor {
@@ -126,15 +130,8 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
         color_attachments: &[Some(wgpu::RenderPassColorAttachment {
             view: &view,
             resolve_target: None,
-            // Royal Purple - 104, 71, 141
-            // TODO: Fix so color is shown accurately
             ops: wgpu::Operations {
-                load: wgpu::LoadOp::Clear(wgpu::Color {
-                    r: 104.0 / 255.0,
-                    g: 71.0 / 255.0,
-                    b: 141.0 / 255.0,
-                    a: 1.0,
-                }),
+                load: wgpu::LoadOp::Clear(wgpu::Color { r, g, b, a: 1.0 }),
                 store: wgpu::StoreOp::Store,
             },
         })],
@@ -175,14 +172,3 @@ pub(crate) fn about_to_wait_event() {
 pub(crate) fn unhandled_event(event: Event<()>) {
     trace!("Unhandled event: {:?}", event);
 }
-
-// #[cfg(test)]
-// mod tests {
-//     use crate::window::events::suspended_window;
-//
-//     #[test]
-//     fn test_get_icon() -> () {
-//         // we don't currently have anything we can test, so...
-//         assert!(suspended_window())
-//     }
-// }
