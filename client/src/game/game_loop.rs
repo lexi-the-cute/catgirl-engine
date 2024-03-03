@@ -36,7 +36,6 @@ pub fn game_loop() -> Result<(), String> {
          * update() - Handle game physics
          * render() - Handle graphics
          */
-        debug!("Loop...");
 
         // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
         // dispatched any events. This is ideal for games and similar applications.
