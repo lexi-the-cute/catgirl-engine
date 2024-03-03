@@ -19,7 +19,9 @@ pub(crate) fn close_requested(window_target: &EventLoopWindowTarget<()>) {
 }
 
 /// This is technically not an event, but is called by the Resume event
-pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> WindowState<'static> {
+pub(crate) async fn create_window(
+    window_target: &EventLoopWindowTarget<()>,
+) -> WindowState<'static> {
     debug!("Creating window...");
     let window = WindowBuilder::new()
         .with_title("Catgirl Engine")
@@ -27,7 +29,7 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
         .build(window_target)
         .expect("Could not create window!");
 
-    WindowState::new(window)
+    WindowState::new(window).await
 }
 
 /// Resumed window after first resume call (e.g Android)

@@ -27,7 +27,7 @@ pub struct WindowState<'a> {
 
 impl WindowState<'_> {
     /// Used to initialize a new window and setup the graphics
-    pub fn new(window: Window) -> Self {
+    pub async fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
         // Context for all WGPU objects
@@ -40,8 +40,7 @@ impl WindowState<'_> {
         // https://crates.io/crates/futures
         debug!("Grabbing wgpu adapter...");
         let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
-        let adapter: Adapter =
-            futures::executor::block_on(adapter_future).expect("Could not grab WGPU adapter!");
+        let adapter: Adapter = adapter_future.await.expect("Could not grab WGPU adapter!");
 
         // Describe's a device
         // For use with adapter's request device
@@ -63,7 +62,8 @@ impl WindowState<'_> {
         // Opens a connection to the graphics device (e.g. GPU)
         debug!("Opening connection with graphics device (e.g. GPU)...");
         let device_future = adapter.request_device(&device_descriptor, None);
-        let (device, queue) = futures::executor::block_on(device_future)
+        let (device, queue) = device_future
+            .await
             .expect("Could not open a connection with the graphics device!");
 
         debug!("Creating wgpu surface...");
