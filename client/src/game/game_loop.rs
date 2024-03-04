@@ -69,11 +69,12 @@ pub fn game_loop() -> Result<(), String> {
 
                     #[cfg(target_family = "wasm")]
                     if cfg!(target_family = "wasm") {
-                        let get_window_state = async {
+                        warn!("Handling async is not currently working... Cannot create window!");
+                        let _get_window_state = async {
                             window_state = Some(window_state_future.await);
                         };
 
-                        wasm_bindgen_futures::spawn_local(get_window_state);
+                        // wasm_bindgen_futures::spawn_local(_get_window_state);
                     }
                 }
             }
