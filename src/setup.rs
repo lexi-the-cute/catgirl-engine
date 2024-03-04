@@ -64,12 +64,14 @@ pub(crate) fn print_version() {
     let mut dependencies: BTreeMap<&str, &CrateInfo> = get_dependencies(info);
     let mut util_dependencies: BTreeMap<&str, &CrateInfo> =
         get_dependencies(utils::setup::build_info_pub());
+
     dependencies.append(&mut util_dependencies);
 
     #[cfg(feature = "client")]
     {
         let mut client_dependencies: BTreeMap<&str, &CrateInfo> =
             get_dependencies(client::setup::build_info_pub());
+
         dependencies.append(&mut client_dependencies);
     }
 
@@ -77,6 +79,7 @@ pub(crate) fn print_version() {
     {
         let mut server_dependencies: BTreeMap<&str, &CrateInfo> =
             get_dependencies(server::setup::build_info_pub());
+
         dependencies.append(&mut server_dependencies);
     }
     // Only add newline if there are dependencies to print
