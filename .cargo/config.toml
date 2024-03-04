@@ -1,5 +1,6 @@
 # https://github.com/rust-windowing/winit/issues/1818
 
 [build]
+# target = "wasm32-unknown-unknown"  # to get ide completions on other platforms
 rustflags = []
 rustdocflags = []

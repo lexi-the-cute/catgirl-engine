@@ -60,21 +60,18 @@ pub fn game_loop() -> Result<(), String> {
                 if let Some(window_state) = &mut window_state {
                     crate::window::events::resumed_window(window_state);
                 } else {
-                    let window_state_future = crate::window::events::create_window(window_target);
+                    window_state = Some(crate::window::events::create_window(window_target));
 
                     #[cfg(not(target_family = "wasm"))]
-                    if cfg!(not(target_family = "wasm")) {
-                        window_state = Some(futures::executor::block_on(window_state_future));
-                    }
+                    futures::executor::block_on(
+                        window_state.as_mut().unwrap().initialize_graphics(),
+                    );
 
                     #[cfg(target_family = "wasm")]
-                    if cfg!(target_family = "wasm") {
-                        warn!("Handling async is not currently working... Cannot create window!");
-                        let _get_window_state = async {
-                            window_state = Some(window_state_future.await);
-                        };
-
-                        // wasm_bindgen_futures::spawn_local(_get_window_state);
+                    {
+                        warn!("WGPU Graphics requires async handling... I have not yet managed to get that to work without blocking yet...")
+                        // wasm_bindgen_futures::spawn_local(window_state.as_mut().unwrap()
+                        //     .initialize_graphics());
                     }
                 }
             }

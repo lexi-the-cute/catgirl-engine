@@ -19,17 +19,29 @@ pub(crate) fn close_requested(window_target: &EventLoopWindowTarget<()>) {
 }
 
 /// This is technically not an event, but is called by the Resume event
-pub(crate) async fn create_window(
-    window_target: &EventLoopWindowTarget<()>,
-) -> WindowState<'static> {
+pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> WindowState<'static> {
     debug!("Creating window...");
-    let window = WindowBuilder::new()
+
+    #[cfg(not(target_family = "wasm"))]
+    let window: Window = WindowBuilder::new()
         .with_title("Catgirl Engine")
         .with_window_icon(Some(crate::get_icon()))
         .build(window_target)
         .expect("Could not create window!");
 
-    WindowState::new(window).await
+    #[cfg(target_family = "wasm")]
+    {
+        use winit::platform::web::WindowBuilderExtWebSys;
+
+        let window: Window = WindowBuilder::new()
+            .with_canvas(crate::window::web::get_canvas())
+            .with_title("Catgirl Engine")
+            .with_window_icon(Some(crate::get_icon()))
+            .build(window_target)
+            .expect("Could not create window!");
+    }
+
+    WindowState::new(window)
 }
 
 /// Resumed window after first resume call (e.g Android)
@@ -113,10 +125,18 @@ pub(crate) fn touched_screen(touch: Touch) {
 
 /// The window was resized
 pub(crate) fn resized_window(window_state: &WindowState, _size: PhysicalSize<u32>) {
+    if window_state.device.is_none() || window_state.adapter.is_none() {
+        warn!(
+            "Device: {:?} or adapter: {:?} is none",
+            window_state.device.is_none(),
+            window_state.adapter.is_none()
+        )
+    }
+
     let window: &Window = &window_state.window;
-    let device: &Device = &window_state.device;
     let surface: &Surface = &window_state.surface;
-    let adapter: &Adapter = &window_state.adapter;
+    let device: &Device = &window_state.device.as_ref().unwrap();
+    let adapter: &Adapter = &window_state.adapter.as_ref().unwrap();
 
     let size: PhysicalSize<u32> = window.inner_size();
     surface.configure(
@@ -134,11 +154,19 @@ pub(crate) fn changed_focus(focused: bool) {
 
 /// Redraw surface
 pub(crate) fn requested_redraw(window_state: &WindowState) {
+    if window_state.device.is_none() || window_state.queue.is_none() {
+        warn!(
+            "Device: {:?} or queue: {:?} is none",
+            window_state.device.is_none(),
+            window_state.queue.is_none()
+        )
+    }
+
     // TODO: https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
     // Configure a surface for drawing on
-    let device: &Device = &window_state.device;
     let surface: &Surface = &window_state.surface;
-    let queue: &Queue = &window_state.queue;
+    let device: &Device = &window_state.device.as_ref().unwrap();
+    let queue: &Queue = &window_state.queue.as_ref().unwrap();
 
     // Get a texture to draw onto the surface
     // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
