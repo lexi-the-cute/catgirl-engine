@@ -118,7 +118,7 @@ pub(crate) fn setup_logger() {
         );
     } else if cfg!(target_family = "wasm") {
         #[cfg(target_family = "wasm")]
-        if let Err(_error) = console_log::init_with_level(tracing::log::Level::Debug) {
+        if let Err(_error) = console_log::init_with_level(tracing::log::Level::Trace) {
             warn!("Failed to initialize console logger...")
         }
     } else {
