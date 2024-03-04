@@ -12,5 +12,9 @@ readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
+[build-dependencies]
+build-info-build = { version = "^0.0.35", default-features = false }
+
 [dependencies]
+build-info = { version = "^0.0.35", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
