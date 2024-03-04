@@ -130,24 +130,19 @@ pub(crate) fn setup_logger() {
 #[cfg(feature = "tracing-subscriber")]
 /// Setup the tracing subscriber to monitor the tracer
 pub(crate) fn setup_tracer() {
-    // Construct a subscriber to print formatted traces to stdout
-    let subscriber: tracing_subscriber::FmtSubscriber =
-        tracing_subscriber::FmtSubscriber::builder()
-            .with_max_level(tracing::Level::DEBUG)
-            .with_file(true)
-            .with_line_number(true)
-            .with_thread_ids(true)
-            .with_thread_names(true)
-            .with_target(false)
-            .finish();
+    use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
-    // Process future traces
-    if let Err(error) = tracing::subscriber::set_global_default(subscriber) {
-        warn!(
-            "Failed to set the tracing subscriber as the global default... Message: {:?}",
-            error
-        )
-    }
+    // Construct a subscriber to print formatted traces to stdout
+    FmtSubscriber::builder()
+        .with_env_filter(EnvFilter::from_default_env())
+        .with_file(true)
+        .with_line_number(true)
+        .with_thread_ids(true)
+        .with_thread_names(true)
+        .with_target(false)
+        .without_time()
+        .with_ansi(true)
+        .init();
 }
 
 /// Setup a hook to catch panics for logging before shutdown
