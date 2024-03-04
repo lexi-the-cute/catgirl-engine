@@ -63,7 +63,7 @@ build-info = { version = "^0.0.35", default-features = false, features = ["runti
 cfg-if = { version = "~1", default-features = false }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-tracing-subscriber = { version = "~0.3", default-features = false, optional = true }
+tracing-subscriber = { version = "~0.3", default-features = false, features = ["fmt", "ansi", "env-filter"], optional = true }
 clap = { version = "~4", features = ["derive"] }
 
 [target.'cfg(any(target_family="unix", target_family="windows"))'.dependencies]
