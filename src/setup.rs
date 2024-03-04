@@ -82,6 +82,7 @@ pub(crate) fn print_version() {
 
         dependencies.append(&mut server_dependencies);
     }
+
     // Only add newline if there are dependencies to print
     if !dependencies.is_empty() {
         println!();

@@ -6,28 +6,28 @@ use wgpu::{Adapter, Device, DeviceDescriptor, Instance, Queue, Surface};
 
 /// Struct used for storing the state of a window
 pub struct WindowState<'a> {
+    /// Handle to the window which holds the drawable surface
+    pub window: Arc<Window>,
+
     /// Context for WGPU objects
     pub instance: Instance,
 
     /// Handle to the graphics device (e.g. the gpu)
-    pub adapter: Adapter,
+    pub adapter: Option<Adapter>,
 
     /// The surface on which to draw graphics on
     pub surface: Surface<'a>,
 
     /// Connection to the graphics device provided by the adapter
-    pub device: Device,
+    pub device: Option<Device>,
 
     /// Queue in which to send commands to the graphics device
-    pub queue: Queue,
-
-    /// Handle to the window which holds the drawable surface
-    pub window: Arc<Window>,
+    pub queue: Option<Queue>,
 }
 
 impl WindowState<'_> {
     /// Used to initialize a new window and setup the graphics
-    pub async fn new(window: Window) -> Self {
+    pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
         // Context for all WGPU objects
@@ -35,13 +35,23 @@ impl WindowState<'_> {
         debug!("Creating wgpu instance...");
         let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
 
-        // Handle to graphics device (e.g. GPU)
-        // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
-        // https://crates.io/crates/futures
-        debug!("Grabbing wgpu adapter...");
-        let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
-        let adapter: Adapter = adapter_future.await.expect("Could not grab WGPU adapter!");
+        debug!("Creating wgpu surface...");
+        let surface: Surface<'_> = instance
+            .create_surface(window_arc.clone())
+            .expect("Could not create surface!");
 
+        Self {
+            window: window_arc,
+            instance,
+            surface,
+            adapter: None,
+            device: None,
+            queue: None,
+        }
+    }
+
+    /// Initalize the async graphics portion of the window state
+    pub async fn initialize_graphics(&mut self) {
         // Describe's a device
         // For use with adapter's request device
         // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
@@ -59,38 +69,49 @@ impl WindowState<'_> {
 
         device_descriptor.required_limits = limits;
 
+        // Handle to graphics device (e.g. GPU)
+        // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
+        // https://crates.io/crates/futures
+        debug!("Grabbing wgpu adapter...");
+        let adapter_future = self
+            .instance
+            .request_adapter(&wgpu::RequestAdapterOptions::default());
+        self.adapter = Some(adapter_future.await.expect("Could not grab WGPU adapter!"));
+
         // Opens a connection to the graphics device (e.g. GPU)
         debug!("Opening connection with graphics device (e.g. GPU)...");
-        let device_future = adapter.request_device(&device_descriptor, None);
+        let device_future = self
+            .adapter
+            .as_ref()
+            .unwrap()
+            .request_device(&device_descriptor, None);
+
         let (device, queue) = device_future
             .await
             .expect("Could not open a connection with the graphics device!");
+        self.device = Some(device);
+        self.queue = Some(queue);
 
-        debug!("Creating wgpu surface...");
-        let surface: Surface<'_> = instance
-            .create_surface(window_arc.clone())
-            .expect("Could not create surface!");
-
-        let size: PhysicalSize<u32> = window_arc.clone().inner_size();
-        surface.configure(
-            &device,
-            &surface
-                .get_default_config(&adapter, size.width, size.height)
+        let size: PhysicalSize<u32> = self.window.clone().inner_size();
+        self.surface.configure(
+            &self.device.as_ref().unwrap(),
+            &self
+                .surface
+                .get_default_config(&self.adapter.as_ref().unwrap(), size.width, size.height)
                 .expect("Could not get surface default config!"),
         );
-
-        Self {
-            instance,
-            adapter,
-            surface,
-            device,
-            queue,
-            window: window_arc,
-        }
     }
 
     /// Recreate the surface after it has been destroyed (e.g. used on Android)
     pub fn recreate_surface(&mut self) {
+        if self.device.is_none() || self.adapter.is_none() {
+            warn!(
+                "Device: {:?} or adapter: {:?} is none",
+                self.device.is_none(),
+                self.adapter.is_none()
+            )
+        }
+
         // Handle to the surface on which to draw on (e.g. a window)
         // https://docs.rs/wgpu/latest/wgpu/struct.Surface.html
         debug!("Creating wgpu surface...");
@@ -101,9 +122,9 @@ impl WindowState<'_> {
 
         let size: PhysicalSize<u32> = self.window.clone().inner_size();
         surface.configure(
-            &self.device,
+            &self.device.as_ref().unwrap(),
             &surface
-                .get_default_config(&self.adapter, size.width, size.height)
+                .get_default_config(&self.adapter.as_ref().unwrap(), size.width, size.height)
                 .expect("Could not get surface default config!"),
         );
 
