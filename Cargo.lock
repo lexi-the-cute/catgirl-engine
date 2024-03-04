@@ -455,6 +455,8 @@ dependencies = [
 name = "catgirl-engine-client"
 version = "0.2.0"
 dependencies = [
+ "build-info",
+ "build-info-build",
  "catgirl-engine-utils",
  "futures",
  "futures-channel",
@@ -469,6 +471,8 @@ dependencies = [
 name = "catgirl-engine-server"
 version = "0.2.0"
 dependencies = [
+ "build-info",
+ "build-info-build",
  "catgirl-engine-utils",
  "rhai",
  "tracing",
@@ -478,6 +482,8 @@ dependencies = [
 name = "catgirl-engine-utils"
 version = "0.0.1"
 dependencies = [
+ "build-info",
+ "build-info-build",
  "clap",
 ]
 

@@ -8,3 +8,6 @@ extern crate tracing;
 
 /// Handles server side game logic
 pub mod game;
+
+/// Handles setup
+pub mod setup;
