@@ -104,12 +104,14 @@ impl WindowState<'_> {
 
     /// Recreate the surface after it has been destroyed (e.g. used on Android)
     pub fn recreate_surface(&mut self) {
-        if self.device.is_none() || self.adapter.is_none() {
-            warn!(
-                "Device: {:?} or adapter: {:?} is none",
-                self.device.is_none(),
-                self.adapter.is_none()
-            )
+        if self.device.is_none() {
+            warn!("Device is not setup... Have graphics been initialized?");
+            return;
+        }
+
+        if self.adapter.is_none() {
+            warn!("Adapter is not setup... Have graphics been initialized?");
+            return;
         }
 
         // Handle to the surface on which to draw on (e.g. a window)
