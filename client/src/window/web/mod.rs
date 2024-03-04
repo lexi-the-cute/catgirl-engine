@@ -1,6 +1,7 @@
 #![cfg(target_family = "wasm")]
 
-use web_sys::{wasm_bindgen::JsCast, Document, Element, HtmlCanvasElement};
+use web_sys::wasm_bindgen::JsCast;
+use web_sys::{Document, Element, HtmlCanvasElement};
 
 /// Find canvas element on page
 pub fn get_canvas() -> Option<HtmlCanvasElement> {
@@ -13,7 +14,7 @@ pub fn get_canvas() -> Option<HtmlCanvasElement> {
         .expect("Could not find canvas element...");
 
     let canvas_element: HtmlCanvasElement =
-        canvas::dyn_into().expect("Could not cast canvas Element to HtmlCanvasElement...");
+        Element::dyn_into(canvas).expect("Could not cast canvas Element to HtmlCanvasElement...");
 
     Some(canvas_element)
 }
