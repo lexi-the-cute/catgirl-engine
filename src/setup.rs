@@ -17,6 +17,11 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
+/// Build info for crate
+pub fn build_info_pub() -> &'static BuildInfo {
+    build_info()
+}
+
 /// Get the list of dependencies used in the engine
 pub fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
     let mut dependencies: BTreeMap<&str, &CrateInfo> = BTreeMap::new();
