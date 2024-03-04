@@ -98,6 +98,13 @@ pub fn game_loop() -> Result<(), String> {
             }
 
             Event::WindowEvent {
+                event: WindowEvent::Touch(touch),
+                ..
+            } => {
+                crate::window::events::touched_screen(touch);
+            }
+
+            Event::WindowEvent {
                 event: WindowEvent::Resized(size),
                 ..
             } => {
@@ -138,6 +145,11 @@ pub fn game_loop() -> Result<(), String> {
             // New events are incoming
             Event::AboutToWait => {
                 crate::window::events::about_to_wait_event();
+            }
+
+            // Last event to ever be executed on shutdown
+            Event::MemoryWarning => {
+                crate::window::events::low_memory_warning();
             }
 
             // All unnamed events
