@@ -4,7 +4,7 @@ use wgpu::{
 };
 use winit::{
     dpi::PhysicalSize,
-    event::{ElementState, Event, KeyEvent, MouseButton},
+    event::{ElementState, Event, KeyEvent, MouseButton, Touch, TouchPhase},
     event_loop::EventLoopWindowTarget,
     keyboard::NamedKey,
     window::{Window, WindowBuilder},
@@ -14,7 +14,7 @@ use crate::window::window_state::WindowState;
 
 /// The close button was pressed. Usually on the top right corner
 pub(crate) fn close_requested(window_target: &EventLoopWindowTarget<()>) {
-    debug!("The Close Button Was Pressed! Stopping...");
+    debug!("The close button was pressed! Stopping...");
     window_target.exit();
 }
 
@@ -51,11 +51,11 @@ pub(crate) fn suspended_window() {
 pub(crate) fn pressed_key(event: KeyEvent, window_target: &EventLoopWindowTarget<()>) {
     match event.logical_key {
         winit::keyboard::Key::Named(NamedKey::Escape) => {
-            debug!("The Escape Key Was Pressed! Stopping...");
+            debug!("The escape key Was pressed! Stopping...");
             window_target.exit();
         }
         _ => {
-            debug!("Event: {:#?}", event);
+            trace!("Event: {:#?}", event);
         }
     }
 }
@@ -67,9 +67,47 @@ pub(crate) fn clicked_mouse(
     _window_target: &EventLoopWindowTarget<()>,
 ) {
     if state.is_pressed() {
-        debug!("Mouse {:?} was pressed...", button);
+        trace!("Mouse {:?} was pressed...", button);
     } else {
-        debug!("Mouse {:?} was released...", button);
+        trace!("Mouse {:?} was released...", button);
+    }
+}
+
+/// Screen was touched
+pub(crate) fn touched_screen(touch: Touch) {
+    match touch.phase {
+        TouchPhase::Started => {
+            trace!(
+                "Finger {:?} touched screen at ({:?}, {:?})",
+                touch.id,
+                touch.location.x,
+                touch.location.y
+            );
+        }
+        TouchPhase::Ended => {
+            trace!(
+                "Finger {:?} released screen at ({:?}, {:?})",
+                touch.id,
+                touch.location.x,
+                touch.location.y
+            );
+        }
+        TouchPhase::Moved => {
+            trace!(
+                "Finger {:?} moved across the screen to ({:?}, {:?})",
+                touch.id,
+                touch.location.x,
+                touch.location.y
+            );
+        }
+        TouchPhase::Cancelled => {
+            trace!(
+                "Finger {:?} touch at ({:?}, {:?}) was cancelled",
+                touch.id,
+                touch.location.x,
+                touch.location.y
+            );
+        }
     }
 }
 
@@ -158,6 +196,11 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 /// Exiting loop
 pub(crate) fn exiting_loop() {
     trace!("Winit loop is exiting...");
+}
+
+/// Low memory warning
+pub(crate) fn low_memory_warning() {
+    trace!("Low memory warning was called...");
 }
 
 /// New events have arrived

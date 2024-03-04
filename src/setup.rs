@@ -112,7 +112,7 @@ pub(crate) fn setup_logger() {
                 .with_tag(TAG)
                 .with_filter(
                     android_logger::FilterBuilder::new()
-                        .parse("trace,android_activity=off,winit=off")
+                        .parse("main=trace,catgirl_engine=trace")
                         .build(),
                 ),
         );
