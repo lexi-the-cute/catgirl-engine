@@ -1,10 +1,10 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "rust-analyzer.linkedProjects": [
-        "./Cargo.toml",
-        "./client/Cargo.toml",
-        "./server/Cargo.toml",
-        "./util/Cargo.toml",
+        "Cargo.toml",
+        "client/Cargo.toml",
+        "server/Cargo.toml",
+        "utils/Cargo.toml",
     ],
     "rust-analyzer.server.extraEnv": {
         "RUST_ANALYZER": "true",
