@@ -1,1 +1,6 @@
 *.pxd
+*.h
+*.hpp
+*.c
+*.so
+build/
