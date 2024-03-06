@@ -37,16 +37,17 @@ pub unsafe fn parse_args_from_c(argc: c_int, argv_pointer: *const *const *const 
         return;
     }
 
+    // Cast back to *const *const c_char so we can operate on it
+    //  now that we passed the Safe API Boundary/Barrier
+    let argv: *const *const i8 = argv_pointer as *const *const c_char;
+
     // Check if argv is null
-    unsafe {
-        if (*argv_pointer).is_null() {
-            return;
-        }
+    if argv.is_null() {
+        return;
     }
 
     // Parse array out of argv
-    let c_args: &[*const c_char] =
-        unsafe { std::slice::from_raw_parts(*argv_pointer, argc as usize) };
+    let c_args: &[*const c_char] = unsafe { std::slice::from_raw_parts(argv, argc as usize) };
 
     let mut args: Vec<String> = vec![];
     for &arg in c_args {
