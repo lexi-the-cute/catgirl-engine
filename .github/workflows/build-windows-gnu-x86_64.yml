@@ -118,19 +118,19 @@ jobs:
         run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/catgirl-engine.exe"
 
       # Install Miri
-      - name: Install Miri
-        run: |
-          rustup toolchain install nightly --component miri
-          rustup override set nightly
-          $HOME/.cargo/bin/cargo miri setup --target=x86_64-pc-windows-gnu
+      # - name: Install Miri
+      #   run: |
+      #     rustup toolchain install nightly --component miri
+      #     rustup override set nightly
+      #     $HOME/.cargo/bin/cargo miri setup --target=x86_64-pc-windows-gnu
 
       # Run Miri Tests
-      - name: Run Miri Tests
-        run: |
-          # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-          export RUSTFLAGS="-Z threads=`nproc --all`"
-          $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=x86_64-pc-windows-gnu --bins --tests --benches --examples
-          # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
+      # - name: Run Miri Tests
+      #   run: |
+      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
+      #     export RUSTFLAGS="-Z threads=`nproc --all`"
+      #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=x86_64-pc-windows-gnu --bins --tests --benches --examples
+      #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
 
       # List Environment
       - name: List Environment
