@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-# import sys
+import sys
 # sys.path.insert(0, 'target/binding')  # This runs from CWD
-# sys.path.insert(1, 'target/release')
+sys.path.insert(1, '../../../target/release')
 
 import pyximport
 pyximport.install()
