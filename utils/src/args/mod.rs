@@ -37,7 +37,6 @@ pub unsafe fn parse_args_from_c(argc: c_int, argv: *const *const c_char) {
     let mut args: Vec<String> = vec![];
     for &arg in c_args {
         let c_str: &CStr = unsafe { CStr::from_ptr(arg) };
-        eprintln!("C: {:?}", c_str.to_str());
         let str_slice: &str = c_str.to_str().unwrap();
 
         args.push(str_slice.to_owned());
@@ -46,6 +45,6 @@ pub unsafe fn parse_args_from_c(argc: c_int, argv: *const *const c_char) {
     let _ = ARGS.set(Args::parse_from(args.iter()));
 }
 
-pub fn get_args() -> Option<&'static Args> {
-    ARGS.get()
+pub fn get_args() -> Option<Args> {
+    ARGS.get().copied()
 }
