@@ -136,8 +136,8 @@ pub(crate) fn resized_window(window_state: &WindowState, _size: PhysicalSize<u32
 
     let window: &Window = &window_state.window;
     let surface: &Surface = &window_state.surface;
-    let device: &Device = &window_state.device.as_ref().unwrap();
-    let adapter: &Adapter = &window_state.adapter.as_ref().unwrap();
+    let device: &Device = window_state.device.as_ref().unwrap();
+    let adapter: &Adapter = window_state.adapter.as_ref().unwrap();
 
     let size: PhysicalSize<u32> = window.inner_size();
     surface.configure(
@@ -168,8 +168,8 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
     // TODO: https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
     // Configure a surface for drawing on
     let surface: &Surface = &window_state.surface;
-    let device: &Device = &window_state.device.as_ref().unwrap();
-    let queue: &Queue = &window_state.queue.as_ref().unwrap();
+    let device: &Device = window_state.device.as_ref().unwrap();
+    let queue: &Queue = window_state.queue.as_ref().unwrap();
 
     // Get a texture to draw onto the surface
     // https://docs.rs/wgpu/latest/wgpu/struct.SurfaceTexture.html
