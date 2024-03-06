@@ -31,7 +31,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // This doesn't say anything about the underlying data, but that's the responsibility of
     //   parse_args_from_c(...) to validate
     unsafe {
-        utils::args::parse_args_from_c(argc, argv as *const *const *const i8);
+        utils::args::parse_args_from_c(argc, argv as *const *const *const c_char);
     }
 
     // Print version and copyright info
