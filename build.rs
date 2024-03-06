@@ -1,7 +1,7 @@
 extern crate cbindgen;
 
 use build_info_build::DependencyDepth;
-use cbindgen::{Config, Language};
+use cbindgen::{Config, CythonConfig, Language};
 use std::collections::HashMap;
 use std::env::{self, Vars};
 use std::path::PathBuf;
@@ -111,6 +111,13 @@ fn create_binding(
     config.no_includes = language == Language::Cython;
     config.defines = defines;
     config.parse = parse_config;
+
+    if language == Language::Cython {
+        config.cython = CythonConfig {
+            header: Some("\"<catgirl-engine.h>\"".to_owned()),
+            ..Default::default()
+        };
+    }
 
     cbindgen::generate_with_config(crate_directory, config)
         .unwrap()

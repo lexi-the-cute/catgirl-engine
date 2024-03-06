@@ -1,5 +1,7 @@
 # cython: language_level=3
-# cython: libraries=main
+# distutils: libraries = main
+# distutils: library_dirs = ../../../target/release
+# distutils: include_dirs = ../../../target/binding
 
 from libc.stdlib cimport malloc, free
 
@@ -18,7 +20,3 @@ def run(args: list):
         return catgirl_engine.ce_start(len(args), c_args)
     finally:
         free(c_args)
-
-def run():
-    #args = [b"--assets", b"path/to/assets/folder"]
-    return run([])
