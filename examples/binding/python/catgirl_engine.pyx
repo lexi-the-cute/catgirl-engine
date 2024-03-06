@@ -3,6 +3,7 @@
 
 from libc.stdlib cimport malloc, free
 
+# Import catgirl_engine.pxd
 cimport catgirl_engine
 
 
