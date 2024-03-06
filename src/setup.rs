@@ -14,7 +14,11 @@ build_info::build_info!(fn build_info);
 #[no_mangle]
 /// Retrieve parsed out command line arguments
 pub fn get_args() -> Args {
-    Args::parse()
+    if utils::args::get_args().is_some() {
+        *utils::args::get_args().unwrap()
+    } else {
+        Args::parse()
+    }
 }
 
 /// Build info for crate

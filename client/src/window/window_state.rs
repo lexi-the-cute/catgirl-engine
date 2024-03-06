@@ -94,10 +94,10 @@ impl WindowState<'_> {
 
         let size: PhysicalSize<u32> = self.window.clone().inner_size();
         self.surface.configure(
-            &self.device.as_ref().unwrap(),
+            self.device.as_ref().unwrap(),
             &self
                 .surface
-                .get_default_config(&self.adapter.as_ref().unwrap(), size.width, size.height)
+                .get_default_config(self.adapter.as_ref().unwrap(), size.width, size.height)
                 .expect("Could not get surface default config!"),
         );
     }
@@ -124,9 +124,9 @@ impl WindowState<'_> {
 
         let size: PhysicalSize<u32> = self.window.clone().inner_size();
         surface.configure(
-            &self.device.as_ref().unwrap(),
+            self.device.as_ref().unwrap(),
             &surface
-                .get_default_config(&self.adapter.as_ref().unwrap(), size.width, size.height)
+                .get_default_config(self.adapter.as_ref().unwrap(), size.width, size.height)
                 .expect("Could not get surface default config!"),
         );
 
