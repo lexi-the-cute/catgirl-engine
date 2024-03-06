@@ -23,16 +23,30 @@ pub struct Args {
 ///
 /// This only checks if argv is null,
 /// it does not verify that argv points to valid data
-pub unsafe fn parse_args_from_c(argc: c_int, argv: *const *const c_char) {
+pub unsafe fn parse_args_from_c(argc: c_int, argv_pointer: *const *const *const c_char) {
     use core::ffi::CStr;
 
-    // Check if argv is null
-    if argv.is_null() {
+    // If we already set the args, don't save again
+    // It's a OnceLock, we can only set it once anyway
+    if ARGS.get().is_some() {
         return;
     }
 
+    // Check if argv_pointer is null
+    if argv_pointer.is_null() {
+        return;
+    }
+
+    // Check if argv is null
+    unsafe {
+        if (*argv_pointer).is_null() {
+            return;
+        }
+    }
+
     // Parse array out of argv
-    let c_args: &[*const c_char] = unsafe { std::slice::from_raw_parts(argv, argc as usize) };
+    let c_args: &[*const c_char] =
+        unsafe { std::slice::from_raw_parts(*argv_pointer, argc as usize) };
 
     let mut args: Vec<String> = vec![];
     for &arg in c_args {

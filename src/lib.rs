@@ -21,18 +21,17 @@ use wasm_bindgen::prelude::*;
 /// Catgirl Engine start
 ///
 /// The starting point when calling as a generic library
-///
-/// # Safety
-///
-/// This function does not verify the safety of argv
 #[no_mangle]
-pub unsafe extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
     // Override Clap's Args
+    // We create a new pointer so we guarantee the pointer we are passing is valid
+    // This doesn't say anything about the underlying data, but that's the responsibility of
+    //   parse_args_from_c(...) to validate
     unsafe {
-        utils::args::parse_args_from_c(argc, argv);
+        utils::args::parse_args_from_c(argc, argv as *const *const *const i8);
     }
 
     // Print version and copyright info

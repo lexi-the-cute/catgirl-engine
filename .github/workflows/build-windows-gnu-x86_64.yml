@@ -118,9 +118,9 @@ jobs:
         run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/catgirl-engine.exe"
 
       # Install Nextest
-      # - name: Install Nextest
-      #   run: |
-      #     cargo install nextest
+      # # - name: Install Nextest
+      # #   run: |
+      # #     cargo install nextest
 
       # Install Miri
       # - name: Install Miri
@@ -132,8 +132,9 @@ jobs:
       # Run Miri Tests
       # - name: Run Miri Tests
       #   run: |
-      #     # cargo miri test
-      #     cargo miri nextest run -j`nproc --all`
+      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
+      #     cargo miri test
+      #     # cargo miri nextest run -j`nproc --all`
 
       # List Environment
       - name: List Environment
