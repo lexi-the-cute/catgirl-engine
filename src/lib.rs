@@ -22,11 +22,13 @@ use wasm_bindgen::prelude::*;
 ///
 /// The starting point when calling as a generic library
 #[no_mangle]
-pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
+pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
-    // Rust obtains these args without me having to do anything special
+    // Override Clap's Args
+    parse_args_from_c(argc, argv);
+
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
@@ -44,6 +46,26 @@ pub extern "C" fn ce_start(_argc: c_int, _argv: *const *const c_char) -> c_int {
         }
         _ => 0,
     }
+}
+
+/// Parse arguments from C and send to the Clap library
+fn parse_args_from_c(argc: c_int, argv: *const *const c_char) {
+    use clap::Parser;
+    use core::ffi::CStr;
+
+    // Parse array out of argv
+    let c_args: &[*const c_char] = unsafe { std::slice::from_raw_parts(argv, argc as usize) };
+
+    let mut args: Vec<String> = vec![];
+    for &arg in c_args {
+        let c_str: &CStr = unsafe { CStr::from_ptr(arg) };
+        eprintln!("C: {:?}", c_str.to_str());
+        let str_slice: &str = c_str.to_str().unwrap();
+
+        args.push(str_slice.to_owned());
+    }
+
+    utils::args::Args::parse_from(args.iter());
 }
 
 #[no_mangle]
