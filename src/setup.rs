@@ -15,7 +15,7 @@ build_info::build_info!(fn build_info);
 /// Retrieve parsed out command line arguments
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
-        *utils::args::get_args().unwrap()
+        utils::args::get_args().unwrap()
     } else {
         Args::parse()
     }
