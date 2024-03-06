@@ -3,6 +3,10 @@
 # printf \\33\[\?1047h
 tput smcup
 clear
+echo Cleaning Old Build
+chmod +x ./clean.sh
+./clean.sh
+
 echo Installing Cython
 pip3 install Cython
 

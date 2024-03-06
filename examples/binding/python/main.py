@@ -5,6 +5,6 @@ import catgirl_engine
 
 
 if __name__ == "__main__":
-    args: list = []
+    args: list = ["--version"]
 
-    catgirl_engine.run_args(args)
+    catgirl_engine.run(args)
