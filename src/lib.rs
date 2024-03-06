@@ -26,12 +26,18 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
-    // Override Clap's Args
+    // Create a vector of args from C styled args
     // We create a new pointer so we guarantee the pointer we are passing is valid
     // This doesn't say anything about the underlying data, but that's the responsibility of
     //   parse_args_from_c(...) to validate
+    let args: Option<Vec<String>>;
     unsafe {
-        utils::args::parse_args_from_c(argc, argv as *const *const *const c_char);
+        args = utils::args::parse_args_from_c(argc, argv as *const *const *const c_char);
+    }
+
+    // Override Clap's args
+    if let Some(args) = args {
+        utils::args::set_parsed_args(args);
     }
 
     // Print version and copyright info

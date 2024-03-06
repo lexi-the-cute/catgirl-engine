@@ -23,18 +23,15 @@ pub struct Args {
 ///
 /// This only checks if argv is null,
 /// it does not verify that argv points to valid data
-pub unsafe fn parse_args_from_c(argc: c_int, argv_pointer: *const *const *const c_char) {
+pub unsafe fn parse_args_from_c(
+    argc: c_int,
+    argv_pointer: *const *const *const c_char,
+) -> Option<Vec<String>> {
     use core::ffi::CStr;
-
-    // If we already set the args, don't save again
-    // It's a OnceLock, we can only set it once anyway
-    if ARGS.get().is_some() {
-        return;
-    }
 
     // Check if argv_pointer is null
     if argv_pointer.is_null() {
-        return;
+        return None;
     }
 
     // Cast back to *const *const c_char so we can operate on it
@@ -43,7 +40,7 @@ pub unsafe fn parse_args_from_c(argc: c_int, argv_pointer: *const *const *const 
 
     // Check if argv is null
     if argv.is_null() {
-        return;
+        return None;
     }
 
     // Parse array out of argv
@@ -57,9 +54,53 @@ pub unsafe fn parse_args_from_c(argc: c_int, argv_pointer: *const *const *const 
         args.push(str_slice.to_owned());
     }
 
+    Some(args)
+}
+
+pub fn set_parsed_args(args: Vec<String>) {
+    // If we already set the args, don't save again
+    // It's a OnceLock, we can only set it once anyway
+    if ARGS.get().is_some() {
+        return;
+    }
+
     let _ = ARGS.set(Args::parse_from(args.iter()));
 }
 
 pub fn get_args() -> Option<Args> {
     ARGS.get().copied()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::ffi::CString;
+
+    #[test]
+    fn test() -> () {
+        use super::*;
+
+        // Null pointer should be disregarded (e.g. return is None)
+        unsafe {
+            assert_eq!(parse_args_from_c(999, core::ptr::null()), None);
+        }
+
+        // Valid argument passed in (e.g. return is vec!["hello"])
+        unsafe {
+            // Create C String
+            let arg_one: CString = CString::new("hello").unwrap();
+            let arg_one_ptr: *const i8 = arg_one.as_ptr();
+
+            // Add C String to array
+            let argv = [arg_one_ptr];
+
+            // Test Parser
+            assert_eq!(
+                parse_args_from_c(
+                    argv.len() as i32,
+                    argv.as_ptr() as *const *const *const c_char
+                ),
+                Some(vec!["hello".to_owned()])
+            );
+        }
+    }
 }
