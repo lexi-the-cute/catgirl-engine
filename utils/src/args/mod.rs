@@ -36,7 +36,7 @@ pub unsafe fn parse_args_from_c(
 
     // Cast back to *const *const c_char so we can operate on it
     //  now that we passed the Safe API Boundary/Barrier
-    let argv: *const *const i8 = argv_pointer as *const *const c_char;
+    let argv: *const *const c_char = argv_pointer as *const *const c_char;
 
     // Check if argv is null
     if argv.is_null() {
@@ -88,7 +88,7 @@ mod tests {
         unsafe {
             // Create C String
             let arg_one: CString = CString::new("hello").unwrap();
-            let arg_one_ptr: *const i8 = arg_one.as_ptr();
+            let arg_one_ptr: *const c_char = arg_one.as_ptr();
 
             // Add C String to array
             let argv = [arg_one_ptr];
