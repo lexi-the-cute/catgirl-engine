@@ -121,9 +121,9 @@ jobs:
           $HOME/.cargo/bin/cargo test -j `nproc --all` --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
 
       # Install Nextest
-      - name: Install Nextest
-        run: |
-          cargo install nextest
+      # - name: Install Nextest
+      #   run: |
+      #     cargo install nextest
 
       # Install Miri
       - name: Install Miri
@@ -135,8 +135,9 @@ jobs:
       # Run Miri Tests
       - name: Run Miri Tests
         run: |
-          # cargo miri test
-          cargo miri nextest run -j`nproc --all`
+          # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
+          cargo miri test
+          # cargo miri nextest run -j`nproc --all`
 
       # List Environment
       - name: List Environment
