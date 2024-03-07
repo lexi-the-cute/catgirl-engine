@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is building for Linux GNU x86_64
 on: [push]
 jobs:
   Build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     environment: Linux
     env:
       CARGO_TERM_COLOR: always
@@ -181,15 +181,15 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Install APT Packages
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 3
-          timeout_minutes: 60
-          retry_on: error
-          command: |
-            sudo apt update
-            sudo apt -y install jq  # coreutils gitsome
+      # - name: Install APT Packages
+      #   uses: nick-fields/retry@v3
+      #   with:
+      #     max_attempts: 3
+      #     timeout_minutes: 60
+      #     retry_on: error
+      #     command: |
+      #       sudo apt update
+      #       sudo apt -y install jq  # coreutils gitsome
 
       # Download Engine
       - name: Download Engine (Release)
