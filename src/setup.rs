@@ -122,7 +122,7 @@ pub(crate) fn setup_logger() {
                 ),
         );
     } else if cfg!(target_family = "wasm") {
-        // https://github.com/iamcodemaker/console_log/issues/15
+        // https://github.com/iamcodemaker/console_log/issues/9#issuecomment-1352641280
         #[cfg(target_family = "wasm")]
         if let Err(_error) = console_log::init_with_level(tracing::log::Level::Trace) {
             warn!("Failed to initialize console logger...")
