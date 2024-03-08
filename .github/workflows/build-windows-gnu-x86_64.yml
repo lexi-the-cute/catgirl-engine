@@ -1,5 +1,5 @@
-name: Build For Windows GNU x86_64
-run-name: ${{ github.actor }} is building for Windows GNU x86_64
+name: Build For Windows x86_64
+run-name: ${{ github.actor }} is building for Windows x86_64
 on: [push]
 jobs:
   Build:
@@ -188,11 +188,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
-          path: ${{ github.workspace }}/artifacts/windows-gnu-x86_64
+          path: ${{ github.workspace }}/artifacts/windows-x86_64
 
       # Recreate Windows Zip
       - name: Recreate Windows Zip (Release)
-        run: cd ${{ github.workspace }}/artifacts/windows-gnu-x86_64; zip -9 -y -r ../CatgirlEngine-Windows-x86_64.zip .
+        run: cd ${{ github.workspace }}/artifacts/windows-x86_64; zip -9 -y -r ../CatgirlEngine-Windows-x86_64.zip .
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -244,4 +244,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-gnu-x86_64 fomxgorl/catgirl-engine:windows-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-x86_64 fomxgorl/catgirl-engine:windows-x86_64
