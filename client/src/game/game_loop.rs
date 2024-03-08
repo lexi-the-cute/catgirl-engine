@@ -1,3 +1,5 @@
+use std::sync::Mutex;
+
 use crate::window::window_state::WindowState;
 
 use winit::event::{Event, WindowEvent};
@@ -27,7 +29,7 @@ pub fn game_loop() -> Result<(), String> {
         .build()
         .expect("Could not create an event loop!");
 
-    static mut WINDOW_STATE: Option<WindowState> = None;
+    static WINDOW_STATE: Mutex<Option<WindowState>> = Mutex::new(None);
     debug!("Starting event loop...");
     let event_loop_closure = move |event: Event<()>, window_target: &EventLoopWindowTarget<()>| {
         /* Update Order
@@ -57,24 +59,37 @@ pub fn game_loop() -> Result<(), String> {
             }
 
             Event::Resumed => {
-                if let Some(window_state) = unsafe { &mut WINDOW_STATE } {
-                    crate::window::events::resumed_window(window_state);
+                if WINDOW_STATE.lock().unwrap().is_some() {
+                    crate::window::events::resumed_window(
+                        WINDOW_STATE.lock().unwrap().as_mut().unwrap(),
+                    );
                 } else {
-                    unsafe {
-                        WINDOW_STATE = Some(crate::window::events::create_window(window_target))
-                    };
+                    *WINDOW_STATE.lock().unwrap() =
+                        Some(crate::window::events::create_window(window_target));
 
                     #[cfg(not(target_family = "wasm"))]
-                    futures::executor::block_on(unsafe {
-                        WINDOW_STATE.as_mut().unwrap().initialize_graphics()
-                    });
+                    futures::executor::block_on(
+                        WINDOW_STATE
+                            .lock()
+                            .unwrap()
+                            .as_mut()
+                            .unwrap()
+                            .initialize_graphics(),
+                    );
 
                     #[cfg(target_family = "wasm")]
                     {
-                        warn!("WGPU Graphics requires async handling... I have not yet managed to get that to work without blocking yet...");
-                        wasm_bindgen_futures::spawn_local(unsafe {
-                            WINDOW_STATE.as_mut().unwrap().initialize_graphics()
-                        });
+                        let await_graphics = async {
+                            WINDOW_STATE
+                                .lock()
+                                .unwrap()
+                                .as_mut()
+                                .unwrap()
+                                .initialize_graphics()
+                                .await;
+                        };
+
+                        wasm_bindgen_futures::spawn_local(await_graphics);
                     }
                 }
             }
@@ -110,8 +125,11 @@ pub fn game_loop() -> Result<(), String> {
                 ..
             } => {
                 // Technically, this can fail if another window was resized before this one was created
-                if let Some(window_state) = unsafe { WINDOW_STATE.as_ref() } {
-                    crate::window::events::resized_window(window_state, size);
+                if WINDOW_STATE.lock().unwrap().is_some() {
+                    crate::window::events::resized_window(
+                        WINDOW_STATE.lock().unwrap().as_ref().unwrap(),
+                        size,
+                    );
                 }
             }
 
@@ -128,8 +146,10 @@ pub fn game_loop() -> Result<(), String> {
                 event: WindowEvent::RedrawRequested,
                 ..
             } => {
-                if let Some(window_state) = unsafe { WINDOW_STATE.as_ref() } {
-                    crate::window::events::requested_redraw(window_state);
+                if WINDOW_STATE.lock().unwrap().is_some() {
+                    crate::window::events::requested_redraw(
+                        WINDOW_STATE.lock().unwrap().as_ref().unwrap(),
+                    );
                 }
             }
 
