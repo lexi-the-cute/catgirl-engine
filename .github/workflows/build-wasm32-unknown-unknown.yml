@@ -1,10 +1,10 @@
-name: Build For Wasm 32 Bit Web Browser
-run-name: ${{ github.actor }} is building for Wasm Bit Web Browser
+name: Build For Wasm 32-bit Web Browser
+run-name: ${{ github.actor }} is building for Wasm 32-bit Web Browser
 on: [push]
 jobs:
   Build:
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: WebAssembly
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -183,7 +183,7 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Wasm-32-bit-Web.zip"
-          export DISPLAY_LABEL="Wasm32-Web"
+          export DISPLAY_LABEL="32-bit Wasm Web Zip"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
 

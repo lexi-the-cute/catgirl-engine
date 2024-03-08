@@ -118,7 +118,7 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine.apk
           #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
@@ -130,7 +130,7 @@ jobs:
         with:
           name: CatgirlEngine-Android-APK
           path: |
-            ${{ github.workspace }}/upload/app-release.apk
+            ${{ github.workspace }}/upload/catgirl-engine.apk
             ${{ github.workspace }}/upload/binding
             ${{ github.workspace }}/upload/cargo-timings
 
@@ -327,4 +327,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/app-release.apk fomxgorl/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/apk/catgirl-engine.apk fomxgorl/catgirl-engine:android
