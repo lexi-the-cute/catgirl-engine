@@ -5,6 +5,7 @@ use winit::{dpi::PhysicalSize, window::Window};
 use wgpu::{Adapter, Device, DeviceDescriptor, Instance, Queue, Surface};
 
 /// Struct used for storing the state of a window
+#[derive(Debug)]
 pub struct WindowState<'a> {
     /// Handle to the window which holds the drawable surface
     pub window: Arc<Window>,
@@ -50,6 +51,32 @@ impl WindowState<'_> {
         }
     }
 
+    fn get_limits(&self) -> wgpu::Limits {
+        if cfg!(any(target_os = "android", target_os = "ios")) {
+            wgpu::Limits {
+                max_texture_dimension_1d: 4096,
+                max_texture_dimension_2d: 4096,
+                ..Default::default()
+            }
+        } else if cfg!(target_family = "wasm") {
+            wgpu::Limits {
+                max_compute_workgroups_per_dimension: 0,
+                max_compute_workgroup_size_z: 0,
+                max_compute_workgroup_size_y: 0,
+                max_compute_workgroup_size_x: 0,
+                max_compute_invocations_per_workgroup: 0,
+                max_compute_workgroup_storage_size: 0,
+                max_storage_buffer_binding_size: 0,
+                max_storage_textures_per_shader_stage: 0,
+                max_storage_buffers_per_shader_stage: 0,
+                max_dynamic_storage_buffers_per_pipeline_layout: 0,
+                ..Default::default()
+            }
+        } else {
+            wgpu::Limits::default()
+        }
+    }
+
     /// Initalize the async graphics portion of the window state
     pub async fn initialize_graphics(&mut self) {
         // Describe's a device
@@ -61,12 +88,8 @@ impl WindowState<'_> {
         // Set limits to make this run on more devices
         // TODO: Research how to dynamically set limits for the running device
         debug!("Setting WGPU limits...");
-        let limits: wgpu::Limits = wgpu::Limits {
-            max_texture_dimension_1d: 4096,
-            max_texture_dimension_2d: 4096,
-            ..Default::default()
-        };
 
+        let limits: wgpu::Limits = self.get_limits();
         device_descriptor.required_limits = limits;
 
         // Handle to graphics device (e.g. GPU)
@@ -92,7 +115,18 @@ impl WindowState<'_> {
         self.device = Some(device);
         self.queue = Some(queue);
 
-        let size: PhysicalSize<u32> = self.window.clone().inner_size();
+        let size: PhysicalSize<u32>;
+        if cfg!(target_family = "wasm") {
+            size = PhysicalSize::new(400, 100);
+        } else {
+            size = self.window.clone().inner_size();
+        }
+
+        trace!(
+            "Window inner size (Initialize Graphics): ({}, {})",
+            size.width,
+            size.height
+        );
         self.surface.configure(
             self.device.as_ref().unwrap(),
             &self
