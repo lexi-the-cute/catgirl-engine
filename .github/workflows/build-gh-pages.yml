@@ -76,15 +76,17 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      # Make Site Directory
-      - name: Make Site Directory
-        run: mkdir -p ${{ github.workspace }}/.github/site
+      # Make Site Directories
+      - name: Make Site Directories
+        run: |
+          mkdir -p ${{ github.workspace }}/.github/site
+          mkdir -p ${{ github.workspace }}/_site
 
       # Compile Program
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/.github/site --verbose --release --bin catgirl-engine --timings
+          $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/_site --verbose --release --bin catgirl-engine --timings
 
       # Build Docs
       - name: Build Docs
@@ -107,6 +109,19 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
   # Deployment job
   deploy:
     environment:
