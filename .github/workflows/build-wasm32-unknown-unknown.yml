@@ -1,6 +1,5 @@
 name: Build For Wasm 32-bit Web Browser
-run-name: ${{ github.actor }} is building for Wasm 32-bit Web Browser
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -107,7 +106,7 @@ jobs:
     if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: WebAssembly
     env:
       BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
       GH_TOKEN: ${{ github.token }}

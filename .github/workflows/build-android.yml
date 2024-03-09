@@ -1,6 +1,5 @@
 name: Build For Android
-run-name: ${{ github.actor }} is building for Android
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
