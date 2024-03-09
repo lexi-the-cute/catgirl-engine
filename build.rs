@@ -7,6 +7,9 @@ use std::env::{self, Vars};
 use std::path::PathBuf;
 
 fn main() {
+    // Debug environment
+    // print_environment_vars();
+
     // Set custom rust flags for platform dependent building
     set_rustflags();
 

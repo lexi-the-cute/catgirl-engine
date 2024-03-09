@@ -35,8 +35,6 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
     #[cfg(target_family = "wasm")]
     let window: Window = WindowBuilder::new()
         .with_canvas(crate::window::web::get_canvas())
-        .with_title("Catgirl Engine")
-        .with_window_icon(Some(crate::get_icon()))
         .build(window_target)
         .expect("Could not create window!");
 

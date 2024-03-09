@@ -21,6 +21,8 @@ pub mod render;
 pub mod setup;
 
 /// Retrieve the icon stored in the binary at build time
+///
+/// This does not work on Wayland, use the .desktop shortcut
 pub fn get_icon() -> Icon {
     // TODO: Implement proper asset finding and loading
     let image_bytes = include_bytes!(concat!(
