@@ -463,6 +463,7 @@ dependencies = [
  "futures-channel",
  "image",
  "tracing",
+ "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",
  "wgpu",
@@ -478,6 +479,7 @@ dependencies = [
  "catgirl-engine-utils",
  "rhai",
  "tracing",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -487,6 +489,7 @@ dependencies = [
  "build-info",
  "build-info-build",
  "clap",
+ "wasm-bindgen",
 ]
 
 [[package]]

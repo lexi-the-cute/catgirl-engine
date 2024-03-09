@@ -2,6 +2,9 @@ use clap::Parser;
 use core::ffi::{c_char, c_int};
 use std::sync::OnceLock;
 
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::*;
+
 static ARGS: OnceLock<Args> = OnceLock::new();
 
 #[derive(Parser, Debug, Copy, Clone)]
@@ -57,6 +60,7 @@ pub unsafe fn parse_args_from_c(
     Some(args)
 }
 
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway

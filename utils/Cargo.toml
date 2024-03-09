@@ -18,3 +18,4 @@ build-info-build = { version = "^0.0.35", default-features = false }
 [dependencies]
 build-info = { version = "^0.0.35", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
+wasm-bindgen = { version = "~0.2", default-features = true }

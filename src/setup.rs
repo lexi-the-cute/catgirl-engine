@@ -4,6 +4,9 @@ use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 use utils::args::Args;
 
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::*;
+
 // Constants
 #[cfg(target_os = "android")]
 pub(crate) const TAG: &str = "CatgirlEngine";
@@ -11,8 +14,8 @@ pub(crate) const TAG: &str = "CatgirlEngine";
 // Generate build_info() function at compile time
 build_info::build_info!(fn build_info);
 
-#[no_mangle]
 /// Retrieve parsed out command line arguments
+#[no_mangle]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
@@ -27,8 +30,8 @@ pub fn build_info_pub() -> &'static BuildInfo {
 }
 
 /// Get the list of dependencies used in the engine
-pub fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
-    let mut dependencies: BTreeMap<&str, &CrateInfo> = BTreeMap::new();
+pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
+    let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
 
     // Add each dependency only once
@@ -38,42 +41,30 @@ pub fn get_dependencies(info: &BuildInfo) -> BTreeMap<&str, &CrateInfo> {
             continue;
         }
 
-        if dependencies.insert(dep.name.as_str(), dep).is_none() {
-            stack.extend(&dep.dependencies);
+        if dependencies
+            .insert(dep.name.as_str().to_owned(), dep.to_owned())
+            .is_none()
+        {
+            stack.extend(dep.dependencies.iter());
         }
     }
 
     dependencies
 }
 
-/// Print the version of the engine and its dependencies
-pub(crate) fn print_version() {
+/// Get all dependencies from the workspace used to build the engine
+pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
-    // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
-    // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
-    println!(
-        "{} v{} built with {} at {}",
-        info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
-    );
-
-    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
-    println!(
-        "Copyright (C) {} {} - {} License",
-        info.timestamp.year(),
-        info.crate_info.authors[0],
-        info.crate_info.license.as_ref().unwrap()
-    );
-
-    let mut dependencies: BTreeMap<&str, &CrateInfo> = get_dependencies(info);
-    let mut util_dependencies: BTreeMap<&str, &CrateInfo> =
+    let mut dependencies: BTreeMap<String, CrateInfo> = get_dependencies(info);
+    let mut util_dependencies: BTreeMap<String, CrateInfo> =
         get_dependencies(utils::setup::build_info_pub());
 
     dependencies.append(&mut util_dependencies);
 
     #[cfg(feature = "client")]
     {
-        let mut client_dependencies: BTreeMap<&str, &CrateInfo> =
+        let mut client_dependencies: BTreeMap<String, CrateInfo> =
             get_dependencies(client::setup::build_info_pub());
 
         dependencies.append(&mut client_dependencies);
@@ -81,26 +72,86 @@ pub(crate) fn print_version() {
 
     #[cfg(feature = "server")]
     {
-        let mut server_dependencies: BTreeMap<&str, &CrateInfo> =
+        let mut server_dependencies: BTreeMap<String, CrateInfo> =
             get_dependencies(server::setup::build_info_pub());
 
         dependencies.append(&mut server_dependencies);
     }
 
+    dependencies
+}
+
+/// Print the version of the engine
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub fn print_version() {
+    let info: &BuildInfo = build_info();
+
+    if cfg!(target_family = "wasm") {
+        // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
+        // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
+        debug!(
+            "{} v{} built with {} at {}",
+            info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
+        );
+
+        // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+        debug!(
+            "Copyright (C) {} {} - {} License",
+            info.timestamp.year(),
+            info.crate_info.authors[0],
+            info.crate_info.license.as_ref().unwrap()
+        );
+    } else {
+        // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
+        // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
+        println!(
+            "{} v{} built with {} at {}",
+            info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
+        );
+
+        // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+        println!(
+            "Copyright (C) {} {} - {} License",
+            info.timestamp.year(),
+            info.crate_info.authors[0],
+            info.crate_info.license.as_ref().unwrap()
+        );
+    }
+}
+
+/// Print the dependencies of the engine
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub fn print_dependencies() {
+    let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
+
     // Only add newline if there are dependencies to print
+    #[cfg(not(target_family = "wasm"))]
     if !dependencies.is_empty() {
         println!();
     }
 
-    // Print all dependencies
-    // Loop through dependency list to print
-    for (name, dep) in dependencies {
-        println!(
-            "{} v{} - License {}",
-            name,
-            dep.version,
-            dep.license.as_ref().unwrap()
-        )
+    if cfg!(target_family = "wasm") {
+        // Print all dependencies
+        // Loop through dependency list to print
+        for (name, dep) in dependencies {
+            debug!(
+                "{} v{} - License {}",
+                name,
+                dep.version,
+                dep.license.as_ref().unwrap()
+            )
+        }
+    } else {
+        // Print all dependencies
+        // Loop through dependency list to print
+        for (name, dep) in dependencies {
+            println!(
+                "{} v{} - License {}",
+                name,
+                dep.version,
+                dep.license.as_ref().unwrap()
+            )
+        }
     }
 }
 
@@ -142,8 +193,8 @@ pub(crate) fn setup_logger() {
     }
 }
 
-#[cfg(feature = "tracing-subscriber")]
 /// Setup the tracing subscriber to monitor the tracer
+#[cfg(feature = "tracing-subscriber")]
 pub(crate) fn setup_tracer() {
     use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
