@@ -2,3 +2,12 @@
 ---
 
 @import "{{ site.theme }}";
+
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+section {
+    max-width: 100%;
+}
