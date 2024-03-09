@@ -3,6 +3,14 @@
 
 @import "{{ site.theme }}";
 
+canvas {
+    background-color: black;
+}
+
+#catgirl-engine-canvas {
+    margin-top: 1rem;
+}
+
 // These are to override the theme's settings
 .wrapper {
     display: flex;
