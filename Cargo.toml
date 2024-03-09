@@ -80,3 +80,4 @@ wasm-bindgen = { version = "~0.2", default-features = false }
 wasm-bindgen-futures = { version = "^0.4.40", default-features = false }
 web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", default-features = false, features = ["js"] }
+fern = { version = "~0.6", default-features = false }

@@ -122,9 +122,18 @@ pub(crate) fn setup_logger() {
                 ),
         );
     } else if cfg!(target_family = "wasm") {
-        // https://github.com/iamcodemaker/console_log/issues/9#issuecomment-1352641280
+        // https://github.com/daboross/fern/issues/134
         #[cfg(target_family = "wasm")]
-        if let Err(_error) = console_log::init_with_level(tracing::log::Level::Trace) {
+        if let Err(_error) = fern::Dispatch::new()
+            .level(tracing::log::LevelFilter::Off)
+            .level_for("main", tracing::log::LevelFilter::Trace)
+            .level_for("catgirl_engine", tracing::log::LevelFilter::Trace)
+            .level_for("catgirl_engine_client", tracing::log::LevelFilter::Trace)
+            .level_for("catgirl_engine_server", tracing::log::LevelFilter::Trace)
+            .level_for("catgirl_engine_utils", tracing::log::LevelFilter::Trace)
+            .chain(fern::Output::call(console_log::log))
+            .apply()
+        {
             warn!("Failed to initialize console logger...")
         }
     } else {
