@@ -19,6 +19,7 @@ fn main() {
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
+        setup::print_dependencies();
         return;
     }
 

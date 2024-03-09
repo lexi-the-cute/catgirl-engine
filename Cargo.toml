@@ -61,6 +61,7 @@ client = { version = "0.2.0", package = "catgirl-engine-client", path = "client"
 server = { version = "0.2.0", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "^0.0.35", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
+wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 tracing-subscriber = { version = "~0.3", default-features = false, features = ["fmt", "ansi", "env-filter"], optional = true }
@@ -76,7 +77,6 @@ winit = { version = "~0.29", default-features = false, features = ["android-game
 [target.'cfg(target_family="wasm")'.dependencies]
 console_error_panic_hook = { version = "~0.1", default-features = false }
 console_log = { version = "~1", default-features = false }
-wasm-bindgen = { version = "~0.2", default-features = false }
 wasm-bindgen-futures = { version = "^0.4.40", default-features = false }
 web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", default-features = false, features = ["js"] }
