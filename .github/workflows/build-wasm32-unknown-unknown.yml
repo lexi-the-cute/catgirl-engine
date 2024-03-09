@@ -2,7 +2,7 @@ name: Build For Wasm 32-bit Web Browser
 run-name: ${{ github.actor }} is building for Wasm 32-bit Web Browser
 on: [push]
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     environment: WebAssembly
     env:
@@ -43,10 +43,10 @@ jobs:
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "wasm32-rust-gnu"
+          shared-key: "wasm32-rust"
 
       # Add Build Targets
-      - name: Add x86_64 GNU Build Target
+      - name: Add 32-bit Wasm Build Target
         run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown
 
       # # Build Docs
@@ -103,7 +103,7 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
-  Publish:
+  deploy:
     if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
     needs: [Build]
     runs-on: ubuntu-latest

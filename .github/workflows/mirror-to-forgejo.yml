@@ -6,7 +6,7 @@ on:
   schedule:
     - cron: "0 */6 * * *"
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     steps:
       # Setup Build Environment

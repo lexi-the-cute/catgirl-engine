@@ -2,7 +2,7 @@ name: Build For Windows x86_64
 run-name: ${{ github.actor }} is building for Windows x86_64
 on: [push]
 jobs:
-  Build:
+  build:
     runs-on: ubuntu-latest
     environment: Windows
     env:
@@ -145,7 +145,7 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
-  Publish:
+  deploy:
     if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
     needs: [Build]
     runs-on: ubuntu-latest
