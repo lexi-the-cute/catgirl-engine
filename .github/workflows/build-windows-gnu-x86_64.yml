@@ -1,6 +1,5 @@
 name: Build For Windows x86_64
-run-name: ${{ github.actor }} is building for Windows x86_64
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest

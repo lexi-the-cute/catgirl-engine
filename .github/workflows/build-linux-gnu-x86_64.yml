@@ -1,6 +1,5 @@
 name: Build For Linux GNU x86_64
-run-name: ${{ github.actor }} is building for Linux GNU x86_64
-on: [push]
+on: [push, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
