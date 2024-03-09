@@ -3,9 +3,11 @@
 
 @import "{{ site.theme }}";
 
+// These are to override the theme's settings
 .wrapper {
     display: flex;
     justify-content: center;
+    max-width: 100%;
 }
 
 section {
