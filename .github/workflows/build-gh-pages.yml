@@ -84,7 +84,7 @@ jobs:
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
-          $HOME/.cargo/bin/wasm-pack build --target web --verbose --release --bin catgirl-engine --timings -d ${{ github.workspace }}/.github/site
+          $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/.github/site --verbose --release --bin catgirl-engine --timings
 
       # Build Docs
       - name: Build Docs
