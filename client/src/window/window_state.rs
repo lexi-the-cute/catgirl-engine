@@ -51,6 +51,7 @@ impl WindowState<'_> {
         }
     }
 
+    /// Used to retrieve the best limits for the target
     fn get_limits(&self) -> wgpu::Limits {
         if cfg!(any(target_os = "android", target_os = "ios")) {
             wgpu::Limits {
@@ -115,12 +116,11 @@ impl WindowState<'_> {
         self.device = Some(device);
         self.queue = Some(queue);
 
-        let size: PhysicalSize<u32>;
-        if cfg!(target_family = "wasm") {
-            size = PhysicalSize::new(400, 100);
+        let size: PhysicalSize<u32> = if cfg!(target_family = "wasm") {
+            PhysicalSize::new(400, 100)
         } else {
-            size = self.window.clone().inner_size();
-        }
+            self.window.clone().inner_size()
+        };
 
         trace!(
             "Window inner size (Initialize Graphics): ({}, {})",
