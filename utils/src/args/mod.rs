@@ -9,6 +9,8 @@ static ARGS: OnceLock<Args> = OnceLock::new();
 
 #[derive(Parser, Debug, Copy, Clone)]
 #[command(author, about, long_about = None)]
+#[repr(C)]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 /// List of possible command line arguments
 pub struct Args {
     /// Start the engine in dedicated server mode

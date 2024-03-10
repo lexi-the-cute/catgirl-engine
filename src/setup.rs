@@ -16,7 +16,8 @@ build_info::build_info!(fn build_info);
 
 /// Retrieve parsed out command line arguments
 #[no_mangle]
-pub fn get_args() -> Args {
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
     } else {
@@ -83,7 +84,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 
 /// Print the version of the engine
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn print_version() {
+pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
 
     if cfg!(target_family = "wasm") {
@@ -121,7 +122,7 @@ pub fn print_version() {
 
 /// Print the dependencies of the engine
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn print_dependencies() {
+pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
 
     // Only add newline if there are dependencies to print
