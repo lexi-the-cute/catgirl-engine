@@ -17,6 +17,8 @@ repos:
     rev: v1.1.0
     hooks:
     -   id: fmt
+        args: ["--all"]
     -   id: check
     -   id: clippy
+        args: ["--all-targets"]
     -   id: test
