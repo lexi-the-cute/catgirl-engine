@@ -137,12 +137,11 @@ pub(crate) fn resized_window(window_state: &WindowState, _size: PhysicalSize<u32
     let device: &Device = window_state.device.as_ref().unwrap();
     let adapter: &Adapter = window_state.adapter.as_ref().unwrap();
 
-    let size: PhysicalSize<u32>;
-    if cfg!(target_family = "wasm") {
-        size = PhysicalSize::new(1000, 500);
+    let size: PhysicalSize<u32> = if cfg!(target_family = "wasm") {
+        PhysicalSize::new(1000, 500)
     } else {
-        size = window.inner_size();
-    }
+        window.inner_size()
+    };
 
     surface.configure(
         device,

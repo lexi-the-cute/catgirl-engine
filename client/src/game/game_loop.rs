@@ -29,6 +29,7 @@ pub fn game_loop() -> Result<(), String> {
         .build()
         .expect("Could not create an event loop!");
 
+    /// Holds the window state in a way that's compatible with async
     static WINDOW_STATE: Mutex<Option<WindowState>> = Mutex::new(None);
     debug!("Starting event loop...");
     let event_loop_closure = move |event: Event<()>, window_target: &EventLoopWindowTarget<()>| {
