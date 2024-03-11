@@ -29,14 +29,14 @@ pub fn get_icon() -> Icon {
     let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");
 
     let image_vec_result: Result<Vec<u8>, std::io::Error> = fs::read(logo_path);
-    let image_bytes: &[u8] = image_vec_result.as_deref().unwrap_or_else(|_| {
+    let image_bytes: &[u8] = image_vec_result.as_deref().unwrap_or({
         include_bytes!(concat!(
             env!("CARGO_MANIFEST_DIR"),
             "/assets/vanilla/texture/logo/logo.png"
         ))
     });
 
-    let image = image::load_from_memory(image_bytes)
+    let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(image_bytes)
         .expect("Could not get asset from memory...")
         .into_rgba8();
     let (width, height) = image.dimensions();
