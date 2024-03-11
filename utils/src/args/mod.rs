@@ -62,6 +62,7 @@ pub unsafe fn parse_args_from_c(
     Some(args)
 }
 
+/// Set parsed args passed in from function
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
@@ -73,6 +74,7 @@ pub fn set_parsed_args(args: Vec<String>) {
     let _ = ARGS.set(Args::parse_from(args.iter()));
 }
 
+/// Retrieve parsed args previously passed in from function
 pub fn get_args() -> Option<Args> {
     ARGS.get().copied()
 }
