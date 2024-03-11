@@ -21,7 +21,7 @@ pub mod render;
 /// Handles setup
 pub mod setup;
 
-/// Retrieve the icon stored in the binary at build time
+/// Retrieve the engine's icon
 ///
 /// This does not work on Wayland, use the .desktop shortcut
 pub fn get_icon() -> Icon {
