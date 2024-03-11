@@ -1,16 +1,12 @@
 use clap::Parser;
 use core::ffi::{c_char, c_int};
-use std::sync::OnceLock;
-
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::*;
+use std::{path::PathBuf, sync::OnceLock};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 static ARGS: OnceLock<Args> = OnceLock::new();
 
-#[derive(Parser, Debug, Copy, Clone)]
+#[derive(Parser, Debug, Clone)]
 #[command(author, about, long_about = None)]
-#[repr(C)]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 /// List of possible command line arguments
 pub struct Args {
     /// Start the engine in dedicated server mode
@@ -20,6 +16,10 @@ pub struct Args {
     /// Display version and copyright info
     #[arg(short, long, default_value_t = false)]
     pub version: bool,
+
+    /// Set custom assets path
+    #[arg(short, long, default_value = "assets")]
+    pub assets: PathBuf,
 }
 
 /// Parse arguments from C and send to the Clap library
@@ -63,7 +63,7 @@ pub unsafe fn parse_args_from_c(
 }
 
 /// Set parsed args passed in from function
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[wasm_bindgen]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway
@@ -76,7 +76,7 @@ pub fn set_parsed_args(args: Vec<String>) {
 
 /// Retrieve parsed args previously passed in from function
 pub fn get_args() -> Option<Args> {
-    ARGS.get().copied()
+    ARGS.get().cloned()
 }
 
 #[cfg(test)]
