@@ -2,10 +2,9 @@ use std::collections::BTreeMap;
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
+use client::game;
 use utils::args::Args;
-
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 // Constants
 #[cfg(target_os = "android")]
@@ -14,20 +13,27 @@ pub(crate) const TAG: &str = "CatgirlEngine";
 // Generate build_info() function at compile time
 build_info::build_info!(fn build_info);
 
+/// Build info for crate
+pub fn build_info_pub() -> &'static BuildInfo {
+    build_info()
+}
+
+/// Process args for future use
+#[wasm_bindgen]
+pub fn process_args() {
+    // Store assets path in separate variable
+    game::store_assets_path(get_args().assets);
+
+    trace!("Assets Path: {:?}", game::get_assets_path())
+}
+
 /// Retrieve parsed out command line arguments
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn get_args() -> Args {
+pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
     } else {
         Args::parse()
     }
-}
-
-/// Build info for crate
-pub fn build_info_pub() -> &'static BuildInfo {
-    build_info()
 }
 
 /// Get the list of dependencies used in the engine
@@ -83,7 +89,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 }
 
 /// Print the version of the engine
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[wasm_bindgen]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
 
@@ -121,7 +127,7 @@ pub extern "C" fn print_version() {
 }
 
 /// Print the dependencies of the engine
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[wasm_bindgen]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
 

@@ -15,7 +15,9 @@ use core::ffi::{c_char, c_int};
 use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::*;
+use wasm_bindgen::prelude::wasm_bindgen;
+
+extern crate wasm_bindgen;
 
 // Run as Library
 /// Catgirl Engine start
@@ -47,8 +49,12 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
         return 0;
     }
 
+    // Setup logger for debugging
     setup::setup_logger();
     debug!("Launched as library...");
+
+    // Process args for future use
+    setup::process_args();
 
     match setup::start() {
         Err(error) => {
@@ -60,7 +66,6 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 }
 
-#[no_mangle]
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
 pub fn android_main(app: AndroidApp) {
@@ -74,8 +79,12 @@ pub fn android_main(app: AndroidApp) {
         return ();
     }
 
+    // Setup logger for debugging
     setup::setup_logger();
     debug!("Launched as Android app...");
+
+    // Process args for future use
+    setup::process_args();
 
     client::game::store_android_app(app);
     if let Err(error) = setup::start() {
@@ -83,9 +92,8 @@ pub fn android_main(app: AndroidApp) {
     }
 }
 
-#[no_mangle]
 #[cfg(target_family = "wasm")]
-#[cfg_attr(target_family = "wasm", wasm_bindgen(start))]
+#[wasm_bindgen(start)]
 /// The starting point when loaded via wasm bindgen
 pub fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
@@ -101,8 +109,12 @@ pub fn wasm_start() {
         return ();
     }
 
+    // Setup logger for debugging
     setup::setup_logger();
     debug!("Launched as Wasm library...");
+
+    // Process args for future use
+    setup::process_args();
 
     if let Err(error) = setup::start() {
         error!("{:?}", error)
