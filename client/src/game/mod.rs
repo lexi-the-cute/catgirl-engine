@@ -5,9 +5,6 @@ use std::{path::PathBuf, sync::OnceLock};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[cfg(target_os = "android")]
-use std::sync::OnceLock;
-
-#[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
 #[cfg(target_os = "android")]

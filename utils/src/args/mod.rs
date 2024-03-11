@@ -3,6 +3,7 @@ use core::ffi::{c_char, c_int};
 use std::{path::PathBuf, sync::OnceLock};
 use wasm_bindgen::prelude::wasm_bindgen;
 
+/// Reference to command line args specified by function
 static ARGS: OnceLock<Args> = OnceLock::new();
 
 #[derive(Parser, Debug, Clone)]
