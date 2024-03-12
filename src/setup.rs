@@ -11,12 +11,10 @@ use wasm_bindgen::prelude::wasm_bindgen;
 pub(crate) const TAG: &str = "CatgirlEngine";
 
 // Generate build_info() function at compile time
-build_info::build_info!(fn build_info);
-
-/// Build info for crate
-pub fn build_info_pub() -> &'static BuildInfo {
-    build_info()
-}
+build_info::build_info!(
+    /// Build info for crate
+    pub fn build_info
+);
 
 /// Process args for future use
 #[wasm_bindgen]
@@ -65,14 +63,14 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 
     let mut dependencies: BTreeMap<String, CrateInfo> = get_dependencies(info);
     let mut util_dependencies: BTreeMap<String, CrateInfo> =
-        get_dependencies(utils::setup::build_info_pub());
+        get_dependencies(utils::setup::build_info());
 
     dependencies.append(&mut util_dependencies);
 
     #[cfg(feature = "client")]
     {
         let mut client_dependencies: BTreeMap<String, CrateInfo> =
-            get_dependencies(client::setup::build_info_pub());
+            get_dependencies(client::setup::build_info());
 
         dependencies.append(&mut client_dependencies);
     }
@@ -80,7 +78,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     #[cfg(feature = "server")]
     {
         let mut server_dependencies: BTreeMap<String, CrateInfo> =
-            get_dependencies(server::setup::build_info_pub());
+            get_dependencies(server::setup::build_info());
 
         dependencies.append(&mut server_dependencies);
     }
