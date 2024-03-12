@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.12.6"  # https://semver.org (Do not use 1.0.0 until first production release)
+version = "0.12.7"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -56,9 +56,9 @@ cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-utils = { version = "0.12.6", package = "catgirl-engine-utils", path = "utils" }
-client = { version = "0.12.6", package = "catgirl-engine-client", path = "client", optional = true }
-server = { version = "0.12.6", package = "catgirl-engine-server", path = "server", optional = true }
+utils = { version = "0.12.7", package = "catgirl-engine-utils", path = "utils" }
+client = { version = "0.12.7", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.12.7", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
