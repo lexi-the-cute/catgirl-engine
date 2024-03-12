@@ -24,16 +24,16 @@ sed -i "s/^client = { version = \"[0-9.]*\"/client = { version = \"$VERSION\"/" 
 sed -i "s/^server = { version = \"[0-9.]*\"/server = { version = \"$VERSION\"/" ./Cargo.toml
 
 echo Publishing catgirl-engine-utils
-cargo publish -p catgirl-engine-utils --allow-dirty
+cargo publish -p catgirl-engine-utils --allow-dirty --no-verify
 
 echo Publishing catgirl-engine-client
-cargo publish -p catgirl-engine-client --allow-dirty
+cargo publish -p catgirl-engine-client --allow-dirty --no-verify
 
 echo Publishing catgirl-engine-server
-cargo publish -p catgirl-engine-server --allow-dirty
+cargo publish -p catgirl-engine-server --allow-dirty --no-verify
 
 echo Publishing catgirl-engine
-cargo publish -p catgirl-engine --allow-dirty
+cargo publish -p catgirl-engine --allow-dirty --no-verify
 
 echo Resetting utils version
 git checkout HEAD -- ./utils/Cargo.toml
