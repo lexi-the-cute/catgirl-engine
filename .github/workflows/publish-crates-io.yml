@@ -73,6 +73,22 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
+      # Check Files with Pre-Commit Hooks
+      - name: Check Files with Pre-Commit Hooks
+        run: pre-commit run --all-files
+
       # Publish to Crates.io
-      - name: Publish to Crates.io
-        run: ${{ github.workspace }}/publish.sh
+      - name: Publish to catgirl-engine-utils to Crates.io
+        run: cargo publish -p catgirl-engine-utils --no-verify
+
+      # Publish to Crates.io
+      - name: Publish to catgirl-engine-client to Crates.io
+        run: cargo publish -p catgirl-engine-client --no-verify
+
+      # Publish to Crates.io
+      - name: Publish to catgirl-engine-server to Crates.io
+        run: cargo publish -p catgirl-engine-server --no-verify
+
+      # Publish to Crates.io
+      - name: Publish to catgirl-engine to Crates.io
+        run: cargo publish -p catgirl-engine --no-verify
