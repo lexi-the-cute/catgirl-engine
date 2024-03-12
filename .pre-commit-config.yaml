@@ -19,6 +19,8 @@ repos:
     -   id: fmt
         args: ["--all", "--"]
     -   id: check
+        args: ["--workspace", "--all-targets"]
     -   id: clippy
         args: ["--all-targets"]
     -   id: test
+        args: ["--workspace", "--bins", "--tests", "--benches", "--examples"]
