@@ -75,6 +75,10 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
+      # Check Files with Pre-Commit Hooks
+      - name: Check Files with Pre-Commit Hooks
+        run: pre-commit run --all-files
+
       # # Build Docs
       # - name: Build Docs
       #   run: |

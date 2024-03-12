@@ -94,6 +94,10 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
+      # Check Files with Pre-Commit Hooks
+      - name: Check Files with Pre-Commit Hooks
+        run: pre-commit run --all-files
+
       # Install Cargo-NDK
       - name: Install Cargo-NDK
         run: cargo install cargo-ndk
