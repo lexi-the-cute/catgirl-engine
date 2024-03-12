@@ -82,6 +82,18 @@ jobs:
       - name: Add x86_64 Android Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-linux-android
 
+      # Install Git Pre-Commit Hooks to Enforce Hooks
+      - name: Install Git Pre-Commit Hooks to Enforce Hooks
+        run: pip install pre-commit
+
+      # Check Pre-Commit Version
+      - name: Check Pre-Commit Version
+        run: pre-commit --version
+
+      # Install Pre-Commit Hooks
+      - name: Install Pre-Commit Hooks
+        run: pre-commit install
+
       # Install Cargo-NDK
       - name: Install Cargo-NDK
         run: cargo install cargo-ndk
