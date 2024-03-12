@@ -63,6 +63,18 @@ jobs:
       - name: Add x86_64 GNU Windows Build Target
         run: $HOME/.cargo/bin/rustup target add x86_64-pc-windows-gnu
 
+      # Install Git Pre-Commit Hooks to Enforce Hooks
+      - name: Install Git Pre-Commit Hooks to Enforce Hooks
+        run: pip install pre-commit
+
+      # Check Pre-Commit Version
+      - name: Check Pre-Commit Version
+        run: pre-commit --version
+
+      # Install Pre-Commit Hooks
+      - name: Install Pre-Commit Hooks
+        run: pre-commit install
+
       # # Build Docs
       # - name: Build Docs
       #   run: |
