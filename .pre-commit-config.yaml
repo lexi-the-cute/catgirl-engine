@@ -25,3 +25,10 @@ repos:
         args: ["--all-targets"]
     -   id: test
         args: ["--workspace", "--bins", "--tests", "--benches", "--examples"]
+-   repo: local
+    hooks:
+    -   id: version
+        name: fix version
+        description: update version of workspaces to match root crate
+        language: script
+        entry: ./version.sh

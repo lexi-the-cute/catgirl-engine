@@ -9,6 +9,7 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
+      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -72,7 +73,6 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
-      # TODO: Get Token From Secrets
       # Publish to Crates.io
       - name: Publish to Crates.io
         run: ${{ github.workspace }}/publish.sh
