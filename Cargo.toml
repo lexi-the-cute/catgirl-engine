@@ -56,9 +56,9 @@ cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-utils = { version = "0.0.1", package = "catgirl-engine-utils", path = "utils" }
-client = { version = "0.2.0", package = "catgirl-engine-client", path = "client", optional = true }
-server = { version = "0.2.0", package = "catgirl-engine-server", path = "server", optional = true }
+utils = { version = "0.12.5", package = "catgirl-engine-utils", path = "utils" }
+client = { version = "0.12.5", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.12.5", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
