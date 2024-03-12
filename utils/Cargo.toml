@@ -1,6 +1,6 @@
 [package]
 name = "catgirl-engine-utils"
-description = "Server side part of the catgirl-engine crate"
+description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
 version = "0.12.6"
 keywords = ["catgirl", "engine", "gamedev", "game"]
