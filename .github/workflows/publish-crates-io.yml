@@ -94,7 +94,8 @@ jobs:
       - name: Publish to catgirl-engine to Crates.io
         run: cargo publish -p catgirl-engine --no-verify
 
-      - name: Publish
+      # Publish Announcement to Notification Channel
+      - name: Publish Announcement to Notification Channel
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export VERSION_STRING="Catgirl Engine v$VERSION"
