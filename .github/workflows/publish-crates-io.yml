@@ -10,6 +10,7 @@ jobs:
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
       CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -92,3 +93,10 @@ jobs:
       # Publish to Crates.io
       - name: Publish to catgirl-engine to Crates.io
         run: cargo publish -p catgirl-engine --no-verify
+
+      - name: Publish
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export VERSION_STRING="Catgirl Engine v$VERSION"
+          export MESSAGE="$VERSION_STRING has been published..."
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL
