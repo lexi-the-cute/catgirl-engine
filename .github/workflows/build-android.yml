@@ -110,7 +110,7 @@ jobs:
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
 
       # We no longer use the Play Store, but if another store uses AAB, we can enable it
@@ -118,7 +118,7 @@ jobs:
       # - name: Build CatgirlEngine AAB
       #   working-directory: ${{ github.workspace }}/android
       #   run: |
-      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
       #     ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Display APK Directory
