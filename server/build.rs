@@ -16,7 +16,8 @@ fn generate_build_info() {
 
     // Custom environment variable to speed up writing code
     let rust_analyzer: bool = matches_environment_var("RUST_ANALYZER", "true");
-    if rust_analyzer {
+    let docs_rs: bool = env::var("DOCS_RS").is_ok();
+    if rust_analyzer || docs_rs {
         depth = DependencyDepth::None;
     }
 
