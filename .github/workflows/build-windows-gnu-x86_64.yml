@@ -88,7 +88,7 @@ jobs:
       # Compile Program
       - name: Build Program
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings
 
       # Display Export Directory
@@ -125,7 +125,7 @@ jobs:
       # Install Code Size Profiler
       - name: Install Code Size Profiler
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
       # Profile Code Size

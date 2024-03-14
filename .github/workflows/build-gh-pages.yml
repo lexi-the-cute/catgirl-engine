@@ -69,7 +69,7 @@ jobs:
       # Install Wasm-Pack
       - name: Install Wasm-Pack
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-pack
 
       # Setup Pages
@@ -85,7 +85,7 @@ jobs:
       # Compile Program
       - name: Build Program
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z time-passes -Z self-profile"
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/docs/pkg --verbose --release --bin catgirl-engine --timings
 
       # Build Docs
