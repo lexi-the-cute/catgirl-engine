@@ -37,7 +37,10 @@ fn generate_build_info() {
         depth = DependencyDepth::None;
     }
 
-    build_info_build::build_script().collect_runtime_dependencies(depth);
+    let options: build_info_build::BuildScriptOptions = build_info_build::build_script();
+    if !docs_rs {
+        options.collect_runtime_dependencies(depth);
+    }
 }
 
 fn set_rustflags() {
