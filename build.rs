@@ -41,11 +41,11 @@ fn generate_build_info() {
         depth = DependencyDepth::None;
     }
 
-    let options: build_info_build::BuildScriptOptions =
+    let _options: build_info_build::BuildScriptOptions =
         build_info_build::build_script().collect_runtime_dependencies(depth);
-    if docs_rs {
-        options.set_offline(true);
-    }
+    // if docs_rs {
+    //     _options.set_offline(true);
+    // }
 }
 
 fn set_rustflags() {
