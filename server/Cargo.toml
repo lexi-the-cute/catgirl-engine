@@ -2,7 +2,7 @@
 name = "catgirl-engine-server"
 description = "Server side part of the catgirl-engine crate"
 license = "Zlib"
-version = "0.12.11"
+version = "0.12.12"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -12,16 +12,22 @@ readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[features]
+default = ["build-info"]
+build-info = ["dep:build-info-build", "dep:build-info"]
+
+# Used for customizing building of docs.rs binary
+[package.metadata.docs.rs]
+features = []
 
 [build-dependencies]
 #build-info-build = { version = "^0.0.36", default-features = false }
-build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false }
+build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, optional = true }
 
 [dependencies]
 #build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
-build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"] }
-utils = { version = "0.12.11", package = "catgirl-engine-utils", path = "../utils" }
+build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"], optional = true }
+utils = { version = "0.12.12", package = "catgirl-engine-utils", path = "../utils" }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 rhai = { version = "~1", default-features = false, features = ["serde"] }

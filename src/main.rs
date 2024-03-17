@@ -17,6 +17,7 @@ fn main() {
     setup::setup_tracer();
 
     // Print version and copyright info
+    #[cfg(feature = "build-info")]
     if setup::get_args().version {
         setup::print_version();
         setup::print_dependencies();

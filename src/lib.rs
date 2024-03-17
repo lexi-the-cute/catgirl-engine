@@ -43,6 +43,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 
     // Print version and copyright info
+    #[cfg(feature = "build-info")]
     if setup::get_args().version {
         setup::print_version();
         setup::print_dependencies();
