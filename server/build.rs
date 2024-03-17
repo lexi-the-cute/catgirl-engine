@@ -1,10 +1,8 @@
-#[cfg(feature = "build-info")]
 use build_info_build::DependencyDepth;
 use std::env;
 
 fn main() {
     // Generate build info
-    #[cfg(feature = "build-info")]
     generate_build_info();
 }
 
@@ -14,7 +12,6 @@ fn matches_environment_var(key: &str, value: &str) -> bool {
     environment_var.is_ok() && environment_var.unwrap() == value
 }
 
-#[cfg(feature = "build-info")]
 fn generate_build_info() {
     let mut depth: DependencyDepth = DependencyDepth::Depth(0);
 

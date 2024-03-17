@@ -34,11 +34,10 @@ opt-level = 3
 incremental = false
 
 [features]
-default = ["client", "server", "build-info"]
+default = ["client", "server"]
 client = ["dep:client"]
 server = ["dep:server"]
 tracing-subscriber = ["dep:tracing-subscriber"]
-build-info = ["dep:build-info-build", "dep:build-info"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -58,7 +57,7 @@ members = [
 ]
 
 [build-dependencies]
-build-info-build = { version = "^0.0.36", default-features = false, optional = true }
+build-info-build = { version = "^0.0.36", default-features = false }
 cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
@@ -66,7 +65,7 @@ cbindgen = { version = "~0", default-features = false }
 utils = { version = "0.12.15", package = "catgirl-engine-utils", path = "utils" }
 client = { version = "0.12.15", package = "catgirl-engine-client", path = "client", optional = true }
 server = { version = "0.12.15", package = "catgirl-engine-server", path = "server", optional = true }
-build-info = { version = "^0.0.36", default-features = false, features = ["runtime"], optional = true }
+build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }

@@ -13,13 +13,11 @@ authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 
 [features]
-default = ["build-info"]
-build-info = ["dep:build-info-build", "dep:build-info"]
+default = []
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
-features = []
-no-default-features = true
+features = ["default"]
 rustdoc-args = ["--document-private-items", "--default-theme=ayu"]
 default-target = "x86_64-unknown-linux-gnu"
 targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu", "wasm32-unknown-unknown",
@@ -27,10 +25,10 @@ targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu", "wasm32-unknown-
             "i686-linux-android", "x86_64-linux-android"]
 
 [build-dependencies]
-build-info-build = { version = "^0.0.36", default-features = false, optional = true }
+build-info-build = { version = "^0.0.36", default-features = false }
 
 [dependencies]
-build-info = { version = "^0.0.36", default-features = false, features = ["runtime"], optional = true }
+build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
 utils = { version = "0.12.15", package = "catgirl-engine-utils", path = "../utils" }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
