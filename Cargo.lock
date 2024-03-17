@@ -281,8 +281,9 @@ dependencies = [
 
 [[package]]
 name = "build-info"
-version = "0.0.37"
-source = "git+https://github.com/lexi-the-cute/build-info.git?rev=3d66549#3d665498238ec713a5aab55ea2db8e4564d71239"
+version = "0.0.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc978ce446e6cd132434049d6a3e9b92982228fd27e0ae11437b8e121b50e7e4"
 dependencies = [
  "bincode",
  "build-info-common",
@@ -291,8 +292,9 @@ dependencies = [
 
 [[package]]
 name = "build-info-build"
-version = "0.0.37"
-source = "git+https://github.com/lexi-the-cute/build-info.git?rev=3d66549#3d665498238ec713a5aab55ea2db8e4564d71239"
+version = "0.0.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "02216ebb53a94c78f65d93293607c5bb1b3e9c156c456791c4aabf45a7d9d55d"
 dependencies = [
  "anyhow",
  "base64",
@@ -309,8 +311,9 @@ dependencies = [
 
 [[package]]
 name = "build-info-common"
-version = "0.0.37"
-source = "git+https://github.com/lexi-the-cute/build-info.git?rev=3d66549#3d665498238ec713a5aab55ea2db8e4564d71239"
+version = "0.0.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c212154d5082e4f891f6750a791f83731bdbf706c97f8e0c3d16c53723e4881e"
 dependencies = [
  "chrono",
  "derive_more",
@@ -320,8 +323,9 @@ dependencies = [
 
 [[package]]
 name = "build-info-proc"
-version = "0.0.37"
-source = "git+https://github.com/lexi-the-cute/build-info.git?rev=3d66549#3d665498238ec713a5aab55ea2db8e4564d71239"
+version = "0.0.36"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ff68aa3f555464fa21e676884d6ef00c1f97ce5b42e65ae9b49f9cacdb87ae3"
 dependencies = [
  "anyhow",
  "base64",
@@ -1437,7 +1441,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c2a198fb6b0eada2a8df47933734e6d35d350665a33a3593d7164fa52c75c19"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.5",
+ "windows-targets 0.52.4",
 ]
 
 [[package]]
