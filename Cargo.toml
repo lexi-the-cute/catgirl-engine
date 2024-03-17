@@ -52,7 +52,7 @@ members = [
 
 [build-dependencies]
 #build-info-build = { version = "^0.0.36", default-features = false }
-build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, version = "^0.0.37" }
+build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false }
 cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
@@ -61,7 +61,7 @@ utils = { version = "0.12.11", package = "catgirl-engine-utils", path = "utils" 
 client = { version = "0.12.11", package = "catgirl-engine-client", path = "client", optional = true }
 server = { version = "0.12.11", package = "catgirl-engine-server", path = "server", optional = true }
 #build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
-build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"], version = "^0.0.37" }
+build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }
