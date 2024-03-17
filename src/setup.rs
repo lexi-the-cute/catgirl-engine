@@ -1,5 +1,7 @@
+#[cfg(feature = "build-info")]
 use std::collections::BTreeMap;
 
+#[cfg(feature = "build-info")]
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 use client::game;
@@ -11,6 +13,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 pub(crate) const TAG: &str = "CatgirlEngine";
 
 // Generate build_info() function at compile time
+#[cfg(feature = "build-info")]
 build_info::build_info!(
     /// Build info for crate
     pub fn build_info
@@ -35,6 +38,7 @@ pub fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
+#[cfg(feature = "build-info")]
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -58,6 +62,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 }
 
 /// Get all dependencies from the workspace used to build the engine
+#[cfg(feature = "build-info")]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
@@ -88,6 +93,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 
 /// Print the version of the engine
 #[wasm_bindgen]
+#[cfg(feature = "build-info")]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
 
@@ -126,6 +132,7 @@ pub extern "C" fn print_version() {
 
 /// Print the dependencies of the engine
 #[wasm_bindgen]
+#[cfg(feature = "build-info")]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
 

@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.12.11"  # https://semver.org (Do not use 1.0.0 until first production release)
+version = "0.12.12"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -34,14 +34,15 @@ opt-level = 3
 incremental = false
 
 [features]
-default = ["client", "server"]
+default = ["client", "server", "build-info"]
 client = ["dep:client"]
 server = ["dep:server"]
 tracing-subscriber = ["dep:tracing-subscriber"]
+build-info = ["dep:build-info-build", "dep:build-info"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
-features = ["default"]
+features = ["client", "server"]
 
 [workspace]
 members = [
@@ -52,16 +53,16 @@ members = [
 
 [build-dependencies]
 #build-info-build = { version = "^0.0.36", default-features = false }
-build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false }
+build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, optional = true }
 cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-utils = { version = "0.12.11", package = "catgirl-engine-utils", path = "utils" }
-client = { version = "0.12.11", package = "catgirl-engine-client", path = "client", optional = true }
-server = { version = "0.12.11", package = "catgirl-engine-server", path = "server", optional = true }
+utils = { version = "0.12.12", package = "catgirl-engine-utils", path = "utils" }
+client = { version = "0.12.12", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.12.12", package = "catgirl-engine-server", path = "server", optional = true }
 #build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
-build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"] }
+build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"], optional = true }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }

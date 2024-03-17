@@ -1,5 +1,6 @@
 extern crate cbindgen;
 
+#[cfg(feature = "build-info")]
 use build_info_build::DependencyDepth;
 use cbindgen::{Config, CythonConfig, Language};
 use std::collections::HashMap;
@@ -14,17 +15,20 @@ fn main() {
     set_rustflags();
 
     // Generate build info
+    #[cfg(feature = "build-info")]
     generate_build_info();
 
     // Bindings are only usable when building libs
     create_bindings();
 }
 
+#[allow(dead_code)]
 fn matches_environment_var(key: &str, value: &str) -> bool {
     let environment_var: Result<String, env::VarError> = env::var(key);
     environment_var.is_ok() && environment_var.unwrap() == value
 }
 
+#[cfg(feature = "build-info")]
 fn generate_build_info() {
     // https://github.com/danielschemmel/build-info/issues/17
     // https://github.com/danielschemmel/build-info/issues/18
