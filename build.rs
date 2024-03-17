@@ -45,7 +45,7 @@ fn generate_build_info() {
         build_info_build::build_script().collect_runtime_dependencies(depth);
     } else {
         // Waiting for https://github.com/danielschemmel/build-info/pull/22
-        let fake_data: &str = "{\"version\":\"0.0.36\",\"string\":\"KLUv/QCIjRMAxiBoJ9Cy6gFCxM4ixSuU/HBxd1D/SOgQX0ocwXafudTHUGTjqJYqkxTYEV8AXABZAJ6pEV23LyseLApKFZy9ffRaDrtI9uVk5tSC2csxgSboyws7nHVkRyLStvNLwQBlJhgnKFn0tZt7/ra+v5tt3XImVA5zSuGorMwUOXFDwSlGWFOEJW1opkdJr4pSjDQElc9LqG85PW8XXLNE8Co1px/brb1WToBuLdmue3bn+/F8GefsA/6xuZLxxZMCEGEGVpu8cxKRmobnoxlnHcZIXLP7uSzB+Nwz5UYRZWBEGxYXB9DE9oe6QyU0zQMOOE+pvT0xj3XHdfEQe6XNrl+B0+wT3ytfrQD17Wffb98NLvrlpik6+4avf7wiityzsRA5ML5X+hZ7mpaYyLXJ/BGQ+QhovyBbF0xMn19Mbo1xiqd9S32bdxEoI10gKX1WlMbJoahmVtSUcTITRlWURoNV2cSmakMjtTAICORuT7X/JLjRwIkgTlzrrLtM0ql0E+7r67i39/0Hfo/nXmVd1qZToHhe1LfM/l6v/TZvF8h9fF1d1wVdqFFURiAkRDIkJYVCY5AkmCOxeSIwIAQXlQopRpBFkogK7TMHvkM/vVYVzflXseIRUE0+NHO0m98GdBw4XQD+W66ntC8ilROTbl2C7FwBAOKyxkLoO2ezpb9o8WPVEdGIIAdxNgGEV5psGGq8o53wRBWWg4pYKcxo/krDUU1ea4Emm4gghYTjcwlEEJbFlqJYUB5PyUejJbW8jCElD9ply7onIqiwOYJS9PmJNuJRBlOgBspEXKbcS/c1HbfBudIyZ6H9OwQwPuckTG88CQ==\"}";
+        let fake_data: &str = "{\"version\":\"0.0.36\",\"string\":\"KLUv/QCIfQUAYgkfGVDVAwMdwRLXXHpu1nWhFFma/2dL1xlougUumP6+APJ9j7KUcySnJLNNYnIltvVKqeC/kGIndHF1BHBIK4wv5CwLsGwLAIbYKL23nt62NWU9rV260vtN+lC7Gc6hQ88VJDnBTTvK2A2OlclP+nFC6Qv9pXpT45P+5vu7IxUg8C5MIG6uRGrJdMrMEWkifBPLCOMAwA1Yz4S7cwMRQhcZnAnHBXwkhgMFxxsKFg==\"}";
         println!("cargo:rustc-env=BUILD_INFO={fake_data}");
     }
 }
