@@ -2,7 +2,7 @@
 name = "catgirl-engine-utils"
 description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.12.10"
+version = "0.12.11"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -14,10 +14,10 @@ edition = "2021"
 
 [build-dependencies]
 #build-info-build = { version = "^0.0.36", default-features = false }
-build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false }
+build-info-build = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, version = "^0.0.37" }
 
 [dependencies]
 #build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
-build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"] }
+build-info = { git = "https://github.com/lexi-the-cute/build-info.git", rev = "3d66549", default-features = false, features = ["runtime"], version = "^0.0.37" }
 clap = { version = "~4", features = ["derive"] }
 wasm-bindgen = { version = "~0.2", default-features = true }
