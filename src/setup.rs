@@ -100,12 +100,20 @@ pub extern "C" fn print_version() {
         );
 
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
-        debug!(
-            "Copyright (C) {} {} - {} License",
-            info.timestamp.year(),
-            info.crate_info.authors[0],
-            info.crate_info.license.as_ref().unwrap()
-        );
+        let year: i32 = info.timestamp.year();
+        let author: String = if info.crate_info.authors.len() > 0 {
+            info.crate_info.authors[0].clone()
+        } else {
+            "Unknown".to_owned()
+        };
+
+        let license: String = if info.crate_info.license.is_some() {
+            info.crate_info.license.as_ref().unwrap().clone()
+        } else {
+            "Unknown".to_owned()
+        };
+
+        debug!("Copyright (C) {} {} - {} License", year, author, license);
     } else {
         // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
         // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
@@ -128,7 +136,7 @@ pub extern "C" fn print_version() {
             "Unknown".to_owned()
         };
 
-        println!("Copyright (C) {} {} - {:?} License", year, author, license);
+        println!("Copyright (C) {} {} - {} License", year, author, license);
     }
 }
 
