@@ -26,14 +26,14 @@ pub fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> (f64, f64, f64) {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_srgb_to_linear_srgb() -> () {
+    fn test_srgb_to_linear_srgb() {
         // ~(0.14, 0.06, 0.27)
         assert_eq!(
             super::srgb_to_linear_srgb(104, 71, 141),
             (
-                0.13843161503245183,
-                0.06301001765316767,
-                0.26635560480286247
+                0.138_431_615_032_451_83,
+                0.063_010_017_653_167_67,
+                0.266_355_604_802_862_47
             )
         );
     }

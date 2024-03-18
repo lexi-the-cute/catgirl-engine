@@ -99,7 +99,7 @@ mod tests {
     use std::ffi::CString;
 
     #[test]
-    fn test() -> () {
+    fn test() {
         use super::*;
 
         // Null pointer should be disregarded (e.g. return is None)
@@ -119,8 +119,8 @@ mod tests {
             // Test Parser
             assert_eq!(
                 parse_args_from_c(
-                    argv.len() as i32,
-                    argv.as_ptr() as *const *const *const c_char
+                    i32::try_from(argv.len()).unwrap(),
+                    argv.as_ptr().cast::<*const *const c_char>()
                 ),
                 Some(vec!["hello".to_owned()])
             );
