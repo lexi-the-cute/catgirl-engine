@@ -18,7 +18,7 @@ build_info::build_info!(
 
 /// Process args for future use
 #[wasm_bindgen]
-pub fn process_args() {
+pub extern "C" fn process_args() {
     // Store assets path in separate variable
     game::store_assets_path(get_args().assets);
 
@@ -26,6 +26,7 @@ pub fn process_args() {
 }
 
 /// Retrieve parsed out command line arguments
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
@@ -35,6 +36,7 @@ pub fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -58,6 +60,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 }
 
 /// Get all dependencies from the workspace used to build the engine
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
@@ -242,6 +245,7 @@ fn set_panic_hook() {
 }
 
 /// Determines if client or server and starts the engine
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");
 

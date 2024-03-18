@@ -24,6 +24,7 @@ pub mod setup;
 /// Retrieve the engine's icon
 ///
 /// This does not work on Wayland, use the .desktop shortcut
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn get_icon() -> Icon {
     let assets_path: PathBuf = crate::game::get_assets_path();
     let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");

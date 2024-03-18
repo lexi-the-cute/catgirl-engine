@@ -29,6 +29,7 @@ pub struct Args {
 ///
 /// This only checks if argv is null,
 /// it does not verify that argv points to valid data
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub unsafe fn parse_args_from_c(
     argc: c_int,
     argv_pointer: *const *const *const c_char,
@@ -64,6 +65,7 @@ pub unsafe fn parse_args_from_c(
 }
 
 /// Set parsed args passed in from function
+// TODO (BIND): Implement `extern "C"`
 #[wasm_bindgen]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
@@ -76,6 +78,7 @@ pub fn set_parsed_args(args: Vec<String>) {
 }
 
 /// Retrieve parsed args previously passed in from function
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn get_args() -> Option<Args> {
     ARGS.get().cloned()
 }

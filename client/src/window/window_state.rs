@@ -28,6 +28,7 @@ pub struct WindowState<'a> {
 
 impl WindowState<'_> {
     /// Used to initialize a new window and setup the graphics
+    // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
@@ -79,6 +80,7 @@ impl WindowState<'_> {
     }
 
     /// Initalize the async graphics portion of the window state
+    // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
     pub async fn initialize_graphics(&mut self) {
         // Describe's a device
         // For use with adapter's request device
@@ -137,6 +139,7 @@ impl WindowState<'_> {
     }
 
     /// Recreate the surface after it has been destroyed (e.g. used on Android)
+    // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
     pub fn recreate_surface(&mut self) {
         if self.device.is_none() {
             warn!("Device is not setup... Have graphics been initialized?");
