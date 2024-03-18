@@ -22,11 +22,16 @@ pub extern "C" fn process_args() {
     // Store assets path in separate variable
     game::store_assets_path(get_args().assets);
 
-    trace!("Assets Path: {:?}", game::get_assets_path())
+    trace!("Assets Path: {:?}", game::get_assets_path());
 }
 
 /// Retrieve parsed out command line arguments
+///
+/// # Panics
+///
+/// This may panic if the args cannot unwrapped
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+#[must_use]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
@@ -61,6 +66,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 
 /// Get all dependencies from the workspace used to build the engine
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+#[must_use]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
@@ -90,6 +96,10 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 }
 
 /// Print the version of the engine
+///
+/// # Panics
+///
+/// This may fail if the license info cannot be unwrapped
 #[wasm_bindgen]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
@@ -104,7 +114,7 @@ pub extern "C" fn print_version() {
 
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
-        let author: String = if info.crate_info.authors.len() > 0 {
+        let author: String = if !info.crate_info.authors.is_empty() {
             info.crate_info.authors[0].clone()
         } else {
             "Unknown".to_owned()
@@ -116,7 +126,7 @@ pub extern "C" fn print_version() {
             "Unknown".to_owned()
         };
 
-        debug!("Copyright (C) {} {} - {} License", year, author, license);
+        debug!("Copyright (C) {year} {author} - {license} License");
     } else {
         // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
         // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
@@ -127,7 +137,7 @@ pub extern "C" fn print_version() {
 
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
-        let author: String = if info.crate_info.authors.len() > 0 {
+        let author: String = if !info.crate_info.authors.is_empty() {
             info.crate_info.authors[0].clone()
         } else {
             "Unknown".to_owned()
@@ -139,11 +149,15 @@ pub extern "C" fn print_version() {
             "Unknown".to_owned()
         };
 
-        println!("Copyright (C) {} {} - {} License", year, author, license);
+        println!("Copyright (C) {year} {author} - {license} License");
     }
 }
 
 /// Print the dependencies of the engine
+///
+/// # Panics
+///
+/// May panic if dependency is license info cannot be unwrapped
 #[wasm_bindgen]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
@@ -158,23 +172,25 @@ pub extern "C" fn print_dependencies() {
         // Print all dependencies
         // Loop through dependency list to print
         for (name, dep) in dependencies {
-            debug!(
-                "{} v{} - License {}",
-                name,
-                dep.version,
-                dep.license.as_ref().unwrap()
-            )
+            let license: String = if dep.license.is_some() {
+                dep.license.as_ref().unwrap().clone()
+            } else {
+                "Unknown".to_owned()
+            };
+
+            debug!("{} v{} - License {}", name, dep.version, license);
         }
     } else {
         // Print all dependencies
         // Loop through dependency list to print
         for (name, dep) in dependencies {
-            println!(
-                "{} v{} - License {}",
-                name,
-                dep.version,
-                dep.license.as_ref().unwrap()
-            )
+            let license: String = if dep.license.is_some() {
+                dep.license.as_ref().unwrap().clone()
+            } else {
+                "Unknown".to_owned()
+            };
+
+            println!("{} v{} - License {}", name, dep.version, license);
         }
     }
 }
@@ -245,6 +261,14 @@ fn set_panic_hook() {
 }
 
 /// Determines if client or server and starts the engine
+///
+/// # Panics
+///
+/// This may fail to set the ctrl+c handler
+///
+/// # Errors
+///
+/// This may fail to set the ctrl+c handler
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");
