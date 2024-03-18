@@ -34,7 +34,7 @@ pub struct Args {
 ///
 /// # Panics
 ///
-/// Can panic if c string is not valid in the argument vector arg
+/// Can panic if C string is not valid in the argument vector arg
 // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use] // must use the result of this function
 pub unsafe fn parse_args_from_c(
