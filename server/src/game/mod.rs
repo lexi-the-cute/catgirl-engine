@@ -6,6 +6,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// Shortcut to [`game_loop::game_loop()`]
 ///
 /// [`game_loop::game_loop()`]: crate::game::game_loop::game_loop()
+// TODO (BIND): Implement `extern "C"`
 pub fn game_loop() -> Result<(), String> {
     game_loop::game_loop()
 }
@@ -13,6 +14,7 @@ pub fn game_loop() -> Result<(), String> {
 /// Shortcut to [`game_loop::game_loop()`] designed for Wasm
 ///
 /// [`game_loop::game_loop()`]: crate::game::game_loop::game_loop()
+// TODO (BIND): Implement `extern "C"`
 #[wasm_bindgen]
 pub fn server_game_loop() -> Result<(), String> {
     game_loop()

@@ -15,6 +15,7 @@ use winit::platform::web::EventLoopExtWebSys;
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
 /// Client game loop
+// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
