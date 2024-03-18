@@ -2,6 +2,7 @@ use std::sync::Mutex;
 
 use crate::window::window_state::WindowState;
 
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::{EventLoop, EventLoopBuilder, EventLoopWindowTarget};
@@ -25,7 +26,7 @@ use winit::platform::web::EventLoopExtWebSys;
 ///
 /// The event loop may not be created
 // TODO (BIND): Implement `extern "C"`
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");

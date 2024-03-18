@@ -4,6 +4,8 @@ use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 use client::game;
 use utils::args::Args;
+
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
 // Constants
@@ -17,7 +19,7 @@ build_info::build_info!(
 );
 
 /// Process args for future use
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn process_args() {
     // Store assets path in separate variable
     game::store_assets_path(get_args().assets);
@@ -30,7 +32,7 @@ pub extern "C" fn process_args() {
 /// # Panics
 ///
 /// This may panic if the args cannot unwrapped
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
@@ -41,7 +43,7 @@ pub fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -65,7 +67,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 }
 
 /// Get all dependencies from the workspace used to build the engine
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
@@ -100,7 +102,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 /// # Panics
 ///
 /// This may fail if the license info cannot be unwrapped
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
 
@@ -158,7 +160,7 @@ pub extern "C" fn print_version() {
 /// # Panics
 ///
 /// May panic if dependency is license info cannot be unwrapped
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
 
@@ -269,7 +271,7 @@ fn set_panic_hook() {
 /// # Errors
 ///
 /// This may fail to set the ctrl+c handler
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");
 
