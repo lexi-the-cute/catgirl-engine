@@ -1,6 +1,8 @@
 use clap::Parser;
 use core::ffi::{c_char, c_int};
 use std::{path::PathBuf, sync::OnceLock};
+
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
 /// Reference to command line args specified by function
@@ -33,7 +35,7 @@ pub struct Args {
 /// # Panics
 ///
 /// Can panic if c string is not valid in the argument vector arg
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use] // must use the result of this function
 pub unsafe fn parse_args_from_c(
     arg_count: c_int,
@@ -75,7 +77,7 @@ pub unsafe fn parse_args_from_c(
 
 /// Set parsed args passed in from function
 // TODO (BIND): Implement `extern "C"`
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway
@@ -87,7 +89,7 @@ pub fn set_parsed_args(args: Vec<String>) {
 }
 
 /// Retrieve parsed args previously passed in from function
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 pub fn get_args() -> Option<Args> {
     ARGS.get().cloned()
 }

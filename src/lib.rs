@@ -13,6 +13,7 @@ use core::ffi::{c_char, c_int};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
+#[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
 extern crate wasm_bindgen;
@@ -22,7 +23,7 @@ extern crate wasm_bindgen;
 ///
 /// The starting point when calling as a generic library
 #[no_mangle]
-#[wasm_bindgen]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();

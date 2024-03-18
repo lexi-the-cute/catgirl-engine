@@ -27,7 +27,7 @@ pub mod setup;
 /// # Panics
 ///
 /// This may fail to load the file from the byte array as an image
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use]
 pub fn get_icon() -> Icon {
     let assets_path: PathBuf = crate::game::get_assets_path();
