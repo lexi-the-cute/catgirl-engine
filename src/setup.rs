@@ -31,7 +31,7 @@ pub extern "C" fn process_args() {
 ///
 /// # Panics
 ///
-/// This may panic if the args cannot unwrapped
+/// This may panic if the args cannot be unwrapped
 // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use]
 pub fn get_args() -> Args {
@@ -159,7 +159,7 @@ pub extern "C" fn print_version() {
 ///
 /// # Panics
 ///
-/// May panic if dependency is license info cannot be unwrapped
+/// May panic if the dependency license info cannot be unwrapped
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
