@@ -48,6 +48,15 @@ targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu", "wasm32-unknown-
             "aarch64-linux-android", "armv7-linux-androideabi",
             "i686-linux-android", "x86_64-linux-android"]
 
+[lints.clippy]
+missing_docs_in_private_items = "warn"
+pedantic = { level = "warn", priority = -1 }
+similar_names = "allow"
+module_name_repetitions = "allow"
+needless_pass_by_value = "allow"
+too_many_lines = "allow"
+unused_self = "allow"
+
 [workspace]
 members = [
     "utils",

@@ -114,10 +114,10 @@ pub extern "C" fn print_version() {
 
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
-        let author: String = if !info.crate_info.authors.is_empty() {
-            info.crate_info.authors[0].clone()
-        } else {
+        let author: String = if info.crate_info.authors.is_empty() {
             "Unknown".to_owned()
+        } else {
+            info.crate_info.authors[0].clone()
         };
 
         let license: String = if info.crate_info.license.is_some() {
@@ -137,10 +137,10 @@ pub extern "C" fn print_version() {
 
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
-        let author: String = if !info.crate_info.authors.is_empty() {
-            info.crate_info.authors[0].clone()
-        } else {
+        let author: String = if info.crate_info.authors.is_empty() {
             "Unknown".to_owned()
+        } else {
+            info.crate_info.authors[0].clone()
         };
 
         let license: String = if info.crate_info.license.is_some() {

@@ -1,3 +1,5 @@
+//! Build script for crate
+
 extern crate cbindgen;
 
 use build_info_build::DependencyDepth;
@@ -6,6 +8,7 @@ use std::collections::HashMap;
 use std::env::{self, Vars};
 use std::path::PathBuf;
 
+/// Main function
 fn main() {
     // Debug environment
     // print_environment_vars();
@@ -20,11 +23,13 @@ fn main() {
     create_bindings();
 }
 
+/// Checks if string matches environment variable
 fn matches_environment_var(key: &str, value: &str) -> bool {
     let environment_var: Result<String, env::VarError> = env::var(key);
     environment_var.is_ok() && environment_var.unwrap() == value
 }
 
+/// Generate build info
 fn generate_build_info() {
     // https://github.com/danielschemmel/build-info/issues/17
     // https://github.com/danielschemmel/build-info/issues/18
@@ -41,15 +46,16 @@ fn generate_build_info() {
         depth = DependencyDepth::None;
     }
 
-    if !docs_rs {
-        build_info_build::build_script().collect_runtime_dependencies(depth);
-    } else {
+    if docs_rs {
         // Waiting for https://github.com/danielschemmel/build-info/pull/22
         let fake_data: &str = "{\"version\":\"0.0.36\",\"string\":\"KLUv/QCIfQUAYgkfGVDVAwMdwRLXXHpu1nWhFFma/2dL1xlougUumP6+APJ9j7KUcySnJLNNYnIltvVKqeC/kGIndHF1BHBIK4wv5CwLsGwLAIbYKL23nt62NWU9rV260vtN+lC7Gc6hQ88VJDnBTTvK2A2OlclP+nFC6Qv9pXpT45P+5vu7IxUg8C5MIG6uRGrJdMrMEWkifBPLCOMAwA1Yz4S7cwMRQhcZnAnHBXwkhgMFxxsKFg==\"}";
         println!("cargo:rustc-env=BUILD_INFO={fake_data}");
+    } else {
+        build_info_build::build_script().collect_runtime_dependencies(depth);
     }
 }
 
+/// Set rust flags depending on build target
 fn set_rustflags() {
     // -rdynamic allows exporting symbols even when compiled as an executable
     // https://stackoverflow.com/a/57595625
@@ -64,6 +70,7 @@ fn set_rustflags() {
       }*/
 }
 
+/// Create C/C++/Python bindings
 fn create_bindings() {
     let crate_directory: String = env::var("CARGO_MANIFEST_DIR").unwrap();
     let package_name: String = env::var("CARGO_PKG_NAME").unwrap();
@@ -78,6 +85,7 @@ fn create_bindings() {
     );
 }
 
+/// Create requested binding
 fn create_binding(
     extension: &str,
     language: Language,
@@ -86,11 +94,11 @@ fn create_binding(
 ) {
     let output_file: String = target_dir()
         .join("binding")
-        .join(format!("{}.{}", package_name, extension))
+        .join(format!("{package_name}.{extension}"))
         .display()
         .to_string();
 
-    let mut header: String = "".to_owned() +
+    let mut header: String = String::new() +
         "/*\n" +
         " * This file exists to help facilitate modding this catgirl game engine...\n" +
         " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" +
@@ -138,6 +146,7 @@ fn create_binding(
         .write_to_file(output_file);
 }
 
+/// Define custom C defines macros
 fn get_bindgen_defines() -> HashMap<String, String> {
     let mut defines: HashMap<String, String> = HashMap::new();
 
@@ -194,6 +203,7 @@ fn target_dir() -> PathBuf {
     }
 }
 
+/// Print all environment variables
 #[allow(dead_code)]
 fn print_environment_vars() {
     let vars: Vars = env::vars();
