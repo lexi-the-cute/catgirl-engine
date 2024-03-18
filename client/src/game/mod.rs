@@ -2,7 +2,6 @@
 pub mod game_loop;
 
 use std::{path::PathBuf, sync::OnceLock};
-use wasm_bindgen::prelude::wasm_bindgen;
 
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
@@ -28,6 +27,10 @@ pub fn store_assets_path(path: PathBuf) {
 }
 
 /// Get assets path
+///
+/// # Panics
+///
+/// The path to the assets directory may be invalid
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn get_assets_path() -> PathBuf {
     if ASSETS_PATH.get().is_some() {
@@ -38,19 +41,18 @@ pub fn get_assets_path() -> PathBuf {
     }
 }
 
-/// Shortcut to [`game_loop::game_loop()`]
+/// Shortcut to [`game_loop::client_game_loop()`]
 ///
-/// [`game_loop::game_loop()`]: crate::game::game_loop::game_loop()
+/// [`game_loop::client_game_loop()`]: crate::game::game_loop::client_game_loop()
+///
+/// # Errors
+///
+/// The event loop may not be created
+///
+/// # Panics
+///
+/// The event loop may not be created
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
 pub fn game_loop() -> Result<(), String> {
-    game_loop::game_loop()
-}
-
-/// Shortcut to [`game_loop::game_loop()`] designed for Wasm
-///
-/// [`game_loop::game_loop()`]: crate::game::game_loop::game_loop()
-// TODO (BIND): Implement `extern "C"`
-#[wasm_bindgen]
-pub fn client_game_loop() -> Result<(), String> {
-    game_loop()
+    game_loop::client_game_loop()
 }

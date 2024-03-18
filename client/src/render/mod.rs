@@ -4,8 +4,9 @@
 // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_sRGB_decode.txt
 /// Converts Standard RGB Color Space to Linear Standard RGB Color Space
 ///
-/// Outputs f64 instead of f32 for use in wgpu::Color
+/// Outputs f64 instead of f32 for use in `wgpu::Color`
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+#[must_use]
 pub fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> (f64, f64, f64) {
     let r: f64 = f64::from(red) / 255.0;
     let g: f64 = f64::from(green) / 255.0;

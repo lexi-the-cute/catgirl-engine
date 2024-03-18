@@ -29,33 +29,42 @@ pub struct Args {
 ///
 /// This only checks if argv is null,
 /// it does not verify that argv points to valid data
+///
+/// # Panics
+///
+/// Can panic if c string is not valid in the argument vector arg
 // TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
+#[must_use] // must use the result of this function
 pub unsafe fn parse_args_from_c(
-    argc: c_int,
-    argv_pointer: *const *const *const c_char,
+    arg_count: c_int,
+    arg_vector_pointer: *const *const *const c_char,
 ) -> Option<Vec<String>> {
     use core::ffi::CStr;
 
     // Check if argv_pointer is null
-    if argv_pointer.is_null() {
+    if arg_vector_pointer.is_null() {
         return None;
     }
 
     // Cast back to *const *const c_char so we can operate on it
     //  now that we passed the Safe API Boundary/Barrier
-    let argv: *const *const c_char = argv_pointer as *const *const c_char;
+    let arg_vector: *const *const c_char = arg_vector_pointer.cast::<*const c_char>();
 
     // Check if argv is null
-    if argv.is_null() {
+    if arg_vector.is_null() {
         return None;
     }
 
     // Parse array out of argv
-    let c_args: &[*const c_char] = unsafe { std::slice::from_raw_parts(argv, argc as usize) };
+    #[allow(clippy::cast_sign_loss)]
+    let c_args: &[*const c_char] =
+        unsafe { std::slice::from_raw_parts(arg_vector, arg_count as usize) };
 
     let mut args: Vec<String> = vec![];
     for &arg in c_args {
         let c_str: &CStr = unsafe { CStr::from_ptr(arg) };
+
+        // This can cause panic
         let str_slice: &str = c_str.to_str().unwrap();
 
         args.push(str_slice.to_owned());

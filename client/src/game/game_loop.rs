@@ -2,6 +2,7 @@ use std::sync::Mutex;
 
 use crate::window::window_state::WindowState;
 
+use wasm_bindgen::prelude::wasm_bindgen;
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::{EventLoop, EventLoopBuilder, EventLoopWindowTarget};
 
@@ -15,8 +16,17 @@ use winit::platform::web::EventLoopExtWebSys;
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
 /// Client game loop
-// TODO (BIND): Implement `#[wasm_bindgen]` and `extern "C"`
-pub fn game_loop() -> Result<(), String> {
+///
+/// # Errors
+///
+/// The event loop may not be created
+///
+/// # Panics
+///
+/// The event loop may not be created
+// TODO (BIND): Implement `extern "C"`
+#[wasm_bindgen]
+pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
@@ -31,6 +41,7 @@ pub fn game_loop() -> Result<(), String> {
         .expect("Could not create an event loop!");
 
     /// Holds the window state in a way that's compatible with async
+    #[allow(clippy::items_after_statements)]
     static WINDOW_STATE: Mutex<Option<WindowState>> = Mutex::new(None);
     debug!("Starting event loop...");
     let event_loop_closure = move |event: Event<()>, window_target: &EventLoopWindowTarget<()>| {
