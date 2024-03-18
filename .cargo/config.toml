@@ -2,5 +2,6 @@
 
 [build]
 # target = "wasm32-unknown-unknown"  # to get ide completions on other platforms
+# target = "aarch64-linux-android"
 rustflags = []
 rustdocflags = []
