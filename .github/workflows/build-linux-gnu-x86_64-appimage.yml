@@ -32,7 +32,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install gcc g++ libfuse2 desktop-file-utils  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+            sudo apt -y install gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
 
             # Install AppImageTool
             mkdir -p ${{ github.workspace }}/.bin
@@ -112,6 +112,7 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
+          mkdir -p ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc/
 
