@@ -9,3 +9,6 @@ _site/
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
+
+# AppImage
+/libs

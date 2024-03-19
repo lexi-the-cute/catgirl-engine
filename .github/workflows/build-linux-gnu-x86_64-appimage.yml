@@ -1,4 +1,4 @@
-name: Build For Linux GNU x86_64
+name: Build For Linux GNU x86_64 as AppImage
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -75,6 +75,10 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
+      # Install Cargo AppImage
+      - name: Install Cargo AppImage
+        run: cargo install cargo-appimage
+
       # # Build Docs
       # - name: Build Docs
       #   run: |
@@ -85,7 +89,10 @@ jobs:
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --timings
+          # Release is already specified by cargo appimage
+          # https://github.com/StratusFearMe21/cargo-appimage/issues/30
+          # https://github.com/StratusFearMe21/cargo-appimage/blob/485be0a4393a251b7c3b20487424209bb29f7374/src/main.rs#L18
+          $HOME/.cargo/bin/cargo appimage --features appimage -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bin catgirl-engine --timings
 
       # Display Export Directory
       - name: Display Export Directory
@@ -94,20 +101,14 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads
         run: |
-          mkdir -p ${{ github.workspace }}/upload/profdata
-          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc/
-          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/client/catgirl-engine.desktop ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
           path: ${{ github.workspace }}/upload/*
 
       # Test Minimal Dependency Versions
@@ -211,12 +212,8 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Zip
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
-
-      # Recreate Linux Zip
-      - name: Recreate Linux Zip (Release)
-        run: cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64; zip -9 -y -r ../CatgirlEngine-Linux-GNU-x86_64.zip .
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
+          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -248,8 +245,8 @@ jobs:
       - name: 👩‍💻 Publish to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.zip"
-          export DISPLAY_LABEL="x86_64 Linux Zip"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine.AppImage"
+          export DISPLAY_LABEL="x86_64 Linux AppImage"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
 
@@ -268,4 +265,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64 fomxgorl/catgirl-engine:linux-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine.AppImage fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage

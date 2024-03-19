@@ -23,6 +23,11 @@ pub struct Args {
     /// Set custom assets path
     #[arg(short, long, default_value = "assets")]
     pub assets: PathBuf,
+    // /// Shows the AppImage help arguments
+    // https://github.com/clap-rs/clap/discussions/5401
+    // #[cfg(feature = "appimage")]
+    // #[arg(long, default_value_t = false)]
+    // pub appimage_help: bool,
 }
 
 /// Parse arguments from C and send to the Clap library

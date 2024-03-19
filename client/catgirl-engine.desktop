@@ -1,9 +1,14 @@
-#!/usr/bin/env xdg-open
 [Desktop Entry]
+Comment=
 Encoding=UTF-8
-Version=1.0
-Type=Application
-Terminal=false
-Exec=./catgirl-engine
-Name=Catgirl Engine
+Exec=sh -e -c "exec \\"\\$(dirname \\"\\$0\\")/catgirl-engine\\"" %k
+GenericName=
 Icon=./assets/vanilla/texture/logo/logo.png
+MimeType=
+Name=Catgirl Engine
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+Version=1.0
