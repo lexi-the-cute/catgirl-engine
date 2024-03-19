@@ -32,7 +32,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install gcc g++ libfuse2  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+            sudo apt -y install gcc g++ libfuse2 desktop-file-utils  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
 
             # Install AppImageTool
             mkdir -p ${{ github.workspace }}/.bin
@@ -104,6 +104,10 @@ jobs:
       # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release
+
+      # Display AppImage Directory
+      - name: Display AppImage Directory
+        run: ls -liallh ${{ github.workspace }}/target/appimage
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads

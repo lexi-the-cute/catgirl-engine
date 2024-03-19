@@ -1,6 +1,5 @@
 [Desktop Entry]
 Comment=
-Encoding=UTF-8
 Exec=sh -e -c "exec \\"\\$(dirname \\"\\$0\\")/catgirl-engine\\"" %k
 GenericName=
 Icon=./assets/vanilla/texture/logo/logo.png
@@ -9,6 +8,5 @@ Name=Catgirl Engine
 Path=
 StartupNotify=true
 Terminal=false
-TerminalOptions=
 Type=Application
 Version=1.0
