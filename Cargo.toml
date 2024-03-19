@@ -38,6 +38,7 @@ default = ["client", "server"]
 client = ["dep:client"]
 server = ["dep:server"]
 tracing-subscriber = ["dep:tracing-subscriber"]
+appimage = ["utils/appimage"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -48,6 +49,13 @@ targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu", "wasm32-unknown-
             "aarch64-linux-android", "armv7-linux-androideabi",
             "i686-linux-android", "x86_64-linux-android"]
 
+[workspace]
+members = [
+    "utils",
+    "client",
+    "server"
+]
+
 [lints.clippy]
 missing_docs_in_private_items = "warn"
 pedantic = { level = "warn", priority = -1 }
@@ -57,11 +65,15 @@ needless_pass_by_value = "allow"
 too_many_lines = "allow"
 unused_self = "allow"
 
-[workspace]
-members = [
-    "utils",
-    "client",
-    "server"
+[package.metadata.appimage]
+assets = ["client/assets", "target/binding"]
+# args = []  # args for appimagetool
+auto_link = true
+auto_link_exclude_list = [
+    "libc.so*",
+    "libm.so*",
+    "libgcc*.so*",
+    "ld-linux*.so*"
 ]
 
 [build-dependencies]

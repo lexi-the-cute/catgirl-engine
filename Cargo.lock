@@ -489,6 +489,7 @@ dependencies = [
  "build-info",
  "build-info-build",
  "clap",
+ "tracing",
  "wasm-bindgen",
 ]
 
