@@ -32,7 +32,12 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install gcc g++  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+            sudo apt -y install gcc g++ libfuse2  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+
+            # Install AppImageTool
+            mkdir -p ${{ github.workspace }}/.bin
+            wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/.bin/appimagetool
+            chmod +x ${{ github.workspace }}/.bin/appimagetool
 
       # Install Rust
       - name: Make Tools Directory
@@ -89,6 +94,8 @@ jobs:
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export PATH="${{ github.workspace }}/.bin:$PATH"
+
           # Release is already specified by cargo appimage
           # https://github.com/StratusFearMe21/cargo-appimage/issues/30
           # https://github.com/StratusFearMe21/cargo-appimage/blob/485be0a4393a251b7c3b20487424209bb29f7374/src/main.rs#L18
