@@ -2,7 +2,7 @@
 name = "catgirl-engine"
 description = "A game engine for cool moddability and procedurally generated data"
 license = "Zlib"
-version = "0.12.23"  # https://semver.org (Do not use 1.0.0 until first production release)
+version = "0.12.24"  # https://semver.org (Do not use 1.0.0 until first production release)
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -68,9 +68,8 @@ unused_self = "allow"
 [package.metadata.appimage]
 assets = ["client/assets", "target/binding"]
 icon = "client/assets/vanilla/texture/logo/logo.png"
-startup_wm_class = "catgirl-engine"
 desktop_file = "catgirl-engine.desktop"
-# args = []  # args for appimagetool
+startup_wm_class = "catgirl-engine"
 auto_link = true
 auto_link_exclude_list = [
     "libc.so*",
@@ -87,9 +86,9 @@ cc = { version = "~1.0", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-utils = { version = "0.12.23", package = "catgirl-engine-utils", path = "utils" }
-client = { version = "0.12.23", package = "catgirl-engine-client", path = "client", optional = true }
-server = { version = "0.12.23", package = "catgirl-engine-server", path = "server", optional = true }
+utils = { version = "0.12.24", package = "catgirl-engine-utils", path = "utils" }
+client = { version = "0.12.24", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.12.24", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
