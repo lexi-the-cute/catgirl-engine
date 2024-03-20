@@ -24,17 +24,44 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
     use winit::platform::web::WindowBuilderExtWebSys;
 
     debug!("Creating window...");
-
-    #[cfg(not(target_family = "wasm"))]
-    let window: Window = WindowBuilder::new()
+    let mut window_builder: WindowBuilder = WindowBuilder::new();
+    window_builder = window_builder
         .with_title("Catgirl Engine")
-        .with_window_icon(Some(crate::get_icon()))
-        .build(window_target)
-        .expect("Could not create window!");
+        .with_window_icon(Some(crate::get_icon()));
 
-    #[cfg(target_family = "wasm")]
-    let window: Window = WindowBuilder::new()
-        .with_canvas(crate::window::web::get_canvas())
+    if cfg!(target_family = "wasm") {
+        #[cfg(target_family = "wasm")]
+        {
+            window_builder = window_builder.with_canvas(crate::window::web::get_canvas());
+        }
+    } else if cfg!(feature = "appimage") {
+        #[cfg(feature = "appimage")]
+        {
+            // This is a bit messy unfortunately
+            // TODO: Figure out why icon is still not set in top left corner
+
+            // WM_CLASS(STRING) = "instance", "general"
+            // https://stackoverflow.com/q/44795622
+            let general: &str = "cargo-appimage";
+            let instance: &str = "catgirl-engine";
+
+            trace!(
+                "XDG_SESSION_TYPE: {}",
+                utils::get_environment_var("XDG_SESSION_TYPE").unwrap_or("None".to_owned())
+            );
+            if utils::matches_environment_var("XDG_SESSION_TYPE", "x11") {
+                use winit::platform::x11::WindowBuilderExtX11;
+
+                window_builder = window_builder.with_name(general, instance);
+            } else if utils::matches_environment_var("XDG_SESSION_TYPE", "wayland") {
+                use winit::platform::wayland::WindowBuilderExtWayland;
+
+                window_builder = window_builder.with_name(general, instance);
+            }
+        }
+    }
+
+    let window: Window = window_builder
         .build(window_target)
         .expect("Could not create window!");
 
