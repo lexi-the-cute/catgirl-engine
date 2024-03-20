@@ -38,7 +38,7 @@ default = ["client", "server"]
 client = ["dep:client"]
 server = ["dep:server"]
 tracing-subscriber = ["dep:tracing-subscriber"]
-appimage = ["utils/appimage"]
+appimage = ["utils/appimage", "client/appimage"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -68,15 +68,15 @@ unused_self = "allow"
 [package.metadata.appimage]
 assets = ["client/assets", "target/binding"]
 # args = []  # args for appimagetool
-# auto_link = true
-# auto_link_exclude_list = [
-#     "libc.so*",
-#     "libm.so*",
-#     "libgcc*.so*",
-#     "ld-linux*.so*",
-#     "libpthread.so*",
-#     "libdl.so*"
-# ]
+auto_link = true
+auto_link_exclude_list = [
+    "libc.so*",
+    "libm.so*",
+    "libgcc*.so*",
+    "ld-linux*.so*",
+    "libpthread.so*",
+    "libdl.so*"
+]
 
 [build-dependencies]
 build-info-build = { version = "^0.0.36", default-features = false }
