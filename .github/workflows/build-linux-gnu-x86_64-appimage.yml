@@ -82,7 +82,7 @@ jobs:
 
       # Install Cargo AppImage
       - name: Install Cargo AppImage
-        run: cargo install cargo-appimage
+        run: cargo install --git https://github.com/lexi-the-cute/cargo-appimage  # cargo-appimage
 
       # # Build Docs
       # - name: Build Docs
