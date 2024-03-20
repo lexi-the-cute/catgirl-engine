@@ -34,15 +34,16 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
         {
             window_builder = window_builder.with_canvas(crate::window::web::get_canvas());
         }
-    } else if cfg!(feature = "appimage") {
-        #[cfg(feature = "appimage")]
+    } else if cfg!(target_family = "unix") {
+        #[cfg(target_family = "unix")]
         {
-            // This is a bit messy unfortunately
-            // TODO: Figure out why icon is still not set in top left corner
+            // For some reason, the icon only shows up in the top left corner
+            //   if the desktop file is placed in `/usr/share/applications`
 
             // WM_CLASS(STRING) = "instance", "general"
+            // `qdbus org.kde.KWin /KWin queryWindowInfo`
             // https://stackoverflow.com/q/44795622
-            let general: &str = "cargo-appimage";
+            let general: &str = "catgirl-engine";
             let instance: &str = "catgirl-engine";
 
             trace!(
