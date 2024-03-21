@@ -19,6 +19,7 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
+      GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -43,7 +44,7 @@ jobs:
           retry_on: error
           command: |
             sudo apt update
-            sudo apt -y install gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+            sudo apt -y install gnupg2 gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
 
             # Install AppImageTool
             mkdir -p ${{ github.workspace }}/.bin
@@ -94,6 +95,12 @@ jobs:
       # Install Cargo AppImage
       - name: Install Cargo AppImage
         run: cargo install --git https://github.com/lexi-the-cute/cargo-appimage  # cargo-appimage
+
+      # Extract/Import GPG Signing Key
+      - name: Extract GPG Signing Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
+          gpg --import $HOME/signing.gpg
 
       # # Build Docs
       # - name: Build Docs
