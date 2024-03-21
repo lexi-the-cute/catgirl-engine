@@ -1,5 +1,15 @@
 name: Build For Linux GNU x86_64
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Run publish job'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'yes'
 jobs:
   build:
     runs-on: ubuntu-20.04  # Intentionally set so it uses an older GLIBC
@@ -169,7 +179,7 @@ jobs:
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
-    if: ${{ success() && endsWith(github.event.head_commit.message, '--publish') }}
+    if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
     runs-on: ubuntu-latest
     environment: Linux
