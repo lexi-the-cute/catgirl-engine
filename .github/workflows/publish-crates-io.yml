@@ -1,8 +1,19 @@
 name: Publish to Crates.io
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Run publish job'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'no'
+        - 'yes'
 jobs:
   build:
-    if: ${{ endsWith(github.event.head_commit.message, '--publish') }}
+    if: ${{ endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes' }}
     runs-on: ubuntu-latest
     environment: Linux
     env:
