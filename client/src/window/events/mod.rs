@@ -34,8 +34,8 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
         {
             window_builder = window_builder.with_canvas(crate::window::web::get_canvas());
         }
-    } else if cfg!(target_family = "unix") {
-        #[cfg(target_family = "unix")]
+    } else if cfg!(target_os = "linux") {
+        #[cfg(target_os = "linux")]
         {
             // For some reason, the icon only shows up in the top left corner
             //   if the desktop file is placed in `/usr/share/applications`
