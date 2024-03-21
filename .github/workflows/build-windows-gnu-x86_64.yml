@@ -9,6 +9,7 @@ on:
         default: 'no'
         type: choice
         options:
+        - 'no'
         - 'yes'
 jobs:
   build:
