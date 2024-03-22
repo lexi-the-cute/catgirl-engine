@@ -163,8 +163,9 @@ jobs:
       # Sign Files
       - name: Sign Files
         run: |
-          find ${{ github.workspace }}/upload -type f -not -name "app-release.aab" -not -name "checksums.sha512" -exec shasum -a 512 {} \; > ${{ github.workspace }}/upload/checksums.sha512
-          gpg --sign ${{ github.workspace }}/upload/checksums.sha512
+          cd ${{ github.workspace }}/upload
+          find . -type f -not -name "app-release.aab" -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
+          gpg --sign checksums.sha512
 
       # Upload APK
       - name: Upload APK (Release)
