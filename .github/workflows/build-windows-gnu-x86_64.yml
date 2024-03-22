@@ -129,7 +129,7 @@ jobs:
 
       # Sign Files
       - name: Sign Files
-        run: find . -maxdepth 1 -type f -exec gpg --sign {} \;
+        run: find ${{ github.workspace }}/upload -maxdepth 1 -type f -exec gpg --sign {} \;
 
       # Upload Engine
       - name: Upload Engine (Release)
