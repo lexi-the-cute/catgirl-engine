@@ -117,6 +117,12 @@ jobs:
       - name: Workaround Cargo Gradle Plugin Bug
         run: touch ${{ github.workspace }}/android/local.properties
 
+      # Extract/Import GPG Signing Key
+      - name: Extract GPG Signing Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
+          gpg --import $HOME/signing.gpg
+
       # Build Engine As APK
       - name: Build CatgirlEngine APK
         working-directory: ${{ github.workspace }}/android
@@ -149,6 +155,10 @@ jobs:
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
+
+      # Sign Files
+      - name: Sign Files
+        run: find . -maxdepth 1 -type f -exec gpg --sign {} \;
 
       # Upload APK
       - name: Upload APK (Release)

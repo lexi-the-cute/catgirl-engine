@@ -86,6 +86,12 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
+      # Extract/Import GPG Signing Key
+      - name: Extract GPG Signing Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
+          gpg --import $HOME/signing.gpg
+
       # # Build Docs
       # - name: Build Docs
       #   run: |
@@ -112,6 +118,10 @@ jobs:
           cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
+
+      # Sign Files
+      - name: Sign Files
+        run: find . -maxdepth 1 -type f -exec gpg --sign {} \;
 
       # Upload Engine
       - name: Upload Engine (Release)
