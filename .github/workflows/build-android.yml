@@ -171,6 +171,7 @@ jobs:
           name: CatgirlEngine-Android-APK
           path: |
             ${{ github.workspace }}/upload/catgirl-engine.apk
+            ${{ github.workspace }}/upload/catgirl-engine.apk.gpg
             ${{ github.workspace }}/upload/binding
             ${{ github.workspace }}/upload/cargo-timings
 
@@ -181,6 +182,7 @@ jobs:
       #     name: CatgirlEngine-Android-Bundle
       #     path: |
       #       ${{ github.workspace }}/upload/app-release.aab
+      #       ${{ github.workspace }}/upload/app-release.aab.gpg
       #       ${{ github.workspace }}/upload/binding
       #       ${{ github.workspace }}/upload/cargo-timings
 
