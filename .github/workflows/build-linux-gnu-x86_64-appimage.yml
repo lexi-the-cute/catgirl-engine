@@ -134,7 +134,7 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/catgirl-engine-x86_64.AppImage
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc/
 
       # Sign Files
@@ -238,15 +238,15 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      # - name: Install APT Packages
-      #   uses: nick-fields/retry@v3
-      #   with:
-      #     max_attempts: 3
-      #     timeout_minutes: 60
-      #     retry_on: error
-      #     command: |
-      #       sudo apt update
-      #       sudo apt -y install jq  # coreutils gitsome
+      - name: Install APT Packages
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            sudo apt update
+            sudo apt -y install zsync  # jq coreutils gitsome
 
       # Download Engine
       - name: Download Engine (Release)
@@ -254,6 +254,11 @@ jobs:
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
+
+      # Create Sync File
+      - name: Create Sync File
+        run: |
+          zsyncmake -u catgirl-engine-x86_64.AppImage
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -281,12 +286,21 @@ jobs:
             -F prerelease="$PRERELEASE" \
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
-      # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release
+      # Publish AppImage to Github Release
+      - name: 👩‍💻 Publish AppImage to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine.AppImage"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage"
           export DISPLAY_LABEL="x86_64 Linux AppImage"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
+
+      # Publish AppImage Sync File to Github Release
+      - name: 👩‍💻 Publish AppImage Sync File to Github Release
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage.zsync"
+          export DISPLAY_LABEL="x86_64 Linux AppImage Zsync"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
 
@@ -305,4 +319,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine.AppImage fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage
