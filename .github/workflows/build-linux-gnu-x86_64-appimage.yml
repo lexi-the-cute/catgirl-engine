@@ -259,7 +259,7 @@ jobs:
       - name: Create Sync File
         run: |
           cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
-          zsyncmake -u catgirl-engine-x86_64.AppImage
+          zsyncmake catgirl-engine-x86_64.AppImage
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
