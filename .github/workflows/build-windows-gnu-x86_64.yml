@@ -86,6 +86,10 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
+      # Autoupdate Pre-Commit Hooks
+      - name: Autoupdate Pre-Commit Hooks
+        run: pre-commit autoupdate
+
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
