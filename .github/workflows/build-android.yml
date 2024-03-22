@@ -162,7 +162,9 @@ jobs:
 
       # Sign Files
       - name: Sign Files
-        run: find ${{ github.workspace }}/upload -maxdepth 1 -type f -exec gpg --sign {} \;
+        run: |
+          find ${{ github.workspace }}/upload -type f -not -name "app-release.aab" -not -name "checksums.sha512" -exec shasum -a 512 {} \; > ${{ github.workspace }}/upload/checksums.sha512
+          gpg --sign ${{ github.workspace }}/upload/checksums.sha512
 
       # Upload APK
       - name: Upload APK (Release)
@@ -171,7 +173,8 @@ jobs:
           name: CatgirlEngine-Android-APK
           path: |
             ${{ github.workspace }}/upload/catgirl-engine.apk
-            ${{ github.workspace }}/upload/catgirl-engine.apk.gpg
+            ${{ github.workspace }}/upload/checksums.sha512
+            ${{ github.workspace }}/upload/checksums.sha512.gpg
             ${{ github.workspace }}/upload/binding
             ${{ github.workspace }}/upload/cargo-timings
 
