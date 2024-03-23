@@ -40,7 +40,7 @@ pub extern "C" fn process_args() {
 
     if get_args().print_environment_variables {
         trace!("Printing environment variables...");
-        utils::print_environment_vars()
+        utils::print_environment_vars();
     }
 
     trace!("Assets Path: {:?}", game::get_assets_path());

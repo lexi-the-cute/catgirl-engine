@@ -65,6 +65,7 @@ module_name_repetitions = "allow"
 needless_pass_by_value = "allow"
 too_many_lines = "allow"
 unused_self = "allow"
+struct_excessive_bools = "allow"
 
 [package.metadata.appimage]
 assets = ["client/assets", "target/binding"]

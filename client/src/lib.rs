@@ -2,7 +2,7 @@
 
 #![warn(missing_docs)]
 
-use std::{env, fs, ops::Deref, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 use winit::window::Icon;
 
 #[cfg(target_family = "wasm")]
@@ -25,6 +25,7 @@ pub mod setup;
 
 /// Retrieve the engine's icon as raw bytes
 // TODO (BIND): Implement `extern "C"`
+#[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Vec<u8> {
     let assets_path: PathBuf = crate::game::get_assets_path();
@@ -55,16 +56,23 @@ pub fn get_icon_bytes() -> Vec<u8> {
 pub fn get_icon() -> Icon {
     let image_bytes: Vec<u8> = get_icon_bytes();
 
-    let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> =
-        image::load_from_memory(image_bytes.deref())
-            .expect("Could not get asset from memory...")
-            .into_rgba8();
+    let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(&image_bytes)
+        .expect("Could not get asset from memory...")
+        .into_rgba8();
     let (width, height) = image.dimensions();
 
     Icon::from_rgba(image.into_raw(), width, height).unwrap()
 }
 
 /// Install Linux desktop files
+///
+/// # Panics
+///
+/// May panic if cannot unwrap executable path
+///
+/// # Errors
+///
+/// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
 pub fn install_desktop_files() -> Result<(), String> {
     let mut desktop_file_contents: String = include_str!(concat!(
@@ -116,8 +124,15 @@ pub fn install_desktop_files() -> Result<(), String> {
 }
 
 /// Install Linux desktop files
+///
+/// # Panics
+///
+/// May panic if cannot unwrap executable path
+///
+/// # Errors
+///
+/// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
-
 pub fn uninstall_desktop_files() -> Result<(), String> {
     if let Some(home) = utils::get_environment_var("HOME") {
         // User Application Directories
@@ -130,8 +145,8 @@ pub fn uninstall_desktop_files() -> Result<(), String> {
         let icon_path: PathBuf = PathBuf::from(&icons_directory).join("catgirl-engine.png");
 
         // Remove old files if any
-        let _ = fs::remove_file(&desktop_path);
-        let _ = fs::remove_file(&icon_path);
+        let _ = fs::remove_file(desktop_path);
+        let _ = fs::remove_file(icon_path);
 
         return Ok(());
     }
