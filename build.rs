@@ -105,7 +105,7 @@ fn create_binding(
         " */";
     if language == Language::Cython {
         header =
-            "# cython: language_level=3\n\n".to_owned() +
+            "# cython: language_level=3\n\n".to_string() +
             "# This file exists to help facilitate modding this catgirl game engine...\n" +
             "# These generated bindings are either public domain or Unlicense where public domain does not exist";
     }
@@ -136,7 +136,7 @@ fn create_binding(
 
     if language == Language::Cython {
         config.cython = CythonConfig {
-            header: Some("\"<catgirl-engine.h>\"".to_owned()),
+            header: Some("\"<catgirl-engine.h>\"".to_string()),
             ..Default::default()
         };
     }

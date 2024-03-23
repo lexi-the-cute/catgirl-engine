@@ -21,5 +21,6 @@
     "rust-analyzer.cargo.extraEnv": {
         "RUST_ANALYZER": "true",
         "CARGO_TARGET_DIR": "./.ra-target"
-    }
+    },
+    "rust-analyzer.cargo.features": ["no_lint"]
 }

@@ -51,10 +51,10 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
     // Setup logger for debugging
     setup::setup_logger();
-    debug!("Launched as library...");
 
     // Process args for future use
     setup::process_args();
+    debug!("Launched as library...");
 
     match setup::start() {
         Err(error) => {
@@ -82,10 +82,10 @@ pub fn android_main(app: AndroidApp) {
 
     // Setup logger for debugging
     setup::setup_logger();
-    debug!("Launched as Android app...");
 
     // Process args for future use
     setup::process_args();
+    debug!("Launched as Android app...");
 
     client::game::store_android_app(app);
     if let Err(error) = setup::start() {
@@ -112,10 +112,10 @@ pub fn wasm_start() {
 
     // Setup logger for debugging
     setup::setup_logger();
-    debug!("Launched as Wasm library...");
 
     // Process args for future use
     setup::process_args();
+    debug!("Launched as Wasm library...");
 
     if let Err(error) = setup::start() {
         error!("{:?}", error)

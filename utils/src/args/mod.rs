@@ -26,9 +26,18 @@ pub struct Args {
 
     /// Shows the AppImage help arguments
     // https://github.com/clap-rs/clap/discussions/5401
-    #[cfg(feature = "appimage")]
+    #[cfg(all(feature = "appimage", not(feature = "no_lint")))]
     #[arg(long, default_value_t = false)]
     pub appimage_help: bool,
+
+    /// Install the desktop files for launching from the application menu
+    #[cfg(all(target_os = "linux", not(feature = "no_lint")))]
+    #[arg(long, default_value_t = false)]
+    pub install_desktop_files: bool,
+
+    /// Print all environment variables
+    #[arg(long, default_value_t = false)]
+    pub print_environment_variables: bool,
 }
 
 /// Parse arguments from C and send to the Clap library
@@ -75,7 +84,7 @@ pub unsafe fn parse_args_from_c(
         // This can cause panic
         let str_slice: &str = c_str.to_str().unwrap();
 
-        args.push(str_slice.to_owned());
+        args.push(str_slice.to_string());
     }
 
     Some(args)
@@ -128,7 +137,7 @@ mod tests {
                     i32::try_from(argv.len()).unwrap(),
                     argv.as_ptr().cast::<*const *const c_char>()
                 ),
-                Some(vec!["hello".to_owned()])
+                Some(vec!["hello".to_string()])
             );
         }
     }

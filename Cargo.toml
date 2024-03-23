@@ -39,6 +39,7 @@ client = ["dep:client"]
 server = ["dep:server"]
 tracing-subscriber = ["dep:tracing-subscriber"]
 appimage = ["utils/appimage", "client/appimage"]
+no_lint = ["utils/no_lint"]  # Tells rust-analyzer to can it with false warnings when workspace config is used
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
