@@ -24,6 +24,18 @@ pub extern "C" fn process_args() {
     // Store assets path in separate variable
     game::store_assets_path(get_args().assets);
 
+    // Install desktop files
+    #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
+    if get_args().install_desktop_files {
+        trace!("Installing desktop files...");
+        let _ = client::install_desktop_files();
+    }
+
+    if get_args().print_environment_variables {
+        trace!("Printing environment variables...");
+        utils::print_environment_vars()
+    }
+
     trace!("Assets Path: {:?}", game::get_assets_path());
 }
 
@@ -56,7 +68,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
         }
 
         if dependencies
-            .insert(dep.name.as_str().to_owned(), dep.to_owned())
+            .insert(dep.name.as_str().to_string(), dep.to_owned())
             .is_none()
         {
             stack.extend(dep.dependencies.iter());
@@ -117,7 +129,7 @@ pub extern "C" fn print_version() {
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
         let author: String = if info.crate_info.authors.is_empty() {
-            "Unknown".to_owned()
+            "Unknown".to_string()
         } else {
             info.crate_info.authors[0].clone()
         };
@@ -125,7 +137,7 @@ pub extern "C" fn print_version() {
         let license: String = if info.crate_info.license.is_some() {
             info.crate_info.license.as_ref().unwrap().clone()
         } else {
-            "Unknown".to_owned()
+            "Unknown".to_string()
         };
 
         debug!("Copyright (C) {year} {author} - {license} License");
@@ -140,7 +152,7 @@ pub extern "C" fn print_version() {
         // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
         let year: i32 = info.timestamp.year();
         let author: String = if info.crate_info.authors.is_empty() {
-            "Unknown".to_owned()
+            "Unknown".to_string()
         } else {
             info.crate_info.authors[0].clone()
         };
@@ -148,7 +160,7 @@ pub extern "C" fn print_version() {
         let license: String = if info.crate_info.license.is_some() {
             info.crate_info.license.as_ref().unwrap().clone()
         } else {
-            "Unknown".to_owned()
+            "Unknown".to_string()
         };
 
         println!("Copyright (C) {year} {author} - {license} License");
@@ -177,7 +189,7 @@ pub extern "C" fn print_dependencies() {
             let license: String = if dep.license.is_some() {
                 dep.license.as_ref().unwrap().clone()
             } else {
-                "Unknown".to_owned()
+                "Unknown".to_string()
             };
 
             debug!("{} v{} - License {}", name, dep.version, license);
@@ -189,7 +201,7 @@ pub extern "C" fn print_dependencies() {
             let license: String = if dep.license.is_some() {
                 dep.license.as_ref().unwrap().clone()
             } else {
-                "Unknown".to_owned()
+                "Unknown".to_string()
             };
 
             println!("{} v{} - License {}", name, dep.version, license);

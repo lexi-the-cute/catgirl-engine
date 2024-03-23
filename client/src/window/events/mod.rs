@@ -48,7 +48,7 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
 
             trace!(
                 "XDG_SESSION_TYPE: {}",
-                utils::get_environment_var("XDG_SESSION_TYPE").unwrap_or("None".to_owned())
+                utils::get_environment_var("XDG_SESSION_TYPE").unwrap_or("None".to_string())
             );
             if utils::matches_environment_var("XDG_SESSION_TYPE", "x11") {
                 use winit::platform::x11::WindowBuilderExtX11;

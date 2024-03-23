@@ -2,7 +2,7 @@
 
 #![warn(missing_docs)]
 
-use std::{fs, path::PathBuf};
+use std::{env, fs, ops::Deref, path::PathBuf};
 use winit::window::Icon;
 
 #[macro_use]
@@ -20,6 +20,24 @@ pub mod render;
 /// Handles setup
 pub mod setup;
 
+/// Retrieve the engine's icon as raw bytes
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+pub fn get_icon_bytes() -> Vec<u8> {
+    let assets_path: PathBuf = crate::game::get_assets_path();
+    let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");
+
+    let image_vec_result: Result<Vec<u8>, std::io::Error> = fs::read(logo_path);
+    image_vec_result
+        .as_deref()
+        .unwrap_or({
+            include_bytes!(concat!(
+                env!("CARGO_MANIFEST_DIR"),
+                "/assets/vanilla/texture/logo/logo.png"
+            ))
+        })
+        .to_vec()
+}
+
 /// Retrieve the engine's icon
 ///
 /// This does not work on Wayland, use the .desktop shortcut
@@ -30,21 +48,64 @@ pub mod setup;
 // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 #[must_use]
 pub fn get_icon() -> Icon {
-    let assets_path: PathBuf = crate::game::get_assets_path();
-    let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");
+    let image_bytes: Vec<u8> = get_icon_bytes();
 
-    let image_vec_result: Result<Vec<u8>, std::io::Error> = fs::read(logo_path);
-    let image_bytes: &[u8] = image_vec_result.as_deref().unwrap_or({
-        include_bytes!(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/assets/vanilla/texture/logo/logo.png"
-        ))
-    });
-
-    let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(image_bytes)
-        .expect("Could not get asset from memory...")
-        .into_rgba8();
+    let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> =
+        image::load_from_memory(image_bytes.deref())
+            .expect("Could not get asset from memory...")
+            .into_rgba8();
     let (width, height) = image.dimensions();
 
     Icon::from_rgba(image.into_raw(), width, height).unwrap()
+}
+
+/// Install Linux desktop files
+// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+pub fn install_desktop_files() -> Result<(), String> {
+    let mut desktop_file_contents: String = include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/resources/catgirl-engine.desktop"
+    ))
+    .to_string();
+
+    // Get path of executable
+    let executable_path: String =
+        if let Some(app_image_path) = utils::get_environment_var("APPIMAGE") {
+            app_image_path
+        } else {
+            env::current_exe()
+                .expect("Could not get own path when installing desktop file...")
+                .to_str()
+                .unwrap()
+                .to_string()
+        };
+
+    desktop_file_contents =
+        desktop_file_contents.replace("${engine_path}", executable_path.as_str());
+
+    if let Some(home) = utils::get_environment_var("HOME") {
+        // User Application Directories
+        let applications_directory: String = format!("{home}/.local/share/applications");
+        let icons_directory: String = format!("{home}/.local/share/icons");
+
+        // Install Paths
+        let desktop_path: PathBuf =
+            PathBuf::from(&applications_directory).join("catgirl-engine.desktop");
+        let icon_path: PathBuf = PathBuf::from(&icons_directory).join("catgirl-engine.png");
+
+        // Create folders if they don't exist
+        let _ = fs::create_dir_all(&applications_directory);
+        let _ = fs::create_dir_all(&icons_directory);
+
+        // Remove old files if any
+        let _ = fs::remove_file(&desktop_path);
+        let _ = fs::remove_file(&icon_path);
+
+        let _ = fs::write(desktop_path, desktop_file_contents);
+        let _ = fs::write(icon_path, get_icon_bytes());
+
+        return Ok(());
+    }
+
+    Err("Failed to find home directory".to_string())
 }

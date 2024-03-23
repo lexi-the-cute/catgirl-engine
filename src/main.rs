@@ -24,10 +24,10 @@ fn main() {
 
     // Setup logger for debugging
     setup::setup_logger();
-    debug!("Launched as binary...");
 
     // Process args for future use
     setup::process_args();
+    debug!("Launched as binary...");
 
     if let Err(error) = setup::start() {
         error!("{:?}", error);

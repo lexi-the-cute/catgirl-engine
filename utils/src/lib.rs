@@ -30,3 +30,13 @@ pub fn get_environment_var(key: &str) -> Option<String> {
         None
     }
 }
+
+/// Print all environment variables
+pub fn print_environment_vars() {
+    let vars: std::env::Vars = std::env::vars();
+
+    debug!("Environment Variables:");
+    for (key, var) in vars {
+        debug!("{key}: {var}");
+    }
+}
