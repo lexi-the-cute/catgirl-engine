@@ -1,11 +1,11 @@
 // https://www.colorspaceconverter.com/converter/rgb-to-srgb-linear
-
 // https://en.wikipedia.org/wiki/SRGB
 // https://registry.khronos.org/OpenGL/extensions/EXT/EXT_texture_sRGB_decode.txt
 /// Converts Standard RGB Color Space to Linear Standard RGB Color Space
 ///
 /// Outputs f64 instead of f32 for use in `wgpu::Color`
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[must_use]
 pub fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> (f64, f64, f64) {
     let r: f64 = f64::from(red) / 255.0;

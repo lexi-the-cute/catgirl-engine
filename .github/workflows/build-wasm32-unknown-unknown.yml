@@ -97,6 +97,11 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-pack
 
+      # Copy License File
+      - name: Copy License File
+        run: |
+          cp -a ${{ github.workspace }}/License.md ${{ github.workspace }}/LICENSE
+
       # Compile Program
       - name: Build Program
         run: |

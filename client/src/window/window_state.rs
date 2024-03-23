@@ -32,7 +32,8 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to create a WGPU surface
-    // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+    // TODO (BIND): Implement `extern "C"`
+    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
@@ -88,7 +89,8 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to grab a connection to the graphics devices (e.g. gpu)
-    // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+    // TODO (BIND): Implement `extern "C"`
+    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub async fn initialize_graphics(&mut self) {
         // Describe's a device
         // For use with adapter's request device
@@ -151,7 +153,8 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to recreate the surface
-    // TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+    // TODO (BIND): Implement `extern "C"`
+    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub fn recreate_surface(&mut self) {
         if self.device.is_none() {
             warn!("Device is not setup... Have graphics been initialized?");

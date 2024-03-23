@@ -5,6 +5,9 @@
 use std::{env, fs, ops::Deref, path::PathBuf};
 use winit::window::Icon;
 
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::wasm_bindgen;
+
 #[macro_use]
 extern crate tracing;
 
@@ -21,7 +24,8 @@ pub mod render;
 pub mod setup;
 
 /// Retrieve the engine's icon as raw bytes
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Vec<u8> {
     let assets_path: PathBuf = crate::game::get_assets_path();
     let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");
@@ -45,7 +49,8 @@ pub fn get_icon_bytes() -> Vec<u8> {
 /// # Panics
 ///
 /// This may fail to load the file from the byte array as an image
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[must_use]
 pub fn get_icon() -> Icon {
     let image_bytes: Vec<u8> = get_icon_bytes();
@@ -60,7 +65,7 @@ pub fn get_icon() -> Icon {
 }
 
 /// Install Linux desktop files
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
 pub fn install_desktop_files() -> Result<(), String> {
     let mut desktop_file_contents: String = include_str!(concat!(
         env!("CARGO_MANIFEST_DIR"),
@@ -103,6 +108,30 @@ pub fn install_desktop_files() -> Result<(), String> {
 
         let _ = fs::write(desktop_path, desktop_file_contents);
         let _ = fs::write(icon_path, get_icon_bytes());
+
+        return Ok(());
+    }
+
+    Err("Failed to find home directory".to_string())
+}
+
+/// Install Linux desktop files
+// TODO (BIND): Implement `extern "C"`
+
+pub fn uninstall_desktop_files() -> Result<(), String> {
+    if let Some(home) = utils::get_environment_var("HOME") {
+        // User Application Directories
+        let applications_directory: String = format!("{home}/.local/share/applications");
+        let icons_directory: String = format!("{home}/.local/share/icons");
+
+        // Install Paths
+        let desktop_path: PathBuf =
+            PathBuf::from(&applications_directory).join("catgirl-engine.desktop");
+        let icon_path: PathBuf = PathBuf::from(&icons_directory).join("catgirl-engine.png");
+
+        // Remove old files if any
+        let _ = fs::remove_file(&desktop_path);
+        let _ = fs::remove_file(&icon_path);
 
         return Ok(());
     }

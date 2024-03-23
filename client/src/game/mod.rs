@@ -21,7 +21,8 @@ pub fn store_android_app(app: AndroidApp) {
 }
 
 /// Stores a custom path to the assets directory
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn store_assets_path(path: PathBuf) {
     let _path: &PathBuf = ASSETS_PATH.get_or_init(|| path);
 }
@@ -31,7 +32,8 @@ pub fn store_assets_path(path: PathBuf) {
 /// # Panics
 ///
 /// The path to the assets directory may be invalid
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_assets_path() -> PathBuf {
     if ASSETS_PATH.get().is_some() {
         ASSETS_PATH.get().unwrap().clone()
@@ -52,7 +54,6 @@ pub fn get_assets_path() -> PathBuf {
 /// # Panics
 ///
 /// The event loop may not be created
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
 pub fn game_loop() -> Result<(), String> {
     game_loop::client_game_loop()
 }
