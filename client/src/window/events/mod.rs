@@ -223,7 +223,7 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 
     // Color to render
     // Royal Purple - 104, 71, 141
-    let (r, g, b) = crate::render::srgb_to_linear_srgb(104, 71, 141);
+    let color: crate::render::Color = crate::render::srgb_to_linear_srgb(104, 71, 141);
 
     // Command to render
     // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
@@ -233,7 +233,7 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
             view: &view,
             resolve_target: None,
             ops: wgpu::Operations {
-                load: wgpu::LoadOp::Clear(wgpu::Color { r, g, b, a: 1.0 }),
+                load: wgpu::LoadOp::Clear(crate::render::get_wgpu_color_from_ce_color(color)),
                 store: wgpu::StoreOp::Store,
             },
         })],

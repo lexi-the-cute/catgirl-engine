@@ -2,7 +2,7 @@
 name = "catgirl-engine-utils"
 description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.12.25"
+version = "0.12.26"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
