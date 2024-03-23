@@ -24,6 +24,13 @@ pub extern "C" fn process_args() {
     // Store assets path in separate variable
     game::store_assets_path(get_args().assets);
 
+    // Uninstall desktop files
+    #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
+    if get_args().uninstall_desktop_files {
+        trace!("Uninstalling desktop files...");
+        let _ = client::uninstall_desktop_files();
+    }
+
     // Install desktop files
     #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
     if get_args().install_desktop_files {
@@ -44,7 +51,8 @@ pub extern "C" fn process_args() {
 /// # Panics
 ///
 /// This may panic if the args cannot be unwrapped
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[must_use]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
@@ -55,7 +63,8 @@ pub fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -79,7 +88,8 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 }
 
 /// Get all dependencies from the workspace used to build the engine
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[must_use]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
@@ -283,7 +293,8 @@ fn set_panic_hook() {
 /// # Errors
 ///
 /// This may fail to set the ctrl+c handler
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");
 

@@ -35,6 +35,11 @@ pub struct Args {
     #[arg(long, default_value_t = false)]
     pub install_desktop_files: bool,
 
+    /// Uninstall the previously installed desktop files
+    #[cfg(all(target_os = "linux", not(feature = "no_lint")))]
+    #[arg(long, default_value_t = false)]
+    pub uninstall_desktop_files: bool,
+
     /// Print all environment variables
     #[arg(long, default_value_t = false)]
     pub print_environment_variables: bool,
@@ -50,7 +55,8 @@ pub struct Args {
 /// # Panics
 ///
 /// Can panic if C string is not valid in the argument vector arg
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[must_use] // must use the result of this function
 pub unsafe fn parse_args_from_c(
     arg_count: c_int,
@@ -104,7 +110,8 @@ pub fn set_parsed_args(args: Vec<String>) {
 }
 
 /// Retrieve parsed args previously passed in from function
-// TODO (BIND): Implement `#[cfg_attr(target_family = "wasm", wasm_bindgen)]` and `extern "C"`
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_args() -> Option<Args> {
     ARGS.get().cloned()
 }
