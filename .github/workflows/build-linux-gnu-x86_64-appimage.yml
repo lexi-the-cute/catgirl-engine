@@ -19,6 +19,7 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
+      APPIMAGE_FILENAME: catgirl-engine-x86_64.AppImage
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -105,6 +106,10 @@ jobs:
           echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
           gpg --import $HOME/signing.gpg
 
+      # Modify Toml AppImageTools Args
+      - name: Modify Toml AppImageTools Args
+        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|lexi-the-cute|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\]/" Cargo.toml
+
       # # Build Docs
       # - name: Build Docs
       #   run: |
@@ -134,7 +139,7 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/catgirl-engine-x86_64.AppImage
+          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/$APPIMAGE_FILENAME
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc/
 
       # Sign Files
@@ -218,6 +223,7 @@ jobs:
     env:
       BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
       GH_TOKEN: ${{ github.token }}
+      APPIMAGE_FILENAME: catgirl-engine-x86_64.AppImage
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -259,7 +265,7 @@ jobs:
       - name: Create Sync File
         run: |
           cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
-          zsyncmake catgirl-engine-x86_64.AppImage
+          zsyncmake $APPIMAGE_FILENAME
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -291,7 +297,7 @@ jobs:
       - name: 👩‍💻 Publish AppImage to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME"
           export DISPLAY_LABEL="x86_64 Linux AppImage"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
@@ -300,7 +306,7 @@ jobs:
       - name: 👩‍💻 Publish AppImage Sync File to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage.zsync"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME.zsync"
           export DISPLAY_LABEL="x86_64 Linux AppImage Zsync"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
@@ -320,4 +326,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-x86_64.AppImage fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage
