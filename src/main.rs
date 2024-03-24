@@ -16,7 +16,7 @@ fn main() {
     setup::setup_tracer();
 
     // Print version and copyright info
-    if setup::get_args().version {
+    if utils::args::get_args().version {
         setup::print_version();
         setup::print_dependencies();
         return;

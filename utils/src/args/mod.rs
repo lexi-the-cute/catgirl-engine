@@ -43,6 +43,14 @@ pub struct Args {
     /// Print all environment variables
     #[arg(long, default_value_t = false)]
     pub print_environment_variables: bool,
+
+    /// Set Max FPS
+    #[arg(long, default_value_t = u64::MAX)]
+    pub fps_cap: u64,
+
+    /// Pause rendering when window unfocused
+    #[arg(long, default_value_t = false)]
+    pub pause_when_unfocused: bool,
 }
 
 /// Parse arguments from C and send to the Clap library
@@ -112,8 +120,24 @@ pub fn set_parsed_args(args: Vec<String>) {
 /// Retrieve parsed args previously passed in from function
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn get_args() -> Option<Args> {
+pub fn get_parsed_args() -> Option<Args> {
     ARGS.get().cloned()
+}
+
+/// Retrieve parsed out command line arguments
+///
+/// # Panics
+///
+/// This may panic if the args cannot be unwrapped
+// TODO (BIND): Implement `extern "C"`
+// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[must_use]
+pub fn get_args() -> Args {
+    if get_parsed_args().is_some() {
+        get_parsed_args().unwrap()
+    } else {
+        Args::parse()
+    }
 }
 
 #[cfg(test)]

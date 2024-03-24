@@ -180,7 +180,8 @@ pub(crate) fn resized_window(window_state: &WindowState, _size: PhysicalSize<u32
 }
 
 /// The window was either just focused or lost focus
-pub(crate) fn changed_focus(focused: bool) {
+pub(crate) fn changed_focus(window_state: &mut WindowState, focused: bool) {
+    window_state.focused = focused;
     trace!("Window focused: {focused}");
 }
 

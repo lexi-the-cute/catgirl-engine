@@ -1,9 +1,7 @@
 use std::collections::BTreeMap;
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
-use clap::Parser;
 use client::game;
-use utils::args::Args;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -22,44 +20,28 @@ build_info::build_info!(
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn process_args() {
     // Store assets path in separate variable
-    game::store_assets_path(get_args().assets);
+    game::store_assets_path(utils::args::get_args().assets);
 
     // Uninstall desktop files
     #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
-    if get_args().uninstall_desktop_files {
+    if utils::args::get_args().uninstall_desktop_files {
         trace!("Uninstalling desktop files...");
         let _ = client::uninstall_desktop_files();
     }
 
     // Install desktop files
     #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
-    if get_args().install_desktop_files {
+    if utils::args::get_args().install_desktop_files {
         trace!("Installing desktop files...");
         let _ = client::install_desktop_files();
     }
 
-    if get_args().print_environment_variables {
+    if utils::args::get_args().print_environment_variables {
         trace!("Printing environment variables...");
         utils::print_environment_vars();
     }
 
     trace!("Assets Path: {:?}", game::get_assets_path());
-}
-
-/// Retrieve parsed out command line arguments
-///
-/// # Panics
-///
-/// This may panic if the args cannot be unwrapped
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[must_use]
-pub fn get_args() -> Args {
-    if utils::args::get_args().is_some() {
-        utils::args::get_args().unwrap()
-    } else {
-        Args::parse()
-    }
 }
 
 /// Get the list of dependencies used in the engine
@@ -315,7 +297,7 @@ pub fn start() -> Result<(), String> {
     debug!("Starting Main Loop...");
 
     #[cfg(feature = "server")]
-    if cfg!(not(feature = "client")) || get_args().server {
+    if cfg!(not(feature = "client")) || utils::args::get_args().server {
         return server::game::game_loop();
     }
 

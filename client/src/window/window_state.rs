@@ -24,6 +24,9 @@ pub struct WindowState<'a> {
 
     /// Queue in which to send commands to the graphics device
     pub queue: Option<Queue>,
+
+    /// Determines if the window is focused
+    pub focused: bool,
 }
 
 impl WindowState<'_> {
@@ -54,6 +57,7 @@ impl WindowState<'_> {
             adapter: None,
             device: None,
             queue: None,
+            focused: true,
         }
     }
 

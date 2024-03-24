@@ -1,6 +1,9 @@
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
+/// Handles the FPS handler
+pub mod fps;
+
 /// Struct used for storing colors (usually in linear srgb)
 #[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]

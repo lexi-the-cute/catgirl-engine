@@ -50,3 +50,25 @@ pub fn print_environment_vars() {
         debug!("{key}: {var}");
     }
 }
+
+/// Get current time in seconds
+///
+/// # Panics
+///
+/// Will cause panic on wasm and potentially if clock went backwards.
+/// TODO: Will be replacing with Instant in the nearby future.
+#[must_use]
+pub fn get_current_time_seconds() -> u64 {
+    #[cfg(target_family = "wasm")]
+    {
+        (js_sys::Date::now() / 1000.0).to_bits()
+    }
+
+    #[cfg(not(target_family = "wasm"))]
+    {
+        std::time::SystemTime::now()
+            .duration_since(std::time::SystemTime::UNIX_EPOCH)
+            .unwrap()
+            .as_secs()
+    }
+}
