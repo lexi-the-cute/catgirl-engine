@@ -246,6 +246,7 @@ jobs:
 
           export DRAFT="false"
           export PRERELEASE="true"
+          export LATEST="true"  # legacy is the default value
           export GENERATE_RELEASE_NOTES="true"
 
           export BRANCH=`git branch --show-current --format="%s" | tr -d '\n'`
@@ -261,6 +262,7 @@ jobs:
             -f body="$BODY" \
             -F draft="$DRAFT" \
             -F prerelease="$PRERELEASE" \
+            -F make_latest="$LATEST" \
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
