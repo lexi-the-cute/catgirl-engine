@@ -309,7 +309,7 @@ jobs:
 
           export DRAFT="false"
           export PRERELEASE="false"
-          export LATEST="true"  # legacy is the default value
+          export LATEST="true"
           export GENERATE_RELEASE_NOTES="true"
 
           export BRANCH=`git branch --show-current --format="%s" | tr -d '\n'`
@@ -323,9 +323,9 @@ jobs:
             -f target_commitish="$BRANCH" \
             -f name="$VERSION_STRING" \
             -f body="$BODY" \
+            -f make_latest="$LATEST" \
             -F draft="$DRAFT" \
             -F prerelease="$PRERELEASE" \
-            -F make_latest="$LATEST" \
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
