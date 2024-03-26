@@ -55,13 +55,13 @@ pub fn client_game_loop() -> Result<(), String> {
 
         // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
         // dispatched any events. This is ideal for games and similar applications.
-        window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
+        // window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
 
         // TODO: Determine if this should be selected depending on menus and pause state
         // ControlFlow::Wait pauses the event loop if no events are available to process.
         // This is ideal for non-game applications that only update in response to user
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
-        // window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
+        window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
         match event {
             // The close button was pressed
