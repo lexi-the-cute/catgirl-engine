@@ -11,6 +11,9 @@ use wasm_bindgen::prelude::wasm_bindgen;
 #[macro_use]
 extern crate tracing;
 
+#[macro_use]
+extern crate utils;
+
 /// Handles the client side game logic
 pub mod game;
 
@@ -35,7 +38,7 @@ pub fn get_icon_bytes() -> Vec<u8> {
     image_vec_result
         .as_deref()
         .unwrap_or({
-            include_bytes!(concat!(
+            bytes!(concat!(
                 env!("CARGO_MANIFEST_DIR"),
                 "/assets/vanilla/texture/logo/logo.png"
             ))
@@ -75,11 +78,10 @@ pub fn get_icon() -> Icon {
 /// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
 pub fn install_desktop_files() -> Result<(), String> {
-    let mut desktop_file_contents: String = include_str!(concat!(
+    let mut desktop_file_contents: String = string!(concat!(
         env!("CARGO_MANIFEST_DIR"),
         "/resources/catgirl-engine.desktop"
-    ))
-    .to_string();
+    ));
 
     // Get path of executable
     let executable_path: String =
