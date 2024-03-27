@@ -14,9 +14,6 @@ pub mod args;
 /// Handles setup
 pub mod setup;
 
-/// Module for handling assets
-pub mod assets;
-
 /// Checks if string matches environment variable
 ///
 /// # Panics

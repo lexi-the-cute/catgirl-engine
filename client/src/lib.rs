@@ -11,8 +11,8 @@ use wasm_bindgen::prelude::wasm_bindgen;
 #[macro_use]
 extern crate tracing;
 
-#[macro_use]
-extern crate utils;
+// #[macro_use]
+// extern crate utils;
 
 /// Handles the client side game logic
 pub mod game;
@@ -26,24 +26,15 @@ pub mod render;
 /// Handles setup
 pub mod setup;
 
+/// Module for handling assets
+pub mod assets;
+
 /// Retrieve the engine's icon as raw bytes
 // TODO (BIND): Implement `extern "C"`
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Vec<u8> {
-    let assets_path: PathBuf = crate::game::get_assets_path();
-    let logo_path: PathBuf = assets_path.join("vanilla/texture/logo/logo.png");
-
-    let image_vec_result: Result<Vec<u8>, std::io::Error> = fs::read(logo_path);
-    image_vec_result
-        .as_deref()
-        .unwrap_or({
-            bytes!(concat!(
-                env!("CARGO_MANIFEST_DIR"),
-                "/assets/vanilla/texture/logo/logo.png"
-            ))
-        })
-        .to_vec()
+    load_bytes!("vanilla/texture/logo/logo.png")
 }
 
 /// Retrieve the engine's icon
@@ -78,10 +69,7 @@ pub fn get_icon() -> Icon {
 /// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
 pub fn install_desktop_files() -> Result<(), String> {
-    let mut desktop_file_contents: String = string!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/resources/catgirl-engine.desktop"
-    ));
+    let mut desktop_file_contents: String = load_string!("resources/catgirl-engine.desktop");
 
     // Get path of executable
     let executable_path: String =
