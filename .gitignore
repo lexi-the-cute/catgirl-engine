@@ -10,6 +10,9 @@ _site/
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
 
+# RUSTFLAGS="-Cinstrument-coverage"
+*.profraw
+
 # AppImage
 /libs
 squashfs-root/
