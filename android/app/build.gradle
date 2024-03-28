@@ -128,7 +128,7 @@ cargoNdk {
 
 dependencies {
     // https://maven.google.com/web/index.html?q=androidx.games#androidx.games:games-activity
-    implementation 'androidx.games:games-activity:3.0.1'
+    implementation 'androidx.games:games-activity:2.0.2'  // Do Not Update RN
 
     // https://mvnrepository.com
     implementation 'androidx.core:core-ktx:1.12.0'
