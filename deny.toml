@@ -96,7 +96,7 @@ allow = [
     "MPL-2.0", # https://opensource.org/license/mpl-2-0 (distribution of license only applies to original work or derivative work)
     "ISC", # https://www.isc.org/licenses (distribution of license only applies to original work or derivative work)
     "Unicode-DFS-2016", # https://www.unicode.org/license.txt (distribution of license only applies to original work or derivative work)
-    #"Apache-2.0 WITH LLVM-exception",
+    "Apache-2.0 WITH LLVM-exception", # https://spdx.org/licenses/LLVM-exception.html (same as Apache-2.0, but less restrictive)
 
     "BSD-2-Clause", # https://opensource.org/license/bsd-2-clause (requires attribution)
     "BSD-3-Clause", # https://opensource.org/license/bsd-3-clause (requires attribution)

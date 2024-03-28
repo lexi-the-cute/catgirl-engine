@@ -1,4 +1,5 @@
 // TODO: Rewrite as Kotlin DSL - https://developer.android.com/build/migrate-to-kotlin-dsl
+import org.apache.commons.io.FileUtils
 plugins {
     id 'org.jetbrains.kotlin.android'
 }
@@ -6,28 +7,54 @@ plugins {
 def buildAsLibrary = project.hasProperty('BUILD_AS_LIBRARY');
 def buildAsApplication = !buildAsLibrary
 
-// ----------------------------------------
-// Read Version Info From Cargo.toml
-// ----------------------------------------
-// https://docs.oracle.com/javase/8/docs/api/java/io/File.html
-File cargoTomlLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "Cargo.toml")
-ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
-String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
-String cargoVersion = cargoVersionLine.split("\"", 3)[1]
-String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
-
-// TODO: Figure out how to deal with 0.40.0 and 4.0.0
-int cargoVersionCode = Integer.parseInt(cargoVersionSplit[0]) * 1000000 +
-                        Integer.parseInt(cargoVersionSplit[1]) * 1000 +
-                        Integer.parseInt(cargoVersionSplit[2]) * 1
-println "Building Catgirl Engine v" + cargoVersion + " (" + cargoVersionCode + ")"
-// ----------------------------------------
-
 if (buildAsApplication) {
     apply plugin: 'com.android.application'
 } else {
     apply plugin: 'com.android.library'
 }
+
+// ----------------------------------------
+// Read Version Info From Cargo.toml
+// ----------------------------------------
+// https://docs.oracle.com/javase/8/docs/api/java/io/File.html
+String readCargoVersion() {
+    File cargoTomlLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "Cargo.toml")
+    ArrayList<String> cargoTomlContents = cargoTomlLocation.readLines()
+    String cargoVersionLine = cargoTomlContents.find({ line -> line.toLowerCase().startsWith("version") })
+
+    return cargoVersionLine.split("\"", 3)[1]
+}
+
+static int getAPKVersionCode(String cargoVersion) {
+    String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
+
+    // TODO: Figure out how to deal with 0.40.0 and 4.0.0
+    return Integer.parseInt(cargoVersionSplit[0]) * 1000000 +
+            Integer.parseInt(cargoVersionSplit[1]) * 1000 +
+            Integer.parseInt(cargoVersionSplit[2]) * 1
+}
+// ----------------------------------------
+
+// ----------------------------------------
+// Copy Assets From Engine
+// ----------------------------------------
+void copyAssetsFromEngine() {
+    File fromAssetsLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "client/assets")
+    File toAssetsLocation = new File(buildscript.sourceFile.parentFile, "src/main/assets")
+
+    try {
+        println "Copy Assets From " + fromAssetsLocation + " To " + toAssetsLocation
+        FileUtils.copyDirectory(fromAssetsLocation, toAssetsLocation)
+    } catch (IOException e) {
+        e.printStackTrace()
+    }
+}
+// ----------------------------------------
+
+String cargoVersion = readCargoVersion()
+int cargoVersionCode = getAPKVersionCode(cargoVersion)
+println "Building Catgirl Engine v" + cargoVersion + " (" + cargoVersionCode + ")"
+copyAssetsFromEngine()
 
 android {
     namespace 'land.catgirl.engine'
@@ -101,12 +128,13 @@ cargoNdk {
 
 dependencies {
     // https://maven.google.com/web/index.html?q=androidx.games#androidx.games:games-activity
-    implementation 'androidx.games:games-activity:2.0.2'
+    implementation 'androidx.games:games-activity:3.0.1'
 
     // https://mvnrepository.com
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
+    implementation 'commons-io:commons-io:2.15.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
