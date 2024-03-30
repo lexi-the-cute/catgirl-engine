@@ -36,7 +36,7 @@ jobs:
 
       # Install Dependencies
       - name: Install and Cache APT Packages
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix wine64 # mingw-w64
           version: 1.0
@@ -214,7 +214,7 @@ jobs:
 
       # Install Dependencies
       - name: Install and Cache APT Packages
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: jq  # coreutils gitsome
           version: 1.0

@@ -37,7 +37,7 @@ jobs:
 
       # Install Dependencies
       - name: Install and Cache APT Packages
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: gnupg2 gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
           version: 1.0
@@ -250,7 +250,7 @@ jobs:
 
       # Install Dependencies
       - name: Install and Cache APT Packages
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: zsync  # jq coreutils gitsome
           version: 1.0

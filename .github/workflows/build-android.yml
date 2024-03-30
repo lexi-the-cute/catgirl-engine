@@ -49,7 +49,7 @@ jobs:
 
       # Install Dependencies
       - name: Install and Cache APT Packages
-      - uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: unzip
           version: 1.0
@@ -277,7 +277,7 @@ jobs:
 
       # Install Dependencies
       # - name: Install and Cache APT Packages
-      # - uses: awalsh128/cache-apt-pkgs-action@latest
+      #   uses: awalsh128/cache-apt-pkgs-action@latest
       #   with:
       #     packages: ruby-bundler  # jq coreutils gitsome
       #     version: 1.0
