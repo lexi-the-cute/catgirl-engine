@@ -36,16 +36,21 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Install APT Packages
+      - name: Install and Cache APT Packages
+      - uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: gnupg2 gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+          version: 1.0
+          execute_install_scripts: true
+
+      # Install Dependencies
+      - name: Install AppImageTool
         uses: nick-fields/retry@v3
         with:
           max_attempts: 3
           timeout_minutes: 60
           retry_on: error
           command: |
-            sudo apt update
-            sudo apt -y install gnupg2 gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
-
             # Install AppImageTool
             mkdir -p ${{ github.workspace }}/.bin
             wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/.bin/appimagetool
@@ -244,15 +249,12 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Dependencies
-      - name: Install APT Packages
-        uses: nick-fields/retry@v3
+      - name: Install and Cache APT Packages
+      - uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          max_attempts: 3
-          timeout_minutes: 60
-          retry_on: error
-          command: |
-            sudo apt update
-            sudo apt -y install zsync  # jq coreutils gitsome
+          packages: zsync  # jq coreutils gitsome
+          version: 1.0
+          execute_install_scripts: true
 
       # Download Engine
       - name: Download Engine (Release)
