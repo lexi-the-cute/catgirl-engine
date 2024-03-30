@@ -27,6 +27,7 @@ pub fn get_android_app() -> AndroidApp {
     ANDROID_APP
         .get()
         .expect("Could not get stored reference to AndroidApp")
+        .clone()
 }
 
 /// Stores a custom path to the assets directory
