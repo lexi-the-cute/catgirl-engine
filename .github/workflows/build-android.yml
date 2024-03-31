@@ -266,12 +266,12 @@ jobs:
       DISPLAY: :99
     steps:
       # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: imagemagick pipewire libgl1-mesa-dri xvfb icewm xdotool libxkbcommon-x11-dev
-          version: 1.0
-          execute_install_scripts: true
+      # - name: Install and Cache APT Packages
+      #   uses: awalsh128/cache-apt-pkgs-action@latest
+      #   with:
+      #     packages: pipewire libgl1-mesa-dri xvfb icewm flameshot libxkbcommon-x11-dev
+      #     version: 1.0
+      #     execute_install_scripts: true
 
       # Download APK
       - name: Download APK (Release)
@@ -304,7 +304,8 @@ jobs:
       # - name: Screenshot Game Engine
       #   run: |
       #     mkdir -p ${{ github.workspace }}/uploads
-      #     import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png
+      #     #import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png  # X11
+      #     flameshot full -p ${{ github.workspace }}/uploads/screenshot.png  # Wayland
 
       # Upload Screenshots
       # - name: Upload Screenshots
@@ -314,10 +315,10 @@ jobs:
       #     path: ${{ github.workspace }}/upload/*
 
       # Kill Window Manager and X Server
-      - name: Kill Window Manager and X Server
-        run: |
-          killall Xvfb
-          killall icewm
+      # - name: Kill Window Manager and X Server
+      #   run: |
+      #     killall Xvfb
+      #     killall icewm
 
       # List Environment
       - name: List Environment

@@ -218,7 +218,7 @@ jobs:
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
+          packages: pipewire libgl1-mesa-dri xvfb flameshot libxkbcommon-x11-dev
           version: 1.0
           execute_install_scripts: true
 
