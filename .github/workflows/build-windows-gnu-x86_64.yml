@@ -239,6 +239,20 @@ jobs:
           killall wine
           killall Xvfb
           killall icewm
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Run]

@@ -294,30 +294,44 @@ jobs:
       # Run Game Engine
       # https://github.com/marketplace/actions/android-emulator-runner
       # TODO: Setup Run Script
-      - name: Run Game Engine
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          script: ${{ github.workspace }}/android/gradlew installRelease
+      # - name: Run Game Engine
+      #   uses: reactivecircus/android-emulator-runner@v2
+      #   with:
+      #     api-level: 34
+      #     script: ${{ github.workspace }}/android/gradlew installRelease
 
       # Screenshot Game Engine
-      - name: Screenshot Game Engine
-        run: |
-          mkdir -p ${{ github.workspace }}/uploads
-          import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png
+      # - name: Screenshot Game Engine
+      #   run: |
+      #     mkdir -p ${{ github.workspace }}/uploads
+      #     import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png
 
       # Upload Screenshots
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
-          path: ${{ github.workspace }}/upload/*
+      # - name: Upload Screenshots
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
+      #     path: ${{ github.workspace }}/upload/*
 
       # Kill Window Manager and X Server
       - name: Kill Window Manager and X Server
         run: |
           killall Xvfb
           killall icewm
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Run]
