@@ -305,7 +305,7 @@ jobs:
       #   run: |
       #     mkdir -p ${{ github.workspace }}/upload
       #     #import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/upload/screenshot.png  # X11
-      #     flameshot full -p ${{ github.workspace }}/upload/screenshot.png  # Wayland
+      #     flameshot screen -p ${{ github.workspace }}/upload/screenshot.png  # Wayland
 
       # Upload Screenshots
       # - name: Upload Screenshots
