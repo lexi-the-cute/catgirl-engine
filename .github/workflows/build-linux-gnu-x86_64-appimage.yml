@@ -220,9 +220,62 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
+  run:
+    if: ${{ success() }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    env:
+      DISPLAY=:99
+    steps:
+      # Install Dependencies
+      - name: Install and Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: imagemagick pipewire libgl1-mesa-dri xvfb icewm xdotool libxkbcommon-x11-dev
+          version: 1.0
+          execute_install_scripts: true
+
+      # Download Engine
+      - name: Download Engine (Release)
+        uses: actions/download-artifact@v4
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
+          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
+
+      # Start X Server
+      - name: Start X Server and Window Manager
+        run: |
+          Xvfb :99 -screen 0 1920x1080x24 >/dev/null 2>&1 &
+          icewm &
+
+      # Run Game Engine
+      - name: Run Game Engine
+        run: |
+          ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-*.AppImage &
+          sleep 30
+
+      # Screenshot Game Engine
+      - name: Screenshot Game Engine
+        run: |
+          mkdir -p ${{ github.workspace }}/uploads
+          import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png
+
+      # Upload Screenshots
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
+          path: ${{ github.workspace }}/upload/*
+
+      # Kill Window Manager and X Server
+      - name: Kill Window Manager and X Server
+        run: |
+          killall Xvfb
+          killall icewm
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
-    needs: [Build]
+    needs: [Run]
     runs-on: ubuntu-latest
     environment: Linux
     env:

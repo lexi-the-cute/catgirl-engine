@@ -206,9 +206,29 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
+  run:
+    if: ${{ success() }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    steps:
+      # Install Dependencies
+      - name: Install and Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
+          version: 1.0
+          execute_install_scripts: true
+
+      # Download Engine
+      - name: Download Engine (Release)
+        uses: actions/download-artifact@v4
+        with:
+          name: CatgirlEngine-Linux-x86_64-Musl-Zip
+          path: ${{ github.workspace }}/artifacts/linux-musl-x86_64
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
-    needs: [Build]
+    needs: [Run]
     runs-on: ubuntu-latest
     environment: Linux
     env:

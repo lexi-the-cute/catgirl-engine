@@ -45,13 +45,22 @@ jobs:
 
       # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
       - name: Setup Gradle Build Action (For Caching Builds)
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v3
 
       # Install Dependencies
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: unzip
+          version: 1.0
+          execute_install_scripts: true
+
+      # https://github.com/marketplace/actions/android-emulator-runner
+      # Install Screenshot Dependencies
+      - name: Install and Cache Screenshot APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
           version: 1.0
           execute_install_scripts: true
 
@@ -248,9 +257,67 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
+  run:
+    if: ${{ success() }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    steps:
+      # Install Dependencies
+      - name: Install and Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: imagemagick pipewire libgl1-mesa-dri xvfb icewm xdotool libxkbcommon-x11-dev
+          version: 1.0
+          execute_install_scripts: true
+
+      # Download APK
+      - name: Download APK (Release)
+        uses: actions/download-artifact@v4
+        with:
+          name: CatgirlEngine-Android
+          path: ${{ github.workspace }}/artifacts/android
+
+      # Enable KVM
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
+      - name: Setup Gradle Build Action (For Caching Builds)
+        uses: gradle/actions/setup-gradle@v3
+
+      # Run Game Engine
+      # TODO: Setup Run Script
+      - name: Run Game Engine
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          script: ${{ github.workspace }}/android/gradlew installRelease
+
+      # Screenshot Game Engine
+      - name: Screenshot Game Engine
+        run: |
+          mkdir -p ${{ github.workspace }}/uploads
+          import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png
+
+      # Upload Screenshots
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
+          path: ${{ github.workspace }}/upload/*
+
+      # Kill Window Manager and X Server
+      - name: Kill Window Manager and X Server
+        run: |
+          killall Xvfb
+          killall icewm
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
-    needs: [Build]
+    needs: [Run]
     runs-on: ubuntu-latest
     environment: Android
     env:
