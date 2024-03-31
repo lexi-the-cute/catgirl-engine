@@ -197,9 +197,9 @@ jobs:
       # Screenshot Game Engine
       - name: Screenshot Game Engine
         run: |
-          mkdir -p ${{ github.workspace }}/uploads
-          #import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/uploads/screenshot.png  # X11
-          flameshot full -p ${{ github.workspace }}/uploads/screenshot.png  # Wayland
+          mkdir -p ${{ github.workspace }}/upload
+          #import -window "$(xdotool getactivewindow)" ${{ github.workspace }}/upload/screenshot.png  # X11
+          flameshot full -p ${{ github.workspace }}/upload/screenshot.png  # Wayland
 
       # Upload Screenshots
       - name: Upload Screenshots
@@ -209,12 +209,12 @@ jobs:
           path: ${{ github.workspace }}/upload/*
 
       # Kill Window Manager and X Server
-      - name: Kill Window Manager and X Server
-        run: |
-          killall firefox
-          killall python3
-          killall Xvfb
-          killall icewm
+      # - name: Kill Window Manager and X Server
+      #   run: |
+      #     killall firefox
+      #     killall python3
+      #     killall Xvfb
+      #     killall icewm
 
       # List Environment
       - name: List Environment
