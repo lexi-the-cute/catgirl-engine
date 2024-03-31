@@ -226,7 +226,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Linux
     env:
-      DISPLAY=:99
+      DISPLAY: :99
     steps:
       # Install Dependencies
       - name: Install and Cache APT Packages

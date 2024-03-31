@@ -261,7 +261,9 @@ jobs:
     if: ${{ success() }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: Android
+    env:
+      DISPLAY: :99
     steps:
       # Install Dependencies
       - name: Install and Cache APT Packages
@@ -290,6 +292,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       # Run Game Engine
+      # https://github.com/marketplace/actions/android-emulator-runner
       # TODO: Setup Run Script
       - name: Run Game Engine
         uses: reactivecircus/android-emulator-runner@v2
