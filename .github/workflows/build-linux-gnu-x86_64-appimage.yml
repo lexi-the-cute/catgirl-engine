@@ -252,6 +252,7 @@ jobs:
       # Run Game Engine
       - name: Run Game Engine
         run: |
+          chmod +x ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-*.AppImage
           ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-*.AppImage &
           sleep 30
 
@@ -273,6 +274,20 @@ jobs:
         run: |
           killall Xvfb
           killall icewm
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Run]

@@ -163,9 +163,14 @@ jobs:
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: imagemagick pipewire libgl1-mesa-dri xvfb icewm xdotool libxkbcommon-x11-dev firefox python3
+          packages: imagemagick pipewire libgl1-mesa-dri xvfb icewm xdotool libxkbcommon-x11-dev python3 snap
           version: 1.0
           execute_install_scripts: true
+
+      # Install Snap Dependencies
+      - name: Install Snap Dependencies
+        run: |
+          snap install firefox
 
       # Download Engine
       - name: Download Engine (Release)
@@ -209,6 +214,20 @@ jobs:
           killall python3
           killall Xvfb
           killall icewm
+
+      # List Environment
+      - name: List Environment
+        run: env
+      - name: List All Installed Packages
+        run: |
+          apt list --installed | wc -l
+          apt list --installed
+      - name: List All Files
+        run: find ${{ github.workspace }}
+
+      # Display Build Status
+      - name: 🍏 This job's status is ${{ job.status }}.
+        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Run]
