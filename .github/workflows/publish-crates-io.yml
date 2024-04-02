@@ -106,7 +106,7 @@ jobs:
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine to Crates.io
-        run: cargo publish -p catgirl-engine --no-verify
+        run: cargo publish -p catgirl-engine --no-verify --allow-dirty
 
       # Publish Announcement to Notification Channel
       - name: Publish Announcement to Notification Channel
