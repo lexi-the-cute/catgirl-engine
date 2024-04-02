@@ -4,7 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Run publish job'
+        description: 'Publish engine'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'no'
+        - 'yes'
+      run:
+        description: 'Run engine'
         required: true
         default: 'no'
         type: choice
@@ -194,7 +202,7 @@ jobs:
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
   run:
-    if: ${{ success() }}
+    if: ${{ success() && inputs.run == 'yes' }}
     needs: [Build]
     runs-on: ubuntu-latest
     environment: Linux
