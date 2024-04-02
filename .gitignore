@@ -16,3 +16,5 @@ _site/
 # AppImage
 /libs
 squashfs-root/
+*.AppImage
+*.zsync
