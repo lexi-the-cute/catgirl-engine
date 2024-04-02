@@ -1,4 +1,4 @@
-name: Publish to Crates.io
+name: Publish to Repositories
 on:
   push:
   workflow_dispatch:
@@ -114,6 +114,7 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           echo Writing SSH Private Key...
+          mkdir -p ~/.ssh
           echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
 
           echo Telling Git which key to use
