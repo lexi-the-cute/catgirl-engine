@@ -116,9 +116,7 @@ jobs:
           echo Writing SSH Private Key...
           mkdir -p ~/.ssh
           echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
-
-          echo Telling Git which key to use
-          git config --local core.sshCommand "ssh -i ~/.ssh/aur"
+          echo "Host aur.archlinux.org\n\tHostname aur.archlinux.org\n\tUser git\n\tIdentityFile ~/.ssh/aur\n\tIdentitiesOnly yes" > ~/.ssh/config
 
           echo Cloning AUR Repo
           git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
