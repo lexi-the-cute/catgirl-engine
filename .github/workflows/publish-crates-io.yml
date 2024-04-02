@@ -41,7 +41,7 @@ jobs:
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: gcc g++  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+          packages: gcc g++ makepkg  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
           version: 1.0
           execute_install_scripts: true
 
@@ -107,6 +107,35 @@ jobs:
       # Publish to Crates.io
       - name: Publish to catgirl-engine to Crates.io
         run: cargo publish -p catgirl-engine --no-verify --allow-dirty
+
+      # Publish Update to Arch User Repository (AUR)
+      - name: Publish Update to Arch User Repository (AUR)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+
+          echo Writing SSH Private Key...
+          echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
+
+          echo Telling Git which key to use
+          git config --local core.sshCommand "ssh -i ~/.ssh/aur"
+
+          echo Cloning AUR Repo
+          git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
+
+          cd aur
+          echo Bumping version
+          sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" PKGBUILD
+          export PKGREL=`grep "pkgrel=[0-9]*" PKGBUILD | cut -d'=' -f2`
+          export PKGRELUPDATE=$(($PKGREL+1))
+          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGRELUPDATE/" PKGBUILD
+
+          echo Generating SRCINFO
+          makepkg --printsrcinfo > .SRCINFO
+
+          echo Publishing Updated Version
+          git add PKGBUILD .SRCINFO
+          git commit -m "Updating latest version"
+          git push
 
       # Publish Announcement to Notification Channel
       - name: Publish Announcement to Notification Channel
