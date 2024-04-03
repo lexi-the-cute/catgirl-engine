@@ -121,6 +121,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: Linux
     steps:
+      # Check out repository code
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       # Write SSH Private Key
       - name: Write SSH Private Key
         run: |
@@ -192,6 +198,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: Linux
     steps:
+      # Check out repository code
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
       # Publish Announcement to Notification Channel
       - name: Publish Announcement to Notification Channel
         run: |
