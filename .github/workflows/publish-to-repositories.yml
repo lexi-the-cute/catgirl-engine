@@ -134,27 +134,34 @@ jobs:
 
       # Clone AUR Repo
       - name: Clone AUR Repo
-        run: git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
+        run: git clone ssh://aur@aur.archlinux.org/catgirl-engine.git ${{ github.workspace }}/aur
 
       # Bump PKGBUILD Version
       - name: Bump PKGBUILD Version
         run: |
-          export PKGREL=`grep "pkgrel=[0-9]*" aur/PKGBUILD | cut -d'=' -f2`
+          export PKGREL=`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`
           export PKGREL=$(($PKGREL+1))
 
-          sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" aur/PKGBUILD
-          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" aur/PKGBUILD
+          sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" ${{ github.workspace }}/aur/PKGBUILD
+          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" ${{ github.workspace }}/aur/PKGBUILD
 
       # Generating SRCINFO (Manually)
       - name: Generating SRCINFO (Manually)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
-          cd aur
+          cd ${{ github.workspace }}/aur
           # makepkg --printsrcinfo > .SRCINFO
           sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" .SRCINFO
           sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" .SRCINFO
           sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" .SRCINFO
+
+      # Upload Repo As Artifact
+      - name: Upload Repo As Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-AUR-Repo
+          path: ${{ github.workspace }}/aur/*
 
       # Setting Git Author Info
       - name: Setting Git Author Info
@@ -169,7 +176,7 @@ jobs:
       # Publish Update to Arch User Repository (AUR)
       - name: Publish Update to Arch User Repository (AUR)
         run: |
-          cd aur
+          cd ${{ github.workspace }}/aur
           git add PKGBUILD .SRCINFO
           git commit -m "Updating latest version"
           git push
