@@ -172,16 +172,16 @@ jobs:
           git add PKGBUILD .SRCINFO
           git commit -m "Updating latest version"
           git push
-    announce:
-      if: ${{ success() }}
-      needs: [AUR]
-      runs-on: ubuntu-latest
-      environment: Linux
-      steps:
-        # Publish Announcement to Notification Channel
-        - name: Publish Announcement to Notification Channel
-          run: |
-            export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-            export VERSION_STRING="Catgirl Engine v$VERSION"
-            export MESSAGE="$VERSION_STRING has been published..."
-            curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL
+  announce:
+    if: ${{ success() }}
+    needs: [AUR]
+    runs-on: ubuntu-latest
+    environment: Linux
+    steps:
+      # Publish Announcement to Notification Channel
+      - name: Publish Announcement to Notification Channel
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export VERSION_STRING="Catgirl Engine v$VERSION"
+          export MESSAGE="$VERSION_STRING has been published..."
+          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL
