@@ -21,7 +21,7 @@ on:
         - 'yes'
 jobs:
   build:
-    if: ${{ (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') && !endsWith(github.event.head_commit.message, '--norun') }}
+    if: ${{ endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes' }}
     runs-on: ubuntu-latest
     environment: Linux
     env:
