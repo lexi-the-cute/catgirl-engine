@@ -128,7 +128,8 @@ jobs:
 
           cd aur
           echo Bumping version
-          export PKGREL=$((`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`+1))
+          export PKGREL=`grep "pkgrel=[0-9]*" PKGBUILD | cut -d'=' -f2`
+          export PKGREL=$(($PKGREL+1))
           sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" PKGBUILD
           sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" PKGBUILD
 
