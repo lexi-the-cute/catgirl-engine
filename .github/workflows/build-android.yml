@@ -21,6 +21,7 @@ on:
         - 'yes'
 jobs:
   build:
+    if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
     environment: Android
     env:
