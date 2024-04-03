@@ -6,6 +6,7 @@
 /examples/wasm/pkg
 .ra-target/
 _site/
+aur/
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata

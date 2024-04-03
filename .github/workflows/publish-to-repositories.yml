@@ -112,6 +112,7 @@ jobs:
       - name: Publish Update to Arch User Repository (AUR)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export DOWNLOAD_PATH="catgirl-engine-$VERSION.tar.gz::https://static.crates.io/crates/catgirl-engine/catgirl-engine-$VERSION.crate"
 
           echo Writing SSH Private Key...
           mkdir -p ~/.ssh
@@ -127,13 +128,15 @@ jobs:
 
           cd aur
           echo Bumping version
+          export PKGREL=$((`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`+1))
           sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" PKGBUILD
-          export PKGREL=`grep "pkgrel=[0-9]*" PKGBUILD | cut -d'=' -f2`
-          export PKGRELUPDATE=$(($PKGREL+1))
-          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGRELUPDATE/" PKGBUILD
+          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" PKGBUILD
 
-          echo Generating SRCINFO
-          makepkg --printsrcinfo > .SRCINFO
+          echo Generating SRCINFO (Manually)
+          sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" .SRCINFO
+          sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" .SRCINFO
+          sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" .SRCINFO
+          # makepkg --printsrcinfo > .SRCINFO
 
           echo Setting Git Author Info
           git config --global user.email "${{ vars.GIT_EMAIL }}"
