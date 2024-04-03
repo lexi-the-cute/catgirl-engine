@@ -116,7 +116,11 @@ jobs:
           echo Writing SSH Private Key...
           mkdir -p ~/.ssh
           echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
-          echo "Host aur.archlinux.org\n\tHostname aur.archlinux.org\n\tUser git\n\tIdentityFile ~/.ssh/aur\n\tIdentitiesOnly yes" > ~/.ssh/config
+          echo -e "Host aur.archlinux.org\n\tHostname aur.archlinux.org\n\tUser git\n\tIdentityFile ~/.ssh/aur\n\tIdentitiesOnly yes" > ~/.ssh/config
+          echo "${{ vars.AUR_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/aur
+          chmod 0600 ~/.ssh/config
+          chmod 0600 ~/.ssh/known_hosts
 
           echo Cloning AUR Repo
           git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
@@ -130,6 +134,10 @@ jobs:
 
           echo Generating SRCINFO
           makepkg --printsrcinfo > .SRCINFO
+
+          echo Setting Git Author Info
+          git config --global user.email "${{ vars.GIT_EMAIL }}"
+          git config --global user.name "${{ vars.GIT_NAME }}"
 
           echo Publishing Updated Version
           git add PKGBUILD .SRCINFO
