@@ -24,6 +24,7 @@ concurrency:
 jobs:
   # Build job
   build:
+    if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
     environment: WebAssembly
     steps:
