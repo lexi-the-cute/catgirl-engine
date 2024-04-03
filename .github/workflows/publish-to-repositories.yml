@@ -169,6 +169,7 @@ jobs:
       # Publish Update to Arch User Repository (AUR)
       - name: Publish Update to Arch User Repository (AUR)
         run: |
+          cd aur
           git add PKGBUILD .SRCINFO
           git commit -m "Updating latest version"
           git push
