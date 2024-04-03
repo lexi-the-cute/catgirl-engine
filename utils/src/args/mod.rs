@@ -121,7 +121,7 @@ mod tests {
     use std::ffi::CString;
 
     #[test]
-    fn test() {
+    fn test_parsing_args_from_c() {
         use super::*;
 
         // Null pointer should be disregarded (e.g. return is None)
