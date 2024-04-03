@@ -115,63 +115,63 @@ jobs:
       # Publish to Crates.io
       - name: Publish to catgirl-engine to Crates.io
         run: cargo publish -p catgirl-engine --no-verify --allow-dirty
-    aur:
-      if: ${{ success() || aur.run == 'yes' }}
-      needs: [Build]
-      runs-on: ubuntu-latest
-      environment: Linux
-      steps:
-        # Write SSH Private Key
-        - name: Write SSH Private Key
-          run: |
-            mkdir -p ~/.ssh
-            echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
-            echo -e "Host aur.archlinux.org\n\tHostname aur.archlinux.org\n\tUser git\n\tIdentityFile ~/.ssh/aur\n\tIdentitiesOnly yes" > ~/.ssh/config
-            echo "${{ vars.AUR_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
-            chmod 0600 ~/.ssh/aur
-            chmod 0600 ~/.ssh/config
-            chmod 0600 ~/.ssh/known_hosts
+  aur:
+    if: ${{ success() || aur.run == 'yes' }}
+    needs: [Build]
+    runs-on: ubuntu-latest
+    environment: Linux
+    steps:
+      # Write SSH Private Key
+      - name: Write SSH Private Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AUR_SSH }}" > ~/.ssh/aur
+          echo -e "Host aur.archlinux.org\n\tHostname aur.archlinux.org\n\tUser git\n\tIdentityFile ~/.ssh/aur\n\tIdentitiesOnly yes" > ~/.ssh/config
+          echo "${{ vars.AUR_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 0600 ~/.ssh/aur
+          chmod 0600 ~/.ssh/config
+          chmod 0600 ~/.ssh/known_hosts
 
-        # Clone AUR Repo
-        - name: Clone AUR Repo
-          run: git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
+      # Clone AUR Repo
+      - name: Clone AUR Repo
+        run: git clone ssh://aur@aur.archlinux.org/catgirl-engine.git aur
 
-        # Bump PKGBUILD Version
-        - name: Bump PKGBUILD Version
-          run: |
-            export PKGREL=`grep "pkgrel=[0-9]*" aur/PKGBUILD | cut -d'=' -f2`
-            export PKGREL=$(($PKGREL+1))
+      # Bump PKGBUILD Version
+      - name: Bump PKGBUILD Version
+        run: |
+          export PKGREL=`grep "pkgrel=[0-9]*" aur/PKGBUILD | cut -d'=' -f2`
+          export PKGREL=$(($PKGREL+1))
 
-            sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" aur/PKGBUILD
-            sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" aur/PKGBUILD
+          sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" aur/PKGBUILD
+          sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" aur/PKGBUILD
 
-        # Generating SRCINFO (Manually)
-        - name: Generating SRCINFO (Manually)
-          run: |
-            export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+      # Generating SRCINFO (Manually)
+      - name: Generating SRCINFO (Manually)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
-            cd aur
-            # makepkg --printsrcinfo > .SRCINFO
-            sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" .SRCINFO
-            sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" .SRCINFO
-            sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" .SRCINFO
+          cd aur
+          # makepkg --printsrcinfo > .SRCINFO
+          sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" .SRCINFO
+          sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" .SRCINFO
+          sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" .SRCINFO
 
-        # Setting Git Author Info
-        - name: Setting Git Author Info
-          run: |
-            export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-            export DOWNLOAD_PATH="catgirl-engine-$VERSION.tar.gz::https://static.crates.io/crates/catgirl-engine/catgirl-engine-$VERSION.crate"
+      # Setting Git Author Info
+      - name: Setting Git Author Info
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export DOWNLOAD_PATH="catgirl-engine-$VERSION.tar.gz::https://static.crates.io/crates/catgirl-engine/catgirl-engine-$VERSION.crate"
 
-            echo Setting Git Author Info
-            git config --global user.email "${{ vars.GIT_EMAIL }}"
-            git config --global user.name "${{ vars.GIT_NAME }}"
+          echo Setting Git Author Info
+          git config --global user.email "${{ vars.GIT_EMAIL }}"
+          git config --global user.name "${{ vars.GIT_NAME }}"
 
-        # Publish Update to Arch User Repository (AUR)
-        - name: Publish Update to Arch User Repository (AUR)
-          run: |
-            git add PKGBUILD .SRCINFO
-            git commit -m "Updating latest version"
-            git push
+      # Publish Update to Arch User Repository (AUR)
+      - name: Publish Update to Arch User Repository (AUR)
+        run: |
+          git add PKGBUILD .SRCINFO
+          git commit -m "Updating latest version"
+          git push
     announce:
       if: ${{ success() }}
       needs: [AUR]
