@@ -143,6 +143,8 @@ jobs:
           export PKGREL=`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`
           export PKGREL=$(($PKGREL+1))
 
+          echo "Version: $VERSION - Release: $PKGREL"
+
           sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" ${{ github.workspace }}/aur/PKGBUILD
           sed -i "s/pkgrel=[0-9]*/pkgrel=$PKGREL/" ${{ github.workspace }}/aur/PKGBUILD
 
@@ -150,13 +152,18 @@ jobs:
       - name: Generating SRCINFO (Manually)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export PKGREL=`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`
+          export PKGREL=$(($PKGREL+1))
           export DOWNLOAD_PATH="catgirl-engine-$VERSION.tar.gz::https://static.crates.io/crates/catgirl-engine/catgirl-engine-$VERSION.crate"
 
+          echo "Version: $VERSION - Release: $PKGREL"
+          echo "Download Path: $DOWNLOAD_PATH"
+
           cd ${{ github.workspace }}/aur
-          # makepkg --printsrcinfo > .SRCINFO
-          sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" .SRCINFO
-          sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" .SRCINFO
-          sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" .SRCINFO
+          # makepkg --printsrcinfo > ${{ github.workspace }}/aur/.SRCINFO
+          sed -i "s/pkgver = [0-9.]*/pkgver = $VERSION/" ${{ github.workspace }}/aur/.SRCINFO
+          sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" ${{ github.workspace }}/aur/.SRCINFO
+          sed -i "s|source = .*|source = \"$DOWNLOAD_PATH\"|" ${{ github.workspace }}/aur/.SRCINFO
 
       # Upload Repo As Artifact
       - name: Upload Repo As Artifact
