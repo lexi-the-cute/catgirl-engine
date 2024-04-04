@@ -108,6 +108,10 @@ android {
     buildFeatures {
         prefab true
     }
+
+    packagingOptions {
+        doNotStrip '**/*.so'
+    }
 }
 
 apply plugin: 'com.github.willir.rust.cargo-ndk-android'
