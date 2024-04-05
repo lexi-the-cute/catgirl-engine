@@ -15,6 +15,7 @@ I'm also considering the idea of inter-server communication, but for now, commun
 # Download
 
 * [Itch.io][itchio-download]
+* [FDroid Repo][fdroid-repo]
 
 # Setup Build Environment
 
@@ -162,3 +163,4 @@ SS1k4L1wKTICYf+SL07C8klAKNF4llhUvBmfAQ==
 [catgirl-engine-utils-docs]: https://docs.rs/catgirl-engine-utils/latest/catgirl_engine_utils
 [main-key]: http://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x20E0635864445A177F8F7C0C6141FD27892AE9B4
 [signing-key]: http://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x2CA0D74483A5E726D7C0BA1A71975DD4507374C1
+[fdroid-repo]: https://fdroid.catgirl.land/fdroid/repo
