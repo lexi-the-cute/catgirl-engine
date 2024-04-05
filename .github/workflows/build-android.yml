@@ -422,7 +422,7 @@ jobs:
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android.zip"
           export DISPLAY_LABEL="Android"
 
-          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R lexi-the-cute/catgirl-engine
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)
