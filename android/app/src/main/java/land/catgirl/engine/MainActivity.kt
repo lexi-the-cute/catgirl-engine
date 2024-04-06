@@ -40,11 +40,15 @@ class MainActivity : GameActivity() {
         controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
-   companion object {
-       init {
-           System.loadLibrary("main")
-       }
+    public fun getExternalStorage() {
+        android.os
+    }
 
-       const val TAG: String = "CatgirlEngineApp"
-   }
+    companion object {
+        init {
+            System.loadLibrary("main")
+        }
+
+        const val TAG: String = "CatgirlEngineApp"
+    }
 }
