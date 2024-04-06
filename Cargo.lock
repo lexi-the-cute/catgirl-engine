@@ -520,6 +520,7 @@ dependencies = [
  "futures",
  "futures-channel",
  "image",
+ "jni",
  "tracing",
  "wasm-bindgen",
  "wasm-bindgen-futures",

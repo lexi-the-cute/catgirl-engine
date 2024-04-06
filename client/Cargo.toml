@@ -58,6 +58,7 @@ futures = { version = "~0.3", default-features = false, features = ["executor"] 
 
 [target.'cfg(target_os="android")'.dependencies]
 winit = { version = "~0.29", default-features = true, features = ["android-game-activity"] }
+jni = { version = "~0.21", default-features = false }
 
 [target.'cfg(target_family="wasm")'.dependencies]
 wgpu = { version = "~0.19", default-features = false, features = ["webgl", "fragile-send-sync-non-atomic-wasm"] }
