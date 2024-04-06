@@ -41,7 +41,11 @@ class MainActivity : GameActivity() {
     }
 
     public fun getExternalStorage() {
-        android.os
+        // android.os
+    }
+
+    public fun getDataDir() {
+
     }
 
     companion object {
