@@ -66,12 +66,12 @@ jobs:
 
       # https://github.com/marketplace/actions/android-emulator-runner
       # Install Screenshot Dependencies
-      - name: Install and Cache Screenshot APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
-          version: 1.0
-          execute_install_scripts: true
+      # - name: Install and Cache Screenshot APT Packages
+      #   uses: awalsh128/cache-apt-pkgs-action@latest
+      #   with:
+      #     packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
+      #     version: 1.0
+      #     execute_install_scripts: true
 
       # Extract Keystore
       - name: Extract Keystore
@@ -143,11 +143,52 @@ jobs:
           gpg --import $HOME/signing.gpg
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK
+      - name: Build CatgirlEngine APK (FAT)
         working-directory: ${{ github.workspace }}/android
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-fat.apk
+
+      # Build Engine As APK
+      - name: Build CatgirlEngine APK (aarch64)
+        working-directory: ${{ github.workspace }}/android
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" app/build.gradle
+          ${{ github.workspace }}/android/gradlew assembleRelease
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-aarch64.apk
+
+      # Build Engine As APK
+      - name: Build CatgirlEngine APK (armv7)
+        working-directory: ${{ github.workspace }}/android
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" app/build.gradle
+          ${{ github.workspace }}/android/gradlew assembleRelease
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-armv7.apk
+
+      # Build Engine As APK
+      - name: Build CatgirlEngine APK (i686)
+        working-directory: ${{ github.workspace }}/android
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          # export CARGO_NDK_ANDROID_TARGET="x86"
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" app/build.gradle
+          ${{ github.workspace }}/android/gradlew assembleRelease
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-i686.apk
+
+      # Build Engine As APK
+      - name: Build CatgirlEngine APK (x86_64)
+        working-directory: ${{ github.workspace }}/android
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          # export CARGO_NDK_ANDROID_TARGET="x86_64"
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" app/build.gradle
+          ${{ github.workspace }}/android/gradlew assembleRelease
+          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-x86_64.apk
 
       # We no longer use the Play Store, but if another store uses AAB, we can enable it
       # # Build Engine As AAB
@@ -169,7 +210,11 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine.apk
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-fat.apk ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-aarch64.apk ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-armv7.apk ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-i686.apk ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-x86_64.apk ${{ github.workspace }}/upload/catgirl-engine-fat.apk
           #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
@@ -416,11 +461,56 @@ jobs:
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (Zip)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android.zip"
-          export DISPLAY_LABEL="Android"
+          export DISPLAY_LABEL="Android (Zip)"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
+
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (FAT)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk"
+          export DISPLAY_LABEL="Android (FAT)"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
+
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (aarch64)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-aarch64.apk"
+          export DISPLAY_LABEL="Android (aarch64)"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
+
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (armv7)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-armv7.apk"
+          export DISPLAY_LABEL="Android (armv7)"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
+
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (i686)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-i686.apk"
+          export DISPLAY_LABEL="Android (i686)"
+
+          gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
+
+      # Publish to Github Release
+      - name: 👩‍💻 Publish to Github Release (x86_64)
+        run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk"
+          export DISPLAY_LABEL="Android (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -439,4 +529,8 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine.apk fomxgorl/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk fomxgorl/catgirl-engine:android
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-aarch64.apk fomxgorl/catgirl-engine:android-aarch64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armv7.apk fomxgorl/catgirl-engine:android-armv7
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-i686.apk fomxgorl/catgirl-engine:android-i686
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk fomxgorl/catgirl-engine:android-x86_64
