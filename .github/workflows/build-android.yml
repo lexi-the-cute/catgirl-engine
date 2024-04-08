@@ -161,7 +161,7 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
-          rm -r ${{ github.workspace }}/android/src/main/jniLibs
+          rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
@@ -176,7 +176,7 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/build.gradle
 
-          rm -r ${{ github.workspace }}/android/src/main/jniLibs
+          rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
@@ -191,7 +191,7 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="x86"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/build.gradle
 
-          rm -r ${{ github.workspace }}/android/src/main/jniLibs
+          rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
@@ -206,7 +206,7 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/build.gradle
 
-          rm -r ${{ github.workspace }}/android/src/main/jniLibs
+          rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
