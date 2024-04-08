@@ -154,7 +154,7 @@ jobs:
           #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (aarch64)
+      - name: Build CatgirlEngine APK (arm64)
         working-directory: ${{ github.workspace }}/android
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
@@ -166,10 +166,10 @@ jobs:
           ${{ github.workspace }}/android/gradlew assembleRelease
 
           mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-aarch64.apk
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-arm64.apk
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (armv7)
+      - name: Build CatgirlEngine APK (armeabi-v7a)
         working-directory: ${{ github.workspace }}/android
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
@@ -181,10 +181,10 @@ jobs:
           ${{ github.workspace }}/android/gradlew assembleRelease
 
           mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-armv7.apk
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-armeabi-v7a.apk
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (i686)
+      - name: Build CatgirlEngine APK (x86)
         working-directory: ${{ github.workspace }}/android
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
@@ -196,7 +196,7 @@ jobs:
           ${{ github.workspace }}/android/gradlew assembleRelease
 
           mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-i686.apk
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-x86.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (x86_64)
@@ -497,29 +497,29 @@ jobs:
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (aarch64)
+      - name: 👩‍💻 Publish to Github Release (arm64)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-aarch64.apk"
-          export DISPLAY_LABEL="Android (aarch64)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk"
+          export DISPLAY_LABEL="Android (arm64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (armv7)
+      - name: 👩‍💻 Publish to Github Release (armeabi-v7a)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-armv7.apk"
-          export DISPLAY_LABEL="Android (armv7)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk"
+          export DISPLAY_LABEL="Android (armeabi-v7a)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (i686)
+      - name: 👩‍💻 Publish to Github Release (x86)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-i686.apk"
-          export DISPLAY_LABEL="Android (i686)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk"
+          export DISPLAY_LABEL="Android (x86)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -548,7 +548,7 @@ jobs:
         run: |
           # Upload App
           ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk fomxgorl/catgirl-engine:android
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-aarch64.apk fomxgorl/catgirl-engine:android-aarch64
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armv7.apk fomxgorl/catgirl-engine:android-armv7
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-i686.apk fomxgorl/catgirl-engine:android-i686
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk fomxgorl/catgirl-engine:android-arm64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk fomxgorl/catgirl-engine:android-armeabi-v7a
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk fomxgorl/catgirl-engine:android-x86
           ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk fomxgorl/catgirl-engine:android-x86_64
