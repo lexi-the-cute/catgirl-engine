@@ -148,7 +148,10 @@ jobs:
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-fat.apk
+
+          mkdir -p ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-fat.apk
+          #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (aarch64)
@@ -158,7 +161,9 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" app/build.gradle
           ${{ github.workspace }}/android/gradlew assembleRelease
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-aarch64.apk
+
+          mkdir -p ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-aarch64.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (armv7)
@@ -168,7 +173,9 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" app/build.gradle
           ${{ github.workspace }}/android/gradlew assembleRelease
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-armv7.apk
+
+          mkdir -p ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-armv7.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (i686)
@@ -178,7 +185,9 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="x86"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" app/build.gradle
           ${{ github.workspace }}/android/gradlew assembleRelease
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-i686.apk
+
+          mkdir -p ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-i686.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (x86_64)
@@ -188,7 +197,10 @@ jobs:
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" app/build.gradle
           ${{ github.workspace }}/android/gradlew assembleRelease
-          mv ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-x86_64.apk
+
+
+          mkdir -p ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-x86_64.apk
 
       # We no longer use the Play Store, but if another store uses AAB, we can enable it
       # # Build Engine As AAB
@@ -210,12 +222,6 @@ jobs:
       - name: Prepare Artifact Uploads
         run: |
           mkdir -p ${{ github.workspace }}/upload/profdata
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-fat.apk ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-aarch64.apk ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-armv7.apk ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-i686.apk ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/catgirl-engine-x86_64.apk ${{ github.workspace }}/upload/catgirl-engine-fat.apk
-          #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
