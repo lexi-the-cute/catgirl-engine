@@ -28,6 +28,7 @@ fn main() {
     // Process args for future use
     setup::process_args();
     debug!("Launched as binary...");
+    trace!("Built for Arch: {}", setup::build_info().target.cpu.arch);
 
     if let Err(error) = setup::start() {
         error!("{:?}", error);
