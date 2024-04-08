@@ -29,7 +29,6 @@ jobs:
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
       CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -197,6 +196,8 @@ jobs:
     needs: [AUR]
     runs-on: ubuntu-latest
     environment: Linux
+    env:
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       # Check out repository code
       - name: Check out repository code
@@ -209,5 +210,5 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export VERSION_STRING="Catgirl Engine v$VERSION"
-          export MESSAGE="$VERSION_STRING has been published..."
+          export MESSAGE="[$VERSION_STRING has been published...](https://github.com/lexi-the-cute/catgirl-engine/releases/tag/v$VERSION)"
           curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL

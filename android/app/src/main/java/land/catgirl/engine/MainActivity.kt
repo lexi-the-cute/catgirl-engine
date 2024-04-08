@@ -6,6 +6,7 @@ import android.view.WindowManager
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.androidgamesdk.GameActivity
+import java.io.File
 
 
 class MainActivity : GameActivity() {
@@ -40,12 +41,12 @@ class MainActivity : GameActivity() {
         controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 
-    public fun getExternalStorage() {
-        // android.os
+    public fun getExternalStorage(): File? {
+         return android.os.Environment.getExternalStorageDirectory()
     }
 
-    public fun getDataDir() {
-
+    public fun getStorage(): File {
+        return android.os.Environment.getStorageDirectory()
     }
 
     companion object {
