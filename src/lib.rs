@@ -55,6 +55,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Process args for future use
     setup::process_args();
     debug!("Launched as library...");
+    trace!("Built for Arch: {}", setup::build_info().target.cpu.arch);
 
     match setup::start() {
         Err(error) => {
@@ -86,6 +87,7 @@ pub fn android_main(app: AndroidApp) {
     // Process args for future use
     setup::process_args();
     debug!("Launched as Android app...");
+    trace!("Built for Arch: {}", setup::build_info().target.cpu.arch);
 
     client::game::store_android_app(app);
     if let Err(error) = setup::start() {
@@ -116,6 +118,7 @@ pub fn wasm_start() {
     // Process args for future use
     setup::process_args();
     debug!("Launched as Wasm library...");
+    trace!("Built for Arch: {}", setup::build_info().target.cpu.arch);
 
     if let Err(error) = setup::start() {
         error!("{:?}", error)
