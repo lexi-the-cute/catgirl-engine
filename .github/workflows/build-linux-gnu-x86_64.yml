@@ -349,7 +349,7 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.zip"
-          export DISPLAY_LABEL="x86_64 Linux GLibc (Zip)"
+          export DISPLAY_LABEL="Linux Zip GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
