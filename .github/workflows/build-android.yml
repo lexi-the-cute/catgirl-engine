@@ -174,7 +174,7 @@ jobs:
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
-          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/build.gradle
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/app/build.gradle
 
           rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
@@ -189,7 +189,7 @@ jobs:
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86"
-          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/build.gradle
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/app/build.gradle
 
           rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
@@ -204,7 +204,7 @@ jobs:
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
-          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/build.gradle
+          sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
           rm -rf ${{ github.workspace }}/android/app/src/main/jniLibs
           ${{ github.workspace }}/android/gradlew clean
