@@ -108,10 +108,12 @@ android {
     buildFeatures {
         prefab true
     }
-
     packagingOptions {
-        doNotStrip '**/*.so'
+        jniLibs {
+            keepDebugSymbols += ['**/*.so']
+        }
     }
+
 }
 
 apply plugin: 'com.github.willir.rust.cargo-ndk-android'
