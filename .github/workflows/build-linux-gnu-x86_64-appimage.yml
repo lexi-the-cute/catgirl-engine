@@ -379,7 +379,7 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME"
-          export DISPLAY_LABEL="x86_64 Linux AppImage"
+          export DISPLAY_LABEL="x86_64 Linux (AppImage)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -388,7 +388,7 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME.zsync"
-          export DISPLAY_LABEL="x86_64 Linux AppImage Zsync"
+          export DISPLAY_LABEL="x86_64 Linux (AppImage Zsync)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
