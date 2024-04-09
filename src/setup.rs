@@ -19,6 +19,7 @@ build_info::build_info!(
 );
 
 /// Process args for future use
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn process_args() {
     // Store assets path in separate variable
@@ -124,6 +125,7 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 /// # Panics
 ///
 /// This may fail if the license info cannot be unwrapped
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
@@ -182,6 +184,7 @@ pub extern "C" fn print_version() {
 /// # Panics
 ///
 /// May panic if the dependency license info cannot be unwrapped
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();

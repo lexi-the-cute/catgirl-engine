@@ -45,6 +45,7 @@ pub enum ColorSpace {
 /// Converts Standard RGB Color Space to Linear Standard RGB Color Space
 ///
 /// Outputs f64 instead of f32 for use in `wgpu::Color`
+#[no_mangle]
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
@@ -70,6 +71,7 @@ pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
 }
 
 /// Converts out color struct to WGPU's color struct
+#[no_mangle]
 #[must_use]
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn get_wgpu_color_from_ce_color(color: Color) -> wgpu::Color {
