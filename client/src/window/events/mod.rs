@@ -87,6 +87,10 @@ pub(crate) fn suspended_window() {
 /// Key was pressed on keyboard
 pub(crate) fn pressed_key(event: KeyEvent, window_target: &EventLoopWindowTarget<()>) {
     match event.logical_key {
+        winit::keyboard::Key::Named(NamedKey::BrowserBack) => {
+            debug!("The back key Was pressed! Stopping...");
+            window_target.exit();
+        }
         winit::keyboard::Key::Named(NamedKey::Escape) => {
             debug!("The escape key Was pressed! Stopping...");
             window_target.exit();
