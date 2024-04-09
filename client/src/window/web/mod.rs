@@ -4,6 +4,7 @@ use wasm_bindgen::prelude::*;
 use web_sys::{Document, Element, HtmlCanvasElement};
 
 /// Find canvas element on page
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_canvas() -> Option<HtmlCanvasElement> {
     let document: Document = web_sys::window()

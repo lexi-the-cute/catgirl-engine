@@ -54,6 +54,7 @@ pub extern "C" fn process_args() {
 /// This may panic if the args cannot be unwrapped
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[no_mangle]
 #[must_use]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
@@ -91,6 +92,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 /// Get all dependencies from the workspace used to build the engine
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[no_mangle]
 #[must_use]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
@@ -297,6 +299,7 @@ fn set_panic_hook() {
 ///
 /// This may fail to set the ctrl+c handler
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");

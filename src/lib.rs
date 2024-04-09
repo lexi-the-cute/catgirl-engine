@@ -95,6 +95,7 @@ pub fn android_main(app: AndroidApp) {
     }
 }
 
+#[no_mangle]
 #[cfg(target_family = "wasm")]
 #[wasm_bindgen(start)]
 /// The starting point when loaded via wasm bindgen

@@ -26,6 +26,7 @@ use winit::platform::web::EventLoopExtWebSys;
 ///
 /// The event loop may not be created
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop

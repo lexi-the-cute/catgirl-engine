@@ -31,6 +31,7 @@ pub mod assets;
 
 /// Retrieve the engine's icon as raw bytes
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Vec<u8> {
@@ -46,6 +47,7 @@ pub fn get_icon_bytes() -> Vec<u8> {
 /// This may fail to load the file from the byte array as an image
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
+#[no_mangle]
 #[must_use]
 pub fn get_icon() -> Icon {
     let image_bytes: Vec<u8> = get_icon_bytes();
@@ -68,6 +70,7 @@ pub fn get_icon() -> Icon {
 ///
 /// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 pub fn install_desktop_files() -> Result<(), String> {
     let mut desktop_file_contents: String = load_string!("resources/catgirl-engine.desktop");
 
@@ -123,6 +126,7 @@ pub fn install_desktop_files() -> Result<(), String> {
 ///
 /// May error if home directory cannot be found
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 pub fn uninstall_desktop_files() -> Result<(), String> {
     if let Some(home) = utils::get_environment_var("HOME") {
         // User Application Directories
