@@ -70,7 +70,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 #[no_mangle]
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
-pub fn android_main(app: AndroidApp) {
+pub extern "Rust" fn android_main(app: AndroidApp) {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
@@ -99,7 +99,7 @@ pub fn android_main(app: AndroidApp) {
 #[cfg(target_family = "wasm")]
 #[wasm_bindgen(start)]
 /// The starting point when loaded via wasm bindgen
-pub fn wasm_start() {
+pub extern "Rust" fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 

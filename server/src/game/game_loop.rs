@@ -9,7 +9,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 // TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn server_game_loop() -> Result<(), String> {
+pub extern "Rust" fn server_game_loop() -> Result<(), String> {
     debug!("Started server game loop...");
     // loop {
     // TODO: Implement

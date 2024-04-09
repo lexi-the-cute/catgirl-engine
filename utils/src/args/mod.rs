@@ -100,7 +100,7 @@ pub unsafe fn parse_args_from_c(
 // TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn set_parsed_args(args: Vec<String>) {
+pub extern "Rust" fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway
     if ARGS.get().is_some() {

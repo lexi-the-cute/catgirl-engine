@@ -28,7 +28,7 @@ use winit::platform::web::EventLoopExtWebSys;
 // TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn client_game_loop() -> Result<(), String> {
+pub extern "Rust" fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
