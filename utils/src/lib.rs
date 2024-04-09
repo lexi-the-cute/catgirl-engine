@@ -19,6 +19,7 @@ pub mod setup;
 /// # Panics
 ///
 /// May panic if environment var cannot be unwrapped
+#[no_mangle]
 #[must_use]
 pub fn matches_environment_var(key: &str, value: &str) -> bool {
     let environment_var: Result<String, env::VarError> = env::var(key);
@@ -30,6 +31,7 @@ pub fn matches_environment_var(key: &str, value: &str) -> bool {
 /// # Panics
 ///
 /// May panic if environment var cannot be unwrapped
+#[no_mangle]
 #[must_use]
 pub fn get_environment_var(key: &str) -> Option<String> {
     let environment_var: Result<String, env::VarError> = env::var(key);
@@ -42,6 +44,7 @@ pub fn get_environment_var(key: &str) -> Option<String> {
 }
 
 /// Print all environment variables
+#[no_mangle]
 pub fn print_environment_vars() {
     let vars: std::env::Vars = std::env::vars();
 

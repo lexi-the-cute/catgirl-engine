@@ -98,6 +98,7 @@ pub unsafe fn parse_args_from_c(
 
 /// Set parsed args passed in from function
 // TODO (BIND): Implement `extern "C"`
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
