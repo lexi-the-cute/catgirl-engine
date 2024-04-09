@@ -56,7 +56,7 @@ pub extern "C" fn process_args() {
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[no_mangle]
 #[must_use]
-pub fn get_args() -> Args {
+pub extern "Rust" fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
     } else {
@@ -94,7 +94,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[no_mangle]
 #[must_use]
-pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
+pub extern "Rust" fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
     let mut dependencies: BTreeMap<String, CrateInfo> = get_dependencies(info);
@@ -301,7 +301,7 @@ fn set_panic_hook() {
 // TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn start() -> Result<(), String> {
+pub extern "Rust" fn start() -> Result<(), String> {
     info!("Starting Game...");
 
     debug!("Setting panic hook...");
@@ -313,7 +313,7 @@ pub fn start() -> Result<(), String> {
         debug!("Setting SIGINT hook...");
         ctrlc::set_handler(move || {
             debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
-            std::process::exit(0);
+            utils::setup::exit();
         })
         .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
     }
