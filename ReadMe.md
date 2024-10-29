@@ -53,7 +53,7 @@ cd catgirl-engine
 
 ```bash
 # Compile Program
-cargo run
+cargo build
 ```
 
 ## Android

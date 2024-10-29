@@ -313,7 +313,7 @@ pub extern "Rust" fn start() -> Result<(), String> {
         debug!("Setting SIGINT hook...");
         ctrlc::set_handler(move || {
             debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
-            utils::setup::exit();
+            utils::setup::exit(0);
         })
         .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
     }
