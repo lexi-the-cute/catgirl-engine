@@ -3,7 +3,6 @@
 /tools
 /gen
 /pkg
-/examples/wasm/pkg
 .ra-target/
 _site/
 aur/
