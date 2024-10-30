@@ -61,7 +61,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
         Err(error) => {
             error!("{:?}", error);
 
-            -1
+            1
         }
         _ => 0,
     }

@@ -4,14 +4,16 @@
 
 #![warn(missing_docs)]
 
+use std::process::ExitCode;
+
 #[macro_use]
 extern crate tracing;
 
 /// Prepare the game engine for running
 pub mod setup;
 
-// Run as Executable (e.g. Linux)
-fn main() {
+/// Run as Executable (e.g. Linux)
+pub extern "Rust" fn main() -> ExitCode {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
@@ -19,7 +21,7 @@ fn main() {
     if setup::get_args().version {
         setup::print_version();
         setup::print_dependencies();
-        return;
+        return ExitCode::SUCCESS;
     }
 
     // Setup logger for debugging
@@ -32,5 +34,9 @@ fn main() {
 
     if let Err(error) = setup::start() {
         error!("{:?}", error);
+
+        return ExitCode::FAILURE;
     }
+
+    ExitCode::SUCCESS
 }

@@ -1,17 +1,21 @@
 use std::sync::Mutex;
 
+use std::sync::OnceLock;
 use crate::window::window_state::WindowState;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 use winit::event::{Event, WindowEvent};
-use winit::event_loop::{EventLoop, EventLoopBuilder, EventLoopWindowTarget};
+use winit::event_loop::{EventLoop, EventLoopBuilder, EventLoopProxy, EventLoopWindowTarget};
 
 #[cfg(target_os = "android")]
 use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
 
 #[cfg(target_family = "wasm")]
 use winit::platform::web::EventLoopExtWebSys;
+
+/// Allows sending custom events to the event loop from the outside
+static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 
 // http://gameprogrammingpatterns.com/game-loop.html
 // https://zdgeier.com/wgpuintro.html
@@ -42,6 +46,9 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         .build()
         .expect("Could not create an event loop!");
 
+    // This'll be useful for triggering the event loop from the outside when in wait mode
+    let _ = EVENT_LOOP_PROXY.set(event_loop.create_proxy());
+
     /// Holds the window state in a way that's compatible with async
     #[allow(clippy::items_after_statements)]
     static WINDOW_STATE: Mutex<Option<WindowState>> = Mutex::new(None);
@@ -63,6 +70,12 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         // This is ideal for non-game applications that only update in response to user
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
         window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
+
+        // Starts exit process when exit bool is set
+        if utils::setup::get_exit() {
+            // window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
+            window_target.exit();
+        }
 
         match event {
             // The close button was pressed
@@ -202,4 +215,34 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
     event_loop.spawn(event_loop_closure);
 
     Ok(())
+}
+
+/// Retrieves proxy to interact with game loop
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub(crate) extern "Rust" fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
+    EVENT_LOOP_PROXY.get().cloned()
+}
+
+/// Retrieves proxy to interact with game loop
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "Rust" fn advance_event_loop() -> bool {
+    send_event(())
+}
+
+/// Send's User Event to event loop
+pub extern "Rust" fn send_event(event: ()) -> bool {
+    let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
+    if event_loop_proxy_option.is_none() {
+        return false;
+    }
+
+    let event_loop_proxy: EventLoopProxy<()> = event_loop_proxy_option.unwrap();
+    let result: Result<(), winit::event_loop::EventLoopClosed<()>> = event_loop_proxy.send_event(event);
+    if result.is_ok() {
+        return true;
+    }
+
+    false
 }
