@@ -11,9 +11,14 @@ use wasm_bindgen::prelude::wasm_bindgen;
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "Rust" fn server_game_loop() -> Result<(), String> {
     debug!("Started server game loop...");
-    // loop {
-    // TODO: Implement
-    // }
+    error!("Dedicated server game loop not implemented yet...");
+
+    loop {
+        // TODO: Implement
+        if utils::setup::get_exit() {
+            break;
+        }
+    }
 
     Ok(())
 }

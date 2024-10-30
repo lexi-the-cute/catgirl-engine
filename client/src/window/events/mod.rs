@@ -262,7 +262,7 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 /// Exiting loop
 pub(crate) fn exiting_loop() {
     trace!("Winit loop is exiting...");
-    utils::setup::exit(0);
+    utils::setup::set_exit();
 }
 
 /// Low memory warning

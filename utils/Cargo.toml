@@ -37,10 +37,10 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [build-dependencies]
-build-info-build = { version = "^0.0.36", default-features = false }
+build-info-build = { version = "^0.0.39", default-features = false }
 
 [dependencies]
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-build-info = { version = "^0.0.36", default-features = false, features = ["runtime"] }
+build-info = { version = "^0.0.39", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
 wasm-bindgen = { version = "~0.2", default-features = true }

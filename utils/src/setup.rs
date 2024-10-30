@@ -1,4 +1,4 @@
-use std::{ffi::c_int, sync::OnceLock};
+use std::sync::OnceLock;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -15,7 +15,7 @@ build_info::build_info!(
 /// Exits the game engine
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn exit(code: c_int) {
+pub extern "C" fn set_exit() {
     if EXITING.get().is_some() {
         return;
     }
@@ -23,5 +23,9 @@ pub extern "C" fn exit(code: c_int) {
     let _ = EXITING.set(true);
 
     trace!("Engine is exiting...");
-    std::process::exit(code);
+}
+
+/// Retrieves if the game engine is exiting
+pub extern "C" fn get_exit() -> bool {
+    EXITING.get().unwrap_or(&false).clone()
 }
