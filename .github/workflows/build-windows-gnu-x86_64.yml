@@ -143,6 +143,7 @@ jobs:
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
+        include-hidden-files: true
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
           path: ${{ github.workspace }}/upload/*
@@ -238,6 +239,7 @@ jobs:
       # Upload Screenshots
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
+        include-hidden-files: true
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Screenshots-Zip
           path: ${{ github.workspace }}/upload/*

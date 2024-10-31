@@ -248,6 +248,7 @@ jobs:
       # Upload Android
       - name: Upload Android (Release)
         uses: actions/upload-artifact@v4
+        include-hidden-files: true
         with:
           name: CatgirlEngine-Android
           path: ${{ github.workspace }}/upload/*

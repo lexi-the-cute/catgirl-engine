@@ -166,6 +166,7 @@ jobs:
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
+        include-hidden-files: true
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
           path: ${{ github.workspace }}/upload/*
