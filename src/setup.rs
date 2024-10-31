@@ -317,6 +317,7 @@ pub extern "Rust" fn start() -> Result<(), String> {
 
             #[cfg(feature = "client")]
             if !get_args().server {
+                #[cfg(not(target_family = "wasm"))]
                 client::game::game_loop::advance_event_loop();
             }
         })

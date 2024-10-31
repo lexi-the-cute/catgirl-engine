@@ -15,7 +15,7 @@ pub extern "Rust" fn server_game_loop() -> Result<(), String> {
 
     loop {
         // TODO: Implement
-        if utils::setup::get_exit() {
+        if utils::setup::is_exiting() {
             break;
         }
     }
