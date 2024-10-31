@@ -12,7 +12,7 @@ build_info::build_info!(
     pub fn build_info
 );
 
-/// Exits the game engine
+/// Tells the game engine to start exiting next time it checks the exit status
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn set_exit() {
@@ -26,6 +26,6 @@ pub extern "C" fn set_exit() {
 }
 
 /// Retrieves if the game engine is exiting
-pub extern "C" fn get_exit() -> bool {
+pub extern "C" fn is_exiting() -> bool {
     EXITING.get().unwrap_or(&false).clone()
 }
