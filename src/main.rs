@@ -4,8 +4,6 @@
 
 #![warn(missing_docs)]
 
-use std::process::ExitCode;
-
 #[macro_use]
 extern crate tracing;
 
@@ -13,7 +11,7 @@ extern crate tracing;
 pub mod setup;
 
 /// Run as Executable (e.g. Linux)
-pub extern "Rust" fn main() -> ExitCode {
+pub extern "Rust" fn main() -> Result<(), String> {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
@@ -21,7 +19,7 @@ pub extern "Rust" fn main() -> ExitCode {
     if setup::get_args().version {
         setup::print_version();
         setup::print_dependencies();
-        return ExitCode::SUCCESS;
+        return Ok(());
     }
 
     // Setup logger for debugging
@@ -35,8 +33,8 @@ pub extern "Rust" fn main() -> ExitCode {
     if let Err(error) = setup::start() {
         error!("{:?}", error);
 
-        return ExitCode::FAILURE;
+        return Err(error);
     }
 
-    ExitCode::SUCCESS
+    Ok(())
 }
