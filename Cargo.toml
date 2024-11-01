@@ -85,7 +85,7 @@ auto_link_exclude_list = [
 
 [build-dependencies]
 build-info-build = { version = "^0.0.39", default-features = false }
-cc = { version = "~1.0", default-features = false }
+cc = { version = "~1.1", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
@@ -104,7 +104,7 @@ clap = { version = "~4", features = ["derive"] }
 ctrlc = { version = "~3", default-features = false }
 
 [target.'cfg(target_os="android")'.dependencies]
-android_logger = { version = "~0.13", default-features = false }
+android_logger = { version = "~0.14", default-features = false }
 winit = { version = "~0.29", default-features = false, features = ["android-game-activity"] }
 
 [target.'cfg(target_family="wasm")'.dependencies]
@@ -113,4 +113,4 @@ console_log = { version = "~1", default-features = false }
 wasm-bindgen-futures = { version = "^0.4.40", default-features = false }
 web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", default-features = false, features = ["js"] }
-fern = { version = "~0.6", default-features = false }
+fern = { version = "~0.7", default-features = false }
