@@ -108,6 +108,7 @@ impl WindowState<'_> {
         // Handle to graphics device (e.g. GPU)
         // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
         // https://crates.io/crates/futures
+        // TODO: Fix grabbing WGPU Adapter for latest WGPU for WASM
         debug!("Grabbing wgpu adapter...");
         let adapter_future = self
             .instance

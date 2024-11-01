@@ -21,7 +21,7 @@ pub(crate) fn close_requested(window_target: &ActiveEventLoop) {
 /// This is technically not an event, but is called by the Resume event
 pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'static> {
     #[cfg(target_family = "wasm")]
-    use winit::platform::web::WindowBuilderExtWebSys;
+    use winit::platform::web::WindowAttributesExtWebSys;
 
     debug!("Creating window...");
     let mut window_builder: WindowAttributes = WindowAttributes::default();
