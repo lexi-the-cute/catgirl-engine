@@ -43,25 +43,25 @@ build-info = { version = "^0.0.39", default-features = false, features = ["runti
 utils = { version = "0.12.49", package = "catgirl-engine-utils", path = "../utils" }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-winit = { version = "~0.29", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita"] }
-wgpu = { version = "~0.19", default-features = false }
+winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita"] }
+wgpu = { version = "~23", default-features = false }
 image = { version = "~0.25" }
 # egui = { version = "~0.26" }
 # egui-wgpu = { version = "~0.26" }
 
 [target.'cfg(not(target_env="musl"))'.dependencies]
-winit = { version = "~0.29", default-features = true }
+winit = { version = "~0.30", default-features = true }
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
-wgpu = { version = "~0.19", default-features = true, features = ["fragile-send-sync-non-atomic-wasm"] }
+wgpu = { version = "~23", default-features = true, features = ["fragile-send-sync-non-atomic-wasm"] }
 futures = { version = "~0.3", default-features = false, features = ["executor"] }
 
 [target.'cfg(target_os="android")'.dependencies]
-winit = { version = "~0.29", default-features = true, features = ["android-game-activity"] }
+winit = { version = "~0.30", default-features = true, features = ["android-game-activity"] }
 jni = { version = "~0.21", default-features = false }
 
 [target.'cfg(target_family="wasm")'.dependencies]
-wgpu = { version = "~0.19", default-features = false, features = ["webgl", "fragile-send-sync-non-atomic-wasm"] }
+wgpu = { version = "~23", default-features = false, features = ["webgl", "fragile-send-sync-non-atomic-wasm"] }
 wasm-bindgen-futures = { version = "~0.4", default-features = false }
 futures-channel = { version = "~0.3", default-features = false }
 web-sys = { version = "~0.3", features = ["Window", "Document", "Element", "HtmlCanvasElement"]}
