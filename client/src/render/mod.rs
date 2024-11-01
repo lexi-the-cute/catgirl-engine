@@ -45,6 +45,7 @@ pub enum ColorSpace {
 /// Converts Standard RGB Color Space to Linear Standard RGB Color Space
 ///
 /// Outputs f64 instead of f32 for use in `wgpu::Color`
+/// TODO: Research Wide Gamut
 #[no_mangle]
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
