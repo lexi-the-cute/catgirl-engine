@@ -9,7 +9,7 @@ use crate::window::window_state::WindowState;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use winit::event::{Event, WindowEvent};
-use winit::event_loop::{EventLoop, EventLoopBuilder, EventLoopWindowTarget};
+use winit::event_loop::{ActiveEventLoop, EventLoop};
 
 #[cfg(not(target_family = "wasm"))]
 use winit::event_loop::EventLoopProxy;
@@ -43,12 +43,12 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
-    let event_loop: EventLoop<()> = EventLoopBuilder::new()
+    let event_loop: EventLoop<()> = EventLoop::builder()
         .build()
         .expect("Could not create an event loop!");
 
     #[cfg(target_os = "android")]
-    let event_loop: EventLoop<()> = EventLoopBuilder::new()
+    let event_loop: EventLoop<()> = EventLoop::builder()
         .with_android_app(crate::game::ANDROID_APP.get().unwrap().to_owned())
         .build()
         .expect("Could not create an event loop!");
@@ -61,7 +61,7 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
     #[allow(clippy::items_after_statements)]
     static WINDOW_STATE: Mutex<Option<WindowState>> = Mutex::new(None);
     debug!("Starting event loop...");
-    let event_loop_closure = move |event: Event<()>, window_target: &EventLoopWindowTarget<()>| {
+    let event_loop_closure = move |event: Event<()>, window_target: &ActiveEventLoop| {
         /* Update Order
          *
          * processInput() - Handles user input
@@ -216,9 +216,11 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         }
     };
 
+    // TODO: Update to run_app
     #[cfg(not(target_family = "wasm"))]
     let _: Result<(), winit::error::EventLoopError> = event_loop.run(event_loop_closure);
 
+    // TODO: Update to spawn_app
     #[cfg(target_family = "wasm")]
     event_loop.spawn(event_loop_closure);
 

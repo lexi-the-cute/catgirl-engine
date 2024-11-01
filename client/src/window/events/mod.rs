@@ -5,26 +5,26 @@ use wgpu::{
 use winit::{
     dpi::PhysicalSize,
     event::{ElementState, Event, KeyEvent, MouseButton, Touch, TouchPhase},
-    event_loop::EventLoopWindowTarget,
+    event_loop::ActiveEventLoop,
     keyboard::NamedKey,
-    window::{Window, WindowBuilder},
+    window::{Window, WindowAttributes},
 };
 
 use crate::window::window_state::WindowState;
 
 /// The close button was pressed. Usually on the top right corner
-pub(crate) fn close_requested(window_target: &EventLoopWindowTarget<()>) {
+pub(crate) fn close_requested(window_target: &ActiveEventLoop) {
     debug!("The close button was pressed! Stopping...");
     window_target.exit();
 }
 
 /// This is technically not an event, but is called by the Resume event
-pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> WindowState<'static> {
+pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'static> {
     #[cfg(target_family = "wasm")]
     use winit::platform::web::WindowBuilderExtWebSys;
 
     debug!("Creating window...");
-    let mut window_builder: WindowBuilder = WindowBuilder::new();
+    let mut window_builder: WindowAttributes = WindowAttributes::default();
     window_builder = window_builder
         .with_title("Catgirl Engine")
         .with_window_icon(Some(crate::get_icon()));
@@ -51,19 +51,19 @@ pub(crate) fn create_window(window_target: &EventLoopWindowTarget<()>) -> Window
                 utils::get_environment_var("XDG_SESSION_TYPE").unwrap_or("None".to_string())
             );
             if utils::matches_environment_var("XDG_SESSION_TYPE", "x11") {
-                use winit::platform::x11::WindowBuilderExtX11;
+                use winit::platform::x11::WindowAttributesExtX11;
 
                 window_builder = window_builder.with_name(general, instance);
             } else if utils::matches_environment_var("XDG_SESSION_TYPE", "wayland") {
-                use winit::platform::wayland::WindowBuilderExtWayland;
+                use winit::platform::wayland::WindowAttributesExtWayland;
 
                 window_builder = window_builder.with_name(general, instance);
             }
         }
     }
 
-    let window: Window = window_builder
-        .build(window_target)
+    let window: Window = window_target
+        .create_window(window_builder)
         .expect("Could not create window!");
 
     WindowState::new(window)
@@ -85,7 +85,7 @@ pub(crate) fn suspended_window() {
 // processInput()
 // update() - Input gets passed to (internal) server, physics gets passed back
 /// Key was pressed on keyboard
-pub(crate) fn pressed_key(event: KeyEvent, window_target: &EventLoopWindowTarget<()>) {
+pub(crate) fn pressed_key(event: KeyEvent, window_target: &ActiveEventLoop) {
     match event.logical_key {
         winit::keyboard::Key::Named(NamedKey::BrowserBack) => {
             debug!("The back key Was pressed! Stopping...");
@@ -105,7 +105,7 @@ pub(crate) fn pressed_key(event: KeyEvent, window_target: &EventLoopWindowTarget
 pub(crate) fn clicked_mouse(
     state: ElementState,
     button: MouseButton,
-    _window_target: &EventLoopWindowTarget<()>,
+    _window_target: &ActiveEventLoop,
 ) {
     if state.is_pressed() {
         trace!("Mouse {:?} was pressed...", button);
