@@ -23,6 +23,8 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
     #[cfg(target_family = "wasm")]
     use winit::platform::web::WindowAttributesExtWebSys;
 
+    // TODO: Check wayland for modern changes to how window icons are handled
+    //   https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/269
     debug!("Creating window...");
     let mut window_builder: WindowAttributes = WindowAttributes::default();
     window_builder = window_builder
