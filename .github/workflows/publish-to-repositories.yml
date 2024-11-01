@@ -173,10 +173,10 @@ jobs:
       # Upload Repo As Artifact
       - name: Upload Repo As Artifact
         uses: actions/upload-artifact@v4
-        include-hidden-files: true
         with:
           name: CatgirlEngine-AUR-Repo
           path: ${{ github.workspace }}/aur/*
+          include-hidden-files: true
 
       # Setting Git Author Info
       - name: Setting Git Author Info

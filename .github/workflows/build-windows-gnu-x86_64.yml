@@ -143,10 +143,10 @@ jobs:
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
-        include-hidden-files: true
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
           path: ${{ github.workspace }}/upload/*
+          include-hidden-files: true
 
       # Test Minimal Dependency Versions
       # https://doc.rust-lang.org/cargo/reference/resolver.html
@@ -239,10 +239,10 @@ jobs:
       # Upload Screenshots
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
-        include-hidden-files: true
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Screenshots-Zip
           path: ${{ github.workspace }}/upload/*
+          include-hidden-files: true
 
       # Kill Window Manager and X Server
       # - name: Kill Window Manager and X Server

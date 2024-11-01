@@ -143,10 +143,10 @@ jobs:
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
-        include-hidden-files: true
         with:
           name: CatgirlEngine-Wasm-32-bit-Zip
           path: ${{ github.workspace }}/upload/*
+          include-hidden-files: true
 
       # List Environment
       - name: List Environment
@@ -213,10 +213,10 @@ jobs:
       # Upload Screenshots
       - name: Upload Screenshots
         uses: actions/upload-artifact@v4
-        include-hidden-files: true
         with:
           name: CatgirlEngine-Wasm-32-bit-Screenshots-Zip
           path: ${{ github.workspace }}/upload/*
+          include-hidden-files: true
 
       # Kill Window Manager and X Server
       # - name: Kill Window Manager and X Server
