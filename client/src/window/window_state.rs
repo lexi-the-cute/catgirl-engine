@@ -87,8 +87,6 @@ impl WindowState<'_> {
         debug!("Creating wgpu instance...");
 
         self.instance = Some(if cfg!(target_family = "wasm") {
-            // TODO: Fix bug with Adapter not being grabbed on later WGPU versions in WASM
-            //   See https://github.com/gfx-rs/wgpu/issues/6490#issuecomment-2453016187
             // wgpu::util::new_instance_with_webgpu_detection(wgpu::InstanceDescriptor::default()).await
             wgpu::Instance::new(wgpu::InstanceDescriptor::default())
         } else {
@@ -120,6 +118,7 @@ impl WindowState<'_> {
         // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
         // https://crates.io/crates/futures
         // TODO: Fix grabbing WGPU Adapter for latest WGPU for WASM
+        //    See https://github.com/gfx-rs/wgpu/commit/7910fd8059f361f48553c03d84c8e1410e94134e
         debug!("Grabbing wgpu adapter...");
         let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
         self.adapter = Some(adapter_future.await.expect("Could not grab WGPU adapter!"));
