@@ -1,6 +1,7 @@
 name: Build For Android
 on:
   push:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       publish:

@@ -11,13 +11,13 @@ pub struct WindowState<'a> {
     pub window: Arc<Window>,
 
     /// Context for WGPU objects
-    pub instance: Instance,
+    pub instance: Option<Instance>,
 
     /// Handle to the graphics device (e.g. the gpu)
     pub adapter: Option<Adapter>,
 
     /// The surface on which to draw graphics on
-    pub surface: Surface<'a>,
+    pub surface: Option<Surface<'a>>,
 
     /// Connection to the graphics device provided by the adapter
     pub device: Option<Device>,
@@ -37,20 +37,10 @@ impl WindowState<'_> {
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
-        // Context for all WGPU objects
-        // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
-        debug!("Creating wgpu instance...");
-        let instance: Instance = wgpu::Instance::new(wgpu::InstanceDescriptor::default());
-
-        debug!("Creating wgpu surface...");
-        let surface: Surface<'_> = instance
-            .create_surface(window_arc.clone())
-            .expect("Could not create surface!");
-
         Self {
             window: window_arc,
-            instance,
-            surface,
+            instance: None,
+            surface: None,
             adapter: None,
             device: None,
             queue: None,
@@ -92,6 +82,27 @@ impl WindowState<'_> {
     // TODO (BIND): Implement `extern "C"`
     // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub async fn initialize_graphics(&mut self) {
+        // Context for all WGPU objects
+        // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
+        debug!("Creating wgpu instance...");
+
+        self.instance = Some(if cfg!(target_family = "wasm") {
+            // TODO: Fix bug with Adapter not being grabbed on later WGPU versions in WASM
+            //   See https://github.com/gfx-rs/wgpu/issues/6490#issuecomment-2453016187
+            // wgpu::util::new_instance_with_webgpu_detection(wgpu::InstanceDescriptor::default()).await
+            wgpu::Instance::new(wgpu::InstanceDescriptor::default())
+        } else {
+            wgpu::Instance::new(wgpu::InstanceDescriptor::default())
+        });
+
+        debug!("Creating wgpu surface...");
+        let instance: &Instance = self.instance.as_ref().unwrap();
+        self.surface = Some(
+            instance
+                .create_surface(self.window.clone())
+                .expect("Could not create surface!"),
+        );
+
         // Describe's a device
         // For use with adapter's request device
         // https://docs.rs/wgpu/latest/wgpu/type.DeviceDescriptor.html
@@ -110,9 +121,7 @@ impl WindowState<'_> {
         // https://crates.io/crates/futures
         // TODO: Fix grabbing WGPU Adapter for latest WGPU for WASM
         debug!("Grabbing wgpu adapter...");
-        let adapter_future = self
-            .instance
-            .request_adapter(&wgpu::RequestAdapterOptions::default());
+        let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
         self.adapter = Some(adapter_future.await.expect("Could not grab WGPU adapter!"));
 
         // Opens a connection to the graphics device (e.g. GPU)
@@ -140,10 +149,10 @@ impl WindowState<'_> {
             size.width,
             size.height
         );
-        self.surface.configure(
+        let surface: &Surface<'_> = self.surface.as_ref().unwrap();
+        surface.configure(
             self.device.as_ref().unwrap(),
-            &self
-                .surface
+            &surface
                 .get_default_config(self.adapter.as_ref().unwrap(), size.width, size.height)
                 .expect("Could not get surface default config!"),
         );
@@ -172,6 +181,8 @@ impl WindowState<'_> {
         debug!("Creating wgpu surface...");
         let surface: Surface<'_> = self
             .instance
+            .as_ref()
+            .unwrap()
             .create_surface(self.window.clone())
             .expect("Could not create surface!");
 
@@ -183,6 +194,6 @@ impl WindowState<'_> {
                 .expect("Could not get surface default config!"),
         );
 
-        self.surface = surface;
+        self.surface = Some(surface);
     }
 }
