@@ -1,6 +1,7 @@
 name: Sync With Forgejo/Codeberg Mirrors
 on:
   push:
+    branches: ["main"]
   workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"

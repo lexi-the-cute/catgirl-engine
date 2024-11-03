@@ -1,6 +1,7 @@
 name: Build For Linux GNU x86_64 as AppImage
 on:
   push:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       publish:

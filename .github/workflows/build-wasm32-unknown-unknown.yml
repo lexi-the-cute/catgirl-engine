@@ -1,6 +1,7 @@
 name: Build For Wasm 32-bit Web Browser
 on:
   push:
+    branches: ["main"]
   workflow_dispatch:
     inputs:
       publish:
