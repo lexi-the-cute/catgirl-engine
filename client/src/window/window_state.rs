@@ -2,7 +2,9 @@ use std::sync::Arc;
 
 use winit::{dpi::PhysicalSize, window::Window};
 
-use wgpu::{Adapter, Device, DeviceDescriptor, Instance, Queue, Surface};
+use wgpu::{
+    Adapter, Device, DeviceDescriptor, Instance, Queue, RequestAdapterOptionsBase, Surface,
+};
 
 /// Struct used for storing the state of a window
 #[derive(Debug)]
@@ -114,13 +116,18 @@ impl WindowState<'_> {
         let limits: wgpu::Limits = self.get_limits();
         device_descriptor.required_limits = limits;
 
+        // Create Adapter Options (Reference to Surface Required for WASM)
+        let mut request_adapter_options: RequestAdapterOptionsBase<&Surface<'_>> =
+            wgpu::RequestAdapterOptions::default();
+        request_adapter_options.compatible_surface = self.surface.as_ref();
+
         // Handle to graphics device (e.g. GPU)
         // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
         // https://crates.io/crates/futures
         // TODO: Fix grabbing WGPU Adapter for latest WGPU for WASM
         //    See https://github.com/gfx-rs/wgpu/commit/7910fd8059f361f48553c03d84c8e1410e94134e
         debug!("Grabbing wgpu adapter...");
-        let adapter_future = instance.request_adapter(&wgpu::RequestAdapterOptions::default());
+        let adapter_future = instance.request_adapter(&request_adapter_options);
         self.adapter = Some(adapter_future.await.expect("Could not grab WGPU adapter!"));
 
         // Opens a connection to the graphics device (e.g. GPU)
