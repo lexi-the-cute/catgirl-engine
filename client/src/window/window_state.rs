@@ -89,8 +89,8 @@ impl WindowState<'_> {
         debug!("Creating wgpu instance...");
 
         self.instance = Some(if cfg!(target_family = "wasm") {
-            // wgpu::util::new_instance_with_webgpu_detection(wgpu::InstanceDescriptor::default()).await
-            wgpu::Instance::new(wgpu::InstanceDescriptor::default())
+            wgpu::util::new_instance_with_webgpu_detection(wgpu::InstanceDescriptor::default())
+                .await
         } else {
             wgpu::Instance::new(wgpu::InstanceDescriptor::default())
         });
