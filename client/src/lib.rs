@@ -30,11 +30,10 @@ pub mod setup;
 pub mod assets;
 
 /// Retrieve the engine's icon as raw bytes
-// TODO (BIND): Implement `extern "C"`
-#[no_mangle]
 #[must_use]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "Rust" fn get_icon_bytes() -> Vec<u8> {
+pub fn get_icon_bytes() -> Vec<u8> {
     load_bytes!("vanilla/texture/logo/logo.png")
 }
 
@@ -45,11 +44,9 @@ pub extern "Rust" fn get_icon_bytes() -> Vec<u8> {
 /// # Panics
 ///
 /// This may fail to load the file from the byte array as an image
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[no_mangle]
 #[must_use]
-pub extern "Rust" fn get_icon() -> Icon {
+#[no_mangle]
+pub fn get_icon() -> Icon {
     let image_bytes: Vec<u8> = get_icon_bytes();
 
     let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(&image_bytes)
@@ -69,9 +66,8 @@ pub extern "Rust" fn get_icon() -> Icon {
 /// # Errors
 ///
 /// May error if home directory cannot be found
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
-pub extern "Rust" fn install_desktop_files() -> Result<(), String> {
+pub fn install_desktop_files() -> Result<(), String> {
     let mut desktop_file_contents: String = load_string!("resources/catgirl-engine.desktop");
 
     // Get path of executable
@@ -125,9 +121,8 @@ pub extern "Rust" fn install_desktop_files() -> Result<(), String> {
 /// # Errors
 ///
 /// May error if home directory cannot be found
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
-pub extern "Rust" fn uninstall_desktop_files() -> Result<(), String> {
+pub fn uninstall_desktop_files() -> Result<(), String> {
     if let Some(home) = utils::get_environment_var("HOME") {
         // User Application Directories
         let applications_directory: String = format!("{home}/.local/share/applications");

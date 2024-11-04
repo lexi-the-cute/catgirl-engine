@@ -19,9 +19,9 @@ pub mod setup;
 /// # Panics
 ///
 /// May panic if environment var cannot be unwrapped
-#[no_mangle]
 #[must_use]
-pub extern "Rust" fn matches_environment_var(key: &str, value: &str) -> bool {
+#[no_mangle]
+pub fn matches_environment_var(key: &str, value: &str) -> bool {
     let environment_var: Result<String, env::VarError> = env::var(key);
     environment_var.is_ok() && environment_var.unwrap() == value
 }
@@ -31,9 +31,9 @@ pub extern "Rust" fn matches_environment_var(key: &str, value: &str) -> bool {
 /// # Panics
 ///
 /// May panic if environment var cannot be unwrapped
-#[no_mangle]
 #[must_use]
-pub extern "Rust" fn get_environment_var(key: &str) -> Option<String> {
+#[no_mangle]
+pub fn get_environment_var(key: &str) -> Option<String> {
     let environment_var: Result<String, env::VarError> = env::var(key);
 
     if let Ok(environment_var) = environment_var {
@@ -45,7 +45,7 @@ pub extern "Rust" fn get_environment_var(key: &str) -> Option<String> {
 
 /// Print all environment variables
 #[no_mangle]
-pub extern "Rust" fn print_environment_vars() {
+pub fn print_environment_vars() {
     let vars: std::env::Vars = std::env::vars();
 
     debug!("Environment Variables:");

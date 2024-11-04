@@ -83,10 +83,10 @@ pub(crate) fn suspended_window() {
     debug!("Suspending application...");
 }
 
-// TODO: Offload to separate function with key mapping config
 // processInput()
 // update() - Input gets passed to (internal) server, physics gets passed back
 /// Key was pressed on keyboard
+// TODO: Offload to separate function with key mapping config
 pub(crate) fn pressed_key(event: KeyEvent, window_target: &ActiveEventLoop) {
     match event.logical_key {
         winit::keyboard::Key::Named(NamedKey::BrowserBack) => {
@@ -202,8 +202,8 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
         return;
     }
 
-    // TODO: https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
     // Configure a surface for drawing on
+    // https://sotrh.github.io/learn-wgpu/beginner/tutorial3-pipeline/#what-s-a-pipeline
     let surface: &Surface = &window_state.surface.as_ref().unwrap();
     let device: &Device = window_state.device.as_ref().unwrap();
     let queue: &Queue = window_state.queue.as_ref().unwrap();

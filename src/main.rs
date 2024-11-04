@@ -11,7 +11,7 @@ extern crate tracing;
 pub mod setup;
 
 /// Run as Executable (e.g. Linux)
-pub extern "Rust" fn main() -> Result<(), String> {
+pub fn main() -> Result<(), String> {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 

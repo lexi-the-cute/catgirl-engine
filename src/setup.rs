@@ -1,4 +1,5 @@
-use std::collections::BTreeMap;
+use core::ffi::c_char;
+use std::{collections::BTreeMap, ffi::CString};
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
@@ -52,11 +53,9 @@ pub extern "C" fn process_args() {
 /// # Panics
 ///
 /// This may panic if the args cannot be unwrapped
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[no_mangle]
 #[must_use]
-pub extern "Rust" fn get_args() -> Args {
+#[no_mangle]
+pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
     } else {
@@ -65,8 +64,6 @@ pub extern "Rust" fn get_args() -> Args {
 }
 
 /// Get the list of dependencies used in the engine
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
@@ -90,11 +87,9 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 }
 
 /// Get all dependencies from the workspace used to build the engine
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[no_mangle]
 #[must_use]
-pub extern "Rust" fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
+#[no_mangle]
+pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
     let mut dependencies: BTreeMap<String, CrateInfo> = get_dependencies(info);
@@ -289,6 +284,26 @@ fn set_panic_hook() {
     }));
 }
 
+/// Helper function to call [`start()`] function from the C ABI
+///
+/// Returns empty C String if suceeded, else returns an error as a string
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn c_start() -> *const c_char {
+    match start() {
+        Err(err) => {
+            let c_str = CString::new(err).unwrap();
+
+            c_str.as_ptr()
+        }
+        _ => {
+            let c_str = CString::new("").unwrap();
+
+            c_str.as_ptr()
+        }
+    }
+}
+
 /// Determines if client or server and starts the engine
 ///
 /// # Panics
@@ -298,10 +313,9 @@ fn set_panic_hook() {
 /// # Errors
 ///
 /// This may fail to set the ctrl+c handler
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "Rust" fn start() -> Result<(), String> {
+pub fn start() -> Result<(), String> {
     info!("Starting Game...");
 
     debug!("Setting panic hook...");
@@ -324,7 +338,7 @@ pub extern "Rust" fn start() -> Result<(), String> {
         .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
     }
 
-    debug!("Starting Main Loop...");
+    debug!("Starting main loop...");
 
     #[cfg(feature = "server")]
     if cfg!(not(feature = "client")) || get_args().server {

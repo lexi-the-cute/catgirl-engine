@@ -15,17 +15,15 @@ static ASSETS_PATH: OnceLock<PathBuf> = OnceLock::new();
 
 #[cfg(target_os = "android")]
 /// Stores a reference to the winit AndroidApp activity
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
-pub extern "Rust" fn store_android_app(app: AndroidApp) {
+pub fn store_android_app(app: AndroidApp) {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
 }
 
 #[cfg(target_os = "android")]
 /// Retrieves a reference to the stored winit AndroidApp activity
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
-pub extern "Rust" fn get_android_app() -> AndroidApp {
+pub fn get_android_app() -> AndroidApp {
     ANDROID_APP
         .get()
         .expect("Could not get stored reference to AndroidApp")
@@ -33,10 +31,8 @@ pub extern "Rust" fn get_android_app() -> AndroidApp {
 }
 
 /// Stores a custom path to the assets directory
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[no_mangle]
-pub extern "Rust" fn store_assets_path(path: PathBuf) {
+pub fn store_assets_path(path: PathBuf) {
     let _path: &PathBuf = ASSETS_PATH.get_or_init(|| path);
 }
 
@@ -45,10 +41,8 @@ pub extern "Rust" fn store_assets_path(path: PathBuf) {
 /// # Panics
 ///
 /// The path to the assets directory may be invalid
-// TODO (BIND): Implement `extern "C"`
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 #[no_mangle]
-pub extern "Rust" fn get_assets_path() -> PathBuf {
+pub fn get_assets_path() -> PathBuf {
     if ASSETS_PATH.get().is_some() {
         ASSETS_PATH.get().unwrap().clone()
     } else {
