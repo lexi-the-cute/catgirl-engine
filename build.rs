@@ -125,14 +125,16 @@ fn create_binding(
         ..Default::default()
     };
 
-    let mut config: Config = cbindgen::Config::default();
-    config.namespace = Some(String::from("ffi"));
-    config.header = Some(header);
-    config.language = language;
-    config.only_target_dependencies = true;
-    config.no_includes = language == Language::Cython;
-    config.defines = defines;
-    config.parse = parse_config;
+    let mut config: Config = cbindgen::Config {
+        namespace: Some(String::from("ffi")),
+        header: Some(header),
+        only_target_dependencies: true,
+        no_includes: language == Language::Cython,
+        parse: parse_config,
+        language,
+        defines,
+        ..Default::default()
+    };
 
     if language == Language::Cython {
         config.cython = CythonConfig {

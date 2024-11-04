@@ -1,5 +1,5 @@
 use core::ffi::c_char;
-use std::ffi::CString;
+use std::ffi::NulError;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -7,20 +7,21 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// Helper function to call [`server_game_loop()`] function from the C ABI
 ///
 /// Returns empty C String if suceeded, else returns an error as a string
+///
+/// # Panics
+///
+/// May panic if the supplied string from an error contains a nul byte anywhere other than the end of the string
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn c_server_game_loop() -> *const c_char {
-    match server_game_loop() {
-        Err(err) => {
-            let c_str = CString::new(err).unwrap();
+    if let Err(err) = server_game_loop() {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust(err);
 
-            c_str.as_ptr()
-        }
-        _ => {
-            let c_str = CString::new("").unwrap();
+        c_str_result.unwrap()
+    } else {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust("");
 
-            c_str.as_ptr()
-        }
+        c_str_result.unwrap()
     }
 }
 
@@ -29,7 +30,6 @@ pub extern "C" fn c_server_game_loop() -> *const c_char {
 /// # Errors
 ///
 /// Errors not implemented yet...
-#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn server_game_loop() -> Result<(), String> {
     debug!("Started server game loop...");

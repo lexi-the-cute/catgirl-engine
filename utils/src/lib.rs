@@ -2,7 +2,9 @@
 
 #![warn(missing_docs)]
 
+use core::ffi::c_char;
 use std::env;
+use std::ffi::{CString, NulError};
 
 #[allow(unused_imports)]
 #[macro_use]
@@ -20,7 +22,6 @@ pub mod setup;
 ///
 /// May panic if environment var cannot be unwrapped
 #[must_use]
-#[no_mangle]
 pub fn matches_environment_var(key: &str, value: &str) -> bool {
     let environment_var: Result<String, env::VarError> = env::var(key);
     environment_var.is_ok() && environment_var.unwrap() == value
@@ -32,7 +33,6 @@ pub fn matches_environment_var(key: &str, value: &str) -> bool {
 ///
 /// May panic if environment var cannot be unwrapped
 #[must_use]
-#[no_mangle]
 pub fn get_environment_var(key: &str) -> Option<String> {
     let environment_var: Result<String, env::VarError> = env::var(key);
 
@@ -44,7 +44,6 @@ pub fn get_environment_var(key: &str) -> Option<String> {
 }
 
 /// Print all environment variables
-#[no_mangle]
 pub fn print_environment_vars() {
     let vars: std::env::Vars = std::env::vars();
 
@@ -52,4 +51,27 @@ pub fn print_environment_vars() {
     for (key, var) in vars {
         debug!("{key}: {var}");
     }
+}
+
+/// Convert's Rust String to C String
+///
+/// # Errors
+///
+/// May return a `NulError` if the Rust string contained a nul byte anywhere other than the very end of the string
+///
+/// # Panics
+///
+/// May panic if result passes the validity check and somehow fails to unwrap anyway
+pub fn get_c_string_from_rust<T: AsRef<str>>(rstr: T) -> Result<*const c_char, NulError>
+where
+    Vec<u8>: From<T>,
+{
+    let cstr_result: Result<CString, NulError> = CString::new(rstr);
+    if cstr_result.is_ok() {
+        let cstr: CString = cstr_result.unwrap();
+
+        return Ok(cstr.as_ptr());
+    }
+
+    Err(cstr_result.err().unwrap())
 }

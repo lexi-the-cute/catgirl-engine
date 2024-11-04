@@ -11,6 +11,10 @@ extern crate tracing;
 pub mod setup;
 
 /// Run as Executable (e.g. Linux)
+///
+/// # Errors
+///
+/// May return a `String` if an error propagated up the stack
 pub fn main() -> Result<(), String> {
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();

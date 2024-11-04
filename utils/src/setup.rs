@@ -26,6 +26,8 @@ pub extern "C" fn set_exit() {
 }
 
 /// Retrieves if the game engine is exiting
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn is_exiting() -> bool {
-    EXITING.get().unwrap_or(&false).clone()
+    *EXITING.get().unwrap_or(&false)
 }
