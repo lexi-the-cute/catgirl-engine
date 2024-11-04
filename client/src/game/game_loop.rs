@@ -1,7 +1,4 @@
-use std::sync::Mutex;
-
-#[cfg(not(target_family = "wasm"))]
-use std::sync::OnceLock;
+use std::sync::{Mutex, OnceLock};
 
 use crate::window::window_state::WindowState;
 
@@ -9,10 +6,7 @@ use crate::window::window_state::WindowState;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use winit::event::{Event, WindowEvent};
-use winit::event_loop::{ActiveEventLoop, EventLoop};
-
-#[cfg(not(target_family = "wasm"))]
-use winit::event_loop::EventLoopProxy;
+use winit::event_loop::{ActiveEventLoop, EventLoop, EventLoopProxy};
 
 #[cfg(target_os = "android")]
 use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_android_app
@@ -21,7 +15,6 @@ use winit::platform::android::EventLoopBuilderExtAndroid; // Necessary for with_
 use winit::platform::web::EventLoopExtWebSys;
 
 /// Allows sending custom events to the event loop from the outside
-#[cfg(not(target_family = "wasm"))]
 static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 
 // http://gameprogrammingpatterns.com/game-loop.html
@@ -54,7 +47,6 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         .expect("Could not create an event loop!");
 
     // This'll be useful for triggering the event loop from the outside when in wait mode
-    #[cfg(not(target_family = "wasm"))]
     let _ = EVENT_LOOP_PROXY.set(event_loop.create_proxy());
 
     /// Holds the window state in a way that's compatible with async
@@ -229,20 +221,19 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
 
 /// Retrieves proxy to interact with game loop
 #[no_mangle]
-#[cfg(not(target_family = "wasm"))]
 pub(crate) extern "Rust" fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
     EVENT_LOOP_PROXY.get().cloned()
 }
 
 /// Retrieves proxy to interact with game loop
 #[no_mangle]
-#[cfg(not(target_family = "wasm"))]
-pub extern "Rust" fn advance_event_loop() -> bool {
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn advance_event_loop() -> bool {
     send_event(())
 }
 
 /// Send's User Event to event loop
-#[cfg(not(target_family = "wasm"))]
+#[no_mangle]
 pub extern "Rust" fn send_event(event: ()) -> bool {
     let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
     if event_loop_proxy_option.is_none() {
