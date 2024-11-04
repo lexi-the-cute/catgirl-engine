@@ -67,6 +67,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 }
 
+#[no_mangle]
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
 pub fn android_main(app: AndroidApp) {
