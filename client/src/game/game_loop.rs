@@ -1,3 +1,5 @@
+use core::ffi::c_char;
+use std::ffi::CString;
 use std::sync::{Mutex, OnceLock};
 
 use crate::window::window_state::WindowState;
@@ -17,6 +19,26 @@ use winit::platform::web::EventLoopExtWebSys;
 /// Allows sending custom events to the event loop from the outside
 static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 
+/// Helper function to call [`client_game_loop()`] function from the C ABI
+///
+/// Returns empty C String if suceeded, else returns an error as a string
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn c_client_game_loop() -> *const c_char {
+    match client_game_loop() {
+        Err(err) => {
+            let c_str = CString::new(err).unwrap();
+
+            c_str.as_ptr()
+        }
+        _ => {
+            let c_str = CString::new("").unwrap();
+
+            c_str.as_ptr()
+        }
+    }
+}
+
 // http://gameprogrammingpatterns.com/game-loop.html
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
@@ -29,10 +51,9 @@ static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 /// # Panics
 ///
 /// The event loop may not be created
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "Rust" fn client_game_loop() -> Result<(), String> {
+pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
     #[cfg(not(target_os = "android"))]
@@ -64,11 +85,13 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         // ControlFlow::Poll continuously runs the event loop, even if the OS hasn't
         // dispatched any events. This is ideal for games and similar applications.
         // window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
-
-        // TODO: Determine if this should be selected depending on menus and pause state
+        //
         // ControlFlow::Wait pauses the event loop if no events are available to process.
         // This is ideal for non-game applications that only update in response to user
         // input, and uses significantly less power/CPU time than ControlFlow::Poll.
+        //
+        // This will use [`winit::event_loop::ControlFlow::Wait`] when on menus and pause
+        //   and will use [`winit::event_loop::ControlFlow::Poll`] when in game
         window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
         // Starts exit process when exit bool is set
@@ -208,11 +231,10 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
         }
     };
 
-    // TODO: Update to run_app
+    // TODO: Update to run_app and spawn_app
     #[cfg(not(target_family = "wasm"))]
     let _: Result<(), winit::error::EventLoopError> = event_loop.run(event_loop_closure);
 
-    // TODO: Update to spawn_app
     #[cfg(target_family = "wasm")]
     event_loop.spawn(event_loop_closure);
 
@@ -220,8 +242,7 @@ pub extern "Rust" fn client_game_loop() -> Result<(), String> {
 }
 
 /// Retrieves proxy to interact with game loop
-#[no_mangle]
-pub(crate) extern "Rust" fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
+pub(crate) fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
     EVENT_LOOP_PROXY.get().cloned()
 }
 
@@ -234,7 +255,7 @@ pub extern "C" fn advance_event_loop() -> bool {
 
 /// Send's User Event to event loop
 #[no_mangle]
-pub extern "Rust" fn send_event(event: ()) -> bool {
+pub fn send_event(event: ()) -> bool {
     let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
     if event_loop_proxy_option.is_none() {
         return false;

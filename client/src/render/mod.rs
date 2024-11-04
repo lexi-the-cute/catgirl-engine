@@ -46,8 +46,8 @@ pub enum ColorSpace {
 ///
 /// Outputs f64 instead of f32 for use in `wgpu::Color`
 /// TODO: Research Wide Gamut
-#[no_mangle]
 #[must_use]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
     let r: f64 = f64::from(red) / 255.0;
@@ -72,8 +72,8 @@ pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
 }
 
 /// Converts out color struct to WGPU's color struct
-#[no_mangle]
 #[must_use]
+#[no_mangle]
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn get_wgpu_color_from_ce_color(color: Color) -> wgpu::Color {
     wgpu::Color {

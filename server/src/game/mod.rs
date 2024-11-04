@@ -8,7 +8,6 @@ pub mod game_loop;
 /// # Errors
 ///
 /// Errors not implemented yet...
-// TODO (BIND): Implement `extern "C"`
 pub fn game_loop() -> Result<(), String> {
     game_loop::server_game_loop()
 }

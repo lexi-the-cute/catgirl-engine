@@ -55,9 +55,8 @@ pub struct Args {
 /// # Panics
 ///
 /// Can panic if C string is not valid in the argument vector arg
-// TODO (BIND): Implement `extern "C"`
+#[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[must_use] // must use the result of this function
 pub unsafe fn parse_args_from_c(
     arg_count: c_int,
     arg_vector_pointer: *const *const *const c_char,
@@ -97,10 +96,9 @@ pub unsafe fn parse_args_from_c(
 }
 
 /// Set parsed args passed in from function
-// TODO (BIND): Implement `extern "C"`
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "Rust" fn set_parsed_args(args: Vec<String>) {
+pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway
     if ARGS.get().is_some() {
@@ -111,7 +109,6 @@ pub extern "Rust" fn set_parsed_args(args: Vec<String>) {
 }
 
 /// Retrieve parsed args previously passed in from function
-// TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_args() -> Option<Args> {
     ARGS.get().cloned()

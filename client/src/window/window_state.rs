@@ -34,8 +34,6 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to create a WGPU surface
-    // TODO (BIND): Implement `extern "C"`
-    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
@@ -81,8 +79,6 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to grab a connection to the graphics devices (e.g. gpu)
-    // TODO (BIND): Implement `extern "C"`
-    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub async fn initialize_graphics(&mut self) {
         // Context for all WGPU objects
         // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
@@ -124,8 +120,6 @@ impl WindowState<'_> {
         // Handle to graphics device (e.g. GPU)
         // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
         // https://crates.io/crates/futures
-        // TODO: Fix grabbing WGPU Adapter for latest WGPU for WASM
-        //    See https://github.com/gfx-rs/wgpu/commit/7910fd8059f361f48553c03d84c8e1410e94134e
         debug!("Grabbing wgpu adapter...");
         let adapter_future = instance.request_adapter(&request_adapter_options);
         self.adapter = Some(adapter_future.await.expect("Could not grab WGPU adapter!"));
@@ -169,8 +163,6 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to recreate the surface
-    // TODO (BIND): Implement `extern "C"`
-    // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
     pub fn recreate_surface(&mut self) {
         if self.device.is_none() {
             warn!("Device is not setup... Have graphics been initialized?");
