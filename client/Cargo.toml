@@ -1,3 +1,5 @@
+cargo-features = ["edition2024"]
+
 [package]
 name = "catgirl-engine-client"
 description = "Client side part of the catgirl-engine crate"
