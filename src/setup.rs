@@ -1,5 +1,6 @@
 use core::ffi::c_char;
-use std::{collections::BTreeMap, ffi::CString};
+use std::collections::BTreeMap;
+use std::ffi::NulError;
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
@@ -54,7 +55,6 @@ pub extern "C" fn process_args() {
 ///
 /// This may panic if the args cannot be unwrapped
 #[must_use]
-#[no_mangle]
 pub fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
@@ -88,7 +88,6 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 
 /// Get all dependencies from the workspace used to build the engine
 #[must_use]
-#[no_mangle]
 pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
 
@@ -287,20 +286,21 @@ fn set_panic_hook() {
 /// Helper function to call [`start()`] function from the C ABI
 ///
 /// Returns empty C String if suceeded, else returns an error as a string
+///
+/// # Panics
+///
+/// May panic if the supplied string from an error contains a nul byte anywhere other than the end of the string
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn c_start() -> *const c_char {
-    match start() {
-        Err(err) => {
-            let c_str = CString::new(err).unwrap();
+    if let Err(err) = start() {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust(err);
 
-            c_str.as_ptr()
-        }
-        _ => {
-            let c_str = CString::new("").unwrap();
+        c_str_result.unwrap()
+    } else {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust("");
 
-            c_str.as_ptr()
-        }
+        c_str_result.unwrap()
     }
 }
 
@@ -313,7 +313,6 @@ pub extern "C" fn c_start() -> *const c_char {
 /// # Errors
 ///
 /// This may fail to set the ctrl+c handler
-#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn start() -> Result<(), String> {
     info!("Starting Game...");

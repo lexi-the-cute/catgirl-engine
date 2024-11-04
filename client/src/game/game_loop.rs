@@ -1,5 +1,5 @@
 use core::ffi::c_char;
-use std::ffi::CString;
+use std::ffi::NulError;
 use std::sync::{Mutex, OnceLock};
 
 use crate::window::window_state::WindowState;
@@ -22,20 +22,21 @@ static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 /// Helper function to call [`client_game_loop()`] function from the C ABI
 ///
 /// Returns empty C String if suceeded, else returns an error as a string
+///
+/// # Panics
+///
+/// May panic if the supplied string from an error contains a nul byte anywhere other than the end of the string
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn c_client_game_loop() -> *const c_char {
-    match client_game_loop() {
-        Err(err) => {
-            let c_str = CString::new(err).unwrap();
+    if let Err(err) = client_game_loop() {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust(err);
 
-            c_str.as_ptr()
-        }
-        _ => {
-            let c_str = CString::new("").unwrap();
+        c_str_result.unwrap()
+    } else {
+        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust("");
 
-            c_str.as_ptr()
-        }
+        c_str_result.unwrap()
     }
 }
 
@@ -51,7 +52,6 @@ pub extern "C" fn c_client_game_loop() -> *const c_char {
 /// # Panics
 ///
 /// The event loop may not be created
-#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop
@@ -254,7 +254,11 @@ pub extern "C" fn advance_event_loop() -> bool {
 }
 
 /// Send's User Event to event loop
-#[no_mangle]
+///
+/// # Panics
+///
+/// May panic if the validity check for the event loop proxy passes, and then fails to unwrap the proxy anyway
+#[must_use]
 pub fn send_event(event: ()) -> bool {
     let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
     if event_loop_proxy_option.is_none() {

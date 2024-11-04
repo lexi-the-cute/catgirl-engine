@@ -96,7 +96,6 @@ pub unsafe fn parse_args_from_c(
 }
 
 /// Set parsed args passed in from function
-#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
@@ -134,7 +133,7 @@ mod tests {
             let arg_one_ptr: *const c_char = arg_one.as_ptr();
 
             // Add C String to array
-            let argv = [arg_one_ptr];
+            let argv: [*const c_char; 1] = [arg_one_ptr];
 
             // Test Parser
             assert_eq!(

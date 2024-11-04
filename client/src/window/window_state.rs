@@ -34,6 +34,7 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to create a WGPU surface
+    #[must_use]
     pub fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
@@ -113,9 +114,11 @@ impl WindowState<'_> {
         device_descriptor.required_limits = limits;
 
         // Create Adapter Options (Reference to Surface Required for WASM)
-        let mut request_adapter_options: RequestAdapterOptionsBase<&Surface<'_>> =
-            wgpu::RequestAdapterOptions::default();
-        request_adapter_options.compatible_surface = self.surface.as_ref();
+        let request_adapter_options: RequestAdapterOptionsBase<&Surface<'_>> =
+            RequestAdapterOptionsBase {
+                compatible_surface: self.surface.as_ref(),
+                ..Default::default()
+            };
 
         // Handle to graphics device (e.g. GPU)
         // https://docs.rs/wgpu/latest/wgpu/struct.Adapter.html
