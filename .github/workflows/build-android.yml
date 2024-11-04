@@ -50,8 +50,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '23'
 
       # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
       - name: Setup Gradle Build Action (For Caching Builds)

@@ -19,7 +19,7 @@ build_info::build_info!(
 );
 
 /// Process args for future use
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn process_args() {
     // Store assets path in separate variable
@@ -54,7 +54,7 @@ pub extern "C" fn process_args() {
 /// This may panic if the args cannot be unwrapped
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[must_use]
 pub extern "Rust" fn get_args() -> Args {
     if utils::args::get_args().is_some() {
@@ -92,7 +92,7 @@ pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> 
 /// Get all dependencies from the workspace used to build the engine
 // TODO (BIND): Implement `extern "C"`
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[must_use]
 pub extern "Rust" fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let info: &BuildInfo = build_info();
@@ -127,7 +127,7 @@ pub extern "Rust" fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 /// # Panics
 ///
 /// This may fail if the license info cannot be unwrapped
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
@@ -186,7 +186,7 @@ pub extern "C" fn print_version() {
 /// # Panics
 ///
 /// May panic if the dependency license info cannot be unwrapped
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
@@ -299,7 +299,7 @@ fn set_panic_hook() {
 ///
 /// This may fail to set the ctrl+c handler
 // TODO (BIND): Implement `extern "C"`
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "Rust" fn start() -> Result<(), String> {
     info!("Starting Game...");

@@ -22,7 +22,7 @@ extern crate wasm_bindgen;
 /// Catgirl Engine start
 ///
 /// The starting point when calling as a generic library
-#[unsafe(no_mangle)]
+#[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "tracing-subscriber")]
