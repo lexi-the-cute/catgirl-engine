@@ -58,10 +58,6 @@ pub fn print_environment_vars() {
 /// # Errors
 ///
 /// May return a `NulError` if the Rust string contained a nul byte anywhere other than the very end of the string
-///
-/// # Panics
-///
-/// May panic if result passes the validity check and somehow fails to unwrap anyway
 pub fn get_c_string_from_rust<T: AsRef<str>>(rstr: T) -> Result<*const c_char, NulError>
 where
     Vec<u8>: From<T>,
@@ -71,5 +67,5 @@ where
         return Ok(cstr.as_ptr());
     }
 
-    Err(cstr_result.err().unwrap())
+    Err(cstr_result.unwrap_err())
 }
