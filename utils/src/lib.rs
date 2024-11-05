@@ -67,9 +67,7 @@ where
     Vec<u8>: From<T>,
 {
     let cstr_result: Result<CString, NulError> = CString::new(rstr);
-    if cstr_result.is_ok() {
-        let cstr: CString = cstr_result.unwrap();
-
+    if let Ok(cstr) = cstr_result {
         return Ok(cstr.as_ptr());
     }
 

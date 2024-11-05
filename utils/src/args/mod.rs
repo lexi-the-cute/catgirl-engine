@@ -54,7 +54,7 @@ pub struct Args {
 ///
 /// # Panics
 ///
-/// Can panic if C string is not valid in the argument vector arg
+/// May panic if one of the arguments contains invalid UTF-8 data
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub unsafe fn parse_args_from_c(

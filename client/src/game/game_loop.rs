@@ -254,23 +254,15 @@ pub extern "C" fn advance_event_loop() -> bool {
 }
 
 /// Send's User Event to event loop
-///
-/// # Panics
-///
-/// May panic if the validity check for the event loop proxy passes, and then fails to unwrap the proxy anyway
 #[must_use]
 pub fn send_event(event: ()) -> bool {
     let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
-    if event_loop_proxy_option.is_none() {
-        return false;
-    }
+    if let Some(event_loop_proxy) = event_loop_proxy_option {
+        let result: Result<(), winit::event_loop::EventLoopClosed<()>> =
+            event_loop_proxy.send_event(event);
 
-    let event_loop_proxy: EventLoopProxy<()> = event_loop_proxy_option.unwrap();
-    let result: Result<(), winit::event_loop::EventLoopClosed<()>> =
-        event_loop_proxy.send_event(event);
-    if result.is_ok() {
-        return true;
-    }
+        return result.is_ok();
+    };
 
     false
 }
