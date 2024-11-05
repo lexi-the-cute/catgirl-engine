@@ -1,6 +1,6 @@
 # What's This Repo
 
-This repo is hosted on [my Forgejo instance][forgejo-repo], [Codeberg][codeberg-repo], [Github][github-repo].
+This repo is hosted on [Codeberg][codeberg-repo], [Github][github-repo].
 
 # Why Yet Another Engine
 
@@ -153,7 +153,6 @@ bjnt5VwRhrBJZgWFyG0A/j9bpzwURxaLiSxrelcoTiEJ6DFzZcQMKJSp7TvKMU4E
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-[forgejo-repo]: https://git.catgirl.land/catgirl-land/catgirl-engine
 [github-repo]: https://github.com/lexi-the-cute/catgirl-engine
 [codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
 [itchio-download]: https://fomxgorl.itch.io/catgirl-engine
