@@ -141,8 +141,10 @@ where
 
 /// Retrieves the commit hash of the repo when this was built
 #[must_use]
-pub fn get_commit_hash() -> Option<GitInfo> {
-    let version_control: VersionControl = crate::setup::build_info().version_control.clone()?;
-
-    version_control.git().cloned()
+pub fn get_version_control_build_info() -> Option<GitInfo> {
+    crate::setup::build_info()
+        .version_control
+        .as_ref()?
+        .git()
+        .cloned()
 }

@@ -164,7 +164,7 @@ pub extern "C" fn print_build_info() {
         info.target.cpu.arch,
         info.profile
     );
-    if let Some(git) = utils::get_commit_hash() {
+    if let Some(git) = utils::get_version_control_build_info() {
         if git.dirty {
             utils::println_string!("Built from Commit: {}-dirty", git.commit_id);
         } else {
