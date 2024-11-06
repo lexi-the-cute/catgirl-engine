@@ -5,7 +5,7 @@
 name = "catgirl-engine-client"
 description = "Client side part of the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.8"
+version = "0.14.9"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -43,7 +43,7 @@ build-info-build = { version = "^0.0.39", default-features = false, features = [
 
 [dependencies]
 build-info = { version = "^0.0.39", default-features = false, features = ["runtime"] }
-utils = { version = "0.14.8", package = "catgirl-engine-utils", path = "../utils" }
+utils = { version = "0.14.9", package = "catgirl-engine-utils", path = "../utils" }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita"] }
