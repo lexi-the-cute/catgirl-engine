@@ -6,6 +6,7 @@
 .ra-target/
 _site/
 aur/
+install/
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
