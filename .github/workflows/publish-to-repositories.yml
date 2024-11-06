@@ -100,7 +100,7 @@ jobs:
         run: |
           cp -a ${{ github.workspace }}/client/assets/resources/catgirl-engine.desktop ${{ github.workspace }}
           cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo.svg ${{ github.workspace }}
-          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo-1024x1024.png ${{ github.workspace }}/logo.png
+          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo-1024x1024-color.png ${{ github.workspace }}/logo.png
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-utils to Crates.io
