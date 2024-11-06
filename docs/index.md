@@ -3,8 +3,16 @@
 
 ## Wasm Test
 
-<link rel="icon" href="./assets/vanilla/texture/logo/logo.png">
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/svg+xml" href="/assets/vanilla/texture/logo/logo.svg" />
+<link rel="icon" type="image/png" href="/assets/vanilla/texture/logo/logo-1024x1024-color.png" />
+<link rel="license" href="/pkg/LICENSE" />
 <canvas id="catgirl-engine-canvas"></canvas>
+<script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register("/service-worker.js");
+    }
+</script>
 <script type="module">
     import init, * as engine from "./pkg/main.js";
 

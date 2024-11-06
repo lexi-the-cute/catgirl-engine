@@ -1,0 +1,30 @@
+self.addEventListener("install", event => {
+    console.debug("Service worker installed");
+
+    cache_files(event);
+});
+
+self.addEventListener("activate", event => {
+    console.debug("Service worker activated");
+});
+
+function cache_files(event) {
+    // Perform install steps
+    var CACHE_NAME = 'catgirl-engine-%CACHE_VERSION%';
+    var urlsToCache = [
+        '/',
+        '/pkg/main.js',
+        '/pkg/main_bg.wasm',
+        '/pkg/main_bg.wasm.map',
+        // '/styles.css',
+    ];
+
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function(cache) {
+                console.debug('Caching files');
+                return cache.addAll(urlsToCache);
+            })
+    );
+    console.debug('Cached files');
+}

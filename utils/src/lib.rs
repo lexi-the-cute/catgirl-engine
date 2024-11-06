@@ -6,7 +6,7 @@ use core::ffi::c_char;
 use std::env;
 use std::ffi::{CString, NulError, OsStr};
 
-use build_info::{GitInfo, VersionControl};
+use build_info::GitInfo;
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;

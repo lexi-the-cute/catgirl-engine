@@ -32,7 +32,7 @@ pub mod assets;
 /// Retrieve the engine's icon as raw bytes
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Vec<u8> {
-    load_bytes!("vanilla/texture/logo/logo.png")
+    load_bytes!("vanilla/texture/logo/logo-1024x1024.png")
 }
 
 /// Retrieve the engine's icon
