@@ -147,7 +147,7 @@ jobs:
           cp -a ${{ github.workspace }}/pkg ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/examples/wasm/web/index.html ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/examples/wasm/web/manifest.json ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.json ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.js ${{ github.workspace }}/upload
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/wasm32-unknown-unknown/doc/
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload

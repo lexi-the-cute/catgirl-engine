@@ -94,11 +94,13 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
+      # Is this necessary?
       # Copy Desktop and Icon Files
       - name: Copy Desktop and Icon Files
         run: |
           cp -a ${{ github.workspace }}/client/assets/resources/catgirl-engine.desktop ${{ github.workspace }}
-          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo.png ${{ github.workspace }}
+          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo.svg ${{ github.workspace }}
+          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo-1024x1024.png ${{ github.workspace }}/logo.png
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-utils to Crates.io
