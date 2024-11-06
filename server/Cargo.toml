@@ -5,7 +5,7 @@
 name = "catgirl-engine-server"
 description = "Server side part of the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.6"
+version = "0.14.7"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/lexi-the-cute/catgirl-engine.git"
@@ -42,7 +42,7 @@ build-info-build = { version = "^0.0.39", default-features = false, features = [
 
 [dependencies]
 build-info = { version = "^0.0.39", default-features = false, features = ["runtime"] }
-utils = { version = "0.14.6", package = "catgirl-engine-utils", path = "../utils" }
+utils = { version = "0.14.7", package = "catgirl-engine-utils", path = "../utils" }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 rhai = { version = "~1", default-features = false, features = ["serde"] }
