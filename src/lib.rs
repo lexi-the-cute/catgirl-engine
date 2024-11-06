@@ -45,6 +45,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
+        setup::print_build_info();
         setup::print_dependencies();
         return 0;
     }
@@ -77,6 +78,7 @@ pub fn android_main(app: AndroidApp) {
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
+        setup::print_build_info();
         setup::print_dependencies();
         return ();
     }
@@ -108,6 +110,7 @@ pub fn wasm_start() {
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
+        setup::print_build_info();
         setup::print_dependencies();
         return ();
     }
