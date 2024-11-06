@@ -27,6 +27,8 @@ jobs:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
     environment: WebAssembly
+    env:
+      HOST: https://engine.catgirl.land/pkg
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -73,6 +75,12 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-pack
 
+      # Install Wasm2Map
+      - name: Install Wasm2Map
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/cargo install -j `nproc --all` cargo-wasm2map
+
       # Setup Pages
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -88,6 +96,12 @@ jobs:
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/docs/pkg --verbose --release --bin catgirl-engine --timings
+
+      # Build Source Maps
+      - name: Build Source Maps
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/main_bg.wasm --patch --base-url $HOST
 
       # Build Docs
       - name: Build Docs
