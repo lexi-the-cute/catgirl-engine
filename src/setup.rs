@@ -5,7 +5,7 @@ use std::ffi::NulError;
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
 use client::game;
-use utils::args::Args;
+use utils::{args::Args, println_string};
 
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
@@ -126,52 +126,50 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 pub extern "C" fn print_version() {
     let info: &BuildInfo = build_info();
 
-    if cfg!(target_family = "wasm") {
-        // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
-        // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
-        debug!(
-            "{} v{} built with {} at {}",
-            info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
-        );
+    // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
+    // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
+    utils::println_string!(
+        "{} v{} built with {} at {}",
+        info.crate_info.name,
+        info.crate_info.version,
+        info.compiler,
+        info.timestamp
+    );
 
-        // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
-        let year: i32 = info.timestamp.year();
-        let author: String = if info.crate_info.authors.is_empty() {
-            "Unknown".to_string()
-        } else {
-            info.crate_info.authors[0].clone()
-        };
-
-        let license: String = if info.crate_info.license.is_some() {
-            info.crate_info.license.as_ref().unwrap().clone()
-        } else {
-            "Unknown".to_string()
-        };
-
-        debug!("Copyright (C) {year} {author} - {license} License");
+    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+    let year: i32 = info.timestamp.year();
+    let author: String = if info.crate_info.authors.is_empty() {
+        "Unknown".to_string()
     } else {
-        // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
-        // Example: catgirl-engine v0.6.0 built with rustc 1.76.0 (07dca489a 2024-02-04) at 2024-02-20 07:40:40Z
-        println!(
-            "{} v{} built with {} at {}",
-            info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
-        );
+        info.crate_info.authors[0].clone()
+    };
 
-        // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
-        let year: i32 = info.timestamp.year();
-        let author: String = if info.crate_info.authors.is_empty() {
-            "Unknown".to_string()
+    let license: String = if info.crate_info.license.is_some() {
+        info.crate_info.license.as_ref().unwrap().clone()
+    } else {
+        "Unknown".to_string()
+    };
+
+    utils::println_string!("Copyright (C) {} {} - {} License", year, author, license);
+}
+
+/// Prints extra build info
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn print_build_info() {
+    let info: &BuildInfo = build_info();
+
+    utils::println_string!(
+        "Built for: {} with {} profile",
+        info.target.cpu.arch,
+        info.profile
+    );
+    if let Some(git) = utils::get_commit_hash() {
+        if git.dirty {
+            utils::println_string!("Built from Commit: {}-dirty", git.commit_id);
         } else {
-            info.crate_info.authors[0].clone()
-        };
-
-        let license: String = if info.crate_info.license.is_some() {
-            info.crate_info.license.as_ref().unwrap().clone()
-        } else {
-            "Unknown".to_string()
-        };
-
-        println!("Copyright (C) {year} {author} - {license} License");
+            utils::println_string!("Built from Commit: {}", git.commit_id);
+        }
     }
 }
 
@@ -191,30 +189,16 @@ pub extern "C" fn print_dependencies() {
         println!();
     }
 
-    if cfg!(target_family = "wasm") {
-        // Print all dependencies
-        // Loop through dependency list to print
-        for (name, dep) in dependencies {
-            let license: String = if dep.license.is_some() {
-                dep.license.as_ref().unwrap().clone()
-            } else {
-                "Unknown".to_string()
-            };
+    // Print all dependencies
+    // Loop through dependency list to print
+    for (name, dep) in dependencies {
+        let license: String = if dep.license.is_some() {
+            dep.license.as_ref().unwrap().clone()
+        } else {
+            "Unknown".to_string()
+        };
 
-            debug!("{} v{} - License {}", name, dep.version, license);
-        }
-    } else {
-        // Print all dependencies
-        // Loop through dependency list to print
-        for (name, dep) in dependencies {
-            let license: String = if dep.license.is_some() {
-                dep.license.as_ref().unwrap().clone()
-            } else {
-                "Unknown".to_string()
-            };
-
-            println!("{} v{} - License {}", name, dep.version, license);
-        }
+        println_string!("{} v{} - License {}", name, dep.version, license);
     }
 }
 

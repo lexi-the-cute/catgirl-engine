@@ -22,6 +22,7 @@ pub fn main() -> Result<(), String> {
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
+        setup::print_build_info();
         setup::print_dependencies();
         return Ok(());
     }
