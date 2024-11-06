@@ -118,6 +118,11 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/wasm-pack build --target web --verbose --release --bin catgirl-engine --timings
 
+      # Generate Service Worker
+      - name: Generate Service Worker
+        run: |
+          /usr/bin/sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/examples/wasm/web/service-worker.js
+
       # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/wasm32-unknown-unknown/release
@@ -128,6 +133,8 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload/profdata
           cp -a ${{ github.workspace }}/pkg ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/examples/wasm/web/index.html ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/examples/wasm/web/manifest.json ${{ github.workspace }}/upload
+          cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.json ${{ github.workspace }}/upload
           #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/wasm32-unknown-unknown/doc/
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload

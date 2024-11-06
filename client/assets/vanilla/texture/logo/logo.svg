@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="270.93332mm"
+   height="270.93332mm"
+   viewBox="0 0 270.93332 270.93332"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title1">Catgirl Engine</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="true"
+     inkscape:zoom="0.35355339"
+     inkscape:cx="446.89149"
+     inkscape:cy="639.22453"
+     inkscape:window-width="1504"
+     inkscape:window-height="923"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2">
+    <inkscape:grid
+       id="grid1"
+       units="px"
+       originx="0"
+       originy="0"
+       spacingx="0.26458333"
+       spacingy="0.26458333"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Ears">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 67.820322,45.627672 C 47.924765,1.7372088 83.102418,30.612513 83.102418,30.612513"
+       id="path27"
+       inkscape:label="Right Outer Ear" />
+    <path
+       id="path27-2"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       inkscape:label="Right Inner Ear"
+       d="m 67.122517,27.132812 c 0.29404,3.207076 1.512414,6.201664 2.582032,9.238282 1.730386,-1.736581 3.501789,-3.435876 5.24414,-5.16211 -2.480313,-1.692525 -4.992308,-3.281986 -7.835937,-4.224609 l 0.0066,0.09978 z" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="M 189.06969,41.729024 C 206.86624,-2.2121556 172.5531,27.930512 172.5531,27.930512"
+       id="path27-9"
+       inkscape:label="Left Outer Ear"
+       sodipodi:nodetypes="cc" />
+    <path
+       id="path27-9-7"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       inkscape:label="Left Inner Ear"
+       d="m 188.6283,23.601562 c -2.81128,0.993522 -5.22314,2.796059 -7.6582,4.466797 1.91388,1.59157 3.82638,3.182633 5.73437,4.78125 1.01535,-2.984027 1.96904,-6.175584 2.11133,-9.310547 l -0.0949,0.03162 z" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Hair">
+    <path
+       id="path21"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       inkscape:label="Hair"
+       d="M 90.762064,26.010502 C 116.23986,65.072907 160.305,90.715126 206.4662,95.622676 m 0.97635,132.429304 c -18.46806,1.05307 -39.7377,-12.26438 -39.68523,-32.29718 -1.41497,-11.45299 -2.82995,-22.90598 -4.24492,-34.35897 m 43.20369,-78.813937 c 0.41125,49.073697 0.82251,98.147387 1.23376,147.221087 M 53.10196,83.137468 c 1.112677,29.761862 0.494236,64.292712 15.689703,80.904192 15.195467,16.61148 22.277488,18.08679 29.746326,18.49185 M 53.134,83.094749 c 10e-7,-36.006619 34.413535,-65.195762 76.86481,-65.1958 42.45131,0 76.86489,29.189154 76.86489,65.1958"
+       sodipodi:nodetypes="ccccccccccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="Face">
+    <path
+       id="path8"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       inkscape:label="Right Eye"
+       d="m 110.59589,83.34375 a 4.2333331,8.4666662 0 0 1 -4.23333,8.466666 4.2333331,8.4666662 0 0 1 -4.23334,-8.466666 4.2333331,8.4666662 0 0 1 4.23334,-8.466666 4.2333331,8.4666662 0 0 1 4.23333,8.466666 z" />
+    <path
+       id="path8-5"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:label="Left Eye"
+       d="m 153.98063,83.34375 c 0,4.676008 -1.89533,8.466663 -4.23333,8.466666 -2.338,-3e-6 -4.23333,-3.790658 -4.23333,-8.466666 0,-4.676008 1.89533,-8.466663 4.23333,-8.466666 2.338,3e-6 4.23333,3.790658 4.23333,8.466666 z"
+       sodipodi:nodetypes="sssss" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:2.91042;stroke-dasharray:none;stroke-opacity:1"
+       d="M 95.816704,77.666095 C 108.66195,63.77868 114.99066,73.922782 114.99066,73.922782"
+       id="path9"
+       inkscape:label="Right Eyebrow"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3.175;stroke-dasharray:none;stroke-opacity:1"
+       d="m 110.54072,114.47867 c 28.61967,19.36036 36.75664,4.20877 36.75664,4.20877"
+       id="path11"
+       inkscape:label="Smile" />
+  </g>
+  <g
+     inkscape:label="Head"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3.175"
+       d="M 187.76072,93.763862 C 189.29362,129.42264 152.85801,163.90108 117.5918,155.99649 85.111407,150.09007 61.738549,114.33292 70.460976,82.235664 74.400117,64.889822 86.671968,49.704081 102.35658,41.535102"
+       id="path1"
+       sodipodi:nodetypes="cccc"
+       inkscape:label="Head" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Shoulder and Neck"
+     style="opacity:1">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 101.1516,149.37936 c -0.5094,18.05819 0.53278,39.22691 -13.583868,52.42868 -21.356381,9.09054 -45.209665,19.84602 -56.744652,41.8401 -1.608093,9.02985 -0.387431,14.67951 -0.395998,27.28518"
+       id="path16"
+       inkscape:label="Right Shoulder and Neck"
+       sodipodi:nodetypes="cccc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 57.149997,270.93332 c -0.13227,-8.20068 -0.264539,-16.40136 -0.396809,-24.60204"
+       id="path28"
+       inkscape:label="Right Inner Arm" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.18392;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 218.25276,270.93333 c 0,-8.11379 0,-16.22758 0,-24.34138"
+       id="path29"
+       inkscape:label="Left Inner Arm" />
+    <path
+       id="path35"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 241.56657,262.99581 c -6.7e-4,2.64584 -0.001,5.29167 -0.002,7.93751 m -34.39383,-61.91251 c 15.18574,4.7025 33.00111,14.45344 34.40525,32.15057 0,7.92733 0,15.85466 0,23.78199"
+       inkscape:label="Left Outer Shoulder" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Shirt">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 66.495681,211.69367 c 33.606769,24.11495 80.308459,28.22891 117.638879,10.74149"
+       id="path22"
+       sodipodi:nodetypes="cc"
+       inkscape:label="Top Stripe" />
+    <path
+       id="path36"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:3.175;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+       d="m 71.029604,224.71681 c -4.249959,-2.79238 -8.499911,-5.58477 -12.74987,-8.37715 m 11.842436,7.83882 c 37.14722,23.54623 87.00526,24.01774 125.23782,2.73519"
+       inkscape:label="Bottom Stripe" />
+  </g>
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lexi</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Catgirl Engine</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>
