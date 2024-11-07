@@ -94,8 +94,7 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
-      # Is this necessary?
-      # Copy Desktop and Icon Files
+      # Copy Desktop and Icon Files (For Crate AUR Install)
       - name: Copy Desktop and Icon Files
         run: |
           mkdir -p ${{ github.workspace }}/install
