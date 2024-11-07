@@ -6,7 +6,6 @@
 .ra-target/
 _site/
 aur/
-install/
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
@@ -22,3 +21,6 @@ squashfs-root/
 
 # License for Wasm-Pack
 /LICENSE
+
+# Do Not Ignore or Cargo won't publish it
+# install/
