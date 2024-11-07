@@ -1,11 +1,19 @@
 self.addEventListener("install", event => {
-    console.debug("Service worker installed");
+    if (window.performance && performance.mark) {
+        performance.mark("Service-Worker: Installed");
+    }
+
+    console.debug("Service Worker Installed");
 
     cache_files(event);
 });
 
 self.addEventListener("activate", event => {
-    console.debug("Service worker activated");
+    if (window.performance && performance.mark) {
+        performance.mark("Service-Worker: Activated");
+    }
+
+    console.debug("Service-Worker Activated");
 });
 
 function cache_files(event) {
@@ -22,9 +30,13 @@ function cache_files(event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(function(cache) {
-                console.debug('Caching files');
+                console.debug('Caching Files...');
                 return cache.addAll(urlsToCache);
             })
     );
-    console.debug('Cached files');
+
+    if (window.performance && performance.mark) {
+        performance.mark("Service-Worker: Cache Files");
+    }
+    console.debug('Cached Files...');
 }

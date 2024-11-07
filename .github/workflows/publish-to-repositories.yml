@@ -149,8 +149,7 @@ jobs:
       - name: Bump PKGBUILD Version
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export PKGREL=`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`
-          export PKGREL=$(($PKGREL+1))
+          export PKGREL=1
 
           echo "Version: $VERSION - Release: $PKGREL"
 
@@ -161,8 +160,7 @@ jobs:
       - name: Generating SRCINFO (Manually)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export PKGREL=`grep "pkgrel=[0-9]*" ${{ github.workspace }}/aur/PKGBUILD | cut -d'=' -f2`
-          export PKGREL=$(($PKGREL+1))
+          export PKGREL=1
           export DOWNLOAD_PATH="catgirl-engine-$VERSION.tar.gz::https://static.crates.io/crates/catgirl-engine/catgirl-engine-$VERSION.crate"
 
           echo "Version: $VERSION - Release: $PKGREL"
