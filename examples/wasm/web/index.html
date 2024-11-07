@@ -24,14 +24,30 @@
     </script> -->
     <script type="text/javascript">
         if ('serviceWorker' in navigator) {
+            if (window.performance && performance.mark) {
+                performance.mark("Service-Worker: Register");
+            }
+
             navigator.serviceWorker.register("/service-worker.js");
         }
     </script>
     <script type="module">
+        if (window.performance && performance.mark) {
+            performance.mark("Wasm: Download");
+        }
+
         import init, * as engine from "/pkg/main.js";
 
         window.addEventListener('load', async function () {
+            if (window.performance && performance.mark) {
+                performance.mark("Wasm: Initialize");
+            }
+
             await init();
+
+            if (window.performance && performance.mark) {
+                performance.mark("Wasm: Loaded");
+            }
 
             console.log("WASM Loaded");
             console.debug("%cYou can gain access to the engine's functions by calling %cgetEngine()", "color: orange; font-weight: bold; font-size: 200%", "color: purple; font-weight: bold; font-size: 200%");
