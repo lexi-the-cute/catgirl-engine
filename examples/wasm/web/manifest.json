@@ -2,6 +2,7 @@
     "name": "Catgirl Engine",
     "short_name": "Catgirl Engine",
     "description": "A game engine for cool moddability and procedurally generated data",
+    "id": "catgirl-engine",
     "start_url": "/?pwa_home=true",
     "display": "standalone",
     "background_color": "#151718",
@@ -46,55 +47,55 @@
         "purpose": "any"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-48x48.svg",
+        "src": "assets/vanilla/texture/logo/logo-48x48.png",
         "type": "image/png",
         "sizes": "48x48",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-72x72.svg",
+        "src": "assets/vanilla/texture/logo/logo-72x72.png",
         "type": "image/png",
         "sizes": "72x72",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-96x96.svg",
+        "src": "assets/vanilla/texture/logo/logo-96x96.png",
         "type": "image/png",
         "sizes": "96x96",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-144x144.svg",
+        "src": "assets/vanilla/texture/logo/logo-144x144.png",
         "type": "image/png",
         "sizes": "144x144",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-168x168.svg",
+        "src": "assets/vanilla/texture/logo/logo-168x168.png",
         "type": "image/png",
         "sizes": "168x168",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-192x192.svg",
+        "src": "assets/vanilla/texture/logo/logo-192x192.png",
         "type": "image/png",
         "sizes": "192x192",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-256x256.svg",
+        "src": "assets/vanilla/texture/logo/logo-256x256.png",
         "type": "image/png",
         "sizes": "256x256",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-512x512.svg",
+        "src": "assets/vanilla/texture/logo/logo-512x512.png",
         "type": "image/png",
         "sizes": "512x512",
         "purpose": "monochrome"
       },
       {
-        "src": "assets/vanilla/texture/logo/logo-1024x1024.svg",
+        "src": "assets/vanilla/texture/logo/logo-1024x1024.png",
         "type": "image/png",
         "sizes": "1024x1024",
         "purpose": "monochrome"

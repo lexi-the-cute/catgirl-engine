@@ -7,11 +7,13 @@ sed "s/%CACHE_VERSION%/`date +'%s'`/" service-worker.js.template > service-worke
 
 cd ../../..
 
+rm -r $CURRENT_DIR/assets
 cp -a `pwd`/License.md `pwd`/LICENSE
 cp -a `pwd`/client/assets $CURRENT_DIR/assets
 
 # Generates usable Wasm binary and supporting files
-wasm-pack build --profiling --target web -d $CURRENT_DIR/pkg
+# wasm-pack build --profiling --target web -d $CURRENT_DIR/pkg
+wasm-pack build --dev --target web -d $CURRENT_DIR/pkg
 
 # Creates Wasm Source Map to aid in debugging
 cargo wasm2map $CURRENT_DIR/pkg/main_bg.wasm --patch --base-url $HOST
