@@ -1,24 +1,26 @@
 #!/bin/sh
 HOST=http://127.0.0.1:8000/pkg
 # RUST_LOG=info
-CURRENT_DIR=`pwd`
 
-sed "s/%CACHE_VERSION%/`date +'%s'`/" service-worker.js.template > service-worker.js
+# Build Time Autovars
+SCRIPT_DIR=`dirname "$0"`
+PROJECT_ROOT=`cd $SCRIPT_DIR/../../.. && pwd`
 
-cd ../../..
+sed "s/%CACHE_VERSION%/`date +'%s'`/" $SCRIPT_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
 
-rm -r $CURRENT_DIR/assets
-cp -a `pwd`/License.md `pwd`/LICENSE
-cp -a `pwd`/client/assets $CURRENT_DIR/assets
+rm -r $SCRIPT_DIR/assets
+cp -a $PROJECT_ROOT/License.md $PROJECT_ROOT/LICENSE
+cp -a $PROJECT_ROOT/client/assets $SCRIPT_DIR/assets
 
 # Generates usable Wasm binary and supporting files
-# wasm-pack build --profiling --target web -d $CURRENT_DIR/pkg
-wasm-pack build --dev --target web -d $CURRENT_DIR/pkg
+# wasm-pack build --profiling --target web -d $SCRIPT_DIR/pkg
+wasm-pack build --dev --target web -d $SCRIPT_DIR/pkg
+# wasm-bindgen $PROJECT_ROOT/target/wasm32-unknown-unknown/debug/main.wasm --out-dir $SCRIPT_DIR/pkg --typescript --target web --debug
 
 # Creates Wasm Source Map to aid in debugging
-cargo wasm2map $CURRENT_DIR/pkg/main_bg.wasm --patch --base-url $HOST
+cargo wasm2map $SCRIPT_DIR/pkg/main_bg.wasm --patch --base-url $HOST
 
 # cargo build --target wasm32-unknown-unknown
 # wasm-bindgen --keep-debug --web --out-dir pkg ./target/wasm32-unknown-unknown/
 
-rm `pwd`/LICENSE
+rm $PROJECT_ROOT/LICENSE
