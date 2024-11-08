@@ -4,5 +4,5 @@
 
 ```bash
 # Install Required Packages
-cargo install wasm-pack
+cargo install wasm-bindgen-cli wasm-opt
 ```

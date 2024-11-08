@@ -102,11 +102,17 @@ jobs:
       #     export RUSTFLAGS="-Z threads=`nproc --all`"
       #     $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=wasm32-unknown-unknown --release --lib --workspace
 
-      # Install Wasm-Pack
-      - name: Install Wasm-Pack
+      # Install Wasm-Bindgen-CLI
+      - name: Install Wasm-Bindgen-CLI
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-pack
+          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-bindgen-cli
+
+      # Install Wasm-Opt
+      - name: Install Wasm-Opt
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-opt
 
       # Install Wasm2Map
       - name: Install Wasm2Map
@@ -114,22 +120,30 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` cargo-wasm2map
 
-      # Copy License File
-      - name: Copy License File
-        run: |
-          cp -a ${{ github.workspace }}/License.md ${{ github.workspace }}/LICENSE
-
       # Compile Program
-      - name: Build Program
+      - name: Build Program (Release)
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/pkg --verbose --release --bin catgirl-engine --timings
+          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine --timings
+
+      # Generate Bindings
+      - name: Generate Bindings
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/pkg --typescript --target web
+
+      # Optimize Program
+      - name: Optimize Program
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/main_bg.wasm -o ${{ github.workspace }}/pkg/main_bg.opt.wasm -O
+          mv ${{ github.workspace }}/pkg/main_bg.opt.wasm ${{ github.workspace }}/pkg/main_bg.wasm
 
       # Build Source Maps
-      - name: Build Source Maps
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/main_bg.wasm --patch --base-url $HOST
+      # - name: Build Source Maps
+      #   run: |
+      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/main_bg.wasm --patch --base-url $HOST
 
       # Generate Service Worker
       - name: Generate Service Worker

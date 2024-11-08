@@ -92,16 +92,29 @@ jobs:
           mkdir -p ${{ github.workspace }}/_site
 
       # Compile Program
-      - name: Build Program
+      - name: Build Program (Release)
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-pack build --target web -d ${{ github.workspace }}/docs/pkg --verbose --release --bin catgirl-engine --timings
+          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine --timings
+
+      # Generate Bindings
+      - name: Generate Bindings
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web --debug --keep-debug
+
+      # Optimize Program
+      - name: Optimize Program
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/docs/pkg/main_bg.wasm -o ${{ github.workspace }}/docs/pkg/main_bg.opt.wasm -O
+          mv ${{ github.workspace }}/docs/pkg/main_bg.opt.wasm ${{ github.workspace }}/docs/pkg/main_bg.wasm
 
       # Build Source Maps
-      - name: Build Source Maps
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/main_bg.wasm --patch --base-url $HOST
+      # - name: Build Source Maps
+      #   run: |
+      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/main_bg.wasm --patch --base-url $HOST
 
       # Build Docs
       - name: Build Docs
