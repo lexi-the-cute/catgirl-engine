@@ -130,7 +130,7 @@ jobs:
       - name: Generate Bindings
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/pkg --typescript --target web
+          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/catgirl-engine.wasm --out-dir ${{ github.workspace }}/pkg --typescript --target web
 
       # Optimize Program
       - name: Optimize Program
