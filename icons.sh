@@ -1,7 +1,11 @@
 #!/bin/bash
 
-CURRENT_DIR=`pwd`
-ASSETS_DIR=`pwd`/client/assets
+# Build Time Autovars
+SCRIPT=`realpath "$0"`
+SCRIPT_DIR=`dirname "$SCRIPT"`
+PROJECT_ROOT=$SCRIPT_DIR
+
+ASSETS_DIR=$PROJECT_ROOT/client/assets
 TEXTURES_DIR=$ASSETS_DIR/vanilla/texture
 LOGO_DIR=$TEXTURES_DIR/logo
 
