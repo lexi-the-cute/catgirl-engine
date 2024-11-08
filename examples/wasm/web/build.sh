@@ -3,7 +3,8 @@ HOST=http://127.0.0.1:8000/pkg
 # RUST_LOG=info
 
 # Build Time Autovars
-SCRIPT_DIR=`dirname "$0"`
+SCRIPT=`realpath "$0"`
+SCRIPT_DIR=`dirname "$SCRIPT"`
 PROJECT_ROOT=`cd $SCRIPT_DIR/../../.. && pwd`
 
 sed "s/%CACHE_VERSION%/`date +'%s'`/" $SCRIPT_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
