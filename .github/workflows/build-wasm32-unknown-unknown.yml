@@ -136,14 +136,14 @@ jobs:
       - name: Optimize Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/main_bg.wasm -o ${{ github.workspace }}/pkg/main_bg.opt.wasm -O
-          mv ${{ github.workspace }}/pkg/main_bg.opt.wasm ${{ github.workspace }}/pkg/main_bg.wasm
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm -O
+          mv ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm
 
       # Build Source Maps
       # - name: Build Source Maps
       #   run: |
       #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/main_bg.wasm --patch --base-url $HOST
+      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
 
       # Generate Service Worker
       - name: Generate Service Worker

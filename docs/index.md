@@ -15,7 +15,7 @@
     }
 </script>
 <script type="module">
-    import init, * as engine from "./pkg/main.js";
+    import init, * as engine from "./pkg/catgirl-engine.js";
 
     window.addEventListener('load', async function () {
         await init();

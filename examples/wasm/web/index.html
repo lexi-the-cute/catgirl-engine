@@ -36,7 +36,7 @@
             performance.mark("Wasm: Download");
         }
 
-        import init, * as engine from "/pkg/main.js";
+        import init, * as engine from "/pkg/catgirl-engine.js";
 
         window.addEventListener('load', async function () {
             if (window.performance && performance.mark) {
