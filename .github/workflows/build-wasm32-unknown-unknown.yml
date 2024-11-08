@@ -136,7 +136,7 @@ jobs:
       - name: Optimize Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm -O
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm -Oz
           mv ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm
 
       # Build Source Maps
@@ -147,8 +147,7 @@ jobs:
 
       # Generate Service Worker
       - name: Generate Service Worker
-        run: |
-          /usr/bin/sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/examples/wasm/web/service-worker.js
+        run: /usr/bin/sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/examples/wasm/web/service-worker.js
 
       # Display Export Directory
       - name: Display Export Directory

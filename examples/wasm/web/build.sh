@@ -1,6 +1,6 @@
 #!/bin/sh
 TOOLCHAIN="stable"  # "stable" or "nightly"
-PROFILE="debug"  # "debug" or "release"
+PROFILE="release"  # "debug" or "release"
 ENABLE_SOURCES="false"
 HOST=http://127.0.0.1:8000/pkg
 # RUST_LOG=info
@@ -33,7 +33,7 @@ fi
 
 if [ $PROFILE != "debug" ]; then
     echo "Optimizing Wasm Binary For Size..."
-    wasm-opt $SCRIPT_DIR/pkg/catgirl-engine_bg.wasm -o $SCRIPT_DIR/pkg/catgirl-engine_bg.opt.wasm -O
+    wasm-opt $SCRIPT_DIR/pkg/catgirl-engine_bg.wasm -o $SCRIPT_DIR/pkg/catgirl-engine_bg.opt.wasm -Oz
     mv $SCRIPT_DIR/pkg/catgirl-engine_bg.opt.wasm $SCRIPT_DIR/pkg/catgirl-engine_bg.wasm
 fi
 
