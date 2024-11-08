@@ -21,9 +21,9 @@ function cache_files(event) {
     var CACHE_NAME = 'catgirl-engine-%CACHE_VERSION%';
     var urlsToCache = [
         '/',
-        '/pkg/main.js',
-        '/pkg/main_bg.wasm',
-        '/pkg/main_bg.wasm.map',
+        '/pkg/catgirl-engine.js',
+        '/pkg/catgirl-engine_bg.wasm',
+        // '/pkg/catgirl-engine_bg.wasm.map',
         // '/styles.css',
     ];
 
