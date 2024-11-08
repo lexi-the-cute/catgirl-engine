@@ -69,11 +69,17 @@ jobs:
       - name: Add x86_64 GNU Build Target
         run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown
 
-      # Install Wasm-Pack
-      - name: Install Wasm-Pack
+      # Install Wasm-Bindgen-CLI
+      - name: Install Wasm-Bindgen-CLI
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-pack
+          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-bindgen-cli
+
+      # Install Wasm-Opt
+      - name: Install Wasm-Opt
+        run: |
+          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-opt
 
       # Install Wasm2Map
       - name: Install Wasm2Map
@@ -101,7 +107,7 @@ jobs:
       - name: Generate Bindings
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web --debug --keep-debug
+          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/catgirl-engine.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web --debug --keep-debug
 
       # Optimize Program
       - name: Optimize Program
