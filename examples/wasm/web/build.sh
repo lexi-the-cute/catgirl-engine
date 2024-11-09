@@ -1,7 +1,7 @@
 #!/bin/sh
 TOOLCHAIN="stable"  # "stable" or "nightly"
-PROFILE="release"  # "debug" or "release"
-ENABLE_SOURCES="false"
+PROFILE="debug"  # "debug" or "release"
+ENABLE_SOURCES="true"
 HOST=http://127.0.0.1:8000/pkg
 # RUST_LOG=info
 
@@ -42,7 +42,7 @@ if [ $PROFILE == "debug" ] && [ $ENABLE_SOURCES == "true" ]; then
     cargo wasm2map $SCRIPT_DIR/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
 fi
 
-if [ $PROFILE == "debug" ] && [ $ENABLE_SOURCES == "true" ]; then
-    echo "Symlinking Rust Sources..."
-    ln -s $LIBRARY_PATH/* $SCRIPT_DIR/pkg/
-fi
+# if [ $PROFILE == "debug" ] && [ $ENABLE_SOURCES == "true" ]; then
+#     echo "Symlinking Rust Sources..."
+#     ln -s $LIBRARY_PATH/* $SCRIPT_DIR/pkg/
+# fi
