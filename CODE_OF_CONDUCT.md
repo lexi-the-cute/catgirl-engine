@@ -39,6 +39,10 @@ Examples of unacceptable behavior include:
 * Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
+## Notes on Behaviors and Responsibilities
+
+We do allow political discussion, we just have to clarify that civil and human rights are inherently not political and as such, advocating for and/or taking action towards stripping someone's rights including, but not limited to, complaining about "wokeness" or "pronouns" are not allowed. We at Foxgirl Labs are making this clarification due to recent events with an unrelated open source repo going on rants about "alienating" potential maintainers as a result of allowing gender neutral pronouns (the PRs were about fixing grammatical errors). Also, queer people tend to be discriminated against by people wrongly calling their existences or daily life as political and banning them or in the opposite end, allowing people to openly "discuss" whether queer people should be allowed to have rights. We want you to know that people talking about their existences or things affecting them such as, but not limited to, trans women talking about their transition or people talking about being affected by wars such as the Ukraine War are allowed. We at Foxgirl Labs want to foster a community where people can openly be themselves and feel safe in the community, so we will enforce the contract of tolerance and ban intolerance of people's existences. We may also take legal action if violations reach the level where legal action is deemed necessary.
+
 ## Enforcement Responsibilities
 
 Community leaders are responsible for clarifying and enforcing our standards of
