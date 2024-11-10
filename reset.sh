@@ -15,6 +15,7 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Cleaning android build data..."
     cd $PROJECT_ROOT/android && $PROJECT_ROOT/android/gradlew clean
+    cd $PROJECT_ROOT
 
     echo "Unstaging all files..."
     git reset
