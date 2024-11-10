@@ -6,11 +6,11 @@ PROJECT_ROOT=`realpath $SCRIPT_DIR/../../..`
 
 cd $PROJECT_ROOT
 
-echo Building Catgirl-Engine
+echo Building Catgirl-Engine...
 cargo build --release --lib
 
-echo Copying Cython Header
+echo Copying Cython Header...
 cp -a $PROJECT_ROOT/target/binding/catgirl_engine.pxd $SCRIPT_DIR
 
-echo Running setup.py
+echo Running setup.py...
 $SCRIPT_DIR/setup.py build_ext --inplace

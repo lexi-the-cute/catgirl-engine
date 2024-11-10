@@ -7,8 +7,8 @@ PROJECT_ROOT=`realpath $SCRIPT_DIR/../../..`
 cd $PROJECT_ROOT
 mkdir -p $PROJECT_ROOT/target/examples
 
-echo Building Catgirl-Engine
+echo Building Catgirl-Engine...
 cargo build --release --lib
 
-echo Compiling C Program
+echo Compiling C Program...
 gcc $PROJECT_ROOT/examples/binding/c/main.c -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/release -lmain -Wl,-rpath,.,-rpath,target/release -o $PROJECT_ROOT/target/examples/examplec.run
