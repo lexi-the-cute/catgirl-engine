@@ -1,4 +1,8 @@
 #!/bin/sh
 
-cd ../../..
-target/examples/examplecpp.run
+SCRIPT=`realpath "$0"`
+SCRIPT_DIR=`dirname "$SCRIPT"`
+PROJECT_ROOT=`realpath $SCRIPT_DIR/../../..`
+
+cd $PROJECT_ROOT
+$PROJECT_ROOT/target/examples/examplecpp.run

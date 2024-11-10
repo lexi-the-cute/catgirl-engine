@@ -1,7 +1,14 @@
 #!/bin/sh
 
-cd ../../..
-mkdir -p target/examples
+SCRIPT=`realpath "$0"`
+SCRIPT_DIR=`dirname "$SCRIPT"`
+PROJECT_ROOT=`realpath $SCRIPT_DIR/../../..`
 
+cd $PROJECT_ROOT
+mkdir -p $PROJECT_ROOT/target/examples
+
+echo Building Catgirl-Engine
 cargo build --release --lib
-gcc examples/binding/c/main.c -Itarget/binding -Ltarget/release -lmain -Wl,-rpath,.,-rpath,target/release -o target/examples/examplec.run
+
+echo Compiling C Program
+gcc $PROJECT_ROOT/examples/binding/c/main.c -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/release -lmain -Wl,-rpath,.,-rpath,target/release -o $PROJECT_ROOT/target/examples/examplec.run
