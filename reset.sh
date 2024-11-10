@@ -10,12 +10,12 @@ echo "This will reset everything that isn't committed..."
 if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     cd $PROJECT_ROOT
 
-    echo "Cleaning rust build data..."
-    cargo clean
+    # echo "Cleaning rust build data..."
+    # cargo clean
 
-    echo "Cleaning android build data..."
-    cd $PROJECT_ROOT/android && $PROJECT_ROOT/android/gradlew clean
-    cd $PROJECT_ROOT
+    # echo "Cleaning android build data..."
+    # cd $PROJECT_ROOT/android && $PROJECT_ROOT/android/gradlew clean
+    # cd $PROJECT_ROOT
 
     echo "Unstaging all files..."
     git reset
