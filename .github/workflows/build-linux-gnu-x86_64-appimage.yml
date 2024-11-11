@@ -12,14 +12,6 @@ on:
         options:
         - 'no'
         - 'yes'
-      run:
-        description: 'Run engine'
-        required: true
-        default: 'no'
-        type: choice
-        options:
-        - 'no'
-        - 'yes'
 jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
@@ -153,13 +145,13 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/$APPIMAGE_FILENAME
+          mkdir -p ${{ github.workspace }}/upload/appimage
+          cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/appimage/$APPIMAGE_FILENAME
 
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
-          cd ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/appimage
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
@@ -168,15 +160,15 @@ jobs:
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/appimage
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz .
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
-          path: ${{ github.workspace }}/upload/*
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz
           include-hidden-files: true
 
       # Test Minimal Dependency Versions
@@ -238,74 +230,6 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
-  run:
-    if: ${{ success() && inputs.run == 'yes' }}
-    needs: [Build]
-    runs-on: ubuntu-latest
-    environment: Linux
-    env:
-      DISPLAY: :99
-    steps:
-      # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: pipewire libgl1-mesa-dri xvfb icewm kde-spectacle libxkbcommon-x11-dev
-          version: 1.0
-          execute_install_scripts: true
-
-      # Download Engine
-      - name: Download Engine (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
-
-      # Start X Server
-      - name: Start X Server and Window Manager
-        run: |
-          Xvfb :99 -screen 0 1920x1080x24 >/dev/null 2>&1 &
-          icewm &
-
-      # Run Game Engine
-      - name: Run Game Engine
-        run: |
-          chmod +x ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-*.AppImage
-          ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/catgirl-engine-*.AppImage &
-          sleep 30
-
-      # Screenshot Game Engine
-      - name: Screenshot Game Engine
-        run: |
-          mkdir -p ${{ github.workspace }}/upload
-          spectacle -a -b -o ${{ github.workspace }}/upload/screenshot.png
-
-      # Upload Screenshots
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
-          path: ${{ github.workspace }}/upload/*
-
-      # Kill Window Manager and X Server
-      # - name: Kill Window Manager and X Server
-      #   run: |
-      #     killall Xvfb
-      #     killall icewm
-
-      # List Environment
-      - name: List Environment
-        run: env
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
-      # Display Build Status
-      - name: 🍏 This job's status is ${{ job.status }}.
-        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
@@ -347,7 +271,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
+          path: ${{ github.workspace }}/artifacts
+
+      # Compress Files
+      - name: Extract Files (Client/Server)
+        run: |
+          mkdir -p ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
+          cd ${{ github.workspace }}/artifacts
+
+          tar xvf ${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz -C linux-gnu-x86_64-appimage
 
       # Create Sync File
       - name: Create Sync File

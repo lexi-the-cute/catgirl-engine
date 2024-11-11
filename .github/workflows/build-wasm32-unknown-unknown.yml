@@ -12,14 +12,6 @@ on:
         options:
         - 'no'
         - 'yes'
-      run:
-        description: 'Run engine'
-        required: true
-        default: 'no'
-        type: choice
-        options:
-        - 'no'
-        - 'yes'
 jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
@@ -156,18 +148,18 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/pkg ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/examples/wasm/web/index.html ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/examples/wasm/web/manifest.json ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.js ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/pkg ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/examples/wasm/web/index.html ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/examples/wasm/web/manifest.json ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.js ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/wasm
+          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/wasm
 
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
-          cd ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/wasm
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
@@ -176,15 +168,15 @@ jobs:
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Tar.tar.xz ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/wasm
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz .
 
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Wasm-32-bit-Tar
-          path: ${{ github.workspace }}/upload/*
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz
           include-hidden-files: true
 
       # List Environment
@@ -319,14 +311,6 @@ jobs:
         with:
           name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/artifacts/wasm-32-bit-web
-
-      # Recreate Wasm Tar
-      - name: Recreate Wasm Tar (Release)
-        run: |
-          export XZ_OPT=-e9
-
-          cd ${{ github.workspace }}/artifacts/wasm-32-bit-web
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz ${{ github.workspace }}/upload/wasm-32-bit-web
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release

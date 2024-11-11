@@ -12,14 +12,6 @@ on:
         options:
         - 'no'
         - 'yes'
-      run:
-        description: 'Run engine'
-        required: true
-        default: 'no'
-        type: choice
-        options:
-        - 'no'
-        - 'yes'
 jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
@@ -234,13 +226,13 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/android
 
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
-          cd ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/android
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
@@ -249,11 +241,11 @@ jobs:
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/android
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz .
 
-      # Upload Android
-      - name: Upload Android (Release)
+      # Upload Engine
+      - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Android
@@ -337,81 +329,6 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
-  run:
-    if: ${{ success() && inputs.run == 'yes' }}
-    needs: [Build]
-    runs-on: ubuntu-latest
-    environment: Android
-    env:
-      DISPLAY: :99
-    steps:
-      # Install Dependencies
-      # - name: Install and Cache APT Packages
-      #   uses: awalsh128/cache-apt-pkgs-action@latest
-      #   with:
-      #     packages: pipewire libgl1-mesa-dri xvfb icewm kde-spectacle libxkbcommon-x11-dev
-      #     version: 1.0
-      #     execute_install_scripts: true
-
-      # Download APK
-      - name: Download APK (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Android
-          path: ${{ github.workspace }}/artifacts/android
-
-      # Enable KVM
-      - name: Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-      # Setup Gradle Build Action (For Caching Builds) - ./app/.cxx|./app/build|./.gradle
-      - name: Setup Gradle Build Action (For Caching Builds)
-        uses: gradle/actions/setup-gradle@v3
-
-      # Run Game Engine
-      # https://github.com/marketplace/actions/android-emulator-runner
-      # TODO: Setup Run Script
-      # - name: Run Game Engine
-      #   uses: reactivecircus/android-emulator-runner@v2
-      #   with:
-      #     api-level: 34
-      #     script: ${{ github.workspace }}/android/gradlew installRelease
-
-      # Screenshot Game Engine
-      # - name: Screenshot Game Engine
-      #   run: |
-      #     mkdir -p ${{ github.workspace }}/upload
-      #     spectacle -a -b -o ${{ github.workspace }}/upload/screenshot.png
-
-      # Upload Screenshots
-      # - name: Upload Screenshots
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Screenshots-Zip
-      #     path: ${{ github.workspace }}/upload/*
-
-      # Kill Window Manager and X Server
-      # - name: Kill Window Manager and X Server
-      #   run: |
-      #     killall Xvfb
-      #     killall icewm
-
-      # List Environment
-      - name: List Environment
-        run: env
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
-      # Display Build Status
-      - name: 🍏 This job's status is ${{ job.status }}.
-        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
@@ -452,23 +369,15 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Android
-          path: ${{ github.workspace }}/artifacts/android
+          path: ${{ github.workspace }}/artifacts
 
       # Compress Files
-      - name: Compress Files (Client/Server)
+      - name: Extract Files (Client/Server)
         run: |
-          export XZ_OPT=-e9
+          mkdir -p ${{ github.workspace }}/artifacts/android
+          cd ${{ github.workspace }}/artifacts
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/upload
-
-      # Recreate APK Tar
-      - name: Recreate APK Tar (Release)
-        run: |
-          export XZ_OPT=-e9
-
-          cd ${{ github.workspace }}/artifacts/android
-          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/artifacts/android
+          tar xvf ${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz -C android
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release

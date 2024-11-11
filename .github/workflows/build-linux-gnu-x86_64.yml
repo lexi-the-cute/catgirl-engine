@@ -12,14 +12,6 @@ on:
         options:
         - 'no'
         - 'yes'
-      run:
-        description: 'Run engine'
-        required: true
-        default: 'no'
-        type: choice
-        options:
-        - 'no'
-        - 'yes'
 jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
@@ -160,16 +152,16 @@ jobs:
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz ${{ github.workspace }}/upload/client-server
+          cd ${{ github.workspace }}/upload/client-server
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz .
 
         # Compress Files
       - name: Compress Files (Server)
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz ${{ github.workspace }}/upload/server
+          cd ${{ github.workspace }}/upload/server
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz .
 
       # Upload Engine
       - name: Upload Engine (Release Client/Server)
@@ -246,75 +238,6 @@ jobs:
       # Display Build Status
       - name: 🍏 This job's status is ${{ job.status }}.
         run: echo "🍏 This job's status is ${{ job.status }}."
-  run:
-    if: ${{ success() && inputs.run == 'yes' }}
-    needs: [Build]
-    runs-on: ubuntu-latest
-    environment: Linux
-    env:
-      DISPLAY: :99
-    steps:
-      # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: pipewire libgl1-mesa-dri xvfb icewm kde-spectacle libxkbcommon-x11-dev
-          version: 1.0
-          execute_install_scripts: true
-
-      # Download Engine
-      - name: Download Engine (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Tar
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
-
-      # Start X Server
-      - name: Start X Server and Window Manager
-        run: |
-          Xvfb :99 -screen 0 1920x1080x24 >/dev/null 2>&1 &
-          icewm &
-
-      # Run Game Engine
-      - name: Run Game Engine
-        run: |
-          chmod +x ${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine
-          ${{ github.workspace }}/artifacts/linux-gnu-x86_64/catgirl-engine-* &
-          sleep 30
-
-      # Screenshot Game Engine
-      - name: Screenshot Game Engine
-        run: |
-          mkdir -p ${{ github.workspace }}/upload
-          spectacle -a -b -o ${{ github.workspace }}/upload/screenshot.png
-
-      # Upload Screenshots
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Screenshots-Zip
-          path: ${{ github.workspace }}/upload/*
-          include-hidden-files: true
-
-      # Kill Window Manager and X Server
-      # - name: Kill Window Manager and X Server
-      #   run: |
-      #     killall Xvfb
-      #     killall icewm
-
-      # List Environment
-      - name: List Environment
-        run: env
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
-      # Display Build Status
-      - name: 🍏 This job's status is ${{ job.status }}.
-        run: echo "🍏 This job's status is ${{ job.status }}."
   deploy:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
@@ -355,30 +278,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-Tar
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
+          path: ${{ github.workspace }}/artifacts
 
       # Download Engine
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Server-Linux-x86_64-GNU-Tar
-          path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server
-
-      # Recreate Linux Tar
-      - name: Recreate Linux Tar (Release Client/Server)
-        run: |
-          export XZ_OPT=-e9
-
-          cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64
-          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz ${{ github.workspace }}/artifacts/linux-gnu-x86_64
-
-      # Recreate Linux Tar
-      - name: Recreate Linux Tar (Release Server)
-        run: |
-          export XZ_OPT=-e9
-
-          cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server
-          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz ${{ github.workspace }}/artifacts/linux-gnu-x86_64
+          path: ${{ github.workspace }}/artifacts
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -412,7 +319,7 @@ jobs:
       - name: 👩‍💻 Publish to Github Release (Tar)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-x86_64-GNU.tar.xz"
           export DISPLAY_LABEL="Linux Tar GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
@@ -421,7 +328,7 @@ jobs:
       - name: 👩‍💻 Publish to Github Release (Server)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz"
           export DISPLAY_LABEL="Linux Server GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
@@ -441,5 +348,5 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64-server
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64-server
