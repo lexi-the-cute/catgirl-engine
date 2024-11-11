@@ -215,6 +215,12 @@ jobs:
       #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
       #     ${{ github.workspace }}/android/gradlew bundleRelease
 
+      # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
       # Display APK Directory
       - name: Display APK Directory (Release)
         run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/release

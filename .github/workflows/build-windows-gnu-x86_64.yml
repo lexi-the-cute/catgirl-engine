@@ -119,6 +119,12 @@ jobs:
           $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --no-default-features --features server
 
       # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
+      # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release
 
@@ -157,7 +163,7 @@ jobs:
           export XZ_OPT=-e9
 
           cd ${{ github.workspace }}/upload/client-server
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz .
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Windows-x86_64-GNU.tar.xz .
 
         # Compress Files
       - name: Compress Files (Server)
@@ -165,7 +171,7 @@ jobs:
           export XZ_OPT=-e9
 
           cd ${{ github.workspace }}/upload/server
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Windows-x86_64-GNU.tar.xz .
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz .
 
       # Upload Engine
       - name: Upload Engine (Release)
@@ -216,75 +222,6 @@ jobs:
       #     export RUSTFLAGS="-Z threads=`nproc --all`"
       #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=x86_64-pc-windows-gnu --bins --tests --benches --examples
       #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
-
-      # List Environment
-      - name: List Environment
-        run: env
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
-      # Display Build Status
-      - name: 🍏 This job's status is ${{ job.status }}.
-        run: echo "🍏 This job's status is ${{ job.status }}."
-  run:
-    if: ${{ success() && inputs.run == 'yes' }}
-    needs: [Build]
-    runs-on: ubuntu-latest
-    environment: Windows
-    env:
-      DISPLAY: :99
-    steps:
-      # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: pipewire libgl1-mesa-dri xvfb icewm kde-spectacle libxkbcommon-x11-dev wine
-          version: 1.0
-          execute_install_scripts: true
-
-      # Download Engine
-      - name: Download Engine (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Windows-x86_64-GNU-Tar
-          path: ${{ github.workspace }}/artifacts/windows-x86_64
-
-      # Start X Server
-      - name: Start X Server and Window Manager
-        run: |
-          Xvfb :99 -screen 0 1920x1080x24 >/dev/null 2>&1 &
-          icewm &
-
-      # Run Game Engine
-      - name: Run Game Engine
-        run: |
-          wine ${{ github.workspace }}/artifacts/windows-x86_64/catgirl-engine-* &
-          sleep 30
-
-      # Screenshot Game Engine
-      - name: Screenshot Game Engine
-        run: |
-          mkdir -p ${{ github.workspace }}/upload
-          spectacle -a -b -o ${{ github.workspace }}/upload/screenshot.png
-
-      # Upload Screenshots
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-Windows-x86_64-GNU-Screenshots-Zip
-          path: ${{ github.workspace }}/upload/*
-          include-hidden-files: true
-
-      # Kill Window Manager and X Server
-      # - name: Kill Window Manager and X Server
-      #   run: |
-      #     killall wine
-      #     killall Xvfb
-      #     killall icewm
 
       # List Environment
       - name: List Environment
