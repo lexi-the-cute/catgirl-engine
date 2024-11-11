@@ -244,12 +244,20 @@ jobs:
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
+      # Compress Files
+      - name: Compress Files (Client/Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/upload
+
       # Upload Android
       - name: Upload Android (Release)
         uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Android
-          path: ${{ github.workspace }}/upload/*
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz
           include-hidden-files: true
 
       # Install Code Size Profiler
@@ -446,9 +454,21 @@ jobs:
           name: CatgirlEngine-Android
           path: ${{ github.workspace }}/artifacts/android
 
-      # Recreate APK Zip
-      - name: Recreate APK Zip (Release)
-        run: cd ${{ github.workspace }}/artifacts/android; zip -9 -y -r ../CatgirlEngine-Android.zip .
+      # Compress Files
+      - name: Compress Files (Client/Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/upload
+
+      # Recreate APK Tar
+      - name: Recreate APK Tar (Release)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/artifacts/android
+          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz ${{ github.workspace }}/artifacts/android
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -479,11 +499,11 @@ jobs:
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (Zip)
+      - name: 👩‍💻 Publish to Github Release (Tar)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android.zip"
-          export DISPLAY_LABEL="Android (Zip)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz"
+          export DISPLAY_LABEL="Android (Tar)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 

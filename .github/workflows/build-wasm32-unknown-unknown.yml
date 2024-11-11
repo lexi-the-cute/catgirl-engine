@@ -171,11 +171,19 @@ jobs:
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
+      # Compress Files
+      - name: Compress Files (Client/Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Tar.tar.xz ${{ github.workspace }}/upload
+
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Wasm-32-bit-Zip
+          name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/upload/*
           include-hidden-files: true
 
@@ -217,7 +225,7 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Wasm-32-bit-Zip
+          name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/artifacts/wasm-32-bit-web
 
       # Start X Server
@@ -309,12 +317,16 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Wasm-32-bit-Zip
+          name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/artifacts/wasm-32-bit-web
 
-      # Recreate Wasm Zip
-      - name: Recreate Wasm Zip (Release)
-        run: cd ${{ github.workspace }}/artifacts/wasm-32-bit-web; zip -9 -y -r ../CatgirlEngine-Wasm-32-bit-Web.zip .
+      # Recreate Wasm Tar
+      - name: Recreate Wasm Tar (Release)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/artifacts/wasm-32-bit-web
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz ${{ github.workspace }}/upload/wasm-32-bit-web
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -348,8 +360,8 @@ jobs:
       - name: 👩‍💻 Publish to Github Release
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Wasm-32-bit-Web.zip"
-          export DISPLAY_LABEL="Wasm Web Zip (wasm32)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Wasm-32-bit-Web.tar.xz"
+          export DISPLAY_LABEL="Wasm Web Tar (wasm32)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -368,4 +380,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web fomxgorl/catgirl-engine:wasm-32-bit-web
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Wasm-32-bit-Web.tar.xz fomxgorl/catgirl-engine:wasm-32-bit-web

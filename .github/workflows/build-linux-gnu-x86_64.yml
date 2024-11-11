@@ -129,46 +129,62 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/client-server
+          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/client-server
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/client-server
+          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/client-server
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Server)
         run: |
-          mkdir -p ${{ github.workspace }}/server-upload
-          cp -a ${{ github.workspace }}/.server-target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/server-upload/catgirl-engine-server
-          cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/server-upload
+          mkdir -p ${{ github.workspace }}/upload/server
+          cp -a ${{ github.workspace }}/.server-target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/client-server/catgirl-engine-server
+          cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/upload/client-server
 
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
-          cd ${{ github.workspace }}/upload
+          cd ${{ github.workspace }}/upload/client-server
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
       # Sign Files
       - name: Sign Files (Server)
         run: |
-          cd ${{ github.workspace }}/server-upload
+          cd ${{ github.workspace }}/upload/server
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
+
+      # Compress Files
+      - name: Compress Files (Client/Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz ${{ github.workspace }}/upload/client-server
+
+        # Compress Files
+      - name: Compress Files (Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz ${{ github.workspace }}/upload/server
 
       # Upload Engine
       - name: Upload Engine (Release Client/Server)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Zip
-          path: ${{ github.workspace }}/upload/*
+          name: CatgirlEngine-Linux-x86_64-GNU-Tar
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz
           include-hidden-files: true
 
       # Upload Engine
       - name: Upload Engine (Release Server)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Server-Linux-x86_64-GNU-Zip
-          path: ${{ github.workspace }}/server-upload/*
+          name: CatgirlEngine-Server-Linux-x86_64-GNU-Tar
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-GNU.tar.xz
           include-hidden-files: true
 
       # Test Minimal Dependency Versions
@@ -250,7 +266,7 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-Tar
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
 
       # Start X Server
@@ -338,23 +354,31 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-Tar
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64
 
       # Download Engine
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Server-Linux-x86_64-GNU-Zip
+          name: CatgirlEngine-Server-Linux-x86_64-GNU-Tar
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server
 
-      # Recreate Linux Zip
-      - name: Recreate Linux Zip (Release Client/Server)
-        run: cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64; zip -9 -y -r ../CatgirlEngine-Linux-GNU-x86_64.zip .
+      # Recreate Linux Tar
+      - name: Recreate Linux Tar (Release Client/Server)
+        run: |
+          export XZ_OPT=-e9
 
-      # Recreate Linux Zip
-      - name: Recreate Linux Zip (Release Server)
-        run: cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server; zip -9 -y -r ../CatgirlEngine-Server-Linux-GNU-x86_64.zip .
+          cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64
+          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz ${{ github.workspace }}/artifacts/linux-gnu-x86_64
+
+      # Recreate Linux Tar
+      - name: Recreate Linux Tar (Release Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server
+          tar cvJf ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz ${{ github.workspace }}/artifacts/linux-gnu-x86_64
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -385,11 +409,11 @@ jobs:
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
       # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (Zip)
+      - name: 👩‍💻 Publish to Github Release (Tar)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.zip"
-          export DISPLAY_LABEL="Linux Zip GLibc (x86_64)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz"
+          export DISPLAY_LABEL="Linux Tar GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -397,7 +421,7 @@ jobs:
       - name: 👩‍💻 Publish to Github Release (Server)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.zip"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz"
           export DISPLAY_LABEL="Linux Server GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
@@ -417,5 +441,5 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64 fomxgorl/catgirl-engine:linux-gnu-x86_64
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-server fomxgorl/catgirl-engine:linux-gnu-x86_64-server
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-GNU-x86_64.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-GNU-x86_64.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64-server
