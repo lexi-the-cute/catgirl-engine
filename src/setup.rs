@@ -4,7 +4,6 @@ use std::ffi::NulError;
 
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use clap::Parser;
-use client::game;
 use utils::{args::Args, println_string};
 
 #[cfg(target_family = "wasm")]
@@ -25,7 +24,8 @@ build_info::build_info!(
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn process_args() {
     // Store assets path in separate variable
-    game::store_assets_path(get_args().assets);
+    #[cfg(feature = "client")]
+    client::game::store_assets_path(get_args().assets);
 
     // Uninstall desktop files
     #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
@@ -46,7 +46,8 @@ pub extern "C" fn process_args() {
         utils::print_environment_vars();
     }
 
-    trace!("Assets Path: {:?}", game::get_assets_path());
+    #[cfg(feature = "client")]
+    trace!("Assets Path: {:?}", client::game::get_assets_path());
 }
 
 /// Retrieve parsed out command line arguments
@@ -330,9 +331,15 @@ pub fn start() -> Result<(), String> {
 
     #[cfg(feature = "server")]
     if cfg!(not(feature = "client")) || get_args().server {
+        // Server exists, client may exist
         return server::game::game_loop();
     }
 
+    // Client exists, server may exist
     #[cfg(feature = "client")]
-    client::game::game_loop()
+    return client::game::game_loop();
+
+    // Server doesn't exist, client doesn't exist
+    #[cfg(not(feature = "client"))]
+    Err("Neither the client nor server features were configured at build time...".to_string())
 }

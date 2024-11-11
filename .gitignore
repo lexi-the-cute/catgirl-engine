@@ -4,6 +4,7 @@
 /gen
 /pkg
 .ra-target/
+.server-target/
 _site/
 aur/
 
