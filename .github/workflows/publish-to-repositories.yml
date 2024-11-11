@@ -212,5 +212,5 @@ jobs:
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export VERSION_STRING="Catgirl Engine v$VERSION"
-          export MESSAGE="[$VERSION_STRING has been published...](https://github.com/lexi-the-cute/catgirl-engine/releases/tag/v$VERSION)"
+          export MESSAGE="[$VERSION_STRING has been published...](https://github.com/foxgirl-labs/catgirl-engine/releases/tag/v$VERSION)"
           curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL

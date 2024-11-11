@@ -15,7 +15,6 @@ I'm also considering the idea of inter-server communication, but for now, commun
 # Download
 
 * [Itch.io][itchio-download]
-* [FDroid Repo][fdroid-repo]
 
 # Setup Build Environment
 
@@ -41,7 +40,7 @@ rustup default stable
 rustup component add rust-src --toolchain stable
 
 # Download This Repo
-git clone https://github.com/lexi-the-cute/catgirl-engine
+git clone https://github.com/foxgirl-labs/catgirl-engine
 
 # Switch To Project Root
 cd catgirl-engine
@@ -153,7 +152,7 @@ bjnt5VwRhrBJZgWFyG0A/j9bpzwURxaLiSxrelcoTiEJ6DFzZcQMKJSp7TvKMU4E
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 
-[github-repo]: https://github.com/lexi-the-cute/catgirl-engine
+[github-repo]: https://github.com/foxgirl-labs/catgirl-engine
 [codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
 [itchio-download]: https://fomxgorl.itch.io/catgirl-engine
 [catgirl-engine-docs]: https://docs.rs/catgirl-engine/latest/main
@@ -162,4 +161,3 @@ bjnt5VwRhrBJZgWFyG0A/j9bpzwURxaLiSxrelcoTiEJ6DFzZcQMKJSp7TvKMU4E
 [catgirl-engine-utils-docs]: https://docs.rs/catgirl-engine-utils/latest/catgirl_engine_utils
 [main-key]: http://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x1E4A9B8B9E3F25B9C3CD1664C7E8D57343655237
 [signing-key]: http://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0xE382EE8AE2F4AFB1B18148DFD83603BC74A7BA9C
-[fdroid-repo]: https://fdroid.catgirl.land/fdroid/repo
