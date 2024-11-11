@@ -279,7 +279,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
           cd ${{ github.workspace }}/artifacts
 
-          tar xvf ${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz -C linux-gnu-x86_64-appimage
+          tar xvf ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz -C linux-gnu-x86_64-appimage
 
       # Create Sync File
       - name: Create Sync File
