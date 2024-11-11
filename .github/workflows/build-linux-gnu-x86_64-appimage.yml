@@ -46,6 +46,8 @@ jobs:
           execute_install_scripts: true
 
       # Install Dependencies
+      - name: Make Tools Directory
+        run: mkdir -p ${{ github.workspace }}/tools
       - name: Install AppImageTool
         uses: nick-fields/retry@v3
         with:
@@ -54,13 +56,10 @@ jobs:
           retry_on: error
           command: |
             # Install AppImageTool
-            mkdir -p ${{ github.workspace }}/.bin
-            wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/.bin/appimagetool
-            chmod +x ${{ github.workspace }}/.bin/appimagetool
+            wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/tools/appimagetool
+            chmod +x ${{ github.workspace }}/tools/appimagetool
 
       # Install Rust
-      - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
@@ -96,8 +95,8 @@ jobs:
         run: pre-commit install
 
       # Autoupdate Pre-Commit Hooks
-      - name: Autoupdate Pre-Commit Hooks
-        run: pre-commit autoupdate
+      # - name: Autoupdate Pre-Commit Hooks
+      #   run: pre-commit autoupdate
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
@@ -117,6 +116,10 @@ jobs:
       - name: Modify Toml AppImageTools Args
         run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|lexi-the-cute|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\]/" Cargo.toml
 
+      # Ignore Modifying Cargo.toml
+      - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
+        run: echo "/Cargo.toml" >> ${{ github.workspace }}/.gitignore
+
       # # Build Docs
       # - name: Build Docs
       #   run: |
@@ -127,7 +130,7 @@ jobs:
       - name: Build Program
         run: |
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
-          export PATH="${{ github.workspace }}/.bin:$PATH"
+          export PATH="${{ github.workspace }}/tools:$PATH"
 
           # Release is already specified by cargo appimage
           # https://github.com/StratusFearMe21/cargo-appimage/issues/30
