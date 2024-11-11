@@ -104,7 +104,7 @@ jobs:
 
       # Install Cargo AppImage
       - name: Install Cargo AppImage
-        run: cargo install --git https://github.com/lexi-the-cute/cargo-appimage  # cargo-appimage
+        run: cargo install --git https://github.com/foxgirl-labs/cargo-appimage  # cargo-appimage
 
       # Extract/Import GPG Signing Key
       - name: Extract GPG Signing Key
@@ -114,7 +114,7 @@ jobs:
 
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
-        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|lexi-the-cute|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\]/" Cargo.toml
+        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\]/" Cargo.toml
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
