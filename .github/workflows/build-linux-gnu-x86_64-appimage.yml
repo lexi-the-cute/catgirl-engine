@@ -134,13 +134,13 @@ jobs:
       # Compile Program
       - name: Build Program
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           export PATH="${{ github.workspace }}/.bin:$PATH"
 
           # Release is already specified by cargo appimage
           # https://github.com/StratusFearMe21/cargo-appimage/issues/30
           # https://github.com/StratusFearMe21/cargo-appimage/blob/485be0a4393a251b7c3b20487424209bb29f7374/src/main.rs#L18
-          $HOME/.cargo/bin/cargo appimage --features appimage -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bin catgirl-engine --timings
+          $HOME/.cargo/bin/cargo appimage --features appimage -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bin catgirl-engine
 
       # Display Export Directory
       - name: Display Export Directory
@@ -151,14 +151,13 @@ jobs:
         run: ls -liallh ${{ github.workspace }}/target/appimage
 
       # Prepare Artifact Uploads
-      - name: Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads (Client/Server)
         run: |
           mkdir -p ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/appimage/catgirl-engine.AppImage ${{ github.workspace }}/upload/$APPIMAGE_FILENAME
-          #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/doc/
 
       # Sign Files
-      - name: Sign Files
+      - name: Sign Files (Client/Server)
         run: |
           cd ${{ github.workspace }}/upload
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
@@ -184,7 +183,7 @@ jobs:
       # Install Code Size Profiler
       - name: Install Code Size Profiler
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
       # Profile Code Size
