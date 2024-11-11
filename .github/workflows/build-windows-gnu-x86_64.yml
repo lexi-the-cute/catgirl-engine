@@ -116,36 +116,47 @@ jobs:
       # Compile Program
       - name: Build Client/Server
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
+          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine
 
       # Compile Program
       - name: Build Server Only
         run: |
           export CARGO_TARGET_DIR="${{ github.workspace }}/.server-target"
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --timings --no-default-features --features server
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
+          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-pc-windows-gnu --release --bin catgirl-engine --no-default-features --features server
 
       # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release
 
       # Prepare Artifact Uploads
-      - name: Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/profdata
+          mkdir -p ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/.server-target/x86_64-pc-windows-gnu/release/catgirl-engine.exe ${{ github.workspace }}/upload/catgirl-engine-server.exe
-          #tar -cvf ${{ github.workspace }}/upload/docs.tar.gz ${{ github.workspace }}/target/x86_64-pc-windows-gnu/doc/
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
+
+      # Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads (Server)
+        run: |
+          mkdir -p ${{ github.workspace }}/server-upload
+          cp -a ${{ github.workspace }}/.server-target/x86_64-pc-windows-gnu/release/catgirl-engine.exe ${{ github.workspace }}/server-upload/catgirl-engine-server
+          cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/server-upload
 
       # Sign Files
-      - name: Sign Files
+      - name: Sign Files (Client/Server)
         run: |
           cd ${{ github.workspace }}/upload
+          find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
+          gpg --sign checksums.sha512
+
+      # Sign Files
+      - name: Sign Files (Server)
+        run: |
+          cd ${{ github.workspace }}/server-upload
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
@@ -155,6 +166,14 @@ jobs:
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
           path: ${{ github.workspace }}/upload/*
+          include-hidden-files: true
+
+      # Upload Engine
+      - name: Upload Engine (Release Server)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-Server-Windows-x86_64-GNU-Zip
+          path: ${{ github.workspace }}/server-upload/*
           include-hidden-files: true
 
       # Test Minimal Dependency Versions
@@ -169,7 +188,7 @@ jobs:
       # Install Code Size Profiler
       - name: Install Code Size Profiler
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
 
       # Profile Code Size
@@ -309,15 +328,26 @@ jobs:
           execute_install_scripts: true
 
       # Download Engine
-      - name: Download Engine (Release)
+      - name: Download Engine (Release Client/Server)
         uses: actions/download-artifact@v4
         with:
           name: CatgirlEngine-Windows-x86_64-GNU-Zip
           path: ${{ github.workspace }}/artifacts/windows-x86_64
 
+      # Download Engine
+      - name: Download Engine (Release Server)
+        uses: actions/download-artifact@v4
+        with:
+          name: CatgirlEngine-Server-Windows-x86_64-GNU-Zip
+          path: ${{ github.workspace }}/artifacts/windows-x86_64-server
+
       # Recreate Windows Zip
-      - name: Recreate Windows Zip (Release)
+      - name: Recreate Windows Zip (Release Server/Client)
         run: cd ${{ github.workspace }}/artifacts/windows-x86_64; zip -9 -y -r ../CatgirlEngine-Windows-x86_64.zip .
+
+      # Recreate Windows Zip
+      - name: Recreate Windows Zip (Release Server)
+        run: cd ${{ github.workspace }}/artifacts/windows-x86_64-server; zip -9 -y -r ../CatgirlEngine-Server-Windows-x86_64.zip .
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
@@ -360,7 +390,7 @@ jobs:
       - name: 👩‍💻 Publish to Github Release (Server)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/windows-x86_64/catgirl-engine-server.exe"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Windows-x86_64.zip"
           export DISPLAY_LABEL="Windows Server GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
@@ -381,4 +411,4 @@ jobs:
         run: |
           # Upload App
           ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-x86_64 fomxgorl/catgirl-engine:windows-x86_64
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-x86_64/catgirl-engine-server.exe fomxgorl/catgirl-engine:windows-x86_64-server
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/windows-x86_64-server fomxgorl/catgirl-engine:windows-x86_64-server

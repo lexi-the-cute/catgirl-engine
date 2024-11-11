@@ -147,7 +147,7 @@ jobs:
       - name: Build CatgirlEngine APK (FAT)
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
 
           mkdir -p ${{ github.workspace }}/upload
@@ -158,7 +158,7 @@ jobs:
       - name: Build CatgirlEngine APK (arm64)
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -173,7 +173,7 @@ jobs:
       - name: Build CatgirlEngine APK (armeabi-v7a)
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -188,7 +188,7 @@ jobs:
       - name: Build CatgirlEngine APK (x86)
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -203,7 +203,7 @@ jobs:
       - name: Build CatgirlEngine APK (x86_64)
         working-directory: ${{ github.workspace }}/android
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -220,7 +220,7 @@ jobs:
       # - name: Build CatgirlEngine AAB
       #   working-directory: ${{ github.workspace }}/android
       #   run: |
-      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+      #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
       #     ${{ github.workspace }}/android/gradlew bundleRelease
 
       # Display APK Directory
@@ -232,15 +232,13 @@ jobs:
       #   run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
 
       # Prepare Artifact Uploads
-      - name: Prepare Artifact Uploads
+      - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/profdata
+          mkdir -p ${{ github.workspace }}/upload
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/target/cargo-timings ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/*.mm_profdata ${{ github.workspace }}/upload/profdata
 
       # Sign Files
-      - name: Sign Files
+      - name: Sign Files (Client/Server)
         run: |
           cd ${{ github.workspace }}/upload
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512

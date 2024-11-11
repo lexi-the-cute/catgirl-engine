@@ -72,19 +72,19 @@ jobs:
       # Install Wasm-Bindgen-CLI
       - name: Install Wasm-Bindgen-CLI
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-bindgen-cli
 
       # Install Wasm-Opt
       - name: Install Wasm-Opt
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` wasm-opt
 
       # Install Wasm2Map
       - name: Install Wasm2Map
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/cargo install -j `nproc --all` cargo-wasm2map
 
       # Setup Pages
@@ -100,28 +100,28 @@ jobs:
       # Compile Program
       - name: Build Program (Release)
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
-          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine --timings
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
+          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine
 
       # Generate Bindings
       - name: Generate Bindings
         run: |
           # When building for debug, add --keep-debug to wasm-bindgen to keep the DWARF debug info for the source map generator (may cause wasm-opt to segfault)
           # --debug adds extra checks in the javascript portion for debugging the wasm
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/catgirl-engine.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web
 
       # Optimize Program
       - name: Optimize Program
         run: |
-          export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.opt.wasm -Oz
           mv ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.opt.wasm ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm
 
       # Build Source Maps
       # - name: Build Source Maps
       #   run: |
-      #     export RUSTFLAGS="-Z threads=`nproc --all` -Z self-profile"  # -Z time-passes
+      #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
       #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
 
       # Build Docs

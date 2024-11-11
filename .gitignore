@@ -7,6 +7,8 @@
 .server-target/
 _site/
 aur/
+upload/
+server-upload/
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
