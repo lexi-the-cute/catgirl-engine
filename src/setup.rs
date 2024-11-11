@@ -243,6 +243,11 @@ pub(crate) fn setup_logger() {
 /// Setup the tracing subscriber to monitor the tracer
 #[cfg(feature = "tracing-subscriber")]
 pub(crate) fn setup_tracer() {
+    if cfg!(target_family = "wasm") {
+        error!("The tracing-subscriber feature is currently not supported on wasm...");
+        return;
+    }
+
     use tracing_subscriber::{EnvFilter, FmtSubscriber};
 
     // Construct a subscriber to print formatted traces to stdout

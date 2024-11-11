@@ -25,9 +25,6 @@ extern crate wasm_bindgen;
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Create a vector of args from C styled args
     // We create a new pointer so we guarantee the pointer we are passing is valid
     // This doesn't say anything about the underlying data, but that's the responsibility of
@@ -53,6 +50,9 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     setup::setup_logger();
 
+    #[cfg(feature = "tracing-subscriber")]
+    setup::setup_tracer();
+
     // Process args for future use
     setup::process_args();
     debug!("Launched as library...");
@@ -72,9 +72,6 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
 pub fn android_main(app: AndroidApp) {
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
@@ -85,6 +82,9 @@ pub fn android_main(app: AndroidApp) {
 
     // Setup logger for debugging
     setup::setup_logger();
+
+    #[cfg(feature = "tracing-subscriber")]
+    setup::setup_tracer();
 
     // Process args for future use
     setup::process_args();
@@ -104,6 +104,9 @@ pub fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
+    // Setup logger for debugging
+    setup::setup_logger();
+
     #[cfg(feature = "tracing-subscriber")]
     setup::setup_tracer();
 
@@ -114,9 +117,6 @@ pub fn wasm_start() {
         setup::print_dependencies();
         return ();
     }
-
-    // Setup logger for debugging
-    setup::setup_logger();
 
     // Process args for future use
     setup::process_args();
