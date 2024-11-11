@@ -60,6 +60,10 @@ jobs:
       - name: Setup Config.toml
         run: sed "s:\$WORKSPACE:${{ github.workspace }}:g" ${{ github.workspace }}/.cargo/config.toml.sample > ${{ github.workspace }}/.cargo/config.toml
 
+      # Ignore Modifying .cargo/config.toml
+      - name: Ignore Modifying ${{ github.workspace }}/.cargo/config.toml
+        run: echo "/.cargo/config.toml" >> ${{ github.workspace }}/.gitignore
+
       # Install Rust Nightly Toolchains
       - name: Set Rust To The Nightly Toolchains
         run: $HOME/.cargo/bin/rustup default nightly
@@ -86,8 +90,8 @@ jobs:
         run: pre-commit install
 
       # Autoupdate Pre-Commit Hooks
-      - name: Autoupdate Pre-Commit Hooks
-        run: pre-commit autoupdate
+      # - name: Autoupdate Pre-Commit Hooks
+      #   run: pre-commit autoupdate
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks

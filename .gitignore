@@ -1,29 +1,46 @@
+# ----------------------------------------
+# Rust
 /target
-/build
-/tools
-/gen
-/pkg
-.ra-target/
-.server-target/
-_site/
-aur/
-upload/
-server-upload/
+/.ra-target
 
 # RUSTFLAGS="-Zself-profile"
 *.mm_profdata
 
 # RUSTFLAGS="-Cinstrument-coverage"
 *.profraw
+# ----------------------------------------
 
+# ----------------------------------------
 # AppImage
 /libs
 squashfs-root/
 *.AppImage
 *.zsync
+# ----------------------------------------
 
-# License for Wasm-Pack
-/LICENSE
+# ----------------------------------------
+# Wasm
+pkg/
+# ----------------------------------------
 
+# ----------------------------------------
+# Github Pages
+_site/
+# ----------------------------------------
+
+# ----------------------------------------
+# AUR
+aur/
+# ----------------------------------------
+
+# ----------------------------------------
+# Github Workflows
+/tools
+/upload
+/.server-target
+# ----------------------------------------
+
+# ----------------------------------------
 # Do Not Ignore or Cargo won't publish it
-# install/
+!/install
+# ----------------------------------------
