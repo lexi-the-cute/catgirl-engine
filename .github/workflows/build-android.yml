@@ -135,6 +135,10 @@ jobs:
           echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
           gpg --import $HOME/signing.gpg
 
+      # Ignore Modifying android/app/build.gradle
+      - name: Ignore Modifying ${{ github.workspace }}/android/app/build.gradle
+        run: echo -e "/.gitignore\n/android/app/build.gradle" >> ${{ github.workspace }}/.gitignore
+
       # Build Engine As APK
       - name: Build CatgirlEngine APK (FAT)
         working-directory: ${{ github.workspace }}/android

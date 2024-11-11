@@ -118,7 +118,7 @@ jobs:
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
-        run: echo "/Cargo.toml" >> ${{ github.workspace }}/.gitignore
+        run: echo -e "/.gitignore\n/Cargo.toml" >> ${{ github.workspace }}/.gitignore
 
       # # Build Docs
       # - name: Build Docs
