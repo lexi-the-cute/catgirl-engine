@@ -142,9 +142,9 @@ jobs:
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
 
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-fat.apk
-          #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-fat.apk
+          #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload/android
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (arm64)
@@ -158,8 +158,8 @@ jobs:
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-arm64.apk
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-arm64.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (armeabi-v7a)
@@ -173,8 +173,8 @@ jobs:
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-armeabi-v7a.apk
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-armeabi-v7a.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (x86)
@@ -188,8 +188,8 @@ jobs:
           ${{ github.workspace }}/android/gradlew clean
           ${{ github.workspace }}/android/gradlew assembleRelease
 
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-x86.apk
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-x86.apk
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (x86_64)
@@ -204,8 +204,8 @@ jobs:
           ${{ github.workspace }}/android/gradlew assembleRelease
 
 
-          mkdir -p ${{ github.workspace }}/upload
-          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/catgirl-engine-x86_64.apk
+          mkdir -p ${{ github.workspace }}/upload/android
+          cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-x86_64.apk
 
       # We no longer use the Play Store, but if another store uses AAB, we can enable it
       # # Build Engine As AAB
