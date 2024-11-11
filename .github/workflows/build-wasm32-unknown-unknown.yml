@@ -137,6 +137,12 @@ jobs:
       #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
       #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
 
+      # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
       # Generate Service Worker
       - name: Generate Service Worker
         run: /usr/bin/sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/examples/wasm/web/service-worker.js
@@ -178,84 +184,6 @@ jobs:
           name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz
           include-hidden-files: true
-
-      # List Environment
-      - name: List Environment
-        run: env
-      - name: List All Installed Packages
-        run: |
-          apt list --installed | wc -l
-          apt list --installed
-      - name: List All Files
-        run: find ${{ github.workspace }}
-
-      # Display Build Status
-      - name: 🍏 This job's status is ${{ job.status }}.
-        run: echo "🍏 This job's status is ${{ job.status }}."
-  run:
-    if: ${{ success() && inputs.run == 'yes' }}
-    needs: [Build]
-    runs-on: ubuntu-latest
-    environment: WebAssembly
-    env:
-      DISPLAY: :99
-    steps:
-      # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: pipewire libgl1-mesa-dri xvfb icewm kde-spectacle libxkbcommon-x11-dev python3 sudo snap
-          version: 1.0
-          execute_install_scripts: true
-
-      # Install Snap Dependencies
-      - name: Install Snap Dependencies
-        run: |
-          sudo snap install firefox
-
-      # Download Engine
-      - name: Download Engine (Release)
-        uses: actions/download-artifact@v4
-        with:
-          name: CatgirlEngine-Wasm-32-bit-Tar
-          path: ${{ github.workspace }}/artifacts/wasm-32-bit-web
-
-      # Start X Server
-      - name: Start X Server and Window Manager
-        run: |
-          Xvfb :99 -screen 0 1920x1080x24 >/dev/null 2>&1 &
-          icewm &
-
-      # Run Game Engine
-      - name: Run Game Engine
-        run: |
-          cd ${{ github.workspace }}/artifacts/wasm-32-bit-web/
-          python3 -m http.server 8000 &
-          firefox http://localhost:8000 &
-
-          sleep 30
-
-      # Screenshot Game Engine
-      - name: Screenshot Game Engine
-        run: |
-          mkdir -p ${{ github.workspace }}/upload
-          spectacle -a -b -o ${{ github.workspace }}/upload/screenshot.png
-
-      # Upload Screenshots
-      - name: Upload Screenshots
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-Wasm-32-bit-Screenshots-Zip
-          path: ${{ github.workspace }}/upload/*
-          include-hidden-files: true
-
-      # Kill Window Manager and X Server
-      # - name: Kill Window Manager and X Server
-      #   run: |
-      #     killall firefox
-      #     killall python3
-      #     killall Xvfb
-      #     killall icewm
 
       # List Environment
       - name: List Environment

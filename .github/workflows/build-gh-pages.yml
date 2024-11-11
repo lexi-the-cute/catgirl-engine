@@ -124,6 +124,12 @@ jobs:
       #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
       #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
 
+      # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
       # Build Docs
       - name: Build Docs
         run: |

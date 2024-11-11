@@ -135,6 +135,12 @@ jobs:
           $HOME/.cargo/bin/cargo appimage --features appimage -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --bin catgirl-engine
 
       # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
+      # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release
 

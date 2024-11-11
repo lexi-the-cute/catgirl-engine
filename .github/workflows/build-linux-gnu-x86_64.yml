@@ -115,6 +115,12 @@ jobs:
           $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --no-default-features --features server
 
       # Display Export Directory
+      - name: Display Git Staging
+        run: |
+          cd ${{ github.workspace }}
+          git status -v -s -b
+
+      # Display Export Directory
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release
 
@@ -130,8 +136,8 @@ jobs:
       - name: Prepare Artifact Uploads (Server)
         run: |
           mkdir -p ${{ github.workspace }}/upload/server
-          cp -a ${{ github.workspace }}/.server-target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/client-server/catgirl-engine-server
-          cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/upload/client-server
+          cp -a ${{ github.workspace }}/.server-target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/server/catgirl-engine-server
+          cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/upload/server
 
       # Sign Files
       - name: Sign Files (Client/Server)
