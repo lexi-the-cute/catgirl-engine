@@ -163,11 +163,19 @@ jobs:
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
+      # Compress Files
+      - name: Compress Files (Client/Server)
+        run: |
+          export XZ_OPT=-e9
+
+          cd ${{ github.workspace }}/upload
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz ${{ github.workspace }}/upload
+
       # Upload Engine
       - name: Upload Engine (Release)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
           path: ${{ github.workspace }}/upload/*
           include-hidden-files: true
 
@@ -250,7 +258,7 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
 
       # Start X Server
@@ -338,7 +346,7 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Zip
+          name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
           path: ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage
 
       # Create Sync File
