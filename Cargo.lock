@@ -481,7 +481,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.14.27"
+version = "0.14.28"
 dependencies = [
  "android_logger",
  "build-info",
@@ -509,7 +509,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-client"
-version = "0.14.27"
+version = "0.14.28"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -528,7 +528,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-server"
-version = "0.14.27"
+version = "0.14.28"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -540,7 +540,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-utils"
-version = "0.14.27"
+version = "0.14.28"
 dependencies = [
  "build-info",
  "build-info-build",

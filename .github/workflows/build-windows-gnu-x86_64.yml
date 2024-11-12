@@ -62,7 +62,9 @@ jobs:
 
       # Ignore Modifying .cargo/config.toml
       - name: Ignore Modifying ${{ github.workspace }}/.cargo/config.toml
-        run: echo "/.cargo/config.toml" >> ${{ github.workspace }}/.git/info/exclude
+        run: |
+          cd ${{ github.workspace }}
+          git update-index --skip-worktree ${{ github.workspace }}/.cargo/config.toml
 
       # Install Rust Nightly Toolchains
       - name: Set Rust To The Nightly Toolchains
