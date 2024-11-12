@@ -21,6 +21,9 @@ pub fn main() -> Result<(), String> {
         setup::print_version();
         setup::print_build_info();
         setup::print_dependencies();
+
+        println!();
+        setup::print_license();
         return Ok(());
     }
 
@@ -32,6 +35,7 @@ pub fn main() -> Result<(), String> {
 
     // Process args for future use
     setup::process_args();
+
     debug!("Launched as binary...");
     setup::log_build_info();
 
