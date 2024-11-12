@@ -38,10 +38,11 @@ opt-level = 3
 incremental = false
 
 [features]
-default = ["client", "server"]
+default = ["client", "server", "logging-subscriber"]
 client = ["dep:client"]
 server = ["dep:server"]
 embed-assets = ["client/embed-assets"]
+logging-subscriber = []
 tracing-subscriber = ["dep:tracing-subscriber"]
 appimage = ["utils/appimage", "client/appimage"]
 no_lint = ["utils/no_lint"]  # Tells rust-analyzer to can it with false warnings when workspace config is used

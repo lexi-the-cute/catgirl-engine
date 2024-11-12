@@ -243,6 +243,7 @@ pub extern "C" fn log_build_info() {
 }
 
 /// Setup the logger for the current platform
+#[cfg(feature = "logging-subscriber")]
 pub(crate) fn setup_logger() {
     if cfg!(target_os = "android") {
         // Limited Filter: trace,android_activity=debug,winit=debug
@@ -276,7 +277,31 @@ pub(crate) fn setup_logger() {
         }
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
-        pretty_env_logger::init();
+        let mut builder = pretty_env_logger::formatted_builder();
+        if let Ok(s) = ::std::env::var("RUST_LOG") {
+            // Set logger according to RUST_LOG environment variable
+            builder.parse_filters(&s);
+        } else {
+            // Failed to find RUST_LOG environment variable
+            builder
+                .default_format()
+                .filter(Some("main"), tracing::log::LevelFilter::Info)
+                .filter(Some("catgirl_engine"), tracing::log::LevelFilter::Info)
+                .filter(
+                    Some("catgirl_engine_client"),
+                    tracing::log::LevelFilter::Info,
+                )
+                .filter(
+                    Some("catgirl_engine_server"),
+                    tracing::log::LevelFilter::Info,
+                )
+                .filter(
+                    Some("catgirl_engine_utils"),
+                    tracing::log::LevelFilter::Info,
+                );
+        }
+
+        builder.try_init().unwrap();
     }
 }
 

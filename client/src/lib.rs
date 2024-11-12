@@ -39,6 +39,7 @@ pub fn get_icon_bytes() -> Option<Vec<u8>> {
     let bytes: Result<Vec<u8>, String> =
         load_bytes!("vanilla/texture/logo/logo-1024x1024-color.png");
     if bytes.is_err() {
+        warn!("{}", bytes.err().unwrap());
         return None;
     }
 
@@ -81,6 +82,8 @@ pub fn install_desktop_files() -> Result<(), String> {
     let icon_bytes_option: Option<Vec<u8>> = get_icon_bytes();
 
     if desktop_file_contents_option.is_err() {
+        warn!("{}", desktop_file_contents_option.err().unwrap());
+
         return Err("Could not find desktop file to install...".to_string());
     }
 

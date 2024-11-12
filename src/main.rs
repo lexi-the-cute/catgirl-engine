@@ -28,6 +28,7 @@ pub fn main() -> Result<(), String> {
     }
 
     // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
     #[cfg(feature = "tracing-subscriber")]

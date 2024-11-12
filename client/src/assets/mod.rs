@@ -21,11 +21,6 @@ macro_rules! load_bytes {
 
                 Ok(include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/", $file)).to_vec())
             } else {
-                trace!(
-                    "Asset Not Found - Unable To Load Asset (Bytes): {:?}",
-                    external_assets_path
-                );
-
                 Err(format!(
                     "Asset Not Found - Unable To Load Asset (Bytes): {:?}",
                     external_assets_path
@@ -62,15 +57,10 @@ macro_rules! load_string {
                         .to_string(),
                 )
             } else {
-                trace!(
+                Err(format!(
                     "Asset Not Found - Unable To Load Asset (String): {:?}",
                     external_assets_path
-                );
-
-                return Err(format!(
-                    "Asset Not Found - Unable To Load Asset (String): {:?}",
-                    external_assets_path
-                ));
+                ))
             }
         };
 
