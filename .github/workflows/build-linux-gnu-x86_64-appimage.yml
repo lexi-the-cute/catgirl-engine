@@ -118,7 +118,9 @@ jobs:
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
-        run: echo -e "/Cargo.toml" >> ${{ github.workspace }}/.git/info/exclude
+        run: |
+          cd ${{ github.workspace }}
+          git update-index --skip-worktree ${{ github.workspace }}/Cargo.toml
 
       # # Build Docs
       # - name: Build Docs

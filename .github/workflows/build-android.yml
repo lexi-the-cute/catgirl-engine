@@ -137,7 +137,9 @@ jobs:
 
       # Ignore Modifying android/app/build.gradle
       - name: Ignore Modifying ${{ github.workspace }}/android/app/build.gradle
-        run: echo -e "/android/app/build.gradle" >> ${{ github.workspace }}/.git/info/exclude
+        run: |
+          cd ${{ github.workspace }}
+          git update-index --skip-worktree ${{ github.workspace }}/android/app/build.gradle
 
       # Build Engine As APK
       - name: Build CatgirlEngine APK (FAT)
