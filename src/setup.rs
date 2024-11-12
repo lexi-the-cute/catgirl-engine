@@ -118,10 +118,6 @@ pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
 }
 
 /// Print the version of the engine
-///
-/// # Panics
-///
-/// This may fail if the license info cannot be unwrapped
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_version() {
@@ -136,42 +132,6 @@ pub extern "C" fn print_version() {
         info.compiler,
         info.timestamp
     );
-
-    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
-    let year: i32 = info.timestamp.year();
-    let author: String = if info.crate_info.authors.is_empty() {
-        "Unknown".to_string()
-    } else {
-        info.crate_info.authors[0].clone()
-    };
-
-    let license: String = if info.crate_info.license.is_some() {
-        info.crate_info.license.as_ref().unwrap().clone()
-    } else {
-        "Unknown".to_string()
-    };
-
-    utils::println_string!("Copyright (C) {} {} - {} License", year, author, license);
-}
-
-/// Prints extra build info
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_build_info() {
-    let info: &BuildInfo = build_info();
-
-    utils::println_string!(
-        "Built for: {} with {} profile",
-        info.target.cpu.arch,
-        info.profile
-    );
-    if let Some(git) = utils::get_version_control_build_info() {
-        if git.dirty {
-            utils::println_string!("Built from Commit: {}-dirty", git.commit_id);
-        } else {
-            utils::println_string!("Built from Commit: {}", git.commit_id);
-        }
-    }
 }
 
 /// Print the dependencies of the engine
@@ -203,13 +163,61 @@ pub extern "C" fn print_dependencies() {
     }
 }
 
+/// Print the dependencies of the engine
+///
+/// # Panics
+///
+/// May panic if the license info cannot be unwrapped
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn print_license() {
+    let info: &BuildInfo = build_info();
+
+    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+    let year: i32 = info.timestamp.year();
+    let author: String = if info.crate_info.authors.is_empty() {
+        "Unknown".to_string()
+    } else {
+        info.crate_info.authors[0].clone()
+    };
+
+    let license: String = if info.crate_info.license.is_some() {
+        info.crate_info.license.as_ref().unwrap().clone()
+    } else {
+        "Unknown".to_string()
+    };
+
+    utils::println_string!("Copyright (C) {} {} - {} License", year, author, license);
+}
+
+/// Prints extra build info
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn print_build_info() {
+    let info: &BuildInfo = build_info();
+
+    utils::println_string!(
+        "Built for {} {} with {} profile",
+        info.target.cpu.arch,
+        info.target.os,
+        info.profile
+    );
+
+    if let Some(git) = utils::get_version_control_build_info() {
+        if git.dirty {
+            utils::println_string!("Built from commit {}-dirty", git.commit_id);
+        } else {
+            utils::println_string!("Built from commit {}", git.commit_id);
+        }
+    }
+}
+
 /// Logs build info including version, commit, and compiled architecture
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn log_build_info() {
     // Logs debug information (useful for Android)
     let info: &BuildInfo = build_info();
-    trace!("Built for Arch: {}", info.target.cpu.arch);
     trace!(
         "{} v{} built with {} at {}",
         info.crate_info.name,
@@ -217,14 +225,21 @@ pub extern "C" fn log_build_info() {
         info.compiler,
         info.timestamp
     );
+
+    trace!(
+        "Built for {} {} with {} profile",
+        info.target.cpu.arch,
+        info.target.os,
+        info.profile
+    );
+
     if let Some(git) = utils::get_version_control_build_info() {
         if git.dirty {
-            trace!("Built from Commit: {}-dirty", git.commit_id);
+            trace!("Built from commit {}-dirty", git.commit_id);
         } else {
-            trace!("Built from Commit: {}", git.commit_id);
+            trace!("Built from commit {}", git.commit_id);
         }
     }
-    trace!("v{} built at {}", info.crate_info.version, info.timestamp);
 }
 
 /// Setup the logger for the current platform

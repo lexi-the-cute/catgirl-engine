@@ -30,6 +30,10 @@ pub mod setup;
 pub mod assets;
 
 /// Retrieve the engine's icon as raw bytes
+///
+/// # Panics
+///
+/// May panic if the bytes to load cannot be unwrapped
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_icon_bytes() -> Option<Vec<u8>> {
     let bytes: Result<Vec<u8>, String> =
@@ -51,9 +55,7 @@ pub fn get_icon_bytes() -> Option<Vec<u8>> {
 #[must_use]
 pub fn get_icon() -> Option<Icon> {
     let image_bytes_option: Option<Vec<u8>> = get_icon_bytes();
-    if image_bytes_option.is_none() {
-        return None;
-    }
+    image_bytes_option.as_ref()?;
 
     let image_bytes: Vec<u8> = image_bytes_option.unwrap();
     let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(&image_bytes)
@@ -78,7 +80,7 @@ pub fn install_desktop_files() -> Result<(), String> {
         load_string!("resources/catgirl-engine.desktop");
     let icon_bytes_option: Option<Vec<u8>> = get_icon_bytes();
 
-    if let Err(_) = desktop_file_contents_option {
+    if desktop_file_contents_option.is_err() {
         return Err("Could not find desktop file to install...".to_string());
     }
 

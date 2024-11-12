@@ -246,7 +246,7 @@ pub(crate) fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
     EVENT_LOOP_PROXY.get().cloned()
 }
 
-/// Retrieves proxy to interact with game loop
+/// Advances game loop by one cycle
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn advance_event_loop() -> bool {

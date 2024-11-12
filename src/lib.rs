@@ -44,6 +44,9 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
         setup::print_version();
         setup::print_build_info();
         setup::print_dependencies();
+
+        println!();
+        setup::print_license();
         return 0;
     }
 
@@ -55,6 +58,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
     // Process args for future use
     setup::process_args();
+
     debug!("Launched as library...");
     setup::log_build_info();
 
@@ -77,6 +81,7 @@ pub fn android_main(app: AndroidApp) {
         setup::print_version();
         setup::print_build_info();
         setup::print_dependencies();
+        setup::print_license();
         return ();
     }
 
@@ -88,6 +93,7 @@ pub fn android_main(app: AndroidApp) {
 
     // Process args for future use
     setup::process_args();
+
     debug!("Launched as Android app...");
     setup::log_build_info();
 
@@ -115,11 +121,13 @@ pub fn wasm_start() {
         setup::print_version();
         setup::print_build_info();
         setup::print_dependencies();
+        setup::print_license();
         return ();
     }
 
     // Process args for future use
     setup::process_args();
+
     debug!("Launched as Wasm library...");
     setup::log_build_info();
 
