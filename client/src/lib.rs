@@ -31,8 +31,14 @@ pub mod assets;
 
 /// Retrieve the engine's icon as raw bytes
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn get_icon_bytes() -> Vec<u8> {
-    load_bytes!("vanilla/texture/logo/logo-1024x1024-color.png")
+pub fn get_icon_bytes() -> Option<Vec<u8>> {
+    let bytes: Result<Vec<u8>, String> =
+        load_bytes!("vanilla/texture/logo/logo-1024x1024-color.png");
+    if bytes.is_err() {
+        return None;
+    }
+
+    Some(bytes.unwrap())
 }
 
 /// Retrieve the engine's icon
@@ -43,15 +49,19 @@ pub fn get_icon_bytes() -> Vec<u8> {
 ///
 /// This may fail to load the file from the byte array as an image
 #[must_use]
-pub fn get_icon() -> Icon {
-    let image_bytes: Vec<u8> = get_icon_bytes();
+pub fn get_icon() -> Option<Icon> {
+    let image_bytes_option: Option<Vec<u8>> = get_icon_bytes();
+    if image_bytes_option.is_none() {
+        return None;
+    }
 
+    let image_bytes: Vec<u8> = image_bytes_option.unwrap();
     let image: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> = image::load_from_memory(&image_bytes)
         .expect("Could not get asset from memory...")
         .into_rgba8();
     let (width, height) = image.dimensions();
 
-    Icon::from_rgba(image.into_raw(), width, height).unwrap()
+    Some(Icon::from_rgba(image.into_raw(), width, height).unwrap())
 }
 
 /// Install Linux desktop files
@@ -64,7 +74,13 @@ pub fn get_icon() -> Icon {
 ///
 /// May error if home directory cannot be found
 pub fn install_desktop_files() -> Result<(), String> {
-    let mut desktop_file_contents: String = load_string!("resources/catgirl-engine.desktop");
+    let desktop_file_contents_option: Result<String, String> =
+        load_string!("resources/catgirl-engine.desktop");
+    let icon_bytes_option: Option<Vec<u8>> = get_icon_bytes();
+
+    if let Err(_) = desktop_file_contents_option {
+        return Err("Could not find desktop file to install...".to_string());
+    }
 
     // Get path of executable
     let executable_path: String =
@@ -78,8 +94,9 @@ pub fn install_desktop_files() -> Result<(), String> {
                 .to_string()
         };
 
-    desktop_file_contents =
-        desktop_file_contents.replace("${engine_path}", executable_path.as_str());
+    let desktop_file_contents: String = desktop_file_contents_option
+        .unwrap()
+        .replace("${engine_path}", executable_path.as_str());
 
     if let Some(home) = utils::get_environment_var("HOME") {
         // User Application Directories
@@ -100,7 +117,10 @@ pub fn install_desktop_files() -> Result<(), String> {
         let _ = fs::remove_file(&icon_path);
 
         let _ = fs::write(desktop_path, desktop_file_contents);
-        let _ = fs::write(icon_path, get_icon_bytes());
+
+        if let Some(icon_bytes) = icon_bytes_option {
+            let _ = fs::write(icon_path, icon_bytes);
+        }
 
         return Ok(());
     }

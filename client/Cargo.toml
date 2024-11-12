@@ -18,6 +18,7 @@ edition = "2021"
 [features]
 default = []
 appimage = []
+embed-assets = []
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
