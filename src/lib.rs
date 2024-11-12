@@ -25,6 +25,13 @@ extern crate wasm_bindgen;
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+    // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
+    setup::setup_logger();
+
+    #[cfg(feature = "tracing-subscriber")]
+    setup::setup_tracer();
+
     // Create a vector of args from C styled args
     // We create a new pointer so we guarantee the pointer we are passing is valid
     // This doesn't say anything about the underlying data, but that's the responsibility of
@@ -50,13 +57,6 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
         return 0;
     }
 
-    // Setup logger for debugging
-    #[cfg(feature = "logging-subscriber")]
-    setup::setup_logger();
-
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Process args for future use
     setup::process_args();
 
@@ -77,6 +77,13 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
 pub fn android_main(app: AndroidApp) {
+    // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
+    setup::setup_logger();
+
+    #[cfg(feature = "tracing-subscriber")]
+    setup::setup_tracer();
+
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
@@ -85,13 +92,6 @@ pub fn android_main(app: AndroidApp) {
         setup::print_license();
         return ();
     }
-
-    // Setup logger for debugging
-    #[cfg(feature = "logging-subscriber")]
-    setup::setup_logger();
-
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
 
     // Process args for future use
     setup::process_args();
