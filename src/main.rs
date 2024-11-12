@@ -33,7 +33,7 @@ pub fn main() -> Result<(), String> {
     // Process args for future use
     setup::process_args();
     debug!("Launched as binary...");
-    trace!("Built for Arch: {}", setup::build_info().target.cpu.arch);
+    setup::log_build_info();
 
     if let Err(error) = setup::start() {
         error!("{:?}", error);

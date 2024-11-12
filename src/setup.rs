@@ -203,6 +203,30 @@ pub extern "C" fn print_dependencies() {
     }
 }
 
+/// Logs build info including version, commit, and compiled architecture
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn log_build_info() {
+    // Logs debug information (useful for Android)
+    let info: &BuildInfo = build_info();
+    trace!("Built for Arch: {}", info.target.cpu.arch);
+    trace!(
+        "{} v{} built with {} at {}",
+        info.crate_info.name,
+        info.crate_info.version,
+        info.compiler,
+        info.timestamp
+    );
+    if let Some(git) = utils::get_version_control_build_info() {
+        if git.dirty {
+            trace!("Built from Commit: {}-dirty", git.commit_id);
+        } else {
+            trace!("Built from Commit: {}", git.commit_id);
+        }
+    }
+    trace!("v{} built at {}", info.crate_info.version, info.timestamp);
+}
+
 /// Setup the logger for the current platform
 pub(crate) fn setup_logger() {
     if cfg!(target_os = "android") {
