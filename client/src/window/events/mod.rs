@@ -29,7 +29,7 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
     let mut window_builder: WindowAttributes = WindowAttributes::default();
     window_builder = window_builder
         .with_title("Catgirl Engine")
-        .with_window_icon(Some(crate::get_icon()));
+        .with_window_icon(crate::get_icon());
 
     if cfg!(target_family = "wasm") {
         #[cfg(target_family = "wasm")]

@@ -41,6 +41,7 @@ incremental = false
 default = ["client", "server"]
 client = ["dep:client"]
 server = ["dep:server"]
+embed-assets = ["client/embed-assets"]
 tracing-subscriber = ["dep:tracing-subscriber"]
 appimage = ["utils/appimage", "client/appimage"]
 no_lint = ["utils/no_lint"]  # Tells rust-analyzer to can it with false warnings when workspace config is used
