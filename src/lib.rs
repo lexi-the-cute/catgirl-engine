@@ -51,6 +51,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 
     // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
     #[cfg(feature = "tracing-subscriber")]
@@ -86,6 +87,7 @@ pub fn android_main(app: AndroidApp) {
     }
 
     // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
     #[cfg(feature = "tracing-subscriber")]
@@ -111,6 +113,7 @@ pub fn wasm_start() {
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 
     // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
     #[cfg(feature = "tracing-subscriber")]
