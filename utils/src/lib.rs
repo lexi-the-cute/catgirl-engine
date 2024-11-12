@@ -23,13 +23,13 @@ pub mod setup;
 
 /// Prints strings in a format usable by the target platform
 ///
-/// Will log with debug for Wasm while printing a line on other platforms
+/// Will log with info for Wasm while printing a line on other platforms
 #[macro_export]
 macro_rules! println_string {
     // Single Arg
     ($arg:tt) => {{
         if cfg!(target_family = "wasm") {
-            debug!("{}", $arg);
+            info!("{}", $arg);
         } else {
             println!("{}", $arg);
         }
@@ -38,7 +38,7 @@ macro_rules! println_string {
     // Multiple Args
     ($fmt:expr, $($arg:tt)+) => {{
         if cfg!(target_family = "wasm") {
-            debug!($fmt, $($arg)*);
+            info!($fmt, $($arg)*);
         } else {
             println!($fmt, $($arg)*);
         }

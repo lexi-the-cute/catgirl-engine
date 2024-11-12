@@ -16,6 +16,13 @@ pub mod setup;
 ///
 /// May return a `String` if an error propagated up the stack
 pub fn main() -> Result<(), String> {
+    // Setup logger for debugging
+    #[cfg(feature = "logging-subscriber")]
+    setup::setup_logger();
+
+    #[cfg(feature = "tracing-subscriber")]
+    setup::setup_tracer();
+
     // Print version and copyright info
     if setup::get_args().version {
         setup::print_version();
@@ -26,13 +33,6 @@ pub fn main() -> Result<(), String> {
         setup::print_license();
         return Ok(());
     }
-
-    // Setup logger for debugging
-    #[cfg(feature = "logging-subscriber")]
-    setup::setup_logger();
-
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
 
     // Process args for future use
     setup::process_args();

@@ -218,26 +218,21 @@ pub extern "C" fn print_build_info() {
 pub extern "C" fn log_build_info() {
     // Logs debug information (useful for Android)
     let info: &BuildInfo = build_info();
-    trace!(
+    info!(
         "{} v{} built with {} at {}",
-        info.crate_info.name,
-        info.crate_info.version,
-        info.compiler,
-        info.timestamp
+        info.crate_info.name, info.crate_info.version, info.compiler, info.timestamp
     );
 
-    trace!(
+    info!(
         "Built for {} {} with {} profile",
-        info.target.cpu.arch,
-        info.target.os,
-        info.profile
+        info.target.cpu.arch, info.target.os, info.profile
     );
 
     if let Some(git) = utils::get_version_control_build_info() {
         if git.dirty {
-            trace!("Built from commit {}-dirty", git.commit_id);
+            info!("Built from commit {}-dirty", git.commit_id);
         } else {
-            trace!("Built from commit {}", git.commit_id);
+            info!("Built from commit {}", git.commit_id);
         }
     }
 }
