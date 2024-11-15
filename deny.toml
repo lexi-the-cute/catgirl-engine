@@ -98,6 +98,7 @@ allow = [
     "Unicode-DFS-2016", # https://www.unicode.org/license.txt (distribution of license only applies to original work or derivative work)
     "Apache-2.0 WITH LLVM-exception", # https://spdx.org/licenses/LLVM-exception.html (same as Apache-2.0, but less restrictive)
 
+    "Unicode-3.0", # https://www.unicode.org/license.txt (requires attribution)
     "BSD-2-Clause", # https://opensource.org/license/bsd-2-clause (requires attribution)
     "BSD-3-Clause", # https://opensource.org/license/bsd-3-clause (requires attribution)
 ]

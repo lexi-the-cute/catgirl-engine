@@ -50,26 +50,8 @@ impl WindowState<'_> {
 
     /// Used to retrieve the best limits for the target
     fn get_limits(&self) -> wgpu::Limits {
-        if cfg!(any(target_os = "android", target_os = "ios")) {
-            wgpu::Limits {
-                max_texture_dimension_1d: 4096,
-                max_texture_dimension_2d: 4096,
-                ..Default::default()
-            }
-        } else if cfg!(target_family = "wasm") {
-            wgpu::Limits {
-                max_compute_workgroups_per_dimension: 0,
-                max_compute_workgroup_size_z: 0,
-                max_compute_workgroup_size_y: 0,
-                max_compute_workgroup_size_x: 0,
-                max_compute_invocations_per_workgroup: 0,
-                max_compute_workgroup_storage_size: 0,
-                max_storage_buffer_binding_size: 0,
-                max_storage_textures_per_shader_stage: 0,
-                max_storage_buffers_per_shader_stage: 0,
-                max_dynamic_storage_buffers_per_pipeline_layout: 0,
-                ..Default::default()
-            }
+        if cfg!(target_family = "wasm") {
+            wgpu::Limits::downlevel_webgl2_defaults()
         } else {
             wgpu::Limits::default()
         }
