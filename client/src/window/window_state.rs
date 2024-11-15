@@ -51,7 +51,10 @@ impl WindowState<'_> {
     /// Used to retrieve the best limits for the target
     fn get_limits(&self) -> wgpu::Limits {
         if cfg!(target_family = "wasm") {
-            wgpu::Limits::downlevel_webgl2_defaults()
+            wgpu::Limits {
+                max_color_attachments: 4,
+                ..wgpu::Limits::downlevel_webgl2_defaults()
+            }
         } else {
             wgpu::Limits::default()
         }
