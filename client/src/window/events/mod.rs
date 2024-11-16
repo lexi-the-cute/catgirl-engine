@@ -27,9 +27,14 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
     //   https://gitlab.freedesktop.org/wayland/wayland-protocols/-/merge_requests/269
     debug!("Creating window...");
     let mut window_builder: WindowAttributes = WindowAttributes::default();
-    window_builder = window_builder
-        .with_title("Catgirl Engine")
-        .with_window_icon(crate::get_icon());
+
+    // These features are not useful in a web browser
+    #[cfg(not(target_family = "wasm"))]
+    if cfg!(not(target_family = "wasm")) {
+        window_builder = window_builder
+            .with_title("Catgirl Engine")
+            .with_window_icon(crate::get_icon());
+    }
 
     if cfg!(target_family = "wasm") {
         #[cfg(target_family = "wasm")]
@@ -229,7 +234,21 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 
     // Color to render
     // Royal Purple - 104, 71, 141
-    let color: crate::render::Color = crate::render::srgb_to_linear_srgb(104, 71, 141);
+    // let texture_format: wgpu::TextureFormat = window_state.surface_config.as_ref().unwrap().format;
+    let color: wgpu::Color = if true {
+        // Renders correctly on all machines I've tested except Arm Mac
+        let ce_color: crate::render::Color = crate::render::srgb_to_linear_srgb(104, 71, 141);
+
+        crate::render::get_wgpu_color_from_ce_color(ce_color)
+    } else {
+        // Renders correctly only on Arm Mac during my tests
+        wgpu::Color {
+            r: 104.0 / 255.0,
+            g: 71.0 / 255.0,
+            b: 141.0 / 255.0,
+            a: 1.0,
+        }
+    };
 
     // Command to render
     // https://docs.rs/wgpu/latest/wgpu/struct.RenderPassDescriptor.html
@@ -239,7 +258,7 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
             view: &view,
             resolve_target: None,
             ops: wgpu::Operations {
-                load: wgpu::LoadOp::Clear(crate::render::get_wgpu_color_from_ce_color(color)),
+                load: wgpu::LoadOp::Clear(color),
                 store: wgpu::StoreOp::Store,
             },
         })],

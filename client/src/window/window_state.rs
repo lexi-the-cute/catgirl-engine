@@ -4,6 +4,7 @@ use winit::{dpi::PhysicalSize, window::Window};
 
 use wgpu::{
     Adapter, Device, DeviceDescriptor, Instance, Queue, RequestAdapterOptionsBase, Surface,
+    SurfaceConfiguration,
 };
 
 /// Struct used for storing the state of a window
@@ -20,6 +21,9 @@ pub struct WindowState<'a> {
 
     /// The surface on which to draw graphics on
     pub surface: Option<Surface<'a>>,
+
+    /// The configuration used to setup the surface
+    pub surface_config: Option<SurfaceConfiguration>,
 
     /// Connection to the graphics device provided by the adapter
     pub device: Option<Device>,
@@ -42,6 +46,7 @@ impl WindowState<'_> {
             window: window_arc,
             instance: None,
             surface: None,
+            surface_config: None,
             adapter: None,
             device: None,
             queue: None,
@@ -138,12 +143,33 @@ impl WindowState<'_> {
             size.height
         );
         let surface: &Surface<'_> = self.surface.as_ref().unwrap();
-        surface.configure(
-            self.device.as_ref().unwrap(),
-            &surface
-                .get_default_config(self.adapter.as_ref().unwrap(), size.width, size.height)
-                .expect("Could not get surface default config!"),
+        self.surface_config =
+            surface.get_default_config(self.adapter.as_ref().unwrap(), size.width, size.height);
+
+        let surface_config = self
+            .surface_config
+            .as_ref()
+            .expect("Could not get surface config!");
+        // surface_config.format = TextureFormat::Rgba8UnormSrgb;
+
+        // https://github-wiki-see.page/m/gfx-rs/wgpu/wiki/Texture-Color-Formats-and-Srgb-conversions
+        // https://blog.johnnovak.net/2016/09/21/what-every-coder-should-know-about-gamma/
+        let texture_format: wgpu::TextureFormat = surface_config.format;
+
+        trace!(
+            "Texture Format: {:?}, SRGB: {}, Depth Aspect: {}, Color Aspect: {}, Stencil Aspect: {}",
+            texture_format,
+            texture_format.is_srgb(),
+            texture_format.has_depth_aspect(),
+            texture_format.has_color_aspect(),
+            texture_format.has_stencil_aspect()
         );
+
+        trace!("Surface Present Mode: {:?}", surface_config.present_mode);
+        trace!("Texture Usages: {:?}", surface_config.usage);
+        trace!("Alpha Mode: {:?}", surface_config.alpha_mode);
+
+        surface.configure(self.device.as_ref().unwrap(), surface_config);
     }
 
     /// Recreate the surface after it has been destroyed (e.g. used on Android)
