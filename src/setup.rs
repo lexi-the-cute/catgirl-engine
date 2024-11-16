@@ -327,9 +327,28 @@ pub(crate) fn setup_tracer() {
 fn set_panic_hook() {
     std::panic::set_hook(Box::new(|info| {
         if let Some(string) = info.payload().downcast_ref::<String>() {
-            error!("Caught panic: {:?}", string);
+            error!("Caught panic at {:?}: {:?}", info.location(), string);
+        } else {
+            error!(
+                "Caught panic at {:?}: {:?}",
+                info.location(),
+                info.payload()
+            );
         }
+
+        utils::setup::set_exit();
     }));
+}
+
+/// This functions intentionally triggers a panic
+///
+/// # Panics
+///
+/// Always
+#[no_mangle]
+#[cfg_attr(target_family = "wasm", wasm_bindgen)]
+pub extern "C" fn trigger_panic() {
+    panic!("Intentionally triggered a panic for debugging...");
 }
 
 /// Helper function to call [`start()`] function from the C ABI
