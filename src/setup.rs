@@ -335,7 +335,7 @@ fn set_panic_hook() {
                 location.column()
             )
         } else {
-            "".to_string()
+            String::new()
         };
 
         if let Some(string) = info.payload().downcast_ref::<String>() {
