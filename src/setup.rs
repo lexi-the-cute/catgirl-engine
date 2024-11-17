@@ -1,5 +1,4 @@
 use core::ffi::c_char;
-use core::{any::Any, marker::Send};
 
 use std::collections::BTreeMap;
 use std::ffi::NulError;
@@ -325,18 +324,12 @@ pub(crate) fn setup_tracer() {
         .init();
 }
 
-/// Get the type of the variable
-fn get_type_of<T: ?Sized>(_: &T) -> String {
-    format!("{}", std::any::type_name::<T>())
-}
-
-/// TODO: Fix output of the location info
 /// Setup a hook to catch panics for logging before shutdown
 fn set_panic_hook() {
     std::panic::set_hook(Box::new(|info| {
         let location_string = if let Some(location) = info.location() {
             format!(
-                "in file {} at line:column {}:{}",
+                " in file {} at line:column {}:{}",
                 location.file(),
                 location.line(),
                 location.column()
@@ -348,13 +341,7 @@ fn set_panic_hook() {
         if let Some(string) = info.payload().downcast_ref::<String>() {
             error!("Caught panic{location_string}: {string}");
         } else {
-            let payload: &(dyn Any + Send) = info.payload();
-            let payload_type: String = get_type_of(payload);
-
-            error!(
-                "Caught panic{location_string} with type {payload_type}: {:?}",
-                payload
-            );
+            error!("Caught panic{location_string}");
         }
 
         utils::setup::set_exit();
@@ -369,7 +356,10 @@ fn set_panic_hook() {
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn trigger_panic() {
-    panic!("Intentionally triggered a panic for debugging...");
+    let message: &str = "Intentionally triggered a panic for debugging...";
+
+    // So, I can't pass a String from to_string(), but can pass as a formatted string
+    panic!("{}", message);
 }
 
 /// Helper function to call [`start()`] function from the C ABI
