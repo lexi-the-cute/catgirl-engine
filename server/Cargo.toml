@@ -14,6 +14,7 @@ homepage = "https://github.com/foxgirl-labs/catgirl-engine"
 readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
+resolver = "2"
 
 [features]
 default = []

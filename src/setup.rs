@@ -1,4 +1,6 @@
 use core::ffi::c_char;
+use core::{any::Any, marker::Send};
+
 use std::collections::BTreeMap;
 use std::ffi::NulError;
 
@@ -323,16 +325,35 @@ pub(crate) fn setup_tracer() {
         .init();
 }
 
+/// Get the type of the variable
+fn get_type_of<T: ?Sized>(_: &T) -> String {
+    format!("{}", std::any::type_name::<T>())
+}
+
+/// TODO: Fix output of the location info
 /// Setup a hook to catch panics for logging before shutdown
 fn set_panic_hook() {
     std::panic::set_hook(Box::new(|info| {
-        if let Some(string) = info.payload().downcast_ref::<String>() {
-            error!("Caught panic at {:?}: {:?}", info.location(), string);
+        let location_string = if let Some(location) = info.location() {
+            format!(
+                "in file {} at line:column {}:{}",
+                location.file(),
+                location.line(),
+                location.column()
+            )
         } else {
+            "".to_string()
+        };
+
+        if let Some(string) = info.payload().downcast_ref::<String>() {
+            error!("Caught panic{location_string}: {string}");
+        } else {
+            let payload: &(dyn Any + Send) = info.payload();
+            let payload_type: String = get_type_of(payload);
+
             error!(
-                "Caught panic at {:?}: {:?}",
-                info.location(),
-                info.payload()
+                "Caught panic{location_string} with type {payload_type}: {:?}",
+                payload
             );
         }
 
