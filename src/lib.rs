@@ -8,6 +8,9 @@ extern crate tracing;
 /// Prepare the game engine for running
 pub mod setup;
 
+/// Module for storing and using build data
+pub mod build;
+
 use core::ffi::{c_char, c_int};
 
 #[cfg(target_os = "android")]
@@ -48,12 +51,12 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
     // Print version and copyright info
     if setup::get_args().version {
-        setup::print_version();
-        setup::print_build_info();
-        setup::print_dependencies();
+        build::print_version();
+        build::print_build_info();
+        build::print_dependencies();
 
         println!();
-        setup::print_license();
+        build::print_license();
         return 0;
     }
 
@@ -61,7 +64,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     setup::process_args();
 
     debug!("Launched as library...");
-    setup::log_build_info();
+    build::log_build_info();
 
     match setup::start() {
         Err(error) => {

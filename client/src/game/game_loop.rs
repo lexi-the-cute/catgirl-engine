@@ -30,11 +30,13 @@ static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn c_client_game_loop() -> *const c_char {
     if let Err(err) = client_game_loop() {
-        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust(err);
+        let c_str_result: Result<*const c_char, NulError> =
+            utils::string::get_c_string_from_rust(err);
 
         c_str_result.unwrap()
     } else {
-        let c_str_result: Result<*const c_char, NulError> = utils::get_c_string_from_rust("");
+        let c_str_result: Result<*const c_char, NulError> =
+            utils::string::get_c_string_from_rust("");
 
         c_str_result.unwrap()
     }
@@ -95,7 +97,7 @@ pub fn client_game_loop() -> Result<(), String> {
         window_target.set_control_flow(winit::event_loop::ControlFlow::Wait);
 
         // Starts exit process when exit bool is set
-        if utils::setup::is_exiting() {
+        if utils::exit::is_exiting() {
             // window_target.set_control_flow(winit::event_loop::ControlFlow::Poll);
             window_target.exit();
         }

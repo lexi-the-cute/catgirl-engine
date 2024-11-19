@@ -55,13 +55,14 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
 
             trace!(
                 "XDG_SESSION_TYPE: {}",
-                utils::get_environment_var("XDG_SESSION_TYPE").unwrap_or("None".to_string())
+                utils::environment::get_environment_var("XDG_SESSION_TYPE")
+                    .unwrap_or("None".to_string())
             );
-            if utils::matches_environment_var("XDG_SESSION_TYPE", "x11") {
+            if utils::environment::matches_environment_var("XDG_SESSION_TYPE", "x11") {
                 use winit::platform::x11::WindowAttributesExtX11;
 
                 window_builder = window_builder.with_name(general, instance);
-            } else if utils::matches_environment_var("XDG_SESSION_TYPE", "wayland") {
+            } else if utils::environment::matches_environment_var("XDG_SESSION_TYPE", "wayland") {
                 use winit::platform::wayland::WindowAttributesExtWayland;
 
                 window_builder = window_builder.with_name(general, instance);
@@ -283,7 +284,7 @@ pub(crate) fn requested_redraw(window_state: &WindowState) {
 /// Exiting loop
 pub(crate) fn exiting_loop() {
     trace!("Winit loop is exiting...");
-    utils::setup::set_exit();
+    utils::exit::set_exit();
 }
 
 /// Low memory warning

@@ -10,6 +10,9 @@ extern crate tracing;
 /// Prepare the game engine for running
 pub mod setup;
 
+/// Module for storing and using build data
+pub mod build;
+
 /// Run as Executable (e.g. Linux)
 ///
 /// # Errors
@@ -25,12 +28,12 @@ pub fn main() -> Result<(), String> {
 
     // Print version and copyright info
     if setup::get_args().version {
-        setup::print_version();
-        setup::print_build_info();
-        setup::print_dependencies();
+        build::print_version();
+        build::print_build_info();
+        build::print_dependencies();
 
         println!();
-        setup::print_license();
+        build::print_license();
         return Ok(());
     }
 
@@ -38,7 +41,7 @@ pub fn main() -> Result<(), String> {
     setup::process_args();
 
     debug!("Launched as binary...");
-    setup::log_build_info();
+    build::log_build_info();
 
     if let Err(error) = setup::start() {
         error!("{:?}", error);

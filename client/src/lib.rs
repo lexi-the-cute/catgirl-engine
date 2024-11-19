@@ -23,8 +23,8 @@ pub mod window;
 /// Handles the rendering code
 pub mod render;
 
-/// Handles setup
-pub mod setup;
+/// Module for storing and using build data
+pub mod build;
 
 /// Module for handling assets
 pub mod assets;
@@ -89,7 +89,7 @@ pub fn install_desktop_files() -> Result<(), String> {
 
     // Get path of executable
     let executable_path: String =
-        if let Some(app_image_path) = utils::get_environment_var("APPIMAGE") {
+        if let Some(app_image_path) = utils::environment::get_environment_var("APPIMAGE") {
             app_image_path
         } else {
             env::current_exe()
@@ -103,7 +103,7 @@ pub fn install_desktop_files() -> Result<(), String> {
         .unwrap()
         .replace("${engine_path}", executable_path.as_str());
 
-    if let Some(home) = utils::get_environment_var("HOME") {
+    if let Some(home) = utils::environment::get_environment_var("HOME") {
         // User Application Directories
         let applications_directory: String = format!("{home}/.local/share/applications");
         let icons_directory: String = format!("{home}/.local/share/icons");
@@ -143,7 +143,7 @@ pub fn install_desktop_files() -> Result<(), String> {
 ///
 /// May error if home directory cannot be found
 pub fn uninstall_desktop_files() -> Result<(), String> {
-    if let Some(home) = utils::get_environment_var("HOME") {
+    if let Some(home) = utils::environment::get_environment_var("HOME") {
         // User Application Directories
         let applications_directory: String = format!("{home}/.local/share/applications");
         let icons_directory: String = format!("{home}/.local/share/icons");
