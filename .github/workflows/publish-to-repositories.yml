@@ -150,6 +150,7 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export PKGREL=1
 
+          # TODO: Consider checking for -alpha and -beta to filter onto other packages
           echo "Version: $VERSION - Release: $PKGREL"
 
           sed -i "s/pkgver=[0-9.]*/pkgver=$VERSION/" ${{ github.workspace }}/aur/PKGBUILD
