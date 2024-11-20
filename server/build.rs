@@ -14,6 +14,7 @@ fn generate_build_info() {
     let mut depth: DependencyDepth = DependencyDepth::Depth(0);
 
     // Track environment for rebuilds
+    println!("cargo:rerun-if-env-changed=SOURCE_DATE_EPOCH");
     println!("cargo:rerun-if-env-changed=RUST_ANALYZER");
     println!("cargo:rerun-if-env-changed=DOCS_RS");
 
