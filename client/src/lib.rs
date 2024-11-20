@@ -2,17 +2,8 @@
 
 #![warn(missing_docs)]
 
-use std::{env, fs, path::PathBuf};
-use winit::window::Icon;
-
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 #[macro_use]
 extern crate tracing;
-
-// #[macro_use]
-// extern crate utils;
 
 /// Handles the client side game logic
 pub mod game;
@@ -28,6 +19,12 @@ pub mod build;
 
 /// Module for handling assets
 pub mod assets;
+
+use std::{env, fs, path::PathBuf};
+use winit::window::Icon;
+
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::wasm_bindgen;
 
 /// Retrieve the engine's icon as raw bytes
 ///
