@@ -25,15 +25,5 @@ fn generate_build_info() {
         depth = DependencyDepth::None;
     }
 
-    if rust_analyzer {
-        let fake_data: &str = "{\"version\":\"0.0.39\",\"string\":\"KLUv/QCIfQUAYgkfGVDVAwMdwRLXXHpu1nWhFFma/2dL1xlougUumP6+APJ9j7KUcySnJLNNYnIltvVKqeC/kGIndHF1BHBIK4wv5CwLsGwLAIbYKL23nt62NWU9rV260vtN+lC7Gc6hQ88VJDnBTTvK2A2OlclP+nFC6Qv9pXpT45P+5vu7IxUg8C5MIG6uRGrJdMrMEWkifBPLCOMAwA1Yz4S7cwMRQhcZnAnHBXwkhgMFxxsKFg==\"}";
-        println!("cargo:rustc-env=BUILD_INFO={fake_data}");
-    } else {
-        build_info_build::build_script().collect_runtime_dependencies(depth);
-    }
-}
-
-/// Find the location of the project's root directory
-fn crate_dir() -> PathBuf {
-    PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
+    build_info_build::build_script().collect_runtime_dependencies(depth);
 }
