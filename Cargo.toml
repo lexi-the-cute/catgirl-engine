@@ -95,15 +95,15 @@ wasm-opt = ['-Oz']
 # dwarf-debug-info = true
 
 [build-dependencies]
-build-info-build = { version = "^0.0.39", default-features = false, features = ["git"] }
+build-info-build = { version = "~0.0", default-features = false, features = ["git"] }
 cc = { version = "~1.2", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
-utils = { version = "0.14.35-alpha", package = "catgirl-engine-utils", path = "utils" }
-client = { version = "0.14.35-alpha", package = "catgirl-engine-client", path = "client", optional = true }
-server = { version = "0.14.35-alpha", package = "catgirl-engine-server", path = "server", optional = true }
-build-info = { version = "^0.0.39", default-features = false, features = ["runtime"] }
+utils = { version = "0.14.35", package = "catgirl-engine-utils", path = "utils" }
+client = { version = "0.14.35", package = "catgirl-engine-client", path = "client", optional = true }
+server = { version = "0.14.35", package = "catgirl-engine-server", path = "server", optional = true }
+build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }
@@ -120,7 +120,7 @@ winit = { version = "~0.30", default-features = false, features = ["android-game
 [target.'cfg(target_family="wasm")'.dependencies]
 console_error_panic_hook = { version = "~0.1", default-features = false }
 console_log = { version = "~1", default-features = false }
-wasm-bindgen-futures = { version = "^0.4.40", default-features = false }
+wasm-bindgen-futures = { version = "~0.4", default-features = false }
 web-sys = { version = "~0.3", default-features = false, features = ["Document", "Window", "Element"] }
 getrandom = { version = "~0.2", default-features = false, features = ["js"] }
 fern = { version = "~0.7", default-features = false }
