@@ -2,7 +2,6 @@
 
 use build_info_build::DependencyDepth;
 use std::env;
-use std::path::PathBuf;
 
 /// Main function
 fn main() {

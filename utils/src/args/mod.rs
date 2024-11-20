@@ -26,17 +26,17 @@ pub struct Args {
 
     /// Shows the AppImage help arguments
     // https://github.com/clap-rs/clap/discussions/5401
-    #[cfg(all(feature = "appimage"))]
+    #[cfg(feature = "appimage")]
     #[arg(long, default_value_t = false)]
     pub appimage_help: bool,
 
     /// Install the desktop files for launching from the application menu
-    #[cfg(all(target_os = "linux"))]
+    #[cfg(target_os = "linux")]
     #[arg(long, default_value_t = false)]
     pub install_desktop_files: bool,
 
     /// Uninstall the previously installed desktop files
-    #[cfg(all(target_os = "linux"))]
+    #[cfg(target_os = "linux")]
     #[arg(long, default_value_t = false)]
     pub uninstall_desktop_files: bool,
 
