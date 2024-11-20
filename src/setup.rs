@@ -20,19 +20,20 @@ pub extern "C" fn process_args() {
     client::game::store_assets_path(get_args().assets);
 
     // Uninstall desktop files
-    #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
+    #[cfg(all(feature = "client", target_os = "linux"))]
     if get_args().uninstall_desktop_files {
         trace!("Uninstalling desktop files...");
         let _ = client::uninstall_desktop_files();
     }
 
     // Install desktop files
-    #[cfg(all(feature = "client", target_os = "linux", not(feature = "no_lint")))]
+    #[cfg(all(feature = "client", target_os = "linux"))]
     if get_args().install_desktop_files {
         trace!("Installing desktop files...");
         let _ = client::install_desktop_files();
     }
 
+    #[cfg(not(target_family = "wasm"))]
     if get_args().print_environment_variables {
         trace!("Printing environment variables...");
         utils::environment::print_environment_vars();
@@ -117,29 +118,6 @@ pub(crate) fn setup_logger() {
 
         builder.try_init().unwrap();
     }
-}
-
-/// Setup the tracing subscriber to monitor the tracer
-#[cfg(feature = "tracing-subscriber")]
-pub(crate) fn setup_tracer() {
-    if cfg!(target_family = "wasm") {
-        error!("The tracing-subscriber feature is currently not supported on wasm...");
-        return;
-    }
-
-    use tracing_subscriber::{EnvFilter, FmtSubscriber};
-
-    // Construct a subscriber to print formatted traces to stdout
-    FmtSubscriber::builder()
-        .with_env_filter(EnvFilter::from_default_env())
-        .with_file(true)
-        .with_line_number(true)
-        .with_thread_ids(true)
-        .with_thread_names(true)
-        .with_target(false)
-        .without_time()
-        .with_ansi(true)
-        .init();
 }
 
 /// Setup a hook to catch panics for logging before shutdown

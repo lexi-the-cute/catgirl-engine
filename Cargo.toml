@@ -44,9 +44,7 @@ client = ["dep:client"]
 server = ["dep:server"]
 embed-assets = ["client/embed-assets"]
 logging-subscriber = []
-tracing-subscriber = ["dep:tracing-subscriber"]
 appimage = ["utils/appimage", "client/appimage"]
-no_lint = ["utils/no_lint"]  # Tells rust-analyzer to can it with false warnings when workspace config is used
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -98,7 +96,7 @@ wasm-opt = ['-Oz']
 
 [build-dependencies]
 build-info-build = { version = "^0.0.39", default-features = false, features = ["git"] }
-cc = { version = "~1.1", default-features = false }
+cc = { version = "~1.2", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
@@ -110,7 +108,6 @@ cfg-if = { version = "~1", default-features = false }
 wasm-bindgen = { version = "~0.2", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-tracing-subscriber = { version = "~0.3", default-features = false, features = ["fmt", "ansi", "env-filter"], optional = true }
 clap = { version = "~4", features = ["derive"] }
 
 [target.'cfg(any(target_family="unix", target_family="windows"))'.dependencies]

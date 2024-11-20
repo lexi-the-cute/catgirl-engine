@@ -90,7 +90,7 @@ On Linux, you can view more log messages by running `RUST_LOG=catgirl_engine=deb
 
 On Android, you can view more log messages with ADB by running `adb logcat -v tag,color -s CatgirlEngineApp CatgirlEngine:D`. You can clear the log by running `adb logcat -c`.
 
-If you want to use traces, you can either setup your own tracing subscriber if importing as a library, or turn on the tracing-subscriber feature (for either the binary or library).
+If you want to use traces, you can setup your own tracing subscriber if importing as a library.
 
 # Docs
 

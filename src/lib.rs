@@ -30,9 +30,6 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Create a vector of args from C styled args
     // We create a new pointer so we guarantee the pointer we are passing is valid
     // This doesn't say anything about the underlying data, but that's the responsibility of
@@ -82,9 +79,6 @@ pub fn android_main(app: AndroidApp) {
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Print version and copyright info
     if setup::get_args().version {
         build::print_version();
@@ -116,9 +110,6 @@ pub fn wasm_start() {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
-
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
 
     // Print version and copyright info
     if setup::get_args().version {
