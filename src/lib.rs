@@ -19,8 +19,6 @@ use winit::platform::android::activity::AndroidApp;
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
-extern crate wasm_bindgen;
-
 // Run as Library
 /// Catgirl Engine start
 ///
@@ -89,10 +87,10 @@ pub fn android_main(app: AndroidApp) {
 
     // Print version and copyright info
     if setup::get_args().version {
-        setup::print_version();
-        setup::print_build_info();
-        setup::print_dependencies();
-        setup::print_license();
+        build::print_version();
+        build::print_build_info();
+        build::print_dependencies();
+        build::print_license();
         return ();
     }
 
@@ -100,7 +98,7 @@ pub fn android_main(app: AndroidApp) {
     setup::process_args();
 
     debug!("Launched as Android app...");
-    setup::log_build_info();
+    build::log_build_info();
 
     client::game::store_android_app(app);
     if let Err(error) = setup::start() {
@@ -124,10 +122,10 @@ pub fn wasm_start() {
 
     // Print version and copyright info
     if setup::get_args().version {
-        setup::print_version();
-        setup::print_build_info();
-        setup::print_dependencies();
-        setup::print_license();
+        build::print_version();
+        build::print_build_info();
+        build::print_dependencies();
+        build::print_license();
         return ();
     }
 
@@ -135,7 +133,7 @@ pub fn wasm_start() {
     setup::process_args();
 
     debug!("Launched as Wasm library...");
-    setup::log_build_info();
+    build::log_build_info();
 
     if let Err(error) = setup::start() {
         error!("{:?}", error)

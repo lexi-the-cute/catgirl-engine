@@ -2,6 +2,9 @@ use std::ffi::{CString, NulError};
 
 use core::ffi::c_char;
 
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::wasm_bindgen;
+
 /// Repeats a string an arbitrary number of times
 #[must_use]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]

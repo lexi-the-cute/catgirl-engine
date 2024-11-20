@@ -3,6 +3,9 @@ use std::collections::BTreeMap;
 
 use utils::println_string;
 
+#[cfg(target_family = "wasm")]
+use wasm_bindgen::prelude::wasm_bindgen;
+
 // Generate build_info() function at compile time
 build_info::build_info!(
     /// Build info for crate
