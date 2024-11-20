@@ -95,7 +95,7 @@ allow = [
     "Apache-2.0", # https://www.apache.org/licenses/LICENSE-2.0.html (distribution of license only applies to original work or derivative work)
     "MPL-2.0", # https://opensource.org/license/mpl-2-0 (distribution of license only applies to original work or derivative work)
     "ISC", # https://www.isc.org/licenses (distribution of license only applies to original work or derivative work)
-    "Unicode-DFS-2016", # https://www.unicode.org/license.txt (distribution of license only applies to original work or derivative work)
+    # "Unicode-DFS-2016", # https://www.unicode.org/license.txt (distribution of license only applies to original work or derivative work)
     "Apache-2.0 WITH LLVM-exception", # https://spdx.org/licenses/LLVM-exception.html (same as Apache-2.0, but less restrictive)
 
     "Unicode-3.0", # https://www.unicode.org/license.txt (requires attribution)

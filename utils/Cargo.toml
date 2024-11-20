@@ -5,7 +5,7 @@
 name = "catgirl-engine-utils"
 description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.35-alpha"
+version = "0.14.35"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/foxgirl-labs/catgirl-engine.git"
@@ -40,10 +40,10 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [build-dependencies]
-build-info-build = { version = "^0.0.39", default-features = false, features = ["git"] }
+build-info-build = { version = "~0.0", default-features = false, features = ["git"] }
 
 [dependencies]
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-build-info = { version = "^0.0.39", default-features = false, features = ["runtime"] }
+build-info = { version = "~0.0", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
 wasm-bindgen = { version = "~0.2", default-features = true }
