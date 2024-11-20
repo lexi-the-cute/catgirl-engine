@@ -26,12 +26,29 @@ String readCargoVersion() {
 }
 
 static int getAPKVersionCode(String cargoVersion) {
+    // cargoVersion = "999.888.777-alpha.6"
     String[] cargoVersionSplit = cargoVersion.split('\\.', 3)
+    String[] prereleaseSplit = cargoVersionSplit[2].split('\\-', 2)
+
+    // Version Strings
+    String majorString = cargoVersionSplit[0]
+    String minorString = cargoVersionSplit[1]
+    String patchString = prereleaseSplit[0].split('\\+', 2)[0]
+
+    // Debugging
+    // println String.format("Test Version Parse: %s.%s.%s", majorString, minorString, patchString)
+
+    // Semver Numbers
+    int major = Integer.parseInt(majorString) * 1000000 // 1,000,000
+    int minor = Integer.parseInt(minorString) * 1000    //     1,000
+    int patch = Integer.parseInt(patchString)           //         1
 
     // TODO: Figure out how to deal with 0.40.0 and 4.0.0
-    return Integer.parseInt(cargoVersionSplit[0]) * 1000000 +
-            Integer.parseInt(cargoVersionSplit[1]) * 1000 +
-            Integer.parseInt(cargoVersionSplit[2]) * 1
+    // Max Java Integer: 2,147,483,647
+    // Max Version Code: 2,100,000,000
+    // 999.888.777-alpha.6 -> 999,000,000 + 888,000 + 777 = 999,888,777
+    // println String.format("Test Version Code: %d.%d.%d", major, minor, patch)
+    return major + minor + patch
 }
 // ----------------------------------------
 

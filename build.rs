@@ -5,7 +5,7 @@ extern crate cbindgen;
 use build_info_build::DependencyDepth;
 use cbindgen::{Config, CythonConfig, Language};
 use std::collections::HashMap;
-use std::env::{self, Vars};
+use std::env;
 use std::path::PathBuf;
 
 /// Main function
@@ -13,20 +13,11 @@ fn main() {
     // Debug environment
     // print_environment_vars();
 
-    // Set custom rust flags for platform dependent building
-    set_rustflags();
-
     // Generate build info
     generate_build_info();
 
     // Bindings are only usable when building libs
     create_bindings();
-}
-
-/// Checks if string matches environment variable
-fn matches_environment_var(key: &str, value: &str) -> bool {
-    let environment_var: Result<String, env::VarError> = env::var(key);
-    environment_var.is_ok() && environment_var.unwrap() == value
 }
 
 /// Generate build info
@@ -40,33 +31,23 @@ fn generate_build_info() {
     println!("cargo:rerun-if-env-changed=DOCS_RS");
 
     // Custom environment variable to speed up writing code
-    let rust_analyzer: bool = matches_environment_var("RUST_ANALYZER", "true");
+    let rust_analyzer: bool = env::var("RUST_ANALYZER").is_ok();
     let docs_rs: bool = env::var("DOCS_RS").is_ok();
     if rust_analyzer || docs_rs {
         depth = DependencyDepth::None;
     }
 
-    build_info_build::build_script().collect_runtime_dependencies(depth);
-}
-
-/// Set rust flags depending on build target
-fn set_rustflags() {
-    // -rdynamic allows exporting symbols even when compiled as an executable
-    // https://stackoverflow.com/a/57595625
-    let family: String = env::var("CARGO_CFG_TARGET_FAMILY").unwrap();
-
-    if family == "unix" {
-        // println!("cargo:rustc-link-arg=-rdynamic");
-    } /*else if family == "windows" {
-          println!("cargo:rustc-link-arg=-Wl,--export-all-symbols");
-      } else if family == "wasm" {
-          println!("cargo:rustc-link-arg=-Wl,--export-dynamic");
-      }*/
+    if rust_analyzer {
+        let fake_data: &str = "{\"version\":\"0.0.39\",\"string\":\"KLUv/QCIfQUAYgkfGVDVAwMdwRLXXHpu1nWhFFma/2dL1xlougUumP6+APJ9j7KUcySnJLNNYnIltvVKqeC/kGIndHF1BHBIK4wv5CwLsGwLAIbYKL23nt62NWU9rV260vtN+lC7Gc6hQ88VJDnBTTvK2A2OlclP+nFC6Qv9pXpT45P+5vu7IxUg8C5MIG6uRGrJdMrMEWkifBPLCOMAwA1Yz4S7cwMRQhcZnAnHBXwkhgMFxxsKFg==\"}";
+        println!("cargo:rustc-env=BUILD_INFO={fake_data}");
+    } else {
+        build_info_build::build_script().collect_runtime_dependencies(depth);
+    }
 }
 
 /// Create C/C++/Python bindings
 fn create_bindings() {
-    let crate_directory: String = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let crate_directory: PathBuf = crate_dir();
     let package_name: String = env::var("CARGO_PKG_NAME").unwrap();
 
     create_binding("h", Language::C, &package_name, &crate_directory);
@@ -84,7 +65,7 @@ fn create_binding(
     extension: &str,
     language: Language,
     package_name: &String,
-    crate_directory: &String,
+    crate_directory: &PathBuf,
 ) {
     let output_file: String = target_dir()
         .join("binding")
@@ -188,21 +169,26 @@ fn get_bindgen_defines() -> HashMap<String, String> {
     defines
 }
 
+/// Find the location of the project's root directory
+fn crate_dir() -> PathBuf {
+    PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
+}
+
 /// Find the location of the `target/` directory. Note that this may be
 /// overridden by `cmake`, so we also need to check the `CARGO_TARGET_DIR`
-/// variable.
+/// variable
 fn target_dir() -> PathBuf {
     if let Ok(target) = env::var("CARGO_TARGET_DIR") {
         PathBuf::from(target)
     } else {
-        PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("target")
+        crate_dir().join("target")
     }
 }
 
 /// Print all environment variables
 #[allow(dead_code)]
 fn print_environment_vars() {
-    let vars: Vars = env::vars();
+    let vars: env::Vars = env::vars();
 
     for (key, var) in vars {
         println!("cargo:warning=EV: {key}: {var}");
