@@ -26,21 +26,22 @@ pub struct Args {
 
     /// Shows the AppImage help arguments
     // https://github.com/clap-rs/clap/discussions/5401
-    #[cfg(all(feature = "appimage", not(feature = "no_lint")))]
+    #[cfg(all(feature = "appimage"))]
     #[arg(long, default_value_t = false)]
     pub appimage_help: bool,
 
     /// Install the desktop files for launching from the application menu
-    #[cfg(all(target_os = "linux", not(feature = "no_lint")))]
+    #[cfg(all(target_os = "linux"))]
     #[arg(long, default_value_t = false)]
     pub install_desktop_files: bool,
 
     /// Uninstall the previously installed desktop files
-    #[cfg(all(target_os = "linux", not(feature = "no_lint")))]
+    #[cfg(all(target_os = "linux"))]
     #[arg(long, default_value_t = false)]
     pub uninstall_desktop_files: bool,
 
     /// Print all environment variables
+    #[cfg(not(target_family = "wasm"))]
     #[arg(long, default_value_t = false)]
     pub print_environment_variables: bool,
 }

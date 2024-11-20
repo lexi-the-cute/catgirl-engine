@@ -6,64 +6,14 @@ use utils::println_string;
 #[cfg(target_family = "wasm")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
+/// Module for grabbing and organizing dependencies
+pub mod dependencies;
+
 // Generate build_info() function at compile time
 build_info::build_info!(
     /// Build info for crate
     pub fn build_info
 );
-
-/// Get the list of dependencies used in the engine
-pub(crate) fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
-    let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
-    let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
-
-    // Add each dependency only once
-    while let Some(dep) = stack.pop() {
-        if dep.name.starts_with("catgirl-engine") {
-            // If one of my own crates, remove from results
-            continue;
-        }
-
-        if dependencies
-            .insert(dep.name.as_str().to_string(), dep.to_owned())
-            .is_none()
-        {
-            stack.extend(dep.dependencies.iter());
-        }
-    }
-
-    dependencies
-}
-
-/// Get all dependencies from the workspace used to build the engine
-#[must_use]
-pub fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
-    let info: &BuildInfo = build_info();
-
-    let mut dependencies: BTreeMap<String, CrateInfo> = get_dependencies(info);
-    let mut util_dependencies: BTreeMap<String, CrateInfo> =
-        get_dependencies(utils::build::build_info());
-
-    dependencies.append(&mut util_dependencies);
-
-    #[cfg(feature = "client")]
-    {
-        let mut client_dependencies: BTreeMap<String, CrateInfo> =
-            get_dependencies(client::build::build_info());
-
-        dependencies.append(&mut client_dependencies);
-    }
-
-    #[cfg(feature = "server")]
-    {
-        let mut server_dependencies: BTreeMap<String, CrateInfo> =
-            get_dependencies(server::build::build_info());
-
-        dependencies.append(&mut server_dependencies);
-    }
-
-    dependencies
-}
 
 /// Print the version of the engine
 #[no_mangle]
@@ -90,7 +40,7 @@ pub extern "C" fn print_version() {
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn print_dependencies() {
-    let dependencies: BTreeMap<String, CrateInfo> = get_all_dependencies();
+    let dependencies: BTreeMap<String, CrateInfo> = dependencies::get_all_dependencies();
 
     // Only add newline if there are dependencies to print
     #[cfg(not(target_family = "wasm"))]

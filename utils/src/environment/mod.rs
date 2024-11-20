@@ -1,19 +1,5 @@
 use std::{env, ffi::OsStr};
 
-/// Checks if string matches environment variable
-///
-/// # Panics
-///
-/// May panic if environment var cannot be unwrapped
-#[must_use]
-pub fn matches_environment_var<S: AsRef<OsStr>>(key: S, value: S) -> bool
-where
-    std::string::String: PartialEq<S>,
-{
-    let environment_var: Result<String, env::VarError> = env::var(key);
-    environment_var.is_ok() && environment_var.unwrap() == value
-}
-
 /// Get value of the requested environment variable
 ///
 /// # Panics
@@ -28,6 +14,20 @@ pub fn get_environment_var<S: AsRef<OsStr>>(key: S) -> Option<String> {
     } else {
         None
     }
+}
+
+/// Checks if string matches environment variable
+///
+/// # Panics
+///
+/// May panic if environment var cannot be unwrapped
+#[must_use]
+pub fn matches_environment_var<S: AsRef<OsStr>>(key: S, value: S) -> bool
+where
+    std::string::String: PartialEq<S>,
+{
+    let environment_var: Option<String> = get_environment_var(key);
+    environment_var.is_some() && environment_var.unwrap() == value
 }
 
 /// Print all environment variables

@@ -23,9 +23,6 @@ pub fn main() -> Result<(), String> {
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
-    #[cfg(feature = "tracing-subscriber")]
-    setup::setup_tracer();
-
     // Print version and copyright info
     if setup::get_args().version {
         build::print_version();
