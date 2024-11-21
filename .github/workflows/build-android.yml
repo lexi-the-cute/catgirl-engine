@@ -142,9 +142,11 @@ jobs:
           git update-index --skip-worktree ${{ github.workspace }}/android/app/build.gradle
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (FAT)
+      - name: Build Engine APK (FAT)
         working-directory: ${{ github.workspace }}/android
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
 
@@ -153,9 +155,11 @@ jobs:
           #cp -a ${{ github.workspace }}/android/app/build/outputs/bundle/release/app-release.aab ${{ github.workspace }}/upload/android
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (arm64)
+      - name: Build Engine APK (arm64)
         working-directory: ${{ github.workspace }}/android
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" ${{ github.workspace }}/android/app/build.gradle
@@ -168,9 +172,11 @@ jobs:
           cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-arm64.apk
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (armeabi-v7a)
+      - name: Build Engine APK (armeabi-v7a)
         working-directory: ${{ github.workspace }}/android
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/app/build.gradle
@@ -183,9 +189,11 @@ jobs:
           cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-armeabi-v7a.apk
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (x86)
+      - name: Build Engine APK (x86)
         working-directory: ${{ github.workspace }}/android
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/app/build.gradle
@@ -198,9 +206,11 @@ jobs:
           cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-x86.apk
 
       # Build Engine As APK
-      - name: Build CatgirlEngine APK (x86_64)
+      - name: Build Engine APK (x86_64)
         working-directory: ${{ github.workspace }}/android
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/app/build.gradle
