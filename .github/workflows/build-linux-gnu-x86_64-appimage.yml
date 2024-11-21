@@ -129,7 +129,7 @@ jobs:
       #     $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=x86_64-unknown-linux-gnu --release --lib --workspace
 
       # Compile Program
-      - name: Build Program
+      - name: Build Engine
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
