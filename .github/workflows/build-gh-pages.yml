@@ -100,7 +100,10 @@ jobs:
       # Compile Program
       - name: Build Program (Release)
         run: |
+          # Sets the build timestamp to the current commit to make builds reproducible
+          export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
+
           $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine
 
       # Generate Bindings
