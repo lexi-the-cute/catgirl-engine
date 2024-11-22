@@ -60,6 +60,8 @@ impl WindowState<'_> {
                 max_color_attachments: 4,
                 ..wgpu::Limits::downlevel_webgl2_defaults()
             }
+        } else if cfg!(any(target_os = "android", target_os = "ios")) {
+            wgpu::Limits::downlevel_defaults()
         } else {
             wgpu::Limits::default()
         }
