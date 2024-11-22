@@ -56,7 +56,9 @@ jobs:
           retry_on: error
           command: |
             # Install AppImageTool
-            wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/tools/appimagetool
+            #wget https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O ${{ github.workspace }}/tools/appimagetool
+            wget https://github.com/lexi-the-cute/appimagetool/releases/download/continuous/appimagetool-x86_64 -O ${{ github.workspace }}/tools/appimagetool
+
             chmod +x ${{ github.workspace }}/tools/appimagetool
 
       # Install Rust
