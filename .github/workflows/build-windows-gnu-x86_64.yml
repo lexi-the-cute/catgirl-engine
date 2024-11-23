@@ -91,10 +91,6 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
-      # Autoupdate Pre-Commit Hooks
-      # - name: Autoupdate Pre-Commit Hooks
-      #   run: pre-commit autoupdate
-
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
@@ -190,21 +186,6 @@ jobs:
           name: CatgirlEngine-Server-Windows-x86_64-GNU-Tar
           path: ${{ github.workspace }}/upload/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz
           include-hidden-files: true
-
-      # Test Minimal Dependency Versions
-      # https://doc.rust-lang.org/cargo/reference/resolver.html
-      # https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=version#direct-minimal-versions
-      - name: Test Minimal Dependency Versions
-        continue-on-error: true
-        run: $HOME/.cargo/bin/cargo build --target=x86_64-pc-windows-gnu --bin catgirl-engine -Z direct-minimal-versions
-
-      # Install Code Size Profiler
-      - name: Install Code Size Profiler
-        run: $HOME/.cargo/bin/cargo install twiggy
-
-      # Profile Code Size
-      - name: Profile Code Size
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/catgirl-engine.exe"
 
       # List Environment
       - name: List Environment
