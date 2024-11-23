@@ -57,15 +57,6 @@ jobs:
           version: 1.0
           execute_install_scripts: true
 
-      # https://github.com/marketplace/actions/android-emulator-runner
-      # Install Screenshot Dependencies
-      # - name: Install and Cache Screenshot APT Packages
-      #   uses: awalsh128/cache-apt-pkgs-action@latest
-      #   with:
-      #     packages: imagemagick pipewire libgl1-mesa-dri xvfb libxkbcommon-x11-dev
-      #     version: 1.0
-      #     execute_install_scripts: true
-
       # Extract Keystore
       - name: Extract Keystore
         run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
@@ -113,10 +104,6 @@ jobs:
       - name: Install Pre-Commit Hooks
         run: pre-commit install
 
-      # Autoupdate Pre-Commit Hooks
-      # - name: Autoupdate Pre-Commit Hooks
-      #   run: pre-commit autoupdate
-
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
@@ -147,7 +134,6 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           ${{ github.workspace }}/android/gradlew assembleRelease
 
           mkdir -p ${{ github.workspace }}/upload/android
@@ -160,7 +146,6 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="arm64-v8a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -177,7 +162,6 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="armeabi-v7a"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"arm\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -194,7 +178,6 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -211,7 +194,6 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
           # export CARGO_NDK_ANDROID_TARGET="x86_64"
           sed -i "s/targets = [\"[a-z_0-9, ]*\"]/targets = [\"x86_64\"]/" ${{ github.workspace }}/android/app/build.gradle
 
@@ -223,14 +205,6 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload/android
           cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-x86_64.apk
 
-      # We no longer use the Play Store, but if another store uses AAB, we can enable it
-      # # Build Engine As AAB
-      # - name: Build CatgirlEngine AAB
-      #   working-directory: ${{ github.workspace }}/android
-      #   run: |
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
-      #     ${{ github.workspace }}/android/gradlew bundleRelease
-
       # Display Export Directory
       - name: Display Git Staging
         run: |
@@ -240,10 +214,6 @@ jobs:
       # Display APK Directory
       - name: Display APK Directory (Release)
         run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/apk/release
-
-      # # Display Bundle Directory
-      # - name: Display Bundle Directory (Release)
-      #   run: ls -liallh ${{ github.workspace }}/android/app/build/outputs/bundle/release
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
@@ -276,9 +246,7 @@ jobs:
 
       # Install Code Size Profiler
       - name: Install Code Size Profiler
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
-          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
+        run: $HOME/.cargo/bin/cargo install twiggy
 
       # Profile Code Size
       - name: Profile Code Size (aarch64)
@@ -295,48 +263,6 @@ jobs:
       # Profile Code Size
       - name: Profile Code Size (x86_64)
         run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so"
-
-      # Install Miri
-      # - name: Install Miri
-      #   run: |
-      #     rustup toolchain install nightly --component miri
-      #     rustup override set nightly
-      #     $HOME/.cargo/bin/cargo miri setup --target=armv7-linux-androideabi
-      #     $HOME/.cargo/bin/cargo miri setup --target=aarch64-linux-android
-      #     $HOME/.cargo/bin/cargo miri setup --target=i686-linux-android
-      #     $HOME/.cargo/bin/cargo miri setup --target=x86_64-linux-android
-
-      # Run Miri Tests (armv7-linux-androideabi)
-      # - name: Run Miri Tests (armv7-linux-androideabi)
-      #   run: |
-      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=armv7-linux-androideabi --bins --tests --benches --examples
-      #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
-
-      # Run Miri Tests (aarch64-linux-android)
-      # - name: Run Miri Tests (aarch64-linux-android)
-      #   run: |
-      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=aarch64-linux-android --bins --tests --benches --examples
-      #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
-
-      # Run Miri Tests (i686-linux-android)
-      # - name: Run Miri Tests (i686-linux-android)
-      #   run: |
-      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=i686-linux-android --bins --tests --benches --examples
-      #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
-
-      # Run Miri Tests (x86_64-linux-android)
-      # - name: Run Miri Tests (x86_64-linux-android)
-      #   run: |
-      #     # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=x86_64-linux-android --bins --tests --benches --examples
-      #     # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
 
       # List Environment
       - name: List Environment
@@ -377,14 +303,6 @@ jobs:
           submodules: recursive
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-
-      # Install Dependencies
-      # - name: Install and Cache APT Packages
-      #   uses: awalsh128/cache-apt-pkgs-action@latest
-      #   with:
-      #     packages: ruby-bundler  # jq coreutils gitsome
-      #     version: 1.0
-      #     execute_install_scripts: true
 
       # Download APK
       - name: Download APK (Release)

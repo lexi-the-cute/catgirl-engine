@@ -95,20 +95,13 @@ jobs:
           echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
           gpg --import $HOME/signing.gpg
 
-      # # Build Docs
-      # - name: Build Docs
-      #   run: |
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo doc -j `nproc --all` --target=x86_64-unknown-linux-gnu --release --lib --workspace
-
       # Compile Program
       - name: Build Engine Client/Server
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
 
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine
+          $HOME/.cargo/bin/cargo build --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine
 
       # Compile Program
       - name: Build Engine Server Only
@@ -116,9 +109,8 @@ jobs:
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export CARGO_TARGET_DIR="${{ github.workspace }}/.server-target"
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
 
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --no-default-features --features server
+          $HOME/.cargo/bin/cargo build --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine --no-default-features --features server
 
       # Display Export Directory
       - name: Display Git Staging
@@ -196,31 +188,15 @@ jobs:
       # https://doc.rust-lang.org/cargo/reference/unstable.html?highlight=version#direct-minimal-versions
       - name: Test Minimal Dependency Versions
         continue-on-error: true
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"
-          $HOME/.cargo/bin/cargo build -j `nproc --all` --target=x86_64-unknown-linux-gnu --bin catgirl-engine -Z direct-minimal-versions
+        run: $HOME/.cargo/bin/cargo build --target=x86_64-unknown-linux-gnu --bin catgirl-engine -Z direct-minimal-versions
 
       # Install Code Size Profiler
       - name: Install Code Size Profiler
-        run: |
-          export RUSTFLAGS="-Z threads=`nproc --all`"  # -Z self-profile -Z time-passes
-          $HOME/.cargo/bin/cargo install -j `nproc --all` twiggy
+        run: $HOME/.cargo/bin/cargo install twiggy
 
       # Profile Code Size
       - name: Profile Code Size
         run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine"
-
-      # Test Program
-      # - name: Test Program
-      #   run: |
-      #     # export LD_LIBRARY_PATH=${{ github.workspace }}/target/libs:$LD_LIBRARY_PATH
-      #     export RUSTFLAGS="-Z threads=`nproc --all`"
-      #     $HOME/.cargo/bin/cargo test --workspace -j `nproc --all` --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
-
-      # Install Nextest
-      # - name: Install Nextest
-      #   run: |
-      #     cargo install nextest
 
       # Install Miri
       - name: Install Miri
@@ -233,8 +209,7 @@ jobs:
       - name: Run Miri Tests
         run: |
           # https://github.com/rust-lang/miri?tab=readme-ov-file#running-tests-in-parallel
-          export RUSTFLAGS="-Z threads=`nproc --all`"
-          $HOME/.cargo/bin/cargo miri test --workspace -j `nproc --all` --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
+          $HOME/.cargo/bin/cargo miri test --workspace --target=x86_64-unknown-linux-gnu --bins --tests --benches --examples
           # $HOME/.cargo/bin/cargo miri nextest run -j`nproc --all`
 
       # List Environment
