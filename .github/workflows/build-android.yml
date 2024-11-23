@@ -244,26 +244,6 @@ jobs:
           path: ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz
           include-hidden-files: true
 
-      # Install Code Size Profiler
-      - name: Install Code Size Profiler
-        run: $HOME/.cargo/bin/cargo install twiggy
-
-      # Profile Code Size
-      - name: Profile Code Size (aarch64)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/aarch64-linux-android/release/libmain.so"
-
-      # Profile Code Size
-      - name: Profile Code Size (armv7)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/armv7-linux-androideabi/release/libmain.so"
-
-      # Profile Code Size
-      - name: Profile Code Size (i686)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/i686-linux-android/release/libmain.so"
-
-      # Profile Code Size
-      - name: Profile Code Size (x86_64)
-        run: $HOME/.cargo/bin/twiggy top -n 20 "${{ github.workspace }}/target/x86_64-linux-android/release/libmain.so"
-
       # List Environment
       - name: List Environment
         run: env
