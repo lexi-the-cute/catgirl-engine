@@ -71,7 +71,7 @@ pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
 }
 
 /// Converts out color struct to WGPU's color struct
-#[no_mangle]
+#[unsafe(no_mangle)]
 // #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub extern "C" fn get_wgpu_color_from_ce_color(color: Color) -> wgpu::Color {
     wgpu::Color {
