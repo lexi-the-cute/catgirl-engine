@@ -5,7 +5,7 @@
 name = "catgirl-engine-utils"
 description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.35"
+version = "0.14.36-alpha"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/Foxgirl-Labs/catgirl-engine.git"
@@ -43,7 +43,7 @@ struct_excessive_bools = "allow"
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 
 [dependencies]
-macros = { version = "0.14.35", package = "catgirl-engine-macros", path = "../macros" }
+macros = { version = "0.14.36-alpha", package = "catgirl-engine-macros", path = "../macros" }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
