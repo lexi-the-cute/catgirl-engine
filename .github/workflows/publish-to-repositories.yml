@@ -103,6 +103,10 @@ jobs:
           cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo-1024x1024-color.png ${{ github.workspace }}/install/catgirl-engine.png
 
       # Publish to Crates.io
+      - name: Publish to catgirl-engine-macros to Crates.io
+        run: cargo publish -p catgirl-engine-macros --no-verify
+
+      # Publish to Crates.io
       - name: Publish to catgirl-engine-utils to Crates.io
         run: cargo publish -p catgirl-engine-utils --no-verify
 
