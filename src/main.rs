@@ -25,7 +25,6 @@ pub fn main() -> Result<(), String> {
 
     // Helps with license compliance
     build::license_compliance_helper();
-    // utils::build::set_engine_name();
 
     // Print version and copyright info
     if setup::get_args().version {

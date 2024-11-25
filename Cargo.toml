@@ -12,7 +12,7 @@ repository = "https://github.com/Foxgirl-Labs/catgirl-engine.git"
 documentation = "https://docs.rs/catgirl-engine"
 homepage = "https://github.com/Foxgirl-Labs/catgirl-engine"
 readme = "ReadMe.md"
-authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
+authors = ["Alexis <@alexis@fearness.org>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 resolver = "2"
 
