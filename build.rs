@@ -108,8 +108,11 @@ fn create_binding(
     };
 
     if language == Language::Cython {
+        let crate_name: String = env::var("CARGO_PKG_NAME").unwrap();
+        let header_filename: String = format!("\"<{}.h>\"", crate_name);
+
         config.cython = CythonConfig {
-            header: Some("\"<catgirl-engine.h>\"".to_string()),
+            header: Some(header_filename),
             ..Default::default()
         };
     }

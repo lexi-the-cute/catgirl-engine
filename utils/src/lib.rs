@@ -1,4 +1,4 @@
-//! Utilities for the catgirl-engine crate
+//! Utilities for the game engine
 
 #![warn(missing_docs)]
 

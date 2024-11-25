@@ -1,4 +1,4 @@
-//! Client side component of the catgirl-engine crate
+//! Client side component of the game engine
 
 #![warn(missing_docs)]
 
@@ -74,6 +74,10 @@ pub fn get_icon() -> Option<Icon> {
 ///
 /// May error if home directory cannot be found
 pub fn install_desktop_files() -> Result<(), String> {
+    // let engine_name: String = utils::build::get_engine_name();
+    // let desktop_file_contents_option: Result<String, String> =
+    //     load_string!(format!("resources/{engine_name}.desktop"));
+
     let desktop_file_contents_option: Result<String, String> =
         load_string!("resources/catgirl-engine.desktop");
     let icon_bytes_option: Option<Vec<u8>> = get_icon_bytes();

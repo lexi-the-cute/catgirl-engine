@@ -1,4 +1,4 @@
-//! Starting point for the catgirl-engine as a binary
+//! Starting point for the game engine as a binary
 //!
 //! This is a game engine designed for moddability
 
@@ -22,6 +22,10 @@ pub fn main() -> Result<(), String> {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Helps with license compliance
+    build::license_compliance_helper();
+    // utils::build::set_engine_name();
 
     // Print version and copyright info
     if setup::get_args().version {
