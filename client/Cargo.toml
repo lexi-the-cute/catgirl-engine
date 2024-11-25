@@ -44,8 +44,9 @@ struct_excessive_bools = "allow"
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 
 [dependencies]
-build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
+macros = { version = "0.14.35", package = "catgirl-engine-macros", path = "../macros" }
 utils = { version = "0.14.35", package = "catgirl-engine-utils", path = "../utils" }
+build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 wasm-bindgen = { version = "~0.2", default-features = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita"] }

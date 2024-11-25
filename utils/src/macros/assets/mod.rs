@@ -1,5 +1,7 @@
 use std::fs;
 
+macros::generate_asset_loader!("../../../client/assets");
+
 macro_rules! store_assets {
     // Traverses the asset tree and stores all files
     () => {{

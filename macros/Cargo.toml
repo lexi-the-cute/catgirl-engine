@@ -2,8 +2,8 @@
 # cargo-features = ["edition2024"]
 
 [package]
-name = "catgirl-engine-server"
-description = "Server side part of the catgirl-engine crate"
+name = "catgirl-engine-macros"
+description = "Procedural macro crate for the catgirl-engine crate"
 license = "Zlib"
 version = "0.14.35"
 keywords = ["catgirl", "engine", "gamedev", "game"]
@@ -15,6 +15,9 @@ readme = "ReadMe.md"
 authors = ["Alexis <@alexis@foxgirl.land>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 resolver = "2"
+
+[lib]
+proc-macro = true
 
 [features]
 default = []
@@ -37,14 +40,3 @@ needless_pass_by_value = "allow"
 too_many_lines = "allow"
 unused_self = "allow"
 struct_excessive_bools = "allow"
-
-[build-dependencies]
-build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
-
-[dependencies]
-macros = { version = "0.14.35", package = "catgirl-engine-macros", path = "../macros" }
-utils = { version = "0.14.35", package = "catgirl-engine-utils", path = "../utils" }
-build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
-wasm-bindgen = { version = "~0.2", default-features = true }
-tracing = { version = "~0.1", default-features = false, features = ["log"] }
-rhai = { version = "~1", default-features = false, features = ["serde"] }
