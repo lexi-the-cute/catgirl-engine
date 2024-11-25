@@ -1,4 +1,4 @@
-//! Starting point for the catgirl-engine as a library
+//! Starting point for the game engine as a library
 
 #![warn(missing_docs)]
 
@@ -29,6 +29,9 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Helps with license compliance
+    build::license_compliance_helper();
 
     // Create a vector of args from C styled args
     // We create a new pointer so we guarantee the pointer we are passing is valid
@@ -79,6 +82,9 @@ pub fn android_main(app: AndroidApp) {
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
+    // Helps with license compliance
+    build::license_compliance_helper();
+
     // Print version and copyright info
     if setup::get_args().version {
         build::print_version();
@@ -110,6 +116,9 @@ pub fn wasm_start() {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Helps with license compliance
+    build::license_compliance_helper();
 
     // Print version and copyright info
     if setup::get_args().version {

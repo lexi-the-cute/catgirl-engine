@@ -134,3 +134,14 @@ pub extern "C" fn log_build_info() {
         }
     }
 }
+
+/// Helps those who fork the project comply with the license
+pub(crate) fn license_compliance_helper() {
+    let info: &BuildInfo = build_info();
+    let crate_name: &String = &info.crate_info.name;
+    let repo_url: String = "https://github.com/Foxgirl-Labs/catgirl-engine".to_string();
+
+    if !crate_name.starts_with("catgirl-engine") {
+        info!("{crate_name} is based off of the Catgirl Engine from {repo_url}");
+    }
+}

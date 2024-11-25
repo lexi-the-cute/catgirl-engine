@@ -1,4 +1,4 @@
-//! Server side component of the catgirl-engine crate
+//! Server side component of the game engine
 
 #![warn(missing_docs)]
 

@@ -5,10 +5,11 @@ use std::collections::BTreeMap;
 fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> = BTreeMap::new();
     let mut stack: Vec<&CrateInfo> = info.crate_info.dependencies.iter().collect();
+    let crate_name: &String = &info.crate_info.name;
 
     // Add each dependency only once
     while let Some(dep) = stack.pop() {
-        if dep.name.starts_with("catgirl-engine") {
+        if dep.name.starts_with(crate_name) {
             // If one of my own crates, remove from results
             continue;
         }
