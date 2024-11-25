@@ -31,8 +31,19 @@ pub fn mask_string(value: String) -> String {
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn is_likely_secret(key: String) -> bool {
     match key.to_lowercase() {
+        // Very Likely
         s if s.contains("password") => true,
         s if s.contains("secret") => true,
+        s if s.contains("token") => true,
+
+        // Kinda Iffy
+        s if s.contains("ssh") => true,
+        s if s.contains("webhook") => true,
+        s if s.contains("release_key") => true,
+        s if s.contains("release_store") => true,
+
+        // Iffy
+        s if s.contains("account") => true,
         _ => false,
     }
 }

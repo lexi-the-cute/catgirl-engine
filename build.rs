@@ -10,6 +10,9 @@ use std::path::PathBuf;
 
 /// Main function
 fn main() {
+    // Tell Cargo where the assets directory is located
+    set_environment_variables();
+
     // Debug environment
     // print_environment_vars();
 
@@ -18,6 +21,14 @@ fn main() {
 
     // Bindings are only usable when building libs
     create_bindings();
+}
+
+fn set_environment_variables() {
+    let assets_path: PathBuf = crate_dir().join("assets");
+    let assets_path_str: &str = assets_path.to_str().unwrap();
+
+    println!("cargo:warning=Setting assets path to {assets_path_str}");
+    println!("cargo:rustc-env=ENGINE_ASSETS_PATH={assets_path_str}");
 }
 
 /// Generate build info
@@ -187,9 +198,51 @@ fn target_dir() -> PathBuf {
 /// Print all environment variables
 #[allow(dead_code)]
 fn print_environment_vars() {
-    let vars: env::Vars = env::vars();
+    let vars: std::env::Vars = std::env::vars();
 
+    println!("Environment Variables:");
     for (key, var) in vars {
-        println!("cargo:warning=EV: {key}: {var}");
+        if is_likely_secret(key.clone()) {
+            println!("cargo:warning=Env: {key}: {}", mask_string(var));
+        } else {
+            println!("cargo:warning=Env: {key}: {var}");
+        }
     }
+}
+
+/// Determines if string represents a secret
+fn is_likely_secret(key: String) -> bool {
+    match key.to_lowercase() {
+        // Very Likely
+        s if s.contains("password") => true,
+        s if s.contains("secret") => true,
+        s if s.contains("token") => true,
+
+        // Kinda Iffy
+        s if s.contains("ssh") => true,
+        s if s.contains("webhook") => true,
+        s if s.contains("release_key") => true,
+        s if s.contains("release_store") => true,
+
+        // Iffy
+        s if s.contains("account") => true,
+        _ => false,
+    }
+}
+
+/// Repeats a string an arbitrary number of times
+fn repeat_string(repetitions: usize, value: &str) -> String {
+    let mut buffer: Vec<&str> = Vec::new();
+
+    for _ in 0..repetitions {
+        buffer.push(value);
+    }
+
+    buffer.join("")
+}
+
+/// Masks a secret
+fn mask_string(value: String) -> String {
+    let size: usize = value.chars().count();
+    repeat_string(size, "*")
 }

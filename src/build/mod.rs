@@ -71,7 +71,7 @@ pub extern "C" fn print_dependencies() {
 pub extern "C" fn print_license() {
     let info: &BuildInfo = build_info();
 
-    // Example: Copyright (C) 2024 Alexis <@alexis@foxgirl.land> - Zlib License
+    // Example: Copyright (C) 2024 Alexis <@alexis@fearness.org> - Zlib License
     let year: i32 = info.timestamp.year();
     let author: String = if info.crate_info.authors.is_empty() {
         "Unknown".to_string()
