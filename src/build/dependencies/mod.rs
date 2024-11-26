@@ -34,7 +34,11 @@ pub(crate) fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let mut util_dependencies: BTreeMap<String, CrateInfo> =
         get_dependencies(utils::build::build_info());
 
+    // let mut macro_dependencies: BTreeMap<String, CrateInfo> =
+    //     get_dependencies(crate::build::macros_build_info());
+
     dependencies.append(&mut util_dependencies);
+    // dependencies.append(&mut macro_dependencies);
 
     #[cfg(feature = "client")]
     {

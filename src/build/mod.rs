@@ -15,6 +15,11 @@ build_info::build_info!(
     pub fn build_info
 );
 
+// Generates the macros_build_info() function at compile time
+//
+// Procedural Macro crates currently cannot export anything other than procedural macros
+// macros::macros_build_info!();
+
 /// Print the version of the engine
 #[no_mangle]
 #[cfg_attr(target_family = "wasm", wasm_bindgen)]
