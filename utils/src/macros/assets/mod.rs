@@ -1,6 +1,4 @@
-use std::fs;
-
-macros::generate_asset_loader!("../../../client/assets");
+// macros::generate_asset_loader!(env!("ENGINE_ASSETS_PATH"));
 
 macro_rules! store_assets {
     // Traverses the asset tree and stores all files

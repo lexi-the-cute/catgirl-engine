@@ -27,7 +27,7 @@ fn set_environment_variables() {
     let assets_path: PathBuf = crate_dir().join("assets");
     let assets_path_str: &str = assets_path.to_str().unwrap();
 
-    println!("cargo:warning=Setting assets path to {assets_path_str}");
+    // println!("cargo:warning=Setting assets path to {assets_path_str}");
     println!("cargo:rustc-env=ENGINE_ASSETS_PATH={assets_path_str}");
 }
 
