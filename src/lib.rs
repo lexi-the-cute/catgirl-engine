@@ -11,6 +11,9 @@ pub mod setup;
 /// Module for storing and using build data
 pub mod build;
 
+/// Module for storing assets
+pub mod assets;
+
 use core::ffi::{c_char, c_int};
 
 #[cfg(target_os = "android")]
@@ -29,6 +32,10 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Transfers embedded assets into utility crate
+    #[cfg(feature = "embed-assets")]
+    utils::assets::store_embedded_assets(assets::get_embedded_assets());
 
     // Helps with license compliance
     build::license_compliance_helper();
@@ -82,6 +89,10 @@ pub fn android_main(app: AndroidApp) {
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
 
+    // Transfers embedded assets into utility crate
+    #[cfg(feature = "embed-assets")]
+    utils::assets::store_embedded_assets(assets::get_embedded_assets());
+
     // Helps with license compliance
     build::license_compliance_helper();
 
@@ -116,6 +127,10 @@ pub fn wasm_start() {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Transfers embedded assets into utility crate
+    #[cfg(feature = "embed-assets")]
+    utils::assets::store_embedded_assets(assets::get_embedded_assets());
 
     // Helps with license compliance
     build::license_compliance_helper();
