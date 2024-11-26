@@ -2,37 +2,72 @@
 
 #![warn(missing_docs)]
 
-/// Generates an asset loader function
-///
-/// The generated function will first attempt to in this order:
-/// * Locate and read a file from the filesystem
-/// * Locate and read a file from within this function
-/// * Return an error
-#[proc_macro]
-pub fn generate_asset_loader(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    // if tokens.is_empty() {}
+use quote::ToTokens;
+use syn::spanned::Spanned;
 
-    println!("cargo:warning=Assets: {:?}", tokens);
+/// Embeds assets folder into the binary
+#[proc_macro]
+pub fn generate_embedded_assets(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    if tokens.is_empty() {}
+
+    let path_expr: syn::Expr = syn::parse_macro_input!(tokens as syn::Expr);
+
+    let mut assets_path_option: Option<String> = None;
+    match path_expr {
+        syn::Expr::Lit(path_lit) => {
+            // Returns "\"path/to/assets\"" or 123
+            assets_path_option = Some(path_lit.into_token_stream().to_string());
+        }
+        syn::Expr::Macro(path_macro) => {
+            // Returns environment variable not found
+            // Environment variable set in main crate build.rs
+            assets_path_option = Some(parse_expr_macro(path_macro).unwrap())
+        }
+        _ => {
+            return syn::Error::new(
+                path_expr.span(),
+                "Cannot parse embedded asset expression...",
+            )
+            .to_compile_error()
+            .into();
+        }
+    };
+
+    let assets_path: String = assets_path_option.unwrap();
+    println!("cargo:warning=Assets Path: {:?}", assets_path);
 
     quote::quote! {
-        ///
-        pub fn get
+        pub(crate) fn get_embedded_assets() -> std::string::String {
+            // Ignore this for now
+            #assets_path.to_string()
+        }
     }
     .into()
 }
 
-/// ...
-#[proc_macro]
-pub fn test(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let path_lit: syn::LitStr = syn::parse(input).unwrap();
-    let root_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
-    let joined_path = AsRef::<std::path::Path>::as_ref(&root_dir).join(path_lit.value());
-    let joined_path = joined_path.to_str().unwrap();
+fn parse_expr_macro(
+    macro_token: syn::ExprMacro,
+) -> Result<std::string::String, std::string::String> {
+    let macro_segments: &syn::PathSegment = &macro_token.mac.path.segments.first().unwrap();
+    let macro_identifier: String = macro_segments.ident.to_string();
 
-    quote::quote! { #joined_path }.into()
+    if macro_identifier.eq("env") {
+        let macro_expr = &macro_token.mac.tokens;
+        let macro_tokens: String = macro_expr.to_string();
+
+        let env_var: Result<String, std::env::VarError> = std::env::var(macro_tokens.as_str());
+
+        if let Ok(environment_variable) = env_var {
+            return Ok(environment_variable);
+        } else {
+            return Err("Could not read environment variable...".to_string());
+        }
+    }
+
+    Err("Could not parse expression macro...".to_string())
 }
 
-/// Generates `macros_build_info`
+/// Generates macros_build_info()
 ///
 /// Waiting for feature request to be implemented:
 /// * https://github.com/danielschemmel/build-info/issues/25

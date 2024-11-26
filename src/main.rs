@@ -13,6 +13,9 @@ pub mod setup;
 /// Module for storing and using build data
 pub mod build;
 
+/// Module for storing assets
+pub mod assets;
+
 /// Run as Executable (e.g. Linux)
 ///
 /// # Errors
@@ -22,6 +25,10 @@ pub fn main() -> Result<(), String> {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
+
+    // Transfers embedded assets into utility crate
+    #[cfg(feature = "embed-assets")]
+    utils::assets::store_embedded_assets(assets::get_embedded_assets());
 
     // Helps with license compliance
     build::license_compliance_helper();
