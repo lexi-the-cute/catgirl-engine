@@ -13,8 +13,8 @@ pub mod macros;
 /// Module for command line arguments
 pub mod args;
 
-/// Module for storing and using assets
-pub mod assets;
+/// Module for storing and using resources
+pub mod resources;
 
 /// Module for storing and using build data
 pub mod build;

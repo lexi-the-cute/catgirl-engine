@@ -5,44 +5,67 @@
 use quote::ToTokens;
 use syn::spanned::Spanned;
 
-/// Embeds assets folder into the binary
+// struct ResourceMacroInput {
+//     expr: T
+// }
+
+// impl syn::parse::Parse for ResourceMacroInput {
+//     fn parse(input: syn::parse::ParseStream) -> Result<Self> {
+//         if input.peek(syn::Token![litexpr]) {
+//             Ok(ResourceMacroInput {
+//                 expr: input.parse()?,
+//             })
+//         } else {
+//             Err(input.error("expected some kind of loop"))
+//         }
+//     }
+// }
+
+/// Embeds resources folder into the binary
 #[proc_macro]
-pub fn generate_embedded_assets(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    if tokens.is_empty() {}
+pub fn generate_embedded_resources(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    // Parses tokens into a rust expression
+    let tokens_expr = syn::parse_macro_input!(tokens as syn::Expr);
 
-    let path_expr: syn::Expr = syn::parse_macro_input!(tokens as syn::Expr);
+    // Parse Resources Path
+    let resources_path_result: Result<String, proc_macro::TokenStream> =
+        parse_resource_macro(tokens_expr);
+    if let Err(error_message) = resources_path_result {
+        return error_message;
+    }
 
-    let mut assets_path_option: Option<String> = None;
-    match path_expr {
+    let resources_path: String = resources_path_result.unwrap();
+    println!("cargo:warning=Resources Path: {:?}", resources_path);
+
+    quote::quote! {
+        pub(crate) fn get_embedded_resources() -> std::string::String {
+            // Ignore this for now
+            #resources_path.to_string()
+        }
+    }
+    .into()
+}
+
+fn parse_resource_macro(tokens: syn::Expr) -> Result<std::string::String, proc_macro::TokenStream> {
+    match tokens {
         syn::Expr::Lit(path_lit) => {
-            // Returns "\"path/to/assets\"" or 123
-            assets_path_option = Some(path_lit.into_token_stream().to_string());
+            // let path = tokens as syn::LitStr;
+
+            // Returns "\"path/to/resources\"" or 123
+            Ok(path_lit.into_token_stream().to_string())
         }
         syn::Expr::Macro(path_macro) => {
             // Returns environment variable not found
             // Environment variable set in main crate build.rs
-            assets_path_option = Some(parse_expr_macro(path_macro).unwrap())
+            Ok(parse_expr_macro(path_macro).unwrap())
         }
-        _ => {
-            return syn::Error::new(
-                path_expr.span(),
-                "Cannot parse embedded asset expression...",
-            )
-            .to_compile_error()
-            .into();
-        }
-    };
-
-    let assets_path: String = assets_path_option.unwrap();
-    println!("cargo:warning=Assets Path: {:?}", assets_path);
-
-    quote::quote! {
-        pub(crate) fn get_embedded_assets() -> std::string::String {
-            // Ignore this for now
-            #assets_path.to_string()
-        }
+        _ => Err(syn::Error::new(
+            tokens.span(),
+            "Cannot parse embedded resource expression...",
+        )
+        .to_compile_error()
+        .into()),
     }
-    .into()
 }
 
 fn parse_expr_macro(

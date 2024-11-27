@@ -10,7 +10,7 @@ use std::path::PathBuf;
 
 /// Main function
 fn main() {
-    // Tell Cargo where the assets directory is located
+    // Tell Cargo where the resources directory is located
     set_environment_variables();
 
     // Debug environment
@@ -24,11 +24,11 @@ fn main() {
 }
 
 fn set_environment_variables() {
-    let assets_path: PathBuf = crate_dir().join("assets");
-    let assets_path_str: &str = assets_path.to_str().unwrap();
+    let resources_path: PathBuf = crate_dir().join("resources");
+    let resources_path_str: &str = resources_path.to_str().unwrap();
 
-    // println!("cargo:warning=Setting assets path to {assets_path_str}");
-    println!("cargo:rustc-env=ENGINE_ASSETS_PATH={assets_path_str}");
+    // println!("cargo:warning=Setting resources path to {resources_path_str}");
+    println!("cargo:rustc-env=ENGINE_RESOURCES_PATH={resources_path_str}");
 }
 
 /// Generate build info
