@@ -1,5 +1,9 @@
 # https://doc.rust-lang.org/cargo/reference/config.html?highlight=alias#configuration-format
 
+[target.x86_64-unknown-linux-musl]
+linker = "/usr/bin/musl-gcc"
+rustflags = ["-Clink-arg=-Wl,--enable-new-dtags,-rpath,/usr/lib/x86_64-linux-musl"]
+
 [target.x86_64-unknown-linux-gnu]
 linker = "/usr/bin/x86_64-linux-gnu-gcc"
 rustflags = ["-Clink-arg=-Wl,--enable-new-dtags,-rpath,/lib/x86_64-linux-gnu,-rpath,/usr/lib/x86_64-linux-gnu"]
