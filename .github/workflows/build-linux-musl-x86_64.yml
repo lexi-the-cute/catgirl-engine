@@ -1,4 +1,4 @@
-name: Build For Linux GNU x86_64
+name: Build For Linux Musl x86_64
 on:
   push:
     branches: ["main"]
@@ -40,7 +40,7 @@ jobs:
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: gcc g++  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+          packages: gcc g++  # musl-tools
           version: 1.0
           execute_install_scripts: true
 
@@ -63,11 +63,11 @@ jobs:
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "linux-rust-gnu-x86_64"
+          shared-key: "linux-rust-musl-x86_64"
 
       # Add Build Targets
-      - name: Add x86_64 GNU Build Target
-        run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-gnu
+      - name: Add x86_64 Musl Build Target
+        run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-musl
 
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
@@ -92,12 +92,12 @@ jobs:
           gpg --import $HOME/signing.gpg
 
       # Compile Program
-      - name: Build Engine Client/Server
+      - name: Build Engine Server Only
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
 
-          $HOME/.cargo/bin/cargo build --verbose --target=x86_64-unknown-linux-gnu --release --bin catgirl-engine
+          $HOME/.cargo/bin/cargo build --verbose --target=x86_64-unknown-linux-musl --release --bin catgirl-engine --no-default-features --features server
 
       # Display Export Directory
       - name: Display Git Staging
@@ -107,37 +107,36 @@ jobs:
 
       # Display Export Directory
       - name: Display Export Directory
-        run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release
+        run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release
 
       # Prepare Artifact Uploads
-      - name: Prepare Artifact Uploads (Client/Server)
+      - name: Prepare Artifact Uploads (Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/client-server
-          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/client-server
-          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/client-server
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/client-server
+          mkdir -p ${{ github.workspace }}/upload/server
+          cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/catgirl-engine ${{ github.workspace }}/upload/server/catgirl-engine-server
+          cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/server
 
       # Sign Files
-      - name: Sign Files (Client/Server)
+      - name: Sign Files (Server)
         run: |
-          cd ${{ github.workspace }}/upload/client-server
+          cd ${{ github.workspace }}/upload/server
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
 
       # Compress Files
-      - name: Compress Files (Client/Server)
+      - name: Compress Files (Server)
         run: |
           export XZ_OPT=-e9
 
-          cd ${{ github.workspace }}/upload/client-server
-          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz .
+          cd ${{ github.workspace }}/upload/server
+          tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz .
 
       # Upload Engine
-      - name: Upload Engine (Release Client/Server)
+      - name: Upload Engine (Release Server)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Tar
-          path: ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU.tar.xz
+          name: CatgirlEngine-Server-Linux-x86_64-Musl-Tar
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz
           include-hidden-files: true
 
       # List Environment
@@ -192,7 +191,7 @@ jobs:
       - name: Download Engine (Release)
         uses: actions/download-artifact@v4
         with:
-          name: CatgirlEngine-Linux-x86_64-GNU-Tar
+          name: CatgirlEngine-Server-Linux-x86_64-Musl-Tar
           path: ${{ github.workspace }}/artifacts
 
       # Create Tag and Github Release
@@ -224,12 +223,12 @@ jobs:
             -F prerelease="$PRERELEASE" \
             -F generate_release_notes="$GENERATE_RELEASE_NOTES" || echo "Already Exists"
 
-      # Publish to Github Release
-      - name: 👩‍💻 Publish to Github Release (Tar)
+      # Publish to Github Release (Server Only)
+      - name: 👩‍💻 Publish to Github Release (Server)
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Linux-x86_64-GNU.tar.xz"
-          export DISPLAY_LABEL="Linux Tar GLibc (x86_64)"
+          export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz"
+          export DISPLAY_LABEL="Linux Server GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
 
@@ -248,4 +247,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Linux-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:linux-gnu-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz fomxgorl/catgirl-engine:linux-musl-x86_64-server
