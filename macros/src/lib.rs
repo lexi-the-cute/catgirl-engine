@@ -70,7 +70,8 @@ fn parse_expr_macro(
 /// Generates macros_build_info()
 ///
 /// Waiting for feature request to be implemented:
-/// * https://github.com/danielschemmel/build-info/issues/25
+///
+/// <https://github.com/danielschemmel/build-info/issues/25>
 #[proc_macro]
 pub fn macros_build_info(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let build_info: &str = env!("BUILD_INFO");
