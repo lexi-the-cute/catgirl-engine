@@ -24,6 +24,10 @@ pub struct Args {
     #[arg(short, long, default_value = "assets")]
     pub assets: PathBuf,
 
+    /// Set custom resources path
+    #[arg(short, long, default_value = "resources")]
+    pub resources: PathBuf,
+
     /// Shows the AppImage help arguments
     // https://github.com/clap-rs/clap/discussions/5401
     #[cfg(feature = "appimage")]

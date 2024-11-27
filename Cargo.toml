@@ -41,7 +41,8 @@ incremental = false
 default = ["client", "server", "logging-subscriber"]
 client = ["dep:client"]
 server = ["dep:server"]
-embed-assets = ["utils/embed-assets", "client/embed-assets"]
+embed-assets = ["client/embed-assets"]
+embed-resources = ["utils/embed-resources"]
 logging-subscriber = []
 appimage = ["utils/appimage", "client/appimage"]
 
