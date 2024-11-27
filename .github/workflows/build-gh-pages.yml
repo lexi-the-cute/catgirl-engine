@@ -125,6 +125,7 @@ jobs:
 
       # Build Docs
       - name: Build Docs
+        continue-on-error: true
         run: $HOME/.cargo/bin/cargo doc --target=wasm32-unknown-unknown --release --lib --workspace
 
       # Copy Assets
@@ -133,6 +134,7 @@ jobs:
 
       # Copy Docs
       - name: Copy Docs
+        continue-on-error: true
         run: cp -af ${{ github.workspace }}/target/wasm32-unknown-unknown/doc ${{ github.workspace }}/docs/docs
 
       # Copy Manifest
