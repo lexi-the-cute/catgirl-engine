@@ -3,7 +3,7 @@
 #![warn(missing_docs)]
 
 use quote::ToTokens;
-use syn::spanned::Spanned;
+use syn::{spanned::Spanned, LitStr};
 
 // struct ResourceMacroInput {
 //     expr: T
@@ -57,7 +57,10 @@ fn parse_resource_macro(tokens: syn::Expr) -> Result<std::string::String, proc_m
             // let path = tokens as syn::LitStr;
 
             // Returns "\"path/to/resources\"" or 123
-            Ok(path_lit.into_token_stream().to_string())
+            // Ok(path_lit.into_token_stream().to_string())
+            Ok(syn::parse::<LitStr>(path_lit.to_token_stream().into())
+                .unwrap()
+                .value())
         }
         syn::Expr::Macro(path_macro) => {
             // Returns environment variable not found
@@ -81,10 +84,9 @@ fn parse_expr_macro(
     let macro_identifier: String = macro_segments.ident.to_string();
 
     if macro_identifier.eq("env") {
-        let macro_expr = &macro_token.mac.tokens;
-        let macro_tokens: String = macro_expr.to_string();
-
-        let env_var: Result<String, std::env::VarError> = std::env::var(macro_tokens.as_str());
+        let macro_tokens = macro_token.mac.tokens;
+        let macro_string = syn::parse::<LitStr>(macro_tokens.into()).unwrap().value();
+        let env_var: Result<String, std::env::VarError> = std::env::var(macro_string);
 
         if let Ok(environment_variable) = env_var {
             return Ok(environment_variable);
