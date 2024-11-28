@@ -14,6 +14,6 @@ fn get_resource(_path: std::path::PathBuf) {
 
 /// Allows using embedded resources from this utility crate
 // #[cfg(feature = "embed-resources")]
-fn store_embedded_resources(embedded_resources: String) {
+pub fn store_embedded_resources(embedded_resources: String) {
     let _ = EMBEDDED_RESOURCES.set(embedded_resources);
 }

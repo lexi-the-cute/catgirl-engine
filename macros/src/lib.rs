@@ -42,7 +42,7 @@ pub fn generate_embedded_resources(tokens: proc_macro::TokenStream) -> proc_macr
     println!("Resources Path: {resources_path:?}");
 
     quote::quote! {
-        fn get_embedded_resources() -> std::string::String {
+        pub(super) fn get_embedded_resources() -> std::string::String {
             // Ignore this for now
             #resources_path.to_string()
         }
