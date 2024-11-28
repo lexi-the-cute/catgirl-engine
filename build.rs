@@ -23,6 +23,7 @@ fn main() {
     create_bindings();
 }
 
+/// Sets environment variables for building
 fn set_environment_variables() {
     let resources_path: PathBuf = crate_dir().join("resources");
     let resources_path_str: &str = resources_path.to_str().unwrap();
@@ -120,7 +121,7 @@ fn create_binding(
 
     if language == Language::Cython {
         let crate_name: String = env::var("CARGO_PKG_NAME").unwrap();
-        let header_filename: String = format!("\"<{}.h>\"", crate_name);
+        let header_filename: String = format!("\"<{crate_name}.h>\"");
 
         config.cython = CythonConfig {
             header: Some(header_filename),
