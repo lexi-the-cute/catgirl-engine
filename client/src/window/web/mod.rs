@@ -4,8 +4,7 @@ use wasm_bindgen::prelude::*;
 use web_sys::{Document, Element, HtmlCanvasElement};
 
 /// Find canvas element on page
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn get_canvas() -> Option<HtmlCanvasElement> {
+fn get_canvas() -> Option<HtmlCanvasElement> {
     let document: Document = web_sys::window()
         .expect("Could not find browser window...")
         .document()
@@ -21,9 +20,7 @@ pub fn get_canvas() -> Option<HtmlCanvasElement> {
 }
 
 /// Prints to log with formatted text
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_formatted_test() {
+fn print_formatted_test() {
     use wasm_bindgen::JsValue;
     use web_sys::console;
 

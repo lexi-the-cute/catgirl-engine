@@ -8,13 +8,13 @@ extern crate tracing;
 
 /// Module for macros
 #[macro_use]
-pub mod macros;
+mod macros;
 
 /// Module for command line arguments
 pub mod args;
 
 /// Module for storing and using resources
-pub mod resources;
+mod resources;
 
 /// Module for storing and using build data
 pub mod build;

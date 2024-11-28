@@ -1,6 +1,3 @@
-use core::ffi::c_char;
-use std::ffi::NulError;
-
 use clap::Parser;
 use utils::args::Args;
 
@@ -9,12 +6,10 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 // Constants
 #[cfg(target_os = "android")]
-pub(crate) const TAG: &str = "CatgirlEngine";
+const TAG: &str = "CatgirlEngine";
 
 /// Process args for future use
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn process_args() {
+pub(super) fn process_args() {
     // Store assets path in separate variable
     #[cfg(feature = "client")]
     client::game::store_assets_path(get_args().assets);
@@ -49,7 +44,7 @@ pub extern "C" fn process_args() {
 ///
 /// This may panic if the args cannot be unwrapped
 #[must_use]
-pub fn get_args() -> Args {
+pub(super) fn get_args() -> Args {
     if utils::args::get_args().is_some() {
         utils::args::get_args().unwrap()
     } else {
@@ -59,7 +54,7 @@ pub fn get_args() -> Args {
 
 /// Setup the logger for the current platform
 #[cfg(feature = "logging-subscriber")]
-pub(crate) fn setup_logger() {
+pub(super) fn setup_logger() {
     if cfg!(target_os = "android") {
         // Limited Filter: trace,android_activity=debug,winit=debug
         // Stronger Filter: trace,android_activity=off,winit=off
@@ -149,36 +144,11 @@ fn set_panic_hook() {
 /// # Panics
 ///
 /// Always
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn trigger_panic() {
+fn trigger_panic() {
     let message: &str = "Intentionally triggered a panic for debugging...";
 
     // So, I can't pass a String from to_string(), but can pass as a formatted string
     panic!("{}", message);
-}
-
-/// Helper function to call [`start()`] function from the C ABI
-///
-/// Returns empty C String if suceeded, else returns an error as a string
-///
-/// # Panics
-///
-/// May panic if the supplied string from an error contains a nul byte anywhere other than the end of the string
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn c_start() -> *const c_char {
-    if let Err(err) = start() {
-        let c_str_result: Result<*const c_char, NulError> =
-            utils::string::get_c_string_from_rust(err);
-
-        c_str_result.unwrap()
-    } else {
-        let c_str_result: Result<*const c_char, NulError> =
-            utils::string::get_c_string_from_rust("");
-
-        c_str_result.unwrap()
-    }
 }
 
 /// Determines if client or server and starts the engine
@@ -190,8 +160,7 @@ pub extern "C" fn c_start() -> *const c_char {
 /// # Errors
 ///
 /// This may fail to set the ctrl+c handler
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn start() -> Result<(), String> {
+pub(super) fn start() -> Result<(), String> {
     info!("Starting Game...");
 
     debug!("Setting panic hook...");
@@ -208,7 +177,7 @@ pub fn start() -> Result<(), String> {
             #[cfg(feature = "client")]
             if !get_args().server {
                 #[cfg(not(target_family = "wasm"))]
-                client::game::game_loop::advance_event_loop();
+                client::game::advance_event_loop();
             }
         })
         .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");

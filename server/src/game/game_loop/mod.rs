@@ -6,7 +6,6 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// # Errors
 ///
 /// Errors not implemented yet...
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn server_game_loop() -> Result<(), String> {
     debug!("Started server game loop...");
     error!("Dedicated server game loop not implemented yet...");

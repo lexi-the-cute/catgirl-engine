@@ -26,13 +26,13 @@ pub struct Args {
 
     /// Set custom resources path
     #[arg(short, long, default_value = "resources")]
-    pub resources: PathBuf,
+    resources: PathBuf,
 
     /// Shows the AppImage help arguments
     // https://github.com/clap-rs/clap/discussions/5401
     #[cfg(feature = "appimage")]
     #[arg(long, default_value_t = false)]
-    pub appimage_help: bool,
+    appimage_help: bool,
 
     /// Install the desktop files for launching from the application menu
     #[cfg(target_os = "linux")]
@@ -60,8 +60,6 @@ pub struct Args {
 /// # Panics
 ///
 /// May panic if one of the arguments contains invalid UTF-8 data
-#[must_use]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub unsafe fn parse_args_from_c(
     arg_count: c_int,
     arg_vector_pointer: *const *const *const c_char,
@@ -101,7 +99,6 @@ pub unsafe fn parse_args_from_c(
 }
 
 /// Set parsed args passed in from function
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn set_parsed_args(args: Vec<String>) {
     // If we already set the args, don't save again
     // It's a OnceLock, we can only set it once anyway
@@ -113,7 +110,6 @@ pub fn set_parsed_args(args: Vec<String>) {
 }
 
 /// Retrieve parsed args previously passed in from function
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn get_args() -> Option<Args> {
     ARGS.get().cloned()
 }

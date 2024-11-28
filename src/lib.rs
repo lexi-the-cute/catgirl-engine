@@ -6,13 +6,13 @@
 extern crate tracing;
 
 /// Prepare the game engine for running
-pub mod setup;
+mod setup;
 
 /// Module for storing and using build data
-pub mod build;
+mod build;
 
 /// Module for storing resources
-pub mod resources;
+mod resources;
 
 use core::ffi::{c_char, c_int};
 
@@ -26,9 +26,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// Catgirl Engine start
 ///
 /// The starting point when calling as a generic library
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+pub fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
@@ -81,10 +79,9 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 }
 
-#[unsafe(no_mangle)]
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
-pub fn android_main(app: AndroidApp) {
+fn android_main(app: AndroidApp) {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
@@ -120,7 +117,7 @@ pub fn android_main(app: AndroidApp) {
 #[cfg(target_family = "wasm")]
 #[wasm_bindgen(start)]
 /// The starting point when loaded via wasm bindgen
-pub fn wasm_start() {
+fn wasm_start() {
     // Temporary panic hook until logger is finished initializing
     std::panic::set_hook(Box::new(console_error_panic_hook::hook));
 

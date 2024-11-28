@@ -42,7 +42,7 @@ pub fn generate_embedded_resources(tokens: proc_macro::TokenStream) -> proc_macr
     println!("Resources Path: {resources_path:?}");
 
     quote::quote! {
-        pub(crate) fn get_embedded_resources() -> std::string::String {
+        fn get_embedded_resources() -> std::string::String {
             // Ignore this for now
             #resources_path.to_string()
         }
@@ -106,7 +106,7 @@ pub fn macros_build_info(_: proc_macro::TokenStream) -> proc_macro::TokenStream 
     let build_info: &str = env!("BUILD_INFO");
     quote::quote! {
         /// Build info for crate
-        pub fn macros_build_info() -> build_info::BuildInfo {
+        fn macros_build_info() -> build_info::BuildInfo {
             build_info::proc::custom_build_info(
                 #build_info
             );

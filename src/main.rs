@@ -8,20 +8,20 @@
 extern crate tracing;
 
 /// Prepare the game engine for running
-pub mod setup;
+mod setup;
 
 /// Module for storing and using build data
-pub mod build;
+mod build;
 
 /// Module for storing resources
-pub mod resources;
+mod resources;
 
 /// Run as Executable (e.g. Linux)
 ///
 /// # Errors
 ///
 /// May return a `String` if an error propagated up the stack
-pub fn main() -> Result<(), String> {
+fn main() -> Result<(), String> {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();

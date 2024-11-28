@@ -31,8 +31,7 @@ where
 }
 
 /// Print all environment variables
-#[unsafe(no_mangle)]
-pub extern "C" fn print_environment_vars() {
+pub fn print_environment_vars() {
     let vars: std::env::Vars = std::env::vars();
 
     println_string!("Environment Variables:");
