@@ -130,17 +130,22 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/client-server
+          mkdir -p ${{ github.workspace }}/upload/client-server/resources
           cp -a ${{ github.workspace }}/target/x86_64-pc-windows-gnu/release/*.exe ${{ github.workspace }}/upload/client-server
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/client-server
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/client-server
+
+          # cp -a ${{ github.workspace }}/resources/windows ${{ github.workspace }}/upload/client-server/resources
+          cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/client-server/resources
 
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/server
+          mkdir -p ${{ github.workspace }}/upload/server  # /resources
           cp -a ${{ github.workspace }}/.server-target/x86_64-pc-windows-gnu/release/catgirl-engine.exe ${{ github.workspace }}/upload/server/catgirl-engine-server.exe
           cp -a ${{ github.workspace }}/.server-target/binding ${{ github.workspace }}/upload/server
+
+          # cp -a ${{ github.workspace }}/resources/windows ${{ github.workspace }}/upload/server/resources
+          # cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/server/resources
 
       # Sign Files
       - name: Sign Files (Client/Server)

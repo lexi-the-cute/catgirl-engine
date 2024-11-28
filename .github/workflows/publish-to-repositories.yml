@@ -95,13 +95,6 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
-      # Copy Desktop and Icon Files (For Crate AUR Install)
-      - name: Copy Desktop and Icon Files
-        run: |
-          mkdir -p ${{ github.workspace }}/install
-          cp -a ${{ github.workspace }}/client/assets/resources/catgirl-engine.desktop ${{ github.workspace }}/install
-          cp -a ${{ github.workspace }}/client/assets/vanilla/texture/logo/logo.svg ${{ github.workspace }}/install/catgirl-engine.svg
-
       # Publish to Crates.io
       - name: Publish to catgirl-engine-macros to Crates.io
         run: cargo publish -p catgirl-engine-macros --no-verify

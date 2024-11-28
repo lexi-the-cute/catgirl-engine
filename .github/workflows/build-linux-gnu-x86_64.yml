@@ -113,10 +113,12 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/client-server
+          mkdir -p ${{ github.workspace }}/upload/client-server/resources
           cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release/catgirl-engine ${{ github.workspace }}/upload/client-server
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/client-server
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/client-server
+
+          cp -a ${{ github.workspace }}/resources/linux ${{ github.workspace }}/upload/client-server/resources
+          cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/client-server/resources
 
       # Sign Files
       - name: Sign Files (Client/Server)
