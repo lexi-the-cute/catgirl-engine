@@ -9,27 +9,27 @@ use wgpu::{
 
 /// Struct used for storing the state of a window
 #[derive(Debug)]
-pub struct WindowState<'a> {
+pub(crate) struct WindowState<'a> {
     /// Handle to the window which holds the drawable surface
-    pub window: Arc<Window>,
+    pub(crate) window: Arc<Window>,
 
     /// Context for WGPU objects
-    pub instance: Option<Instance>,
+    instance: Option<Instance>,
 
     /// Handle to the graphics device (e.g. the gpu)
-    pub adapter: Option<Adapter>,
+    pub(crate) adapter: Option<Adapter>,
 
     /// The surface on which to draw graphics on
-    pub surface: Option<Surface<'a>>,
+    pub(crate) surface: Option<Surface<'a>>,
 
     /// The configuration used to setup the surface
-    pub surface_config: Option<SurfaceConfiguration>,
+    surface_config: Option<SurfaceConfiguration>,
 
     /// Connection to the graphics device provided by the adapter
-    pub device: Option<Device>,
+    pub(crate) device: Option<Device>,
 
     /// Queue in which to send commands to the graphics device
-    pub queue: Option<Queue>,
+    pub(crate) queue: Option<Queue>,
 }
 
 impl WindowState<'_> {
@@ -39,7 +39,7 @@ impl WindowState<'_> {
     ///
     /// This may fail to create a WGPU surface
     #[must_use]
-    pub fn new(window: Window) -> Self {
+    pub(crate) fn new(window: Window) -> Self {
         let window_arc: Arc<Window> = Arc::new(window);
 
         Self {
@@ -72,7 +72,7 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to grab a connection to the graphics devices (e.g. gpu)
-    pub async fn initialize_graphics(&mut self) {
+    pub(crate) async fn initialize_graphics(&mut self) {
         // Context for all WGPU objects
         // https://docs.rs/wgpu/latest/wgpu/struct.Instance.html
         debug!("Creating wgpu instance...");
@@ -179,7 +179,7 @@ impl WindowState<'_> {
     /// # Panics
     ///
     /// This may fail to recreate the surface
-    pub fn recreate_surface(&mut self) {
+    pub(crate) fn recreate_surface(&mut self) {
         if self.device.is_none() {
             warn!("Device is not setup... Have graphics been initialized?");
             return;

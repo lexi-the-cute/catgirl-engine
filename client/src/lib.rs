@@ -9,16 +9,16 @@ extern crate tracing;
 pub mod game;
 
 /// Handles the client window
-pub mod window;
+mod window;
 
 /// Handles the rendering code
-pub mod render;
+mod render;
 
 /// Module for storing and using build data
 pub mod build;
 
 /// Module for handling assets
-pub mod assets;
+mod assets;
 
 use std::{env, fs, path::PathBuf};
 use winit::window::Icon;
@@ -31,8 +31,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// # Panics
 ///
 /// May panic if the bytes to load cannot be unwrapped
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub fn get_icon_bytes() -> Option<Vec<u8>> {
+fn get_icon_bytes() -> Option<Vec<u8>> {
     let bytes: Result<Vec<u8>, String> = load_bytes!("vanilla/texture/logo/logo-1024x1024.png");
     if bytes.is_err() {
         warn!("{}", bytes.err().unwrap());
@@ -50,7 +49,7 @@ pub fn get_icon_bytes() -> Option<Vec<u8>> {
 ///
 /// This may fail to load the file from the byte array as an image
 #[must_use]
-pub fn get_icon() -> Option<Icon> {
+fn get_icon() -> Option<Icon> {
     let image_bytes_option: Option<Vec<u8>> = get_icon_bytes();
     image_bytes_option.as_ref()?;
 

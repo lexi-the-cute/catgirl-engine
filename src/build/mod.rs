@@ -7,12 +7,12 @@ use utils::println_string;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 /// Module for grabbing and organizing dependencies
-pub mod dependencies;
+mod dependencies;
 
 // Generate build_info() function at compile time
 build_info::build_info!(
     /// Build info for crate
-    pub fn build_info
+    fn build_info
 );
 
 // Generates the macros_build_info() function at compile time
@@ -21,9 +21,7 @@ build_info::build_info!(
 // macros::macros_build_info!();
 
 /// Print the version of the engine
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_version() {
+pub(super) fn print_version() {
     let info: &BuildInfo = build_info();
 
     // The $... are proc macros - https://doc.rust-lang.org/reference/procedural-macros.html
@@ -42,9 +40,7 @@ pub extern "C" fn print_version() {
 /// # Panics
 ///
 /// May panic if the dependency license info cannot be unwrapped
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_dependencies() {
+pub(super) fn print_dependencies() {
     let dependencies: BTreeMap<String, CrateInfo> = dependencies::get_all_dependencies();
 
     // Only add newline if there are dependencies to print
@@ -71,9 +67,7 @@ pub extern "C" fn print_dependencies() {
 /// # Panics
 ///
 /// May panic if the license info cannot be unwrapped
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_license() {
+pub(super) fn print_license() {
     let info: &BuildInfo = build_info();
 
     // Example: Copyright (C) 2024 Alexis <@alexis@fearness.org> - Zlib License
@@ -94,9 +88,7 @@ pub extern "C" fn print_license() {
 }
 
 /// Prints extra build info
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn print_build_info() {
+pub(super) fn print_build_info() {
     let info: &BuildInfo = build_info();
 
     utils::println_string!(
@@ -116,9 +108,7 @@ pub extern "C" fn print_build_info() {
 }
 
 /// Logs build info including version, commit, and compiled architecture
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn log_build_info() {
+pub(super) fn log_build_info() {
     // Logs debug information (useful for Android)
     let info: &BuildInfo = build_info();
     info!(
@@ -141,7 +131,7 @@ pub extern "C" fn log_build_info() {
 }
 
 /// Helps those who fork the project comply with the license
-pub(crate) fn license_compliance_helper() {
+pub(super) fn license_compliance_helper() {
     let info: &BuildInfo = build_info();
     let crate_name: &String = &info.crate_info.name;
     let repo_url: String = "https://github.com/Foxgirl-Labs/catgirl-engine".to_string();

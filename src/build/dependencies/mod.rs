@@ -27,7 +27,7 @@ fn get_dependencies(info: &BuildInfo) -> BTreeMap<String, CrateInfo> {
 
 /// Get all dependencies from the workspace used to build the engine
 #[must_use]
-pub(crate) fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
+pub(super) fn get_all_dependencies() -> BTreeMap<String, CrateInfo> {
     let mut dependencies: BTreeMap<String, CrateInfo> =
         get_dependencies(crate::build::build_info());
 

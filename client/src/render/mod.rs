@@ -2,36 +2,32 @@
 use wasm_bindgen::prelude::wasm_bindgen;
 
 /// Struct used for storing colors (usually in linear srgb)
-#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub struct Color {
+pub(crate) struct Color {
     /// The color red
     /// 0 (no red) to 1 (fully red)
-    pub red: f64,
+    red: f64,
 
     /// The color green
     /// 0 (no green) to 1 (fully green)
-    pub green: f64,
+    green: f64,
 
     /// The color blue
     /// 0 (no blue) to 1 (fully blue)
-    pub blue: f64,
+    blue: f64,
 
     /// The transparency
     /// 0 (fully transparent) to 1 (fullly opaque)
-    pub alpha: f64,
+    alpha: f64,
 
     /// The color space
     /// Linear is more accurate
-    pub color_space: ColorSpace,
+    color_space: ColorSpace,
 }
 
 /// The color space a color is in
-#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq)]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub enum ColorSpace {
+enum ColorSpace {
     /// Linear Color Space
     LINEAR,
 
@@ -46,9 +42,7 @@ pub enum ColorSpace {
 ///
 /// Outputs f64 instead of f32 for use in `wgpu::Color`
 /// TODO: Research Wide Gamut
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
+pub(crate) fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
     let r: f64 = f64::from(red) / 255.0;
     let g: f64 = f64::from(green) / 255.0;
     let b: f64 = f64::from(blue) / 255.0;
@@ -71,9 +65,7 @@ pub extern "C" fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
 }
 
 /// Converts out color struct to WGPU's color struct
-#[unsafe(no_mangle)]
-// #[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn get_wgpu_color_from_ce_color(color: Color) -> wgpu::Color {
+pub(crate) fn get_wgpu_color_from_ce_color(color: Color) -> wgpu::Color {
     wgpu::Color {
         r: color.red,
         g: color.green,

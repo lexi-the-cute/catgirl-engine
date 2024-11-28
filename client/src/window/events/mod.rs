@@ -29,7 +29,7 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
     let mut window_builder: WindowAttributes = WindowAttributes::default();
 
     // These features are not useful in a web browser
-    #[cfg(not(target_family = "wasm"))]
+    #[cfg(any(target_family = "unix", target_family = "windows"))]
     if cfg!(not(target_family = "wasm")) {
         window_builder = window_builder
             .with_title("Catgirl Engine")

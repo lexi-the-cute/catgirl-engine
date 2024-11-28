@@ -7,9 +7,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 static EXITING: OnceLock<bool> = OnceLock::new();
 
 /// Tells the game engine to start exiting next time it checks the exit status
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn set_exit() {
+pub fn set_exit() {
     if EXITING.get().is_some() {
         return;
     }
@@ -20,8 +18,6 @@ pub extern "C" fn set_exit() {
 }
 
 /// Retrieves if the game engine is exiting
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn is_exiting() -> bool {
+pub fn is_exiting() -> bool {
     *EXITING.get().unwrap_or(&false)
 }

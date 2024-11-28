@@ -1,5 +1,3 @@
-use core::ffi::c_char;
-use std::ffi::NulError;
 use std::sync::{Mutex, OnceLock};
 
 use crate::window::window_state::WindowState;
@@ -19,29 +17,6 @@ use winit::platform::web::EventLoopExtWebSys;
 /// Allows sending custom events to the event loop from the outside
 static EVENT_LOOP_PROXY: OnceLock<EventLoopProxy<()>> = OnceLock::new();
 
-/// Helper function to call [`client_game_loop()`] function from the C ABI
-///
-/// Returns empty C String if suceeded, else returns an error as a string
-///
-/// # Panics
-///
-/// May panic if the supplied string from an error contains a nul byte anywhere other than the end of the string
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn c_client_game_loop() -> *const c_char {
-    if let Err(err) = client_game_loop() {
-        let c_str_result: Result<*const c_char, NulError> =
-            utils::string::get_c_string_from_rust(err);
-
-        c_str_result.unwrap()
-    } else {
-        let c_str_result: Result<*const c_char, NulError> =
-            utils::string::get_c_string_from_rust("");
-
-        c_str_result.unwrap()
-    }
-}
-
 // http://gameprogrammingpatterns.com/game-loop.html
 // https://zdgeier.com/wgpuintro.html
 // https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#loading-an-image-from-a-file
@@ -54,7 +29,6 @@ pub extern "C" fn c_client_game_loop() -> *const c_char {
 /// # Panics
 ///
 /// The event loop may not be created
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
 pub fn client_game_loop() -> Result<(), String> {
     // Create the main loop
     debug!("Creating event loop...");
@@ -244,20 +218,18 @@ pub fn client_game_loop() -> Result<(), String> {
 }
 
 /// Retrieves proxy to interact with game loop
-pub(crate) fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
+fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
     EVENT_LOOP_PROXY.get().cloned()
 }
 
 /// Advances game loop by one cycle
-#[no_mangle]
-#[cfg_attr(target_family = "wasm", wasm_bindgen)]
-pub extern "C" fn advance_event_loop() -> bool {
+pub fn advance_event_loop() -> bool {
     send_event(())
 }
 
 /// Send's User Event to event loop
 #[must_use]
-pub fn send_event(event: ()) -> bool {
+fn send_event(event: ()) -> bool {
     let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
     if let Some(event_loop_proxy) = event_loop_proxy_option {
         let result: Result<(), winit::event_loop::EventLoopClosed<()>> =
