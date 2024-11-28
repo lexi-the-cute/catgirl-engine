@@ -48,4 +48,4 @@ build-info-build = { version = "~0.0.39", default-features = false, features = [
 
 [dependencies]
 syn = { version = "~2" }
-quote = { version = "~1" }
+quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable
