@@ -14,7 +14,7 @@ mod macros;
 pub mod args;
 
 /// Module for storing and using resources
-mod resources;
+pub mod resources;
 
 /// Module for storing and using build data
 pub mod build;
