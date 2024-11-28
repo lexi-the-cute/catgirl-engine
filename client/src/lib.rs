@@ -17,8 +17,9 @@ mod render;
 /// Module for storing and using build data
 pub mod build;
 
-/// Module for handling assets
-mod assets;
+/// Module for handling resources
+#[deprecated]
+mod resources;
 
 use std::{env, fs, path::PathBuf};
 use winit::window::Icon;
@@ -32,7 +33,8 @@ use wasm_bindgen::prelude::wasm_bindgen;
 ///
 /// May panic if the bytes to load cannot be unwrapped
 fn get_icon_bytes() -> Option<Vec<u8>> {
-    let bytes: Result<Vec<u8>, String> = load_bytes!("vanilla/texture/logo/logo-1024x1024.png");
+    let bytes: Result<Vec<u8>, String> =
+        load_bytes!("assets/vanilla/texture/logo/logo-1024x1024.png");
     if bytes.is_err() {
         warn!("{}", bytes.err().unwrap());
         return None;
@@ -73,7 +75,7 @@ fn get_icon() -> Option<Icon> {
 /// May error if home directory cannot be found
 pub fn install_desktop_files() -> Result<(), String> {
     let desktop_file_contents_option: Result<String, String> =
-        load_string!("resources/catgirl-engine.desktop");
+        load_string!("linux/install/game-engine.desktop");
     let icon_bytes_option: Option<Vec<u8>> = get_icon_bytes();
 
     if desktop_file_contents_option.is_err() {

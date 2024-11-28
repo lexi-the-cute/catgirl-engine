@@ -26,7 +26,8 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// Catgirl Engine start
 ///
 /// The starting point when calling as a generic library
-pub fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
+#[no_mangle]
+pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
