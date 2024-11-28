@@ -10,9 +10,9 @@ const TAG: &str = "CatgirlEngine";
 
 /// Process args for future use
 pub(super) fn process_args() {
-    // Store assets path in separate variable
+    // Store resources path in separate variable
     #[cfg(feature = "client")]
-    client::game::store_assets_path(get_args().assets);
+    client::game::store_resources_path(get_args().resources);
 
     // Uninstall desktop files
     #[cfg(all(feature = "client", target_os = "linux"))]
@@ -35,7 +35,7 @@ pub(super) fn process_args() {
     }
 
     #[cfg(feature = "client")]
-    trace!("Assets Path: {:?}", client::game::get_assets_path());
+    trace!("Resources Path: {:?}", client::game::get_resources_path());
 }
 
 /// Retrieve parsed out command line arguments

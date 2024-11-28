@@ -4,7 +4,7 @@
 #[macro_export]
 macro_rules! load_bytes {
     ($file:literal) => {{
-        let external_assets_path: PathBuf = $crate::game::get_assets_path().join($file);
+        let external_assets_path: PathBuf = $crate::game::get_resources_path().join($file);
         trace!("External Assets Path (Bytes): {:?}", external_assets_path);
 
         let embedded_bytes: Result<Vec<u8>, String> = {
@@ -19,7 +19,10 @@ macro_rules! load_bytes {
                     external_assets_path
                 );
 
-                Ok(include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/", $file)).to_vec())
+                Ok(
+                    include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/resources/", $file))
+                        .to_vec(),
+                )
             } else {
                 Err(format!(
                     "Asset Not Found - Unable To Load Asset (Bytes): {:?}",
@@ -36,7 +39,7 @@ macro_rules! load_bytes {
 #[macro_export]
 macro_rules! load_string {
     ($file:literal) => {{
-        let external_assets_path: PathBuf = $crate::game::get_assets_path().join($file);
+        let external_assets_path: PathBuf = $crate::game::get_resources_path().join($file);
         trace!("External Assets Path (String): {:?}", external_assets_path);
 
         let embedded_string: Result<String, String> = {
@@ -53,7 +56,7 @@ macro_rules! load_string {
                 );
 
                 Ok(
-                    include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/assets/", $file))
+                    include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/resources/", $file))
                         .to_string(),
                 )
             } else {

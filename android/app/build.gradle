@@ -56,7 +56,7 @@ static int getAPKVersionCode(String cargoVersion) {
 // Copy Assets From Engine
 // ----------------------------------------
 void copyAssetsFromEngine() {
-    File fromAssetsLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "client/assets")
+    File fromAssetsLocation = new File(buildscript.sourceFile.parentFile.parentFile.parentFile, "resources/assets")
     File toAssetsLocation = new File(buildscript.sourceFile.parentFile, "src/main/assets")
 
     try {
