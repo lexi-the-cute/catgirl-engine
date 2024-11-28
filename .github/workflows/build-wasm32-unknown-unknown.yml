@@ -136,13 +136,15 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Client/Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/wasm
+          mkdir -p ${{ github.workspace }}/upload/wasm/resources
           cp -a ${{ github.workspace }}/pkg ${{ github.workspace }}/upload/wasm
           cp -a ${{ github.workspace }}/examples/wasm/web/index.html ${{ github.workspace }}/upload/wasm
           cp -a ${{ github.workspace }}/examples/wasm/web/manifest.json ${{ github.workspace }}/upload/wasm
           cp -a ${{ github.workspace }}/examples/wasm/web/service-worker.js ${{ github.workspace }}/upload/wasm
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/wasm
-          cp -a ${{ github.workspace }}/client/assets ${{ github.workspace }}/upload/wasm
+
+          # cp -af ${{ github.workspace }}/resources/wasm ${{ github.workspace }}/upload/wasm/resources
+          cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/wasm/resources
 
       # Sign Files
       - name: Sign Files (Client/Server)

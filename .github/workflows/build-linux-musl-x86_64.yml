@@ -113,9 +113,12 @@ jobs:
       # Prepare Artifact Uploads
       - name: Prepare Artifact Uploads (Server)
         run: |
-          mkdir -p ${{ github.workspace }}/upload/server
+          mkdir -p ${{ github.workspace }}/upload/server  # /resources
           cp -a ${{ github.workspace }}/target/x86_64-unknown-linux-musl/release/catgirl-engine ${{ github.workspace }}/upload/server/catgirl-engine-server
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/server
+
+          # cp -a ${{ github.workspace }}/resources/linux ${{ github.workspace }}/upload/server/resources
+          # cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/server/resources
 
       # Sign Files
       - name: Sign Files (Server)

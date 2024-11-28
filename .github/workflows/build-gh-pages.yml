@@ -130,7 +130,11 @@ jobs:
 
       # Copy Assets
       - name: Copy Assets
-        run: cp -af ${{ github.workspace }}/client/assets ${{ github.workspace }}/docs
+        run: |
+          mkdir -p ${{ github.workspace }}/docs/resources
+
+          # cp -af ${{ github.workspace }}/resources/wasm ${{ github.workspace }}/docs/resources
+          cp -af ${{ github.workspace }}/resources/assets ${{ github.workspace }}/docs/resources
 
       # Copy Docs
       - name: Copy Docs
