@@ -6,6 +6,8 @@ use std::{path::PathBuf, sync::OnceLock};
 #[cfg(target_os = "android")]
 use winit::platform::android::activity::AndroidApp;
 
+pub use game_loop::client_game_loop as game_loop;
+
 #[cfg(target_os = "android")]
 /// Holds a reference to the winit AndroidApp activity
 pub static ANDROID_APP: OnceLock<AndroidApp> = OnceLock::new();
@@ -45,19 +47,4 @@ pub fn get_assets_path() -> PathBuf {
         // If process_args is ran, this should never be called
         PathBuf::from("assets")
     }
-}
-
-/// Shortcut to [`game_loop::client_game_loop()`]
-///
-/// [`game_loop::client_game_loop()`]: crate::game::game_loop::client_game_loop()
-///
-/// # Errors
-///
-/// The event loop may not be created
-///
-/// # Panics
-///
-/// The event loop may not be created
-pub fn game_loop() -> Result<(), String> {
-    game_loop::client_game_loop()
 }
