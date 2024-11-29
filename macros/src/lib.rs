@@ -5,22 +5,6 @@
 use quote::ToTokens;
 use syn::{spanned::Spanned, LitStr};
 
-// struct ResourceMacroInput {
-//     expr: T
-// }
-
-// impl syn::parse::Parse for ResourceMacroInput {
-//     fn parse(input: syn::parse::ParseStream) -> Result<Self> {
-//         if input.peek(syn::Token![litexpr]) {
-//             Ok(ResourceMacroInput {
-//                 expr: input.parse()?,
-//             })
-//         } else {
-//             Err(input.error("expected some kind of loop"))
-//         }
-//     }
-// }
-
 /// Embeds resources folder into the binary
 ///
 /// # Panics
@@ -58,7 +42,7 @@ fn parse_resource_macro(tokens: syn::Expr) -> Result<std::string::String, proc_m
 
             // Returns "\"path/to/resources\"" or 123
             // Ok(path_lit.into_token_stream().to_string())
-            Ok(syn::parse::<LitStr>(path_lit.to_token_stream().into())
+            Ok(syn::parse2::<LitStr>(path_lit.to_token_stream())
                 .unwrap()
                 .value())
         }
@@ -85,7 +69,8 @@ fn parse_expr_macro(
 
     if macro_identifier.eq("env") {
         let macro_tokens = macro_token.mac.tokens;
-        let macro_string = syn::parse::<LitStr>(macro_tokens.into()).unwrap().value();
+        let macro_string: std::string::String =
+            syn::parse2::<LitStr>(macro_tokens).unwrap().value();
         let env_var: Result<String, std::env::VarError> = std::env::var(macro_string);
 
         if let Ok(environment_variable) = env_var {
