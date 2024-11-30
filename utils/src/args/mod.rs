@@ -2,9 +2,6 @@ use clap::Parser;
 use core::ffi::{c_char, c_int};
 use std::{path::PathBuf, sync::OnceLock};
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Reference to command line args specified by function
 static ARGS: OnceLock<Args> = OnceLock::new();
 

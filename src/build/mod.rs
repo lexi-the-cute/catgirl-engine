@@ -3,9 +3,6 @@ use std::collections::BTreeMap;
 
 use utils::println_string;
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Module for grabbing and organizing dependencies
 mod dependencies;
 

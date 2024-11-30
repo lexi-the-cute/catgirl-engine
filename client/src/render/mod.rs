@@ -1,6 +1,3 @@
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Struct used for storing colors (usually in linear srgb)
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub(crate) struct Color {
@@ -30,9 +27,6 @@ pub(crate) struct Color {
 enum ColorSpace {
     /// Linear Color Space
     LINEAR,
-
-    /// Gamma Color Space
-    GAMMA,
 }
 
 // https://www.colorspaceconverter.com/converter/rgb-to-srgb-linear

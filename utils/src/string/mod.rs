@@ -1,10 +1,3 @@
-use std::ffi::{CString, NulError};
-
-use core::ffi::c_char;
-
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Repeats a string an arbitrary number of times
 fn repeat_string(repetitions: usize, value: &str) -> String {
     let mut buffer: Vec<&str> = Vec::new();
@@ -40,21 +33,4 @@ pub(crate) fn is_likely_secret(key: String) -> bool {
         s if s.contains("account") => true,
         _ => false,
     }
-}
-
-/// Convert's Rust String to C String
-///
-/// # Errors
-///
-/// May return a `NulError` if the Rust string contained a nul byte anywhere other than the very end of the string
-fn get_c_string_from_rust<S: AsRef<str>>(rstr: S) -> Result<*const c_char, NulError>
-where
-    Vec<u8>: From<S>,
-{
-    let cstr_result: Result<CString, NulError> = CString::new(rstr);
-    if let Ok(cstr) = cstr_result {
-        return Ok(cstr.as_ptr());
-    }
-
-    Err(cstr_result.unwrap_err())
 }
