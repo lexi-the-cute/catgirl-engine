@@ -24,9 +24,6 @@ mod resources;
 use std::{env, fs, path::PathBuf};
 use winit::window::Icon;
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Retrieve the engine's icon as raw bytes
 ///
 /// # Panics

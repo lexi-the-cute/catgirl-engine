@@ -1,8 +1,5 @@
 use std::sync::OnceLock;
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// To help check if [`exit()`] was already called
 static EXITING: OnceLock<bool> = OnceLock::new();
 

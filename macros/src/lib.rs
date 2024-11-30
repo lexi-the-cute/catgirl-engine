@@ -80,22 +80,3 @@ fn parse_expr_macro(
 
     Err("Could not parse expression macro...".to_string())
 }
-
-/// Generates `macros_build_info()`
-///
-/// Waiting for feature request to be implemented:
-///
-/// <https://github.com/danielschemmel/build-info/issues/25>
-#[proc_macro]
-pub fn macros_build_info(_: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    let build_info: &str = env!("BUILD_INFO");
-    quote::quote! {
-        /// Build info for crate
-        fn macros_build_info() -> build_info::BuildInfo {
-            build_info::proc::custom_build_info(
-                #build_info
-            );
-        }
-    }
-    .into()
-}

@@ -1,13 +1,5 @@
 //! Build script for crate
 
-extern crate cbindgen;
-
-use build_info_build::DependencyDepth;
-use cbindgen::{Config, CythonConfig, Language};
-use std::collections::HashMap;
-use std::env;
-use std::path::PathBuf;
-
 /// Main function
 fn main() {
     // Tell Cargo where the resources directory is located
@@ -25,7 +17,7 @@ fn main() {
 
 /// Sets environment variables for building
 fn set_environment_variables() {
-    let resources_path: PathBuf = crate_dir().join("resources");
+    let resources_path: std::path::PathBuf = crate_dir().join("resources");
     let resources_path_str: &str = resources_path.to_str().unwrap();
 
     // println!("cargo:warning=Setting resources path to {resources_path_str}");
@@ -36,7 +28,7 @@ fn set_environment_variables() {
 fn generate_build_info() {
     // https://github.com/danielschemmel/build-info/issues/17
     // https://github.com/danielschemmel/build-info/issues/18
-    let mut depth: DependencyDepth = DependencyDepth::Depth(0);
+    let mut depth: build_info_build::DependencyDepth = build_info_build::DependencyDepth::Depth(0);
 
     // Track environment for rebuilds
     println!("cargo:rerun-if-env-changed=SOURCE_DATE_EPOCH");
@@ -44,10 +36,10 @@ fn generate_build_info() {
     println!("cargo:rerun-if-env-changed=DOCS_RS");
 
     // Custom environment variable to speed up writing code
-    let rust_analyzer: bool = env::var("RUST_ANALYZER").is_ok();
-    let docs_rs: bool = env::var("DOCS_RS").is_ok();
+    let rust_analyzer: bool = std::env::var("RUST_ANALYZER").is_ok();
+    let docs_rs: bool = std::env::var("DOCS_RS").is_ok();
     if rust_analyzer || docs_rs {
-        depth = DependencyDepth::None;
+        depth = build_info_build::DependencyDepth::None;
     }
 
     build_info_build::build_script().collect_runtime_dependencies(depth);
@@ -55,14 +47,19 @@ fn generate_build_info() {
 
 /// Create C/C++/Python bindings
 fn create_bindings() {
-    let crate_directory: PathBuf = crate_dir();
-    let package_name: String = env::var("CARGO_PKG_NAME").unwrap();
+    let crate_directory: std::path::PathBuf = crate_dir();
+    let package_name: String = std::env::var("CARGO_PKG_NAME").unwrap();
 
-    create_binding("h", Language::C, &package_name, &crate_directory);
-    create_binding("hpp", Language::Cxx, &package_name, &crate_directory);
+    create_binding("h", cbindgen::Language::C, &package_name, &crate_directory);
+    create_binding(
+        "hpp",
+        cbindgen::Language::Cxx,
+        &package_name,
+        &crate_directory,
+    );
     create_binding(
         "pxd",
-        Language::Cython,
+        cbindgen::Language::Cython,
         &package_name.replace('-', "_"),
         &crate_directory,
     );
@@ -71,9 +68,9 @@ fn create_bindings() {
 /// Create requested binding
 fn create_binding(
     extension: &str,
-    language: Language,
+    language: cbindgen::Language,
     package_name: &String,
-    crate_directory: &PathBuf,
+    crate_directory: &std::path::PathBuf,
 ) {
     let output_file: String = target_dir()
         .join("binding")
@@ -86,14 +83,14 @@ fn create_binding(
         " * This file exists to help facilitate modding this catgirl game engine...\n" +
         " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" +
         " */";
-    if language == Language::Cython {
+    if language == cbindgen::Language::Cython {
         header =
             "# cython: language_level=3\n\n".to_string() +
             "# This file exists to help facilitate modding this catgirl game engine...\n" +
             "# These generated bindings are either public domain or Unlicense where public domain does not exist";
     }
 
-    let defines: HashMap<String, String> = get_bindgen_defines();
+    let defines: std::collections::HashMap<String, String> = get_bindgen_defines();
 
     // Ensures including the workspace crates
     let workspace_crates = vec![
@@ -108,22 +105,22 @@ fn create_binding(
         ..Default::default()
     };
 
-    let mut config: Config = cbindgen::Config {
+    let mut config: cbindgen::Config = cbindgen::Config {
         namespace: Some(String::from("ffi")),
         header: Some(header),
         only_target_dependencies: true,
-        no_includes: language == Language::Cython,
+        no_includes: language == cbindgen::Language::Cython,
         parse: parse_config,
         language,
         defines,
         ..Default::default()
     };
 
-    if language == Language::Cython {
-        let crate_name: String = env::var("CARGO_PKG_NAME").unwrap();
+    if language == cbindgen::Language::Cython {
+        let crate_name: String = std::env::var("CARGO_PKG_NAME").unwrap();
         let header_filename: String = format!("\"<{crate_name}.h>\"");
 
-        config.cython = CythonConfig {
+        config.cython = cbindgen::CythonConfig {
             header: Some(header_filename),
             ..Default::default()
         };
@@ -135,8 +132,8 @@ fn create_binding(
 }
 
 /// Define custom C defines macros
-fn get_bindgen_defines() -> HashMap<String, String> {
-    let mut defines: HashMap<String, String> = HashMap::new();
+fn get_bindgen_defines() -> std::collections::HashMap<String, String> {
+    let mut defines: std::collections::HashMap<String, String> = std::collections::HashMap::new();
 
     // Features
     defines.insert(
@@ -181,16 +178,16 @@ fn get_bindgen_defines() -> HashMap<String, String> {
 }
 
 /// Find the location of the project's root directory
-fn crate_dir() -> PathBuf {
-    PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap())
+fn crate_dir() -> std::path::PathBuf {
+    std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap())
 }
 
 /// Find the location of the `target/` directory. Note that this may be
 /// overridden by `cmake`, so we also need to check the `CARGO_TARGET_DIR`
 /// variable
-fn target_dir() -> PathBuf {
-    if let Ok(target) = env::var("CARGO_TARGET_DIR") {
-        PathBuf::from(target)
+fn target_dir() -> std::path::PathBuf {
+    if let Ok(target) = std::env::var("CARGO_TARGET_DIR") {
+        std::path::PathBuf::from(target)
     } else {
         crate_dir().join("target")
     }

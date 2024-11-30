@@ -43,9 +43,6 @@ too_many_lines = "allow"
 unused_self = "allow"
 struct_excessive_bools = "allow"
 
-[build-dependencies]
-build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
-
 [dependencies]
 syn = { version = "~2" }
 quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable

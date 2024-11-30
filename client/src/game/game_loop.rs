@@ -2,9 +2,6 @@ use std::sync::{Mutex, OnceLock};
 
 use crate::window::window_state::WindowState;
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 use winit::event::{Event, WindowEvent};
 use winit::event_loop::{ActiveEventLoop, EventLoop, EventLoopProxy};
 

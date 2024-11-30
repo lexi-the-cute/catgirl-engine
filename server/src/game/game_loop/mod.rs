@@ -1,6 +1,3 @@
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 /// Server side game loop
 ///
 /// # Errors

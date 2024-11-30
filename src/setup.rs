@@ -1,9 +1,6 @@
 use clap::Parser;
 use utils::args::Args;
 
-#[cfg(target_family = "wasm")]
-use wasm_bindgen::prelude::wasm_bindgen;
-
 // Constants
 #[cfg(target_os = "android")]
 const TAG: &str = "CatgirlEngine";
@@ -144,12 +141,12 @@ fn set_panic_hook() {
 /// # Panics
 ///
 /// Always
-fn trigger_panic() {
-    let message: &str = "Intentionally triggered a panic for debugging...";
+// fn trigger_panic() {
+//     let message: &str = "Intentionally triggered a panic for debugging...";
 
-    // So, I can't pass a String from to_string(), but can pass as a formatted string
-    panic!("{}", message);
-}
+//     // So, I can't pass a String from to_string(), but can pass as a formatted string
+//     panic!("{}", message);
+// }
 
 /// Determines if client or server and starts the engine
 ///
