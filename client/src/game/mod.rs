@@ -22,14 +22,14 @@ pub fn store_android_app(app: AndroidApp) {
     let _app: &AndroidApp = ANDROID_APP.get_or_init(|| app);
 }
 
-#[cfg(target_os = "android")]
-/// Retrieves a reference to the stored winit AndroidApp activity
-fn get_android_app() -> AndroidApp {
-    ANDROID_APP
-        .get()
-        .expect("Could not get stored reference to AndroidApp")
-        .clone()
-}
+// #[cfg(target_os = "android")]
+// /// Retrieves a reference to the stored winit AndroidApp activity
+// fn get_android_app() -> AndroidApp {
+//     ANDROID_APP
+//         .get()
+//         .expect("Could not get stored reference to AndroidApp")
+//         .clone()
+// }
 
 /// Stores a custom path to the resources directory
 pub fn store_resources_path(path: PathBuf) {

@@ -18,13 +18,3 @@ pub(crate) fn get_canvas() -> Option<HtmlCanvasElement> {
 
     Some(canvas_element)
 }
-
-/// Prints to log with formatted text
-fn print_formatted_test() {
-    use wasm_bindgen::JsValue;
-    use web_sys::console;
-
-    let message: JsValue = JsValue::from_str("%cTest");
-    let style: JsValue = JsValue::from_str("color: orange; font-weight: bold; font-size: 200%");
-    console::debug_2(&message, &style);
-}
