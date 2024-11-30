@@ -87,7 +87,10 @@ jobs:
 
       # Install Wasm-Bindgen-CLI
       - name: Install Wasm-Bindgen-CLI
-        run: $HOME/.cargo/bin/cargo install wasm-bindgen-cli
+        run: |
+          # wasm-bindgen is currently unstable, so getting the exact version used is required
+          export WASM_BINDGEN_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          $HOME/.cargo/bin/cargo install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION
 
       # Install Wasm-Opt
       - name: Install Wasm-Opt
