@@ -22,7 +22,6 @@ pub mod build;
 mod resources;
 
 use std::{env, fs, path::PathBuf};
-use winit::window::Icon;
 
 /// Retrieve the engine's icon as raw bytes
 ///
@@ -48,7 +47,8 @@ fn get_icon_bytes() -> Option<Vec<u8>> {
 ///
 /// This may fail to load the file from the byte array as an image
 #[must_use]
-fn get_icon() -> Option<Icon> {
+#[cfg(not(target_family = "wasm"))]
+fn get_icon() -> Option<winit::window::Icon> {
     let image_bytes_option: Option<Vec<u8>> = get_icon_bytes();
     image_bytes_option.as_ref()?;
 
@@ -58,7 +58,7 @@ fn get_icon() -> Option<Icon> {
         .into_rgba8();
     let (width, height) = image.dimensions();
 
-    Some(Icon::from_rgba(image.into_raw(), width, height).unwrap())
+    Some(winit::window::Icon::from_rgba(image.into_raw(), width, height).unwrap())
 }
 
 /// Install Linux desktop files

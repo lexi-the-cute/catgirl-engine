@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>catgirl-engine</id>
+    <name>Catgirl Engine</name>
+
+	<summary>A game engine for cool moddability and procedurally generated data</summary>
+	<description>
+		<p>This game engine is designed around moddability. This will allow people to make different games based on it, which should hypothetically all be compatible with each other. In order to enforce the spirit of the design, the game built into the engine will itself be a mod.
+
+The engine will also allow transferring items and other entities between single player and multiplayer including transferring modded items from a modded server to a vanilla client.</p>
+	</description>
+	<launchable type="desktop-id">catgirl-engine.desktop</launchable>
+	<url type="homepage">https://github.com/Foxgirl-Labs/catgirl-engine</url>
+
+	<metadata_license>MIT</metadata_license>
+	<project_license>Zlib</project_license>
+
+    <supports>
+        <control>pointing</control>
+        <control>keyboard</control>
+        <control>touch</control>
+    </supports>
+
+	<screenshots>
+		<screenshot type="default">
+			<image></image>
+		</screenshot>
+	</screenshots>
+	<provides>
+		<id>catgirl-engine.desktop</id>
+	</provides>
+</component>

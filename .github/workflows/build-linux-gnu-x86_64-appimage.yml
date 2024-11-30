@@ -42,7 +42,7 @@ jobs:
       - name: Install and Cache APT Packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: gnupg2 gcc g++ libfuse2 desktop-file-utils zsync  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
+          packages: gnupg2 gcc g++ libfuse2 desktop-file-utils zsync appstream  # gcc-x86-64-linux-gnu g++-x86-64-linux-gnu
           version: 1.0
           execute_install_scripts: true
 
@@ -122,7 +122,7 @@ jobs:
           git update-index --skip-worktree ${{ github.workspace }}/Cargo.toml
 
       # Compile Program
-      - name: Build Engine
+      - name: Build Engine Client/Server
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"

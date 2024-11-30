@@ -74,7 +74,7 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [package.metadata.appimage]
-assets = ["resources/linux", "resources/assets", "target/binding"]
+assets = ["resources/assets", "resources/appimage/usr", "target/binding"]
 icon = "resources/assets/vanilla/texture/logo/logo.svg"
 desktop_file = "catgirl-engine.desktop"
 startup_wm_class = "catgirl-engine"

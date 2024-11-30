@@ -82,7 +82,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
 
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
-fn android_main(app: AndroidApp) {
+pub fn android_main(app: AndroidApp) {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
