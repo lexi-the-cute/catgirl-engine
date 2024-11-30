@@ -107,7 +107,7 @@ client = { version = "0.14.37-alpha", package = "catgirl-engine-client", path = 
 server = { version = "0.14.37-alpha", package = "catgirl-engine-server", path = "server", optional = true }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
-wasm-bindgen = { version = "~0.2", default-features = true }
+wasm-bindgen = { version = "0.2.96", default-features = true }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 clap = { version = "~4", features = ["derive"] }
