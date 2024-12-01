@@ -10,9 +10,15 @@ pub(crate) fn get_canvas() -> Option<HtmlCanvasElement> {
         .document()
         .expect("Could not find window document...");
 
-    let canvas: Element = web_sys::Document::get_element_by_id(&document, "catgirl-engine-canvas")
-        .expect("Could not find canvas element...");
+    let mut canvas_option: Option<Element> =
+        web_sys::Document::get_element_by_id(&document, "catgirl-engine-canvas");
 
+    // Itch.io's https://html-classic.itch.zone/html/xxxxxxx/index.html uses the id `canvas`
+    if canvas_option.is_none() {
+        canvas_option = web_sys::Document::get_element_by_id(&document, "canvas");
+    }
+
+    let canvas: Element = canvas_option.unwrap();
     let canvas_element: HtmlCanvasElement =
         Element::dyn_into(canvas).expect("Could not cast canvas Element to HtmlCanvasElement...");
 
