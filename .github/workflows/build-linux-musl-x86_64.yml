@@ -236,20 +236,3 @@ jobs:
           export DISPLAY_LABEL="Linux Server GLibc (x86_64)"
 
           gh release upload v$VERSION "$ARTIFACT_PATH"#"$DISPLAY_LABEL" -R ${{ github.repository }}
-
-      # Install Butler (For Uploading to Itch.io)
-      - name: Install Butler (Upload to Itch.io)
-        run: |
-          # https://itch.io/docs/butler/pushing.html#channel-names
-          # Setup For Installation
-          mkdir -p ${{ github.workspace }}/tools/butler
-
-          # Install Butler
-          wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
-          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
-
-      # Publish to Itch.io
-      - name: 🎮 Publish to Itch.io
-        run: |
-          # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz fomxgorl/catgirl-engine:linux-musl-x86_64-server
