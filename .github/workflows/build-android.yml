@@ -243,7 +243,6 @@ jobs:
         with:
           name: CatgirlEngine-Android
           path: ${{ github.workspace }}/upload/CatgirlEngine-Android.tar.xz
-          include-hidden-files: true
 
       # List Environment
       - name: List Environment
@@ -398,9 +397,11 @@ jobs:
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
         run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk fomxgorl/catgirl-engine:android
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk fomxgorl/catgirl-engine:android-arm64
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk fomxgorl/catgirl-engine:android-armeabi-v7a
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk fomxgorl/catgirl-engine:android-x86
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk fomxgorl/catgirl-engine:android-x86_64
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk fomxgorl/catgirl-engine:android --userversion $VERSION
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk fomxgorl/catgirl-engine:android-arm64 --userversion $VERSION
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk fomxgorl/catgirl-engine:android-armeabi-v7a --userversion $VERSION
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk fomxgorl/catgirl-engine:android-x86 --userversion $VERSION
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk fomxgorl/catgirl-engine:android-x86_64 --userversion $VERSION

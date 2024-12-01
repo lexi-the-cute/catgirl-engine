@@ -174,7 +174,6 @@ jobs:
         with:
           name: CatgirlEngine-Linux-x86_64-GNU-AppImage-Tar
           path: ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz
-          include-hidden-files: true
 
       # List Environment
       - name: List Environment
@@ -308,5 +307,7 @@ jobs:
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
         run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage --userversion $VERSION

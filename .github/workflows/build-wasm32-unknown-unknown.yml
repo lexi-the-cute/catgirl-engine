@@ -171,12 +171,18 @@ jobs:
           zip -r9 ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.zip .
 
       # Upload Engine
-      - name: Upload Engine (Release)
+      - name: Upload Engine Tar (Release)
         uses: actions/upload-artifact@v4
         with:
           name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz
-          include-hidden-files: true
+
+      # Upload Engine
+      - name: Upload Engine Zip (Release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-Wasm-32-bit-Tar
+          path: ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.zip
 
       # List Environment
       - name: List Environment
@@ -293,5 +299,7 @@ jobs:
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
         run: |
+          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip/CatgirlEngine-Wasm-32-bit-Web.zip fomxgorl/catgirl-engine:wasm-32-bit-web
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip/CatgirlEngine-Wasm-32-bit-Web.zip fomxgorl/catgirl-engine:wasm-32-bit-web --userversion $VERSION
