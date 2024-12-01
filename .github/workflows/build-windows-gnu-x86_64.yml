@@ -319,4 +319,4 @@ jobs:
         run: |
           # Upload App
           ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Windows-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:windows-x86_64
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:windows-x86_64-server
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:windows-x86_64-server

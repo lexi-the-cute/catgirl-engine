@@ -5,7 +5,7 @@
 name = "catgirl-engine-macros"
 description = "Procedural macro crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.37-alpha"
+version = "0.14.37"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/Foxgirl-Labs/catgirl-engine.git"

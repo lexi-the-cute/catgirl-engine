@@ -157,12 +157,18 @@ jobs:
           gpg --sign checksums.sha512
 
       # Compress Files
-      - name: Compress Files (Client/Server)
+      - name: Compress Files as Tar (Client/Server)
         run: |
           export XZ_OPT=-e9
 
           cd ${{ github.workspace }}/upload/wasm
           tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.tar.xz .
+
+      # Compress Files
+      - name: Compress Files as Zip (Client/Server)
+        run: |
+          cd ${{ github.workspace }}/upload/wasm
+          zip -r9 ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.zip .
 
       # Upload Engine
       - name: Upload Engine (Release)
@@ -228,6 +234,13 @@ jobs:
           name: CatgirlEngine-Wasm-32-bit-Tar
           path: ${{ github.workspace }}/artifacts/wasm-32-bit-web
 
+      # Download Engine
+      - name: Download Engine (Release)
+        uses: actions/download-artifact@v4
+        with:
+          name: CatgirlEngine-Wasm-32-bit-Zip
+          path: ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip
+
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
         run: |
@@ -281,4 +294,4 @@ jobs:
       - name: 🎮 Publish to Itch.io
         run: |
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web/CatgirlEngine-Wasm-32-bit-Web.tar.xz fomxgorl/catgirl-engine:wasm-32-bit-web
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip/CatgirlEngine-Wasm-32-bit-Web.zip fomxgorl/catgirl-engine:wasm-32-bit-web
