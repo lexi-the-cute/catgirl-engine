@@ -1,0 +1,54 @@
+name: "Initialize Rust"
+description: "Initializes Rust"
+inputs:
+  toolchain:
+    description: "The toolchain to build for, for example stable or stable-x86_64-unknown-linux-gnu"
+    required: false
+    default: "stable"
+  build-target:
+    description: "The target to build for, for example wasm32-unknown-unknown"
+    required: true
+outputs:
+  hello:
+    description: ""
+    value: ${{ steps.step_id.outputs.var_name }}
+runs:
+  using: "composite"
+  env:
+    RUSTUP_TOOLCHAIN: ${{ inputs.toolchain }}
+  steps:
+      # Install Rust
+      - name: Make Tools Directory
+        shell: bash
+        run: mkdir -p ${{ github.workspace }}/tools
+
+      - name: Download Rust Installer
+        shell: bash
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+
+      - name: Make Rust Installer Executable
+        shell: bash
+        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+
+      - name: Install Rust
+        shell: bash
+        run: ${{ github.workspace }}/tools/rust.sh -y
+
+      # TODO: Determine if necessary
+      - name: Load Cargo Environment
+        shell: bash
+        run: source "$HOME/.cargo/env"
+
+      # Setup Rust Build Caching
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "$BUILD_TARGET-rust"
+        env:
+          BUILD_TARGET: ${{ inputs.build-target }}
+
+      # Add Build Targets
+      - name: Add Build Target
+        shell: bash
+        run: $HOME/.cargo/bin/rustup target add $BUILD_TARGET
+        env:
+          BUILD_TARGET: ${{ inputs.build-target }}
