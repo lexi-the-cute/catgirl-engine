@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>catgirl-engine</id>
+	<id>land.catgirl.engine</id>
     <name>Catgirl Engine</name>
 
 	<summary>A game engine for cool moddability and procedurally generated data</summary>
