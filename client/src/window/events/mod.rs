@@ -30,7 +30,7 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
 
     // These features are not useful in a web browser
     #[cfg(any(target_family = "unix", target_family = "windows"))]
-    if cfg!(not(target_family = "wasm")) {
+    if cfg!(any(target_family = "unix", target_family = "windows")) {
         window_builder = window_builder
             .with_title("Catgirl Engine")
             .with_window_icon(crate::get_icon());
