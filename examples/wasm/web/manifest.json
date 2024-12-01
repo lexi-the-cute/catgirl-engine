@@ -3,7 +3,7 @@
     "short_name": "Catgirl Engine",
     "description": "A game engine for cool moddability and procedurally generated data",
     "id": "catgirl-engine",
-    "start_url": "/?pwa_home=true",
+    "start_url": "./?pwa_home=true",
     "display": "standalone",
     "background_color": "#151718",
     "theme_color": "#68478d",

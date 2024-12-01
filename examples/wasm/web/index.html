@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/png" href="/assets/vanilla/texture/logo/logo-1024x1024-color.png" />
-    <link rel="icon" type="image/svg+xml" href="/assets/vanilla/texture/logo/logo.svg" />
-    <link rel="license" href="/pkg/LICENSE" />
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" type="image/png" href="./assets/vanilla/texture/logo/logo-1024x1024-color.png" />
+    <link rel="icon" type="image/svg+xml" href="./assets/vanilla/texture/logo/logo.svg" />
+    <link rel="license" href="./pkg/LICENSE" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catgirl Engine</title>
     <style>
@@ -28,7 +28,7 @@
                 performance.mark("Service-Worker: Register");
             }
 
-            navigator.serviceWorker.register("/service-worker.js");
+            navigator.serviceWorker.register("./service-worker.js");
         }
     </script>
     <script type="module">
@@ -36,7 +36,7 @@
             performance.mark("Wasm: Download");
         }
 
-        import init, * as engine from "/pkg/catgirl-engine.js";
+        import init, * as engine from "./pkg/catgirl-engine.js";
 
         window.addEventListener('load', async function () {
             if (window.performance && performance.mark) {
