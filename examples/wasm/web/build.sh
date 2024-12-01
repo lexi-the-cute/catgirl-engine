@@ -1,6 +1,6 @@
 #!/bin/sh
 TOOLCHAIN="stable"  # "stable" or "nightly"
-PROFILE="release"  # "debug" or "release"
+PROFILE="debug"  # "debug" or "release"
 ENABLE_SOURCES="true"
 HOST=http://127.0.0.1:8000/pkg
 # RUST_LOG=info

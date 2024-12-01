@@ -26,7 +26,8 @@ use wasm_bindgen::prelude::wasm_bindgen;
 /// Catgirl Engine start
 ///
 /// The starting point when calling as a generic library
-#[no_mangle]
+#[unsafe(no_mangle)]
+#[cfg(not(target_family = "wasm"))]
 pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
@@ -80,6 +81,7 @@ pub extern "C" fn ce_start(argc: c_int, argv: *const *const c_char) -> c_int {
     }
 }
 
+#[unsafe(no_mangle)]
 #[cfg(all(target_os = "android", feature = "client"))]
 /// The starting point when loaded as an Android app
 pub fn android_main(app: AndroidApp) {
