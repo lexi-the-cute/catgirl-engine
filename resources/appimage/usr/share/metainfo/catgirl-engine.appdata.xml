@@ -15,17 +15,6 @@ The engine will also allow transferring items and other entities between single 
 	<metadata_license>MIT</metadata_license>
 	<project_license>Zlib</project_license>
 
-    <supports>
-        <control>pointing</control>
-        <control>keyboard</control>
-        <control>touch</control>
-    </supports>
-
-	<screenshots>
-		<screenshot type="default">
-			<image></image>
-		</screenshot>
-	</screenshots>
 	<provides>
 		<id>catgirl-engine.desktop</id>
 	</provides>

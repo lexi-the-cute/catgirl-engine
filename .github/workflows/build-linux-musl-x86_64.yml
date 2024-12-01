@@ -141,7 +141,6 @@ jobs:
         with:
           name: CatgirlEngine-Server-Linux-x86_64-Musl-Tar
           path: ${{ github.workspace }}/upload/CatgirlEngine-Server-Linux-x86_64-Musl.tar.xz
-          include-hidden-files: true
 
       # List Environment
       - name: List Environment
