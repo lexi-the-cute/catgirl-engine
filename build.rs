@@ -144,6 +144,18 @@ fn get_bindgen_defines() -> std::collections::HashMap<String, String> {
         "feature = server".to_string(),
         "DEFINE_SERVER_FEATURE".to_string(),
     );
+    defines.insert(
+        "feature = embed-resources".to_string(),
+        "DEFINE_EMBED_RESOURCES_FEATURE".to_string(),
+    );
+    defines.insert(
+        "feature = logging-subscriber".to_string(),
+        "DEFINE_LOGGING_SUBSCRIBER_FEATURE".to_string(),
+    );
+    defines.insert(
+        "feature = appimage".to_string(),
+        "DEFINE_APPIMAGE_FEATURE".to_string(),
+    );
 
     // Basic OS Targets
     defines.insert(
@@ -172,6 +184,10 @@ fn get_bindgen_defines() -> std::collections::HashMap<String, String> {
     defines.insert(
         "target_family = windows".to_string(),
         "DEFINE_WINDOWS_FAMILY".to_string(),
+    );
+    defines.insert(
+        "target_family = wasm".to_string(),
+        "DEFINE_WASM_FAMILY".to_string(),
     );
 
     defines

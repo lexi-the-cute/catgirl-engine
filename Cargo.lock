@@ -481,7 +481,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.14.37"
+version = "0.14.38"
 dependencies = [
  "android_logger",
  "build-info",
@@ -509,7 +509,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-client"
-version = "0.14.37"
+version = "0.14.38"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -529,7 +529,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-macros"
-version = "0.14.37"
+version = "0.14.38"
 dependencies = [
  "quote",
  "syn",
@@ -537,7 +537,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-server"
-version = "0.14.37"
+version = "0.14.38"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -550,7 +550,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-utils"
-version = "0.14.37"
+version = "0.14.38"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -563,8 +563,7 @@ dependencies = [
 [[package]]
 name = "cbindgen"
 version = "0.27.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3fce8dd7fcfcbf3a0a87d8f515194b49d6135acab73e18bd380d1d93bb1a15eb"
+source = "git+https://github.com/mozilla/cbindgen.git?rev=b9b8f8878ac272935193c449066b88c0cb94ced2#b9b8f8878ac272935193c449066b88c0cb94ced2"
 dependencies = [
  "heck 0.4.1",
  "indexmap",
