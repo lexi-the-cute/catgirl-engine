@@ -181,7 +181,7 @@ jobs:
       - name: Upload Engine Zip (Release)
         uses: actions/upload-artifact@v4
         with:
-          name: CatgirlEngine-Wasm-32-bit-Tar
+          name: CatgirlEngine-Wasm-32-bit-Zip
           path: ${{ github.workspace }}/upload/CatgirlEngine-Wasm-32-bit-Web.zip
 
       # List Environment
