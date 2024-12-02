@@ -214,7 +214,7 @@ fn target_dir() -> std::path::PathBuf {
 fn print_environment_vars() {
     let vars: std::env::Vars = std::env::vars();
 
-    println!("Environment Variables:");
+    println!("cargo:warning=Environment Variables:");
     for (key, var) in vars {
         if is_likely_secret(key.clone()) {
             println!("cargo:warning=Env: {key}: {}", mask_string(var));
