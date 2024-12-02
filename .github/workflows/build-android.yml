@@ -385,6 +385,8 @@ jobs:
 
       # Install Butler (For Uploading to Itch.io)
       - name: Install Butler (Upload to Itch.io)
+        id: download-butler
+        continue-on-error: true
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
@@ -392,6 +394,17 @@ jobs:
 
           # Install Butler
           wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
+          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+
+      # Fallback to deal with DDOS attack on Itch.io at the time of writing
+      - name: Install Butler (Fallback)
+        if: failure() && steps.download-butler.outcome == 'failure'
+        run: |
+          # Setup For Installation
+          mkdir -p ${{ github.workspace }}/tools/butler
+
+          # Install Butler
+          wget https://github.com/lexi-the-cute/butler/releases/download/v15.21.0/butler-linux-amd64.zip -O ${{ github.workspace }}/butler-linux-amd64.zip
           unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Publish to Itch.io
