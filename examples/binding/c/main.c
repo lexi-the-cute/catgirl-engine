@@ -8,5 +8,5 @@ int main(int argc, const char * const* argv) {
   // print_version();
   // print_dependencies();
 
-  return ce_start(argc, argv);
+  return start_engine(argc, argv);
 }

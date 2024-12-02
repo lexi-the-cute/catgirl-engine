@@ -4,7 +4,8 @@ use wasm_bindgen::prelude::*;
 use web_sys::{Document, Element, HtmlCanvasElement};
 
 /// Find canvas element on page
-pub(crate) fn get_canvas() -> Option<HtmlCanvasElement> {
+#[no_mangle]
+pub fn get_canvas() -> Option<HtmlCanvasElement> {
     let document: Document = web_sys::window()
         .expect("Could not find browser window...")
         .document()

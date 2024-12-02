@@ -5,5 +5,5 @@ using namespace std;
 int main(int argc, const char * const* argv) {
   cout << "Starting Catgirl Engine From C++ Program\n";
 
-  return ffi::ce_start(argc, argv);
+  return ffi::start_engine(argc, argv);
 }

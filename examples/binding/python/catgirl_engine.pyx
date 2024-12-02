@@ -17,6 +17,6 @@ def run(args: list):
         for n, a in enumerate(args):
             c_args[n] = a
 
-        return catgirl_engine.ce_start(len(args), c_args)
+        return catgirl_engine.start_engine(len(args), c_args)
     finally:
         free(c_args)

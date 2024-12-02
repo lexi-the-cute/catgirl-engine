@@ -20,6 +20,7 @@ resolver = "2"
 
 [lib]
 name = "main"
+path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]  # cdylib - C Compatible Lib, rlib - Rust Lib
 
 # Optimize for faster build times
