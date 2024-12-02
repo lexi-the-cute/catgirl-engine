@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="./manifest.json" />
-    <link rel="icon" type="image/png" href="./assets/vanilla/texture/logo/logo-1024x1024-color.png" />
-    <link rel="icon" type="image/svg+xml" href="./assets/vanilla/texture/logo/logo.svg" />
+    <link rel="icon" type="image/png" href="./resources/assets/vanilla/texture/logo/logo-1024x1024-color.png" />
+    <link rel="icon" type="image/svg+xml" href="./resources/assets/vanilla/texture/logo/logo.svg" />
     <link rel="license" href="./pkg/LICENSE" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catgirl Engine</title>
@@ -36,14 +36,19 @@
             performance.mark("Wasm: Download");
         }
 
-        import init, * as engine from "./pkg/catgirl-engine.js";
+        import init, * as engine from "./pkg/main.js";
 
         window.addEventListener('load', async function () {
             if (window.performance && performance.mark) {
                 performance.mark("Wasm: Initialize");
             }
 
-            await init();
+            try {
+                await init();
+            } catch(error) {
+                // console.error("Wasm Error: " + error);
+                return;
+            }
 
             if (window.performance && performance.mark) {
                 performance.mark("Wasm: Loaded");
