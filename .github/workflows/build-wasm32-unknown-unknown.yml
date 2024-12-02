@@ -300,7 +300,7 @@ jobs:
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
-        if: failure() && steps.download-butler.outcome == 'failure'
+        if: steps.download-butler.outcome == 'failure'
         run: |
           # Setup For Installation
           mkdir -p ${{ github.workspace }}/tools/butler
