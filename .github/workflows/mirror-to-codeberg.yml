@@ -24,6 +24,9 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      - name: Enable Git LFS Locking Support
+        run: git config lfs.https://codeberg.org/alexis/catgirl-engine.git/info/lfs.locksverify true
+
       # Mirror To Codeberg
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
