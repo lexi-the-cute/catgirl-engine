@@ -21,6 +21,7 @@ jobs:
         with:
           lfs: true
           submodules: recursive
+          fetch-depth: 0  # 0 means fetch all git history (no shallow clones)
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
