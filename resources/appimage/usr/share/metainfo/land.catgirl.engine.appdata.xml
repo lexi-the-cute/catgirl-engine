@@ -10,7 +10,7 @@
 The engine will also allow transferring items and other entities between single player and multiplayer including transferring modded items from a modded server to a vanilla client.</p>
 	</description>
 	<launchable type="desktop-id">catgirl-engine.desktop</launchable>
-	<url type="homepage">https://github.com/Foxgirl-Labs/catgirl-engine</url>
+	<url type="homepage">https://github.com/foxgirl-labs/catgirl-engine</url>
 
 	<metadata_license>MIT</metadata_license>
 	<project_license>Zlib</project_license>
