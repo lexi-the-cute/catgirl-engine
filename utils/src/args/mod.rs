@@ -6,7 +6,11 @@ use std::{path::PathBuf, sync::OnceLock};
 static ARGS: OnceLock<Args> = OnceLock::new();
 
 #[derive(Parser, Debug, Clone)]
-#[command(author, about, long_about = None)]
+#[command(
+    author,
+    about="A game engine for cool moddability and procedurally generated data",
+    long_about = None
+)]
 /// List of possible command line arguments
 pub struct Args {
     /// Start the engine in dedicated server mode
