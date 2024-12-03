@@ -42,7 +42,36 @@ fn generate_build_info() {
         depth = build_info_build::DependencyDepth::None;
     }
 
-    build_info_build::build_script().collect_runtime_dependencies(depth);
+    if docs_rs {
+        generate_fake_build_info();
+    } else {
+        build_info_build::build_script().collect_runtime_dependencies(depth);
+    }
+}
+
+fn generate_fake_build_info() {
+    let manifest_path: std::path::PathBuf = manifest_path();
+    let manifest_contents: String = std::fs::read_to_string(manifest_path).unwrap();
+    let manifest: toml::map::Map<String, toml::Value> =
+        manifest_contents.parse::<toml::Table>().unwrap();
+    let mut build_info_version: String = manifest
+        .get("dependencies")
+        .unwrap()
+        .get("build-info")
+        .unwrap()
+        .get("version")
+        .unwrap()
+        .as_str()
+        .unwrap()
+        .to_string();
+    build_info_version = build_info_version
+        .chars()
+        .filter(|&c| matches!(c, '.') | c.is_numeric())
+        .collect();
+
+    // Waiting for https://github.com/danielschemmel/build-info/pull/22
+    let fake_data: String = format!("{{\"version\":\"{build_info_version}\",\"string\":\"KLUv/QCIfQUAYgkfGVDVAwMdwRLXXHpu1nWhFFma/2dL1xlougUumP6+APJ9j7KUcySnJLNNYnIltvVKqeC/kGIndHF1BHBIK4wv5CwLsGwLAIbYKL23nt62NWU9rV260vtN+lC7Gc6hQ88VJDnBTTvK2A2OlclP+nFC6Qv9pXpT45P+5vu7IxUg8C5MIG6uRGrJdMrMEWkifBPLCOMAwA1Yz4S7cwMRQhcZnAnHBXwkhgMFxxsKFg==\"}}");
+    println!("cargo:rustc-env=BUILD_INFO={fake_data}");
 }
 
 /// Create C/C++/Python bindings
@@ -193,7 +222,12 @@ fn get_bindgen_defines() -> std::collections::HashMap<String, String> {
     defines
 }
 
-/// Find the location of the project's root directory
+/// Find the location of the crate's manifest
+fn manifest_path() -> std::path::PathBuf {
+    std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_PATH").unwrap())
+}
+
+/// Find the location of the crate's directory
 fn crate_dir() -> std::path::PathBuf {
     std::path::PathBuf::from(std::env::var("CARGO_MANIFEST_DIR").unwrap())
 }

@@ -1,10 +1,10 @@
+/// Module for grabbing and organizing dependencies
+mod dependencies;
+
 use build_info::{chrono::Datelike, BuildInfo, CrateInfo};
 use std::collections::BTreeMap;
 
 use utils::println_string;
-
-/// Module for grabbing and organizing dependencies
-mod dependencies;
 
 // Generate build_info() function at compile time
 build_info::build_info!(
