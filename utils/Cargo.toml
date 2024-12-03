@@ -45,6 +45,7 @@ toml = { version = "~0.8", default-features = false }
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 
 [dependencies]
+common = { version = "0.14.39", package = "catgirl-engine-common", path = "../common" }
 macros = { version = "0.14.39", package = "catgirl-engine-macros", path = "../macros" }
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }

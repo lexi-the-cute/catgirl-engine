@@ -487,6 +487,7 @@ dependencies = [
  "build-info",
  "build-info-build",
  "catgirl-engine-client",
+ "catgirl-engine-common",
  "catgirl-engine-macros",
  "catgirl-engine-server",
  "catgirl-engine-utils",
@@ -516,6 +517,7 @@ version = "0.14.39"
 dependencies = [
  "build-info",
  "build-info-build",
+ "catgirl-engine-common",
  "catgirl-engine-macros",
  "catgirl-engine-utils",
  "futures",
@@ -534,9 +536,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "catgirl-engine-common"
+version = "0.14.39"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "catgirl-engine-macros"
 version = "0.14.39"
 dependencies = [
+ "catgirl-engine-common",
  "quote",
  "serde",
  "serde_json",
@@ -549,6 +560,7 @@ version = "0.14.39"
 dependencies = [
  "build-info",
  "build-info-build",
+ "catgirl-engine-common",
  "catgirl-engine-macros",
  "catgirl-engine-utils",
  "rhai",
@@ -565,6 +577,7 @@ version = "0.14.39"
 dependencies = [
  "build-info",
  "build-info-build",
+ "catgirl-engine-common",
  "catgirl-engine-macros",
  "clap",
  "serde",

@@ -2,19 +2,24 @@
 # cargo-features = ["edition2024"]
 
 [package]
-name = "catgirl-engine-server"
-description = "Server side part of the catgirl-engine crate"
+name = "catgirl-engine-common"
+description = "Common crate for the catgirl-engine crate"
 license = "Zlib"
 version = "0.14.39"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/foxgirl-labs/catgirl-engine.git"
-documentation = "https://docs.rs/catgirl-engine-server"
+documentation = "https://docs.rs/catgirl-engine-common"
 homepage = "https://github.com/foxgirl-labs/catgirl-engine"
 readme = "ReadMe.md"
 authors = ["Alexis <@alexis@fearness.org>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 resolver = "2"
+
+[lib]
+# doc generation disabled until cargo bug is fixed. https://github.com/rust-lang/cargo/issues/10368#issuecomment-1776114335
+doc = false
+proc-macro = true
 
 [features]
 default = []
@@ -38,17 +43,6 @@ too_many_lines = "allow"
 unused_self = "allow"
 struct_excessive_bools = "allow"
 
-[build-dependencies]
-toml = { version = "~0.8", default-features = false }
-build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
-
 [dependencies]
-common = { version = "0.14.39", package = "catgirl-engine-common", path = "../common" }
-macros = { version = "0.14.39", package = "catgirl-engine-macros", path = "../macros" }
-utils = { version = "0.14.39", package = "catgirl-engine-utils", path = "../utils" }
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
-build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
-wasm-bindgen = { version = "0.2.96", default-features = true }
-tracing = { version = "~0.1", default-features = false, features = ["log"] }
-rhai = { version = "~1", default-features = false, features = ["serde"] }
