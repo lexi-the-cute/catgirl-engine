@@ -500,6 +500,8 @@ dependencies = [
  "fern",
  "getrandom",
  "pretty_env_logger",
+ "serde",
+ "serde_json",
  "toml",
  "tracing",
  "wasm-bindgen",
@@ -520,6 +522,8 @@ dependencies = [
  "futures-channel",
  "image",
  "jni",
+ "serde",
+ "serde_json",
  "toml",
  "tracing",
  "wasm-bindgen",
@@ -534,6 +538,8 @@ name = "catgirl-engine-macros"
 version = "0.14.39"
 dependencies = [
  "quote",
+ "serde",
+ "serde_json",
  "syn",
 ]
 
@@ -546,6 +552,8 @@ dependencies = [
  "catgirl-engine-macros",
  "catgirl-engine-utils",
  "rhai",
+ "serde",
+ "serde_json",
  "toml",
  "tracing",
  "wasm-bindgen",
@@ -559,6 +567,8 @@ dependencies = [
  "build-info-build",
  "catgirl-engine-macros",
  "clap",
+ "serde",
+ "serde_json",
  "toml",
  "tracing",
  "wasm-bindgen",
