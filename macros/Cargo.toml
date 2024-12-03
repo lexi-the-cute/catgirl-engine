@@ -46,3 +46,5 @@ struct_excessive_bools = "allow"
 [dependencies]
 syn = { version = "~2" }
 quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable
+serde = { version = "~1.0", default-features = false }
+serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }

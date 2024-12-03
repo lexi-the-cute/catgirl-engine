@@ -6,8 +6,28 @@
     html_playground_url = "https://play.rust-lang.org"
 )]
 
+use std::{collections::VecDeque, path::PathBuf};
+
 use proc_macro::TokenStream;
+use serde::Serialize;
 use syn::{Expr, LitStr};
+
+/// Embedded Files
+#[derive(Serialize, Debug)]
+struct EmbeddedFile {
+    /// Relative File Path
+    path: String,
+
+    /// Contents of File
+    contents: Vec<u8>,
+}
+
+/// Embedded Files
+#[derive(Serialize, Debug)]
+struct EmbeddedFiles {
+    /// Vector containing embedded files
+    inner: Vec<EmbeddedFile>,
+}
 
 /// Embeds resources folder into the binary
 ///
@@ -22,16 +42,69 @@ pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
         return error_message;
     }
 
-    let resources_path: String = resources_path_result.unwrap();
-    // println!("Resources Path: {resources_path:?}");
+    let files: EmbeddedFiles = get_files(&PathBuf::from(&resources_path_result.unwrap()));
+    let files_json: String = serde_json::to_string(&files).unwrap();
 
     quote::quote! {
-        pub(super) fn get_embedded_resources() -> String {
-            // Ignore this for now
-            #resources_path.to_string()
+        pub(super) fn get_embedded_resources() -> utils::resources::EmbeddedFiles {
+            let files_json: String = #files_json.to_string();
+            serde_json::from_str::<utils::resources::EmbeddedFiles>(&files_json).unwrap()
         }
     }
     .into()
+}
+
+/// Recursively retrieve within the specified directory
+fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
+    let mut dirs: VecDeque<std::fs::ReadDir> =
+        VecDeque::from([std::fs::read_dir(resources_path).unwrap()]);
+    let mut files: EmbeddedFiles = EmbeddedFiles { inner: Vec::new() };
+
+    while !dirs.is_empty() {
+        let dir: std::fs::ReadDir = VecDeque::pop_front(&mut dirs).unwrap();
+
+        for dir_entry in dir {
+            let full_path: PathBuf = dir_entry.as_ref().unwrap().path();
+            let path: PathBuf = shorten_file_paths(&resources_path, &full_path);
+
+            if full_path.is_dir() {
+                dirs.push_back(std::fs::read_dir(&full_path).unwrap());
+            } else {
+                // println!("FP: {:?}; SFP: {:?}", &full_path, &path);
+                files.inner.push(EmbeddedFile {
+                    path: path.to_str().unwrap().to_string(),
+                    contents: std::fs::read(path).unwrap(),
+                });
+            }
+        }
+    }
+
+    files
+}
+
+/// Shorten the path to only the part after the tail end
+fn shorten_file_paths(resources_path: &PathBuf, file_path: &PathBuf) -> PathBuf {
+    let path_components: std::path::Components<'_> = file_path.components();
+
+    let mut shortened_file_path: PathBuf = PathBuf::new();
+    let mut temp_base_path: PathBuf = PathBuf::new();
+    let mut found_root_path: bool = false;
+    for component in path_components {
+        temp_base_path.push(component);
+
+        if !found_root_path && temp_base_path.eq(resources_path) {
+            temp_base_path.clear();
+            temp_base_path.push(PathBuf::from(resources_path.file_name().unwrap()));
+
+            found_root_path = true;
+        }
+
+        if found_root_path {
+            shortened_file_path = temp_base_path.clone();
+        }
+    }
+
+    shortened_file_path
 }
 
 /// Parses resource macros
@@ -55,7 +128,7 @@ fn parse_resource_macro(tokens: TokenStream) -> Result<String, TokenStream> {
     }
 }
 
-// Parses String Literals
+/// Parses String Literals
 fn parse_string_literal(string_literal: syn::ExprLit) -> String {
     syn::parse2::<syn::LitStr>(quote::ToTokens::to_token_stream(&string_literal))
         .unwrap()
