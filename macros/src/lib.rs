@@ -1,13 +1,13 @@
 //! Procedural Macros for the game engine
+#![warn(missing_docs)]
 #![doc(
     html_favicon_url = "https://engine.catgirl.land/resources/assets/vanilla/texture/logo/logo.svg",
     html_logo_url = "https://engine.catgirl.land/resources/assets/vanilla/texture/logo/logo.svg",
     html_playground_url = "https://play.rust-lang.org"
 )]
-#![warn(missing_docs)]
 
-use quote::ToTokens;
-use syn::{spanned::Spanned, LitStr};
+use proc_macro::TokenStream;
+use syn::{Expr, LitStr};
 
 /// Embeds resources folder into the binary
 ///
@@ -15,22 +15,18 @@ use syn::{spanned::Spanned, LitStr};
 ///
 /// Panics if passed no tokens or tokens other than a literal or env!() macro
 #[proc_macro]
-pub fn generate_embedded_resources(tokens: proc_macro::TokenStream) -> proc_macro::TokenStream {
-    // Parses tokens into a rust expression
-    let tokens_expr = syn::parse_macro_input!(tokens as syn::Expr);
-
+pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
     // Parse Resources Path
-    let resources_path_result: Result<String, proc_macro::TokenStream> =
-        parse_resource_macro(tokens_expr);
+    let resources_path_result: Result<String, TokenStream> = parse_resource_macro(tokens);
     if let Err(error_message) = resources_path_result {
         return error_message;
     }
 
     let resources_path: String = resources_path_result.unwrap();
-    println!("Resources Path: {resources_path:?}");
+    // println!("Resources Path: {resources_path:?}");
 
     quote::quote! {
-        pub(super) fn get_embedded_resources() -> std::string::String {
+        pub(super) fn get_embedded_resources() -> String {
             // Ignore this for now
             #resources_path.to_string()
         }
@@ -39,24 +35,26 @@ pub fn generate_embedded_resources(tokens: proc_macro::TokenStream) -> proc_macr
 }
 
 /// Parses resource macros
-fn parse_resource_macro(tokens: syn::Expr) -> Result<std::string::String, proc_macro::TokenStream> {
-    match tokens {
-        syn::Expr::Lit(path_lit) => {
-            // let path = tokens as syn::LitStr;
+fn parse_resource_macro(tokens: TokenStream) -> Result<String, TokenStream> {
+    use syn::spanned::Spanned;
 
-            // Returns "\"path/to/resources\"" or 123
-            // Ok(path_lit.into_token_stream().to_string())
-            Ok(syn::parse2::<LitStr>(path_lit.to_token_stream())
-                .unwrap()
-                .value())
-        }
-        syn::Expr::Macro(path_macro) => {
-            // Returns environment variable not found
-            // Environment variable set in main crate build.rs
-            Ok(parse_expr_macro(path_macro).unwrap())
-        }
+    // Parses tokens into a rust expression
+    let tokens_expr_result: Result<Expr, syn::Error> = syn::parse::<Expr>(tokens);
+    if let Err(error) = tokens_expr_result {
+        return Err(error.to_compile_error().into());
+    }
+
+    // Match against the two types of tokens we care about and parse
+    let tokens_expr: Expr = tokens_expr_result.unwrap();
+    match tokens_expr {
+        syn::Expr::Lit(path_lit) => Ok(syn::parse2::<syn::LitStr>(
+            quote::ToTokens::to_token_stream(&path_lit),
+        )
+        .unwrap()
+        .value()),
+        syn::Expr::Macro(path_macro) => Ok(parse_expr_macro(path_macro).unwrap()),
         _ => Err(syn::Error::new(
-            tokens.span(),
+            tokens_expr.span(),
             "Cannot parse embedded resource expression...",
         )
         .to_compile_error()
@@ -65,16 +63,13 @@ fn parse_resource_macro(tokens: syn::Expr) -> Result<std::string::String, proc_m
 }
 
 /// Parses Expression Macros
-fn parse_expr_macro(
-    macro_token: syn::ExprMacro,
-) -> Result<std::string::String, std::string::String> {
+fn parse_expr_macro(macro_token: syn::ExprMacro) -> Result<String, String> {
     let macro_segments: &syn::PathSegment = macro_token.mac.path.segments.first().unwrap();
     let macro_identifier: String = macro_segments.ident.to_string();
 
     if macro_identifier.eq("env") {
         let macro_tokens = macro_token.mac.tokens;
-        let macro_string: std::string::String =
-            syn::parse2::<LitStr>(macro_tokens).unwrap().value();
+        let macro_string: String = syn::parse2::<LitStr>(macro_tokens).unwrap().value();
         let env_var: Result<String, std::env::VarError> = std::env::var(macro_string);
 
         if let Ok(environment_variable) = env_var {

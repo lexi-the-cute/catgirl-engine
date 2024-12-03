@@ -85,7 +85,7 @@ pub(super) fn setup_logger() {
     } else {
         // windows, unix (which includes Linux, BSD, and OSX), or target_os = "macos"
         let mut builder = pretty_env_logger::formatted_builder();
-        if let Ok(s) = ::std::env::var("RUST_LOG") {
+        if let Ok(s) = std::env::var("RUST_LOG") {
             // Set logger according to RUST_LOG environment variable
             builder.parse_filters(&s);
         } else {
