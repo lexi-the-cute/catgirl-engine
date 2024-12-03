@@ -101,6 +101,7 @@ wasm-opt = ['-Oz']
 cbindgen = { git = "https://github.com/mozilla/cbindgen.git", rev = "b9b8f8878ac272935193c449066b88c0cb94ced2" }
 
 [build-dependencies]
+toml = { version = "~0.8", default-features = false }
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 cc = { version = "~1.2", default-features = false }
 cbindgen = { version = "~0", default-features = false }

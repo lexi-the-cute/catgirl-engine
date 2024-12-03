@@ -41,6 +41,7 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [build-dependencies]
+toml = { version = "~0.8", default-features = false }
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 
 [dependencies]

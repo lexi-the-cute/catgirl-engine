@@ -500,6 +500,7 @@ dependencies = [
  "fern",
  "getrandom",
  "pretty_env_logger",
+ "toml",
  "tracing",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -519,6 +520,7 @@ dependencies = [
  "futures-channel",
  "image",
  "jni",
+ "toml",
  "tracing",
  "wasm-bindgen",
  "wasm-bindgen-futures",
@@ -544,6 +546,7 @@ dependencies = [
  "catgirl-engine-macros",
  "catgirl-engine-utils",
  "rhai",
+ "toml",
  "tracing",
  "wasm-bindgen",
 ]
@@ -556,6 +559,7 @@ dependencies = [
  "build-info-build",
  "catgirl-engine-macros",
  "clap",
+ "toml",
  "tracing",
  "wasm-bindgen",
 ]
