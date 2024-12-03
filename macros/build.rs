@@ -13,8 +13,8 @@ fn print_environment_vars() {
 
     println!("cargo:warning=Environment Variables:");
     for (key, var) in vars {
-        if is_likely_secret(key.clone()) {
-            println!("cargo:warning=Env: {key}: {}", mask_string(var));
+        if is_likely_secret(&key) {
+            println!("cargo:warning=Env: {key}: {}", mask_string(&var));
         } else {
             println!("cargo:warning=Env: {key}: {var}");
         }
@@ -22,7 +22,7 @@ fn print_environment_vars() {
 }
 
 /// Determines if string represents a secret
-fn is_likely_secret(key: String) -> bool {
+fn is_likely_secret(key: &String) -> bool {
     match key.to_lowercase() {
         // Very Likely
         s if s.contains("password") => true,
@@ -53,7 +53,7 @@ fn repeat_string(repetitions: usize, value: &str) -> String {
 }
 
 /// Masks a secret
-fn mask_string(value: String) -> String {
+fn mask_string(value: &String) -> String {
     let size: usize = value.chars().count();
     repeat_string(size, "*")
 }

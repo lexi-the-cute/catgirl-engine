@@ -136,7 +136,7 @@ impl WindowState<'_> {
         let size: PhysicalSize<u32> = if cfg!(target_family = "wasm") {
             PhysicalSize::new(400, 100)
         } else {
-            self.window.clone().inner_size()
+            self.window.inner_size()
         };
 
         trace!(
@@ -200,7 +200,7 @@ impl WindowState<'_> {
             .create_surface(self.window.clone())
             .expect("Could not create surface!");
 
-        let size: PhysicalSize<u32> = self.window.clone().inner_size();
+        let size: PhysicalSize<u32> = self.window.inner_size();
         surface.configure(
             self.device.as_ref().unwrap(),
             &surface

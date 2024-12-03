@@ -11,7 +11,7 @@ fn main() {
 
 /// Generate build info
 fn generate_build_info() {
-    let mut depth: build_info_build::DependencyDepth = build_info_build::DependencyDepth::Depth(0);
+    let depth: build_info_build::DependencyDepth = build_info_build::DependencyDepth::Depth(0);
 
     // Track environment for rebuilds
     println!("cargo:rerun-if-env-changed=SOURCE_DATE_EPOCH");
@@ -21,11 +21,8 @@ fn generate_build_info() {
     // Custom environment variable to speed up writing code
     let rust_analyzer: bool = std::env::var("RUST_ANALYZER").is_ok();
     let docs_rs: bool = std::env::var("DOCS_RS").is_ok();
-    if rust_analyzer || docs_rs {
-        depth = build_info_build::DependencyDepth::None;
-    }
 
-    if docs_rs {
+    if rust_analyzer || docs_rs {
         generate_fake_build_info();
     } else {
         build_info_build::build_script().collect_runtime_dependencies(depth);
@@ -69,8 +66,8 @@ fn print_environment_vars() {
 
     println!("cargo:warning=Environment Variables:");
     for (key, var) in vars {
-        if is_likely_secret(key.clone()) {
-            println!("cargo:warning=Env: {key}: {}", mask_string(var));
+        if is_likely_secret(&key) {
+            println!("cargo:warning=Env: {key}: {}", mask_string(&var));
         } else {
             println!("cargo:warning=Env: {key}: {var}");
         }
@@ -78,7 +75,7 @@ fn print_environment_vars() {
 }
 
 /// Determines if string represents a secret
-fn is_likely_secret(key: String) -> bool {
+fn is_likely_secret(key: &String) -> bool {
     match key.to_lowercase() {
         // Very Likely
         s if s.contains("password") => true,
@@ -109,7 +106,7 @@ fn repeat_string(repetitions: usize, value: &str) -> String {
 }
 
 /// Masks a secret
-fn mask_string(value: String) -> String {
+fn mask_string(value: &String) -> String {
     let size: usize = value.chars().count();
     repeat_string(size, "*")
 }
