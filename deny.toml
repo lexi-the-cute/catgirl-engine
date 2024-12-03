@@ -89,14 +89,12 @@ ignore = [
 # See https://spdx.org/licenses/ for list of possible licenses
 # [possible values: any SPDX 3.11 short identifier (+ optional exception)].
 allow = [
-    "Unlicense",  # Unlicense is explicitly enforced public domain even where public domain does not normally exist
     "CC0-1.0", # https://www.tldrlegal.com/license/creative-commons-cc0-1-0-universal (public domain)
     "MIT",  # https://softwareengineering.stackexchange.com/a/311309 (distribution of license only required for original project)
     "Zlib", # https://www.zlib.net/zlib_license.html (no attribution needed for binary)
     "Apache-2.0", # https://www.apache.org/licenses/LICENSE-2.0.html (distribution of license only applies to original work or derivative work)
     "MPL-2.0", # https://opensource.org/license/mpl-2-0 (distribution of license only applies to original work or derivative work)
     "ISC", # https://www.isc.org/licenses (distribution of license only applies to original work or derivative work)
-    # "Unicode-DFS-2016", # https://www.unicode.org/license.txt (distribution of license only applies to original work or derivative work)
     "Apache-2.0 WITH LLVM-exception", # https://spdx.org/licenses/LLVM-exception.html (same as Apache-2.0, but less restrictive)
 
     "Unicode-3.0", # https://www.unicode.org/license.txt (requires attribution)
