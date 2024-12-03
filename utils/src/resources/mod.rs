@@ -1,22 +1,5 @@
-use serde::{Deserialize, Serialize};
+use common::resources::{EmbeddedFile, EmbeddedFiles};
 use std::{path::Path, sync::OnceLock};
-
-/// Embedded Files
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-pub struct EmbeddedFile {
-    /// Relative File Path
-    pub path: String,
-
-    /// Contents of File
-    pub contents: Vec<u8>,
-}
-
-/// Embedded Files
-#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-pub struct EmbeddedFiles {
-    /// Vector containing embedded files
-    pub inner: Vec<EmbeddedFile>,
-}
 
 /// This is where resources are embedded if embedding is compiled in
 // #[cfg(feature = "embed-resources")]

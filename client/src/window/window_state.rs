@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use serde::{Deserialize, Serialize};
 use winit::{dpi::PhysicalSize, window::Window};
 
 use wgpu::{

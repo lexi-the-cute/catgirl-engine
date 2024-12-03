@@ -6,28 +6,11 @@
     html_playground_url = "https://play.rust-lang.org"
 )]
 
+use common::resources::{EmbeddedFile, EmbeddedFiles};
 use std::{collections::VecDeque, path::PathBuf};
 
 use proc_macro::TokenStream;
-use serde::Serialize;
 use syn::{Expr, LitStr};
-
-/// Embedded Files
-#[derive(Serialize, Debug, Clone, PartialEq)]
-struct EmbeddedFile {
-    /// Relative File Path
-    path: String,
-
-    /// Contents of File
-    contents: Vec<u8>,
-}
-
-/// Embedded Files
-#[derive(Serialize, Debug, Clone, PartialEq)]
-struct EmbeddedFiles {
-    /// Vector containing embedded files
-    inner: Vec<EmbeddedFile>,
-}
 
 /// Embeds resources folder into the binary
 ///
@@ -46,9 +29,9 @@ pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
     let files_json: String = serde_json::to_string(&files).unwrap();
 
     quote::quote! {
-        pub(super) fn get_embedded_resources() -> utils::resources::EmbeddedFiles {
+        pub(super) fn get_embedded_resources() -> common::resources::EmbeddedFiles {
             let files_json: String = #files_json.to_string();
-            serde_json::from_str::<utils::resources::EmbeddedFiles>(&files_json).unwrap()
+            serde_json::from_str::<common::resources::EmbeddedFiles>(&files_json).unwrap()
         }
     }
     .into()

@@ -5,3 +5,6 @@
     html_logo_url = "https://engine.catgirl.land/resources/assets/vanilla/texture/logo/logo.svg",
     html_playground_url = "https://play.rust-lang.org"
 )]
+
+/// Resources structs
+pub mod resources;

@@ -8,8 +8,6 @@
     html_playground_url = "https://play.rust-lang.org"
 )]
 
-use std::path::PathBuf;
-
 #[macro_use]
 extern crate tracing;
 
@@ -38,6 +36,7 @@ fn main() -> Result<(), String> {
 
     #[cfg(feature = "embed-resources")]
     {
+        use std::path::PathBuf;
         let readme = utils::resources::get_resource_string(PathBuf::from("resources/ReadMe.md"));
         warn!("{}", readme.unwrap());
     }

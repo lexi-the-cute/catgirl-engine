@@ -16,11 +16,6 @@ authors = ["Alexis <@alexis@fearness.org>"]  # <@user@server> is a Fedi Address
 edition = "2021"
 resolver = "2"
 
-[lib]
-# doc generation disabled until cargo bug is fixed. https://github.com/rust-lang/cargo/issues/10368#issuecomment-1776114335
-doc = false
-proc-macro = true
-
 [features]
 default = []
 
