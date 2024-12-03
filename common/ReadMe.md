@@ -1,6 +1,6 @@
 # What's This About
 
-This is the procedural macro crate used by the catgirl-engine crate as well as the client, server, and utility crates.
+This is the common macro crate used by the catgirl-engine crate as well as the client, server, utility, and macro crates.
 
 # Docs
 

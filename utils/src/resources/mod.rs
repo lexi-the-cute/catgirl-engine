@@ -1,8 +1,8 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::{path::Path, sync::OnceLock};
 
 /// Embedded Files
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct EmbeddedFile {
     /// Relative File Path
     pub path: String,
@@ -12,7 +12,7 @@ pub struct EmbeddedFile {
 }
 
 /// Embedded Files
-#[derive(Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct EmbeddedFiles {
     /// Vector containing embedded files
     pub inner: Vec<EmbeddedFile>,

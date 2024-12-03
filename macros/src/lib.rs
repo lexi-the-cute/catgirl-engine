@@ -13,7 +13,7 @@ use serde::Serialize;
 use syn::{Expr, LitStr};
 
 /// Embedded Files
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 struct EmbeddedFile {
     /// Relative File Path
     path: String,
@@ -23,7 +23,7 @@ struct EmbeddedFile {
 }
 
 /// Embedded Files
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 struct EmbeddedFiles {
     /// Vector containing embedded files
     inner: Vec<EmbeddedFile>,

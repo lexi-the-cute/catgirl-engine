@@ -9,7 +9,7 @@ version = "0.14.39"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/foxgirl-labs/catgirl-engine.git"
-documentation = "https://docs.rs/catgirl-engine-server"
+documentation = "https://docs.rs/catgirl-engine-macros"
 homepage = "https://github.com/foxgirl-labs/catgirl-engine"
 readme = "ReadMe.md"
 authors = ["Alexis <@alexis@fearness.org>"]  # <@user@server> is a Fedi Address
@@ -44,6 +44,7 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [dependencies]
+common = { version = "0.14.39", package = "catgirl-engine-common", path = "../common" }
 syn = { version = "~2" }
 quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable
 serde = { version = "~1.0", default-features = false }

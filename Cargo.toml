@@ -58,6 +58,7 @@ targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-gnu", "wasm32-unknown-
 
 [workspace]
 members = [
+    "common",
     "macros",
     "utils",
     "client",
@@ -107,6 +108,7 @@ cc = { version = "~1.2", default-features = false }
 cbindgen = { version = "~0", default-features = false }
 
 [dependencies]
+common = { version = "0.14.39", package = "catgirl-engine-common", path = "common" }
 macros = { version = "0.14.39", package = "catgirl-engine-macros", path = "macros" }
 utils = { version = "0.14.39", package = "catgirl-engine-utils", path = "utils" }
 client = { version = "0.14.39", package = "catgirl-engine-client", path = "client", optional = true }

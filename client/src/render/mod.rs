@@ -1,5 +1,7 @@
+use serde::{Deserialize, Serialize};
+
 /// Struct used for storing colors (usually in linear srgb)
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq)]
 pub(crate) struct Color {
     /// The color red
     /// 0 (no red) to 1 (fully red)
@@ -23,7 +25,7 @@ pub(crate) struct Color {
 }
 
 /// The color space a color is in
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq)]
 enum ColorSpace {
     /// Linear Color Space
     LINEAR,
