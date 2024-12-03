@@ -49,10 +49,10 @@ pub(super) fn print_dependencies() {
     // Print all dependencies
     // Loop through dependency list to print
     for (name, dep) in dependencies {
-        let license: String = if dep.license.is_some() {
-            dep.license.as_ref().unwrap().clone()
+        let license: &String = if dep.license.is_some() {
+            dep.license.as_ref().unwrap()
         } else {
-            "Unknown".to_string()
+            &"Unknown".to_string()
         };
 
         println_string!("{} v{} - License {}", name, dep.version, license);
@@ -69,16 +69,16 @@ pub(super) fn print_license() {
 
     // Example: Copyright (C) 2024 Alexis <@alexis@fearness.org> - Zlib License
     let year: i32 = info.timestamp.year();
-    let author: String = if info.crate_info.authors.is_empty() {
-        "Unknown".to_string()
+    let author: &String = if info.crate_info.authors.is_empty() {
+        &"Unknown".to_string()
     } else {
-        info.crate_info.authors[0].clone()
+        &info.crate_info.authors[0]
     };
 
-    let license: String = if info.crate_info.license.is_some() {
-        info.crate_info.license.as_ref().unwrap().clone()
+    let license: &String = if info.crate_info.license.is_none() {
+        &"Unknown".to_string()
     } else {
-        "Unknown".to_string()
+        info.crate_info.license.as_ref().unwrap()
     };
 
     utils::println_string!("Copyright (C) {} {} - {} License", year, author, license);

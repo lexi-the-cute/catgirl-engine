@@ -36,8 +36,8 @@ pub fn print_environment_vars() {
 
     println_string!("Environment Variables:");
     for (key, var) in vars {
-        if crate::string::is_likely_secret(key.clone()) {
-            println_string!("{}: {}", key, crate::string::mask_string(var));
+        if crate::string::is_likely_secret(&key) {
+            println_string!("{}: {}", key, crate::string::mask_string(&var));
         } else {
             println_string!("{}: {}", key, var);
         }

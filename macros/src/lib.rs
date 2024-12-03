@@ -36,39 +36,39 @@ pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
 
 /// Parses resource macros
 fn parse_resource_macro(tokens: TokenStream) -> Result<String, TokenStream> {
-    use syn::spanned::Spanned;
-
     // Parses tokens into a rust expression
-    let tokens_expr_result: Result<Expr, syn::Error> = syn::parse::<Expr>(tokens);
-    if let Err(error) = tokens_expr_result {
+    let token_expr_result: Result<Expr, syn::Error> = syn::parse::<Expr>(tokens);
+    if let Err(error) = token_expr_result {
         return Err(error.to_compile_error().into());
     }
 
     // Match against the two types of tokens we care about and parse
-    let tokens_expr: Expr = tokens_expr_result.unwrap();
-    match tokens_expr {
-        syn::Expr::Lit(path_lit) => Ok(syn::parse2::<syn::LitStr>(
-            quote::ToTokens::to_token_stream(&path_lit),
-        )
-        .unwrap()
-        .value()),
-        syn::Expr::Macro(path_macro) => Ok(parse_expr_macro(path_macro).unwrap()),
-        _ => Err(syn::Error::new(
-            tokens_expr.span(),
+    let token_expr: Expr = token_expr_result.unwrap();
+    match token_expr {
+        // Parses for string literal ("/path/to/resources")
+        syn::Expr::Lit(path_lit) => Ok(parse_string_literal(path_lit)),
+        syn::Expr::Macro(path_macro) => parse_expr_macro(path_macro),
+        _ => Err(create_error(
+            token_expr,
             "Cannot parse embedded resource expression...",
-        )
-        .to_compile_error()
-        .into()),
+        )),
     }
 }
 
+// Parses String Literals
+fn parse_string_literal(string_literal: syn::ExprLit) -> String {
+    syn::parse2::<syn::LitStr>(quote::ToTokens::to_token_stream(&string_literal))
+        .unwrap()
+        .value()
+}
+
 /// Parses Expression Macros
-fn parse_expr_macro(macro_token: syn::ExprMacro) -> Result<String, String> {
+fn parse_expr_macro(macro_token: syn::ExprMacro) -> Result<String, TokenStream> {
     let macro_segments: &syn::PathSegment = macro_token.mac.path.segments.first().unwrap();
     let macro_identifier: String = macro_segments.ident.to_string();
 
     if macro_identifier.eq("env") {
-        let macro_tokens = macro_token.mac.tokens;
+        let macro_tokens = macro_token.mac.tokens.clone();
         let macro_string: String = syn::parse2::<LitStr>(macro_tokens).unwrap().value();
         let env_var: Result<String, std::env::VarError> = std::env::var(macro_string);
 
@@ -77,5 +77,17 @@ fn parse_expr_macro(macro_token: syn::ExprMacro) -> Result<String, String> {
         }
     }
 
-    Err("Could not parse expression macro...".to_string())
+    Err(create_error(
+        macro_token.into(),
+        "Could not parse expression macro...",
+    ))
+}
+
+/// Create's an error as a TokenStream to unwind to compiler
+fn create_error(token_expr: Expr, message: &str) -> TokenStream {
+    use syn::spanned::Spanned;
+
+    syn::Error::new(token_expr.span(), message)
+        .to_compile_error()
+        .into()
 }

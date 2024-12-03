@@ -214,11 +214,6 @@ pub fn client_game_loop() -> Result<(), String> {
     Ok(())
 }
 
-/// Retrieves proxy to interact with game loop
-fn get_event_loop_proxy() -> Option<EventLoopProxy<()>> {
-    EVENT_LOOP_PROXY.get().cloned()
-}
-
 /// Advances game loop by one cycle
 pub fn advance_event_loop() -> bool {
     send_event(())
@@ -227,7 +222,7 @@ pub fn advance_event_loop() -> bool {
 /// Send's User Event to event loop
 #[must_use]
 fn send_event(event: ()) -> bool {
-    let event_loop_proxy_option: Option<EventLoopProxy<()>> = get_event_loop_proxy();
+    let event_loop_proxy_option: Option<&EventLoopProxy<()>> = EVENT_LOOP_PROXY.get();
     if let Some(event_loop_proxy) = event_loop_proxy_option {
         let result: Result<(), winit::event_loop::EventLoopClosed<()>> =
             event_loop_proxy.send_event(event);
