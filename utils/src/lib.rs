@@ -1,10 +1,10 @@
 //! Utilities for the game engine
+#![warn(missing_docs)]
 #![doc(
     html_favicon_url = "https://engine.catgirl.land/resources/assets/vanilla/texture/logo/logo.svg",
     html_logo_url = "https://engine.catgirl.land/resources/assets/vanilla/texture/logo/logo.svg",
     html_playground_url = "https://play.rust-lang.org"
 )]
-#![warn(missing_docs)]
 
 #[allow(unused_imports)]
 #[macro_use]
