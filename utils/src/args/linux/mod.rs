@@ -2,7 +2,7 @@ use clap::Parser;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-#[derive(Serialize, Deserialize, Parser, Debug, Clone, PartialEq)]
+#[derive(Serialize, Deserialize, Parser, Debug, Clone, PartialEq, PartialOrd)]
 #[command(
     author,
     about="A game engine for cool moddability and procedurally generated data",

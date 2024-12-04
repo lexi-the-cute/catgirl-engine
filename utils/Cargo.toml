@@ -52,4 +52,4 @@ serde_json = { version = "~1.0", default-features = false, features = ["alloc"] 
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 clap = { version = "~4", features = ["derive"] }
-wasm-bindgen = { version = "0.2.96", default-features = true }
+wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }

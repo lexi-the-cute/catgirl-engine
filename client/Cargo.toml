@@ -51,27 +51,25 @@ utils = { version = "0.14.39", package = "catgirl-engine-utils", path = "../util
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
-wasm-bindgen = { version = "0.2.96", default-features = true }
+wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita"] }
-wgpu = { version = "~23", default-features = false }
-image = { version = "~0.25" }
-# egui = { version = "~0.26" }
-# egui-wgpu = { version = "~0.26" }
+winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita", "serde"] }
+wgpu = { version = "~23", default-features = false, features = ["serde"] }
+image = { version = "~0.25", features = ["serde"] }
 
 [target.'cfg(not(target_env="musl"))'.dependencies]
-winit = { version = "~0.30", default-features = true }
+winit = { version = "~0.30", default-features = true, features = ["serde"] }
 
 [target.'cfg(not(target_family="wasm"))'.dependencies]
-wgpu = { version = "~23", default-features = true, features = ["fragile-send-sync-non-atomic-wasm"] }
+wgpu = { version = "~23", default-features = true, features = ["fragile-send-sync-non-atomic-wasm", "serde"] }
 futures = { version = "~0.3", default-features = false, features = ["executor"] }
 
 [target.'cfg(target_os="android")'.dependencies]
-winit = { version = "~0.30", default-features = true, features = ["android-game-activity"] }
+winit = { version = "~0.30", default-features = true, features = ["android-game-activity", "serde"] }
 jni = { version = "~0.21", default-features = false }
 
 [target.'cfg(target_family="wasm")'.dependencies]
-wgpu = { version = "~23", default-features = false, features = ["webgpu", "webgl", "fragile-send-sync-non-atomic-wasm"] }
+wgpu = { version = "~23", default-features = false, features = ["webgpu", "webgl", "fragile-send-sync-non-atomic-wasm", "serde"] }
 wasm-bindgen-futures = { version = "~0.4", default-features = false }
 futures-channel = { version = "~0.3", default-features = false }
 web-sys = { version = "~0.3", features = ["Window", "Document", "Element", "HtmlCanvasElement"]}

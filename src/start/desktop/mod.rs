@@ -30,7 +30,7 @@ pub extern "C" fn start_engine(argc: c_int, argv: *const *const c_char) -> c_int
     //   parse_args_from_c(...) to validate
     let args: Option<Vec<String>>;
     unsafe {
-        args = utils::args::desktop::parse_args_from_c(argc, argv.cast::<*const *const c_char>());
+        args = utils::args::c_abi::parse_args_from_c(argc, argv.cast::<*const *const c_char>());
     }
 
     // Override Clap's args
