@@ -117,7 +117,7 @@ serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
-wasm-bindgen = { version = "0.2.96", default-features = true }
+wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 clap = { version = "~4", features = ["derive"] }
@@ -127,7 +127,7 @@ ctrlc = { version = "~3", default-features = false }
 
 [target.'cfg(target_os="android")'.dependencies]
 android_logger = { version = "~0.14", default-features = false }
-winit = { version = "~0.30", default-features = false, features = ["android-game-activity"] }
+winit = { version = "~0.30", default-features = false, features = ["android-game-activity", "serde"] }
 
 [target.'cfg(target_family="wasm")'.dependencies]
 console_error_panic_hook = { version = "~0.1", default-features = false }

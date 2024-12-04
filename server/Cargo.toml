@@ -49,6 +49,6 @@ utils = { version = "0.14.39", package = "catgirl-engine-utils", path = "../util
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
-wasm-bindgen = { version = "0.2.96", default-features = true }
+wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
-rhai = { version = "~1", default-features = false, features = ["serde"] }
+rhai = { version = "~1", default-features = false, features = ["serde", "serde_json"] }

@@ -1,17 +1,4 @@
-#![cfg(any(target_family = "unix", target_family = "windows"))]
-#![cfg(not(target_os = "android"))]
-#![cfg(not(target_os = "ios"))]
-
-mod generic;
-mod linux;
-
 use core::ffi::{c_char, c_int};
-
-#[cfg(not(target_os = "linux"))]
-pub use generic::Args;
-
-#[cfg(target_os = "linux")]
-pub use linux::Args;
 
 /// Parse arguments from C and send to the Clap library
 ///

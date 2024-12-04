@@ -1,8 +1,23 @@
-/// Desktop specific features
-pub mod desktop;
+// #![cfg(any(target_family = "unix", target_family = "windows"))]
+// #![cfg(not(target_os = "android"))]
+// #![cfg(not(target_os = "ios"))]
 
-pub use desktop::Args;
+/// Handles generic version of Args
+mod generic;
+
+/// Handles Linux version of Args
+mod linux;
+
+/// Handles parsing from C ABI
+pub mod c_abi;
+
 use std::sync::OnceLock;
+
+#[cfg(not(target_os = "linux"))]
+pub use generic::Args;
+
+#[cfg(target_os = "linux")]
+pub use linux::Args;
 
 /// Reference to command line args specified by function
 static ARGS: OnceLock<Args> = OnceLock::new();
