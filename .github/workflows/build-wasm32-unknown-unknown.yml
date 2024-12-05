@@ -295,7 +295,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
-          wget https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
+          wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
           unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
