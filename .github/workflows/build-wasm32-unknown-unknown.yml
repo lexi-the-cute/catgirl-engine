@@ -315,4 +315,4 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip/CatgirlEngine-Wasm-32-bit-Web.zip fomxgorl/catgirl-engine:wasm-32-bit-web --userversion $VERSION
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/wasm-32-bit-web-zip/CatgirlEngine-Wasm-32-bit-Web.zip foxgirl-labs/catgirl-engine:wasm-32-bit-web --userversion $VERSION

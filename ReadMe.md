@@ -156,7 +156,7 @@ bjnt5VwRhrBJZgWFyG0A/j9bpzwURxaLiSxrelcoTiEJ6DFzZcQMKJSp7TvKMU4E
 
 [github-repo]: https://github.com/foxgirl-labs/catgirl-engine
 [codeberg-repo]: https://codeberg.org/alexis/catgirl-engine
-[itchio-download]: https://fomxgorl.itch.io/catgirl-engine
+[itchio-download]: https://foxgirl-labs.itch.io/catgirl-engine
 [catgirl-engine-docs]: https://docs.rs/catgirl-engine/latest/main
 [catgirl-engine-client-docs]: https://docs.rs/catgirl-engine-client/latest/catgirl_engine_client
 [catgirl-engine-server-docs]: https://docs.rs/catgirl-engine-server/latest/catgirl_engine_server

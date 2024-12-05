@@ -331,5 +331,5 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Windows-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:windows-x86_64 --userversion $VERSION
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz fomxgorl/catgirl-engine:windows-x86_64-server --userversion $VERSION
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Windows-x86_64-GNU.tar.xz foxgirl-labs/catgirl-engine:windows-x86_64 --userversion $VERSION
+          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/CatgirlEngine-Server-Windows-x86_64-GNU.tar.xz foxgirl-labs/catgirl-engine:windows-x86_64-server --userversion $VERSION
