@@ -11,25 +11,25 @@
     "related_applications": [
         {
             "platform": "android",
-            "url": "https://fomxgorl.itch.io/catgirl-engine",
+            "url": "https://foxgirl-labs.itch.io/catgirl-engine",
             "id": "land.catgirl.engine"
         },
         {
             "platform": "windows",
-            "url": "https://fomxgorl.itch.io/catgirl-engine"
+            "url": "https://foxgirl-labs.itch.io/catgirl-engine"
         },
         {
             "platform": "linux",
-            "url": "https://fomxgorl.itch.io/catgirl-engine"
+            "url": "https://foxgirl-labs.itch.io/catgirl-engine"
         },
         {
             "platform": "f-droid",
-            "url": "https://fomxgorl.itch.io/catgirl-engine",
+            "url": "https://foxgirl-labs.itch.io/catgirl-engine",
             "id": "land.catgirl.engine"
         },
         {
             "platform": "play",
-            "url": "https://fomxgorl.itch.io/catgirl-engine",
+            "url": "https://foxgirl-labs.itch.io/catgirl-engine",
             "id": "land.catgirl.engine"
         }
     ],

@@ -484,7 +484,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "android_logger",
  "build-info",
@@ -516,7 +516,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-client"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -540,7 +540,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-common"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "serde",
  "serde_json",
@@ -548,7 +548,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-macros"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "catgirl-engine-common",
  "quote",
@@ -559,7 +559,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-server"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "build-info",
  "build-info-build",
@@ -576,7 +576,7 @@ dependencies = [
 
 [[package]]
 name = "catgirl-engine-utils"
-version = "0.14.39"
+version = "0.14.40"
 dependencies = [
  "build-info",
  "build-info-build",

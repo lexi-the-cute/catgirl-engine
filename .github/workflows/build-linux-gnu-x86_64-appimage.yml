@@ -323,4 +323,4 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME fomxgorl/catgirl-engine:linux-gnu-x86_64-appimage --userversion $VERSION
+          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME foxgirl-labs/catgirl-engine:linux-gnu-x86_64-appimage --userversion $VERSION
