@@ -18,7 +18,6 @@ pub extern "C" fn start_engine(argc: c_int, argv: *const *const c_char) -> c_int
     setup::setup_logger();
 
     // Transfers embedded resources into utility crate
-    #[cfg(feature = "embed-resources")]
     utils::resources::store_embedded_resources(crate::resources::get_embedded_resources());
 
     // Helps with license compliance

@@ -42,10 +42,9 @@ incremental = false
 default = ["client", "server", "logging-subscriber"]
 client = ["dep:client"]
 server = ["dep:server"]
-embed-assets = ["client/embed-assets"]
-embed-resources = ["utils/embed-resources"]
 logging-subscriber = []
-appimage = ["utils/appimage", "client/appimage"]
+appimage = ["utils/appimage"]
+embed-assets = ["macros/embed-assets"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]

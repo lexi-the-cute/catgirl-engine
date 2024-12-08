@@ -171,8 +171,8 @@ fn get_bindgen_defines() -> std::collections::HashMap<String, String> {
         "DEFINE_SERVER_FEATURE".to_string(),
     );
     defines.insert(
-        "feature = embed-resources".to_string(),
-        "DEFINE_EMBED_RESOURCES_FEATURE".to_string(),
+        "feature = embed-assets".to_string(),
+        "DEFINE_EMBED_ASSETS_FEATURE".to_string(),
     );
     defines.insert(
         "feature = logging-subscriber".to_string(),

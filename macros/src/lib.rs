@@ -37,6 +37,23 @@ pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
     .into()
 }
 
+/// Determines if a path should be embedded
+#[rustfmt::skip]
+fn should_embed(path: &PathBuf) -> bool {
+    let resources_path: PathBuf = PathBuf::from("resources");
+
+    [
+        // Locales should always be embedded
+        resources_path.join("locales"),
+
+        // Only embed if the build target does not support filesystems
+        #[cfg(feature = "embed-assets")]
+        resources_path.join("assets"),
+    ]
+    .into_iter()
+    .any(|embed_path| path.starts_with(embed_path))
+}
+
 /// Recursively retrieve within the specified directory
 fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
     let mut dirs: VecDeque<std::fs::ReadDir> =
@@ -53,11 +70,13 @@ fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
             if full_path.is_dir() {
                 dirs.push_back(std::fs::read_dir(&full_path).unwrap());
             } else {
-                // println!("FP: {:?}; SFP: {:?}", &full_path, &path);
-                files.inner.push(EmbeddedFile {
-                    path: path.to_str().unwrap().to_string(),
-                    contents: std::fs::read(path).unwrap(),
-                });
+                if should_embed(&path) {
+                    // println!("FP: {:?}; SFP: {:?}", &full_path, &path);
+                    files.inner.push(EmbeddedFile {
+                        path: path.to_str().unwrap().to_string(),
+                        contents: std::fs::read(path).unwrap(),
+                    });
+                }
             }
         }
     }

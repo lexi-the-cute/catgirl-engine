@@ -19,7 +19,6 @@ resolver = "2"
 [features]
 default = []
 appimage = []
-embed-resources = []
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
