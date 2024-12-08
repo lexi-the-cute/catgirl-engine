@@ -75,12 +75,6 @@ too_many_lines = "allow"
 unused_self = "allow"
 struct_excessive_bools = "allow"
 
-[package.metadata.i18n]
-# available-locales = ["en", "zh-CN"]
-# default-locale = "en"
-load-path = "resources/locales"
-minify-key = true
-
 [package.metadata.appimage]
 assets = ["resources/assets", "resources/appimage/usr", "target/binding"]
 icon = "resources/assets/vanilla/texture/logo/logo.svg"
@@ -119,7 +113,6 @@ macros = { version = "0.14.40", package = "catgirl-engine-macros", path = "macro
 utils = { version = "0.14.40", package = "catgirl-engine-utils", path = "utils" }
 client = { version = "0.14.40", package = "catgirl-engine-client", path = "client", optional = true }
 server = { version = "0.14.40", package = "catgirl-engine-server", path = "server", optional = true }
-rust-i18n = { version = "~3" }
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }

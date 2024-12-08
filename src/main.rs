@@ -9,9 +9,6 @@
 )]
 
 #[macro_use]
-extern crate rust_i18n;
-
-#[macro_use]
 extern crate tracing;
 
 /// Prepare the game engine for running
@@ -23,19 +20,12 @@ mod build;
 /// Module for storing resources
 mod resources;
 
-// i18n!();
-
 /// Run as Executable (e.g. Linux)
 ///
 /// # Errors
 ///
 /// May return a `String` if an error propagated up the stack
 fn main() -> Result<(), String> {
-    // const LOCALES: &str = env!("ENGINE_LOCALES_PATH");
-    // i18n!(backend = utils::i18n::I18N::new(LOCALES));
-    // i18n!();
-    // error!(t!("test"));
-
     // Setup logger for debugging
     #[cfg(feature = "logging-subscriber")]
     setup::setup_logger();
