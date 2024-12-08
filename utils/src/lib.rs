@@ -14,6 +14,9 @@ extern crate tracing;
 #[macro_use]
 mod macros;
 
+/// Module for handling translations
+pub mod i18n;
+
 /// Module for command line arguments
 pub mod args;
 

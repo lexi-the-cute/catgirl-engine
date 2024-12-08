@@ -47,6 +47,8 @@ build-info-build = { version = "~0.0.39", default-features = false, features = [
 [dependencies]
 common = { version = "0.14.40", package = "catgirl-engine-common", path = "../common" }
 macros = { version = "0.14.40", package = "catgirl-engine-macros", path = "../macros" }
+rust-i18n = { version = "~3" }
+# toml = { version = "~0.8", default-features = false, features = ["parse"] }
 serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
