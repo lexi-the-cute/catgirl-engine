@@ -49,6 +49,24 @@ fn should_embed(path: &PathBuf) -> bool {
         // Only embed if the build target does not support filesystems
         #[cfg(feature = "embed-assets")]
         resources_path.join("assets"),
+
+        #[cfg(all(feature = "embed-assets", target_os = "linux"))]
+        resources_path.join("linux"),
+
+        #[cfg(all(feature = "embed-assets", target_os = "windows"))]
+        resources_path.join("windows"),
+
+        #[cfg(all(feature = "embed-assets", target_os = "macos"))]
+        resources_path.join("osx"),
+
+        #[cfg(all(feature = "embed-assets", target_os = "android"))]
+        resources_path.join("android"),
+
+        #[cfg(all(feature = "embed-assets", target_os = "ios"))]
+        resources_path.join("ios"),
+
+        #[cfg(all(feature = "embed-assets", target_family = "wasm"))]
+        resources_path.join("wasm"),
     ]
     .into_iter()
     .any(|embed_path| path.starts_with(embed_path))
