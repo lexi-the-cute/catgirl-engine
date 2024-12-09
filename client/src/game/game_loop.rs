@@ -215,6 +215,7 @@ pub fn client_game_loop() -> Result<(), String> {
 }
 
 /// Advances game loop by one cycle
+#[must_use]
 pub fn advance_event_loop() -> bool {
     send_event(())
 }

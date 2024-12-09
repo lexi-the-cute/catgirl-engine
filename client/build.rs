@@ -29,6 +29,7 @@ fn generate_build_info() {
     }
 }
 
+/// Generates fake build info so docs.rs works and rust analyzer speeds up
 fn generate_fake_build_info() {
     let manifest_path: std::path::PathBuf = manifest_path();
     let manifest_contents: String = std::fs::read_to_string(manifest_path).unwrap();
@@ -75,7 +76,7 @@ fn print_environment_vars() {
 }
 
 /// Determines if string represents a secret
-fn is_likely_secret(key: &String) -> bool {
+fn is_likely_secret(key: &str) -> bool {
     match key.to_lowercase() {
         // Very Likely
         s if s.contains("password") => true,
@@ -106,7 +107,7 @@ fn repeat_string(repetitions: usize, value: &str) -> String {
 }
 
 /// Masks a secret
-fn mask_string(value: &String) -> String {
+fn mask_string(value: &str) -> String {
     let size: usize = value.chars().count();
     repeat_string(size, "*")
 }

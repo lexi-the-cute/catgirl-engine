@@ -10,6 +10,7 @@ use core::ffi::{c_char, c_int};
 /// # Panics
 ///
 /// May panic if one of the arguments contains invalid UTF-8 data
+#[must_use]
 pub unsafe fn parse_args_from_c(
     arg_count: c_int,
     arg_vector_pointer: *const *const *const c_char,

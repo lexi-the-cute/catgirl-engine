@@ -46,6 +46,7 @@ fn generate_build_info() {
     }
 }
 
+/// Generates fake build info so docs.rs works and rust analyzer speeds up
 fn generate_fake_build_info() {
     let manifest_path: std::path::PathBuf = manifest_path();
     let manifest_contents: String = std::fs::read_to_string(manifest_path).unwrap();
@@ -287,7 +288,7 @@ fn repeat_string(repetitions: usize, value: &str) -> String {
 }
 
 /// Masks a secret
-fn mask_string(value: &String) -> String {
+fn mask_string(value: &str) -> String {
     let size: usize = value.chars().count();
     repeat_string(size, "*")
 }

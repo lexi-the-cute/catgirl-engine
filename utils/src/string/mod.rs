@@ -10,13 +10,13 @@ fn repeat_string(repetitions: usize, value: &str) -> String {
 }
 
 /// Masks a secret
-pub(crate) fn mask_string(value: &String) -> String {
+pub(crate) fn mask_string(value: &str) -> String {
     let size: usize = value.chars().count();
     repeat_string(size, "*")
 }
 
 /// Determines if string represents a secret
-pub(crate) fn is_likely_secret(key: &String) -> bool {
+pub(crate) fn is_likely_secret(key: &str) -> bool {
     match key.to_lowercase() {
         // Very Likely
         s if s.contains("password") => true,

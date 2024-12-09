@@ -17,7 +17,8 @@ edition = "2021"
 resolver = "2"
 
 [features]
-default = []
+default = ["serde"]
+serde = ["dep:serde", "dep:serde_json"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -46,8 +47,8 @@ build-info-build = { version = "~0.0.39", default-features = false, features = [
 common = { version = "0.14.40", package = "catgirl-engine-common", path = "../common" }
 macros = { version = "0.14.40", package = "catgirl-engine-macros", path = "../macros" }
 utils = { version = "0.14.40", package = "catgirl-engine-utils", path = "../utils" }
-serde = { version = "~1.0", default-features = false }
-serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
+serde = { version = "~1.0", default-features = false, optional = true }
+serde_json = { version = "~1.0", default-features = false, features = ["alloc"], optional = true }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }

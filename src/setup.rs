@@ -136,11 +136,11 @@ fn set_panic_hook() {
     }));
 }
 
-/// This functions intentionally triggers a panic
-///
-/// # Panics
-///
-/// Always
+// /// This functions intentionally triggers a panic
+// ///
+// /// # Panics
+// ///
+// /// Always
 // fn trigger_panic() {
 //     let message: &str = "Intentionally triggered a panic for debugging...";
 
@@ -174,7 +174,7 @@ pub(super) fn start() -> Result<(), String> {
             #[cfg(feature = "client")]
             if !get_args().server {
                 #[cfg(not(target_family = "wasm"))]
-                client::game::advance_event_loop();
+                let _ = client::game::advance_event_loop();
             }
         })
         .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");

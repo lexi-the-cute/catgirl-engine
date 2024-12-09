@@ -22,8 +22,9 @@ doc = false
 proc-macro = true
 
 [features]
-default = []
+default = ["serde"]
 embed-assets = []
+serde = ["dep:serde", "dep:serde_json"]
 
 # Used for customizing building of docs.rs binary
 [package.metadata.docs.rs]
@@ -48,5 +49,5 @@ struct_excessive_bools = "allow"
 common = { version = "0.14.40", package = "catgirl-engine-common", path = "../common" }
 syn = { version = "~2" }
 quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable
-serde = { version = "~1.0", default-features = false }
-serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
+serde = { version = "~1.0", default-features = false, optional = true }
+serde_json = { version = "~1.0", default-features = false, features = ["alloc"], optional = true }

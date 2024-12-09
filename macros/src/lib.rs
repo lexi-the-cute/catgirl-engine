@@ -7,7 +7,10 @@
 )]
 
 use common::resources::{EmbeddedFile, EmbeddedFiles};
-use std::{collections::VecDeque, path::PathBuf};
+use std::{
+    collections::VecDeque,
+    path::{Path, PathBuf},
+};
 
 use proc_macro::TokenStream;
 use syn::{Expr, LitStr};
@@ -39,7 +42,7 @@ pub fn generate_embedded_resources(tokens: TokenStream) -> TokenStream {
 
 /// Determines if a path should be embedded
 #[rustfmt::skip]
-fn should_embed(path: &PathBuf) -> bool {
+fn should_embed(path: &Path) -> bool {
     let resources_path: PathBuf = PathBuf::from("resources");
 
     [
@@ -73,7 +76,7 @@ fn should_embed(path: &PathBuf) -> bool {
 }
 
 /// Recursively retrieve within the specified directory
-fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
+fn get_files(resources_path: &Path) -> EmbeddedFiles {
     let mut dirs: VecDeque<std::fs::ReadDir> =
         VecDeque::from([std::fs::read_dir(resources_path).unwrap()]);
     let mut files: EmbeddedFiles = EmbeddedFiles { inner: Vec::new() };
@@ -83,18 +86,16 @@ fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
 
         for dir_entry in dir {
             let full_path: PathBuf = dir_entry.as_ref().unwrap().path();
-            let path: PathBuf = shorten_file_paths(&resources_path, &full_path);
+            let path: PathBuf = shorten_file_paths(resources_path, &full_path);
 
             if full_path.is_dir() {
                 dirs.push_back(std::fs::read_dir(&full_path).unwrap());
-            } else {
-                if should_embed(&path) {
-                    // println!("FP: {:?}; SFP: {:?}", &full_path, &path);
-                    files.inner.push(EmbeddedFile {
-                        path: path.to_str().unwrap().to_string(),
-                        contents: std::fs::read(path).unwrap(),
-                    });
-                }
+            } else if should_embed(&path) {
+                // println!("FP: {:?}; SFP: {:?}", &full_path, &path);
+                files.inner.push(EmbeddedFile {
+                    path: path.to_str().unwrap().to_string(),
+                    contents: std::fs::read(path).unwrap(),
+                });
             }
         }
     }
@@ -103,7 +104,7 @@ fn get_files(resources_path: &PathBuf) -> EmbeddedFiles {
 }
 
 /// Shorten the path to only the part after the tail end
-fn shorten_file_paths(resources_path: &PathBuf, file_path: &PathBuf) -> PathBuf {
+fn shorten_file_paths(resources_path: &Path, file_path: &Path) -> PathBuf {
     let path_components: std::path::Components<'_> = file_path.components();
 
     let mut shortened_file_path: PathBuf = PathBuf::new();
@@ -120,7 +121,7 @@ fn shorten_file_paths(resources_path: &PathBuf, file_path: &PathBuf) -> PathBuf 
         }
 
         if found_root_path {
-            shortened_file_path = temp_base_path.clone();
+            shortened_file_path.clone_from(&temp_base_path);
         }
     }
 
@@ -176,7 +177,7 @@ fn parse_expr_macro(macro_token: syn::ExprMacro) -> Result<String, TokenStream> 
     ))
 }
 
-/// Create's an error as a TokenStream to unwind to compiler
+/// Create's an error as a `TokenStream` to unwind to compiler
 fn create_error(token_expr: Expr, message: &str) -> TokenStream {
     use syn::spanned::Spanned;
 

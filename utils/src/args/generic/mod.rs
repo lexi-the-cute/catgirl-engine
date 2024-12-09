@@ -1,8 +1,12 @@
-use clap::Parser;
-use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-#[derive(Serialize, Deserialize, Parser, Debug, Clone, PartialEq, PartialOrd)]
+use clap::Parser;
+
+#[cfg(feature = "serde")]
+use serde::{Deserialize, Serialize};
+
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Parser, Debug, Clone, PartialEq, PartialOrd, Default, Hash, Eq, Ord)]
 #[command(
     author,
     about="A game engine for cool moddability and procedurally generated data",

@@ -1,7 +1,9 @@
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 /// Struct used for storing colors (usually in linear srgb)
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
 pub(crate) struct Color {
     /// The color red
     /// 0 (no red) to 1 (fully red)
@@ -21,14 +23,16 @@ pub(crate) struct Color {
 
     /// The color space
     /// Linear is more accurate
-    color_space: ColorSpace,
+    space: ColorSpace,
 }
 
 /// The color space a color is in
-#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default, Hash, Eq, Ord)]
 enum ColorSpace {
     /// Linear Color Space
-    LINEAR,
+    #[default]
+    Linear,
 }
 
 // https://www.colorspaceconverter.com/converter/rgb-to-srgb-linear
@@ -56,7 +60,7 @@ pub(crate) fn srgb_to_linear_srgb(red: u8, green: u8, blue: u8) -> Color {
         green: convert_color(g),
         blue: convert_color(b),
         alpha: 1.0,
-        color_space: ColorSpace::LINEAR,
+        space: ColorSpace::Linear,
     }
 }
 
@@ -82,7 +86,7 @@ mod tests {
             green: 0.063_010_017_653_167_67,
             blue: 0.266_355_604_802_862_47,
             alpha: 1.0,
-            color_space: ColorSpace::LINEAR,
+            space: ColorSpace::Linear,
         };
 
         assert_eq!(super::srgb_to_linear_srgb(104, 71, 141), expected_result);
