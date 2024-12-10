@@ -78,15 +78,21 @@ jobs:
       - name: Install Wasm2Map
         run: $HOME/.cargo/bin/cargo install cargo-wasm2map
 
-      # Setup Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
       # Make Site Directories
       - name: Make Site Directories
         run: |
           mkdir -p ${{ github.workspace }}/docs
           mkdir -p ${{ github.workspace }}/_site
+
+      # Install Gems
+      - name: Install Gems
+        run: |
+          cd ${{ github.workspace }}/docs
+          bundle install
+
+      # Setup Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       # Compile Program
       - name: Build Engine (Release)

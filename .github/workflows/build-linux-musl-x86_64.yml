@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
-    runs-on: ubuntu-20.04  # Intentionally set so it uses an older GLIBC
+    runs-on: ubuntu-latest
     environment: general
     env:
       CARGO_TERM_COLOR: always
