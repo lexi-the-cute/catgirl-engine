@@ -18,8 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: Android
     env:
-      ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
-      ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
       ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       CARGO_TERM_COLOR: always
@@ -57,10 +55,6 @@ jobs:
           packages: unzip
           version: 1.0
           execute_install_scripts: true
-
-      # Extract Keystore
-      - name: Extract Keystore
-        run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
 
       # Install Rust
       - name: Make Tools Directory
@@ -117,21 +111,22 @@ jobs:
       - name: Workaround Cargo Gradle Plugin Bug
         run: touch ${{ github.workspace }}/android/local.properties
 
-      # Extract/Import GPG Signing Key
-      - name: Extract GPG Signing Key
-        run: |
-          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
-          gpg --import $HOME/signing.gpg
-
       # Ignore Modifying android/app/build.gradle
       - name: Ignore Modifying ${{ github.workspace }}/android/app/build.gradle
         run: |
           cd ${{ github.workspace }}
           git update-index --skip-worktree ${{ github.workspace }}/android/app/build.gradle
 
+      # Extract Keystore
+      - name: Extract Keystore
+        run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+
       # Build Engine As APK
       - name: Build Engine APK (FAT)
         working-directory: ${{ github.workspace }}/android
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
@@ -144,6 +139,9 @@ jobs:
       # Build Engine As APK
       - name: Build Engine APK (arm64)
         working-directory: ${{ github.workspace }}/android
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
@@ -160,6 +158,9 @@ jobs:
       # Build Engine As APK
       - name: Build Engine APK (armeabi-v7a)
         working-directory: ${{ github.workspace }}/android
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
@@ -176,6 +177,9 @@ jobs:
       # Build Engine As APK
       - name: Build Engine APK (x86)
         working-directory: ${{ github.workspace }}/android
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
@@ -192,6 +196,9 @@ jobs:
       # Build Engine As APK
       - name: Build Engine APK (x86_64)
         working-directory: ${{ github.workspace }}/android
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
@@ -205,6 +212,10 @@ jobs:
 
           mkdir -p ${{ github.workspace }}/upload/android
           cp -a ${{ github.workspace }}/android/app/build/outputs/apk/release/app-release.apk ${{ github.workspace }}/upload/android/catgirl-engine-x86_64.apk
+
+      # Remove Keystore
+      - name: Remove Keystore
+        run: rm -rf ${{ vars.ANDROID_RELEASE_KEY_PATH }}
 
       # Display Export Directory
       - name: Display Git Staging
@@ -222,12 +233,23 @@ jobs:
           mkdir -p ${{ github.workspace }}/upload/android
           cp -a ${{ github.workspace }}/target/binding ${{ github.workspace }}/upload/android
 
+      # Extract/Import GPG Signing Key
+      - name: Extract GPG Signing Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
+          gpg --import $HOME/signing.gpg
+          rm -rf $HOME/signing.gpg
+
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
           cd ${{ github.workspace }}/upload/android
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
+
+      # Remove GPG Signing Key
+      - name: Remove GPG Signing Key
+        run: rm -rf $HOME/.gnupg
 
       # Compress Files
       - name: Compress Files (Client/Server)
@@ -262,9 +284,6 @@ jobs:
     needs: [Build]
     runs-on: ubuntu-latest
     environment: Android
-    env:
-      BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
-      GH_TOKEN: ${{ github.token }}
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -302,6 +321,8 @@ jobs:
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # TODO: Consider checking for -alpha and -beta to filter onto other packages
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
@@ -331,6 +352,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (Tar)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/CatgirlEngine-Android.tar.xz"
@@ -340,6 +363,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (FAT)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk"
@@ -349,6 +374,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (arm64)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk"
@@ -358,6 +385,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (armeabi-v7a)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk"
@@ -367,6 +396,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (x86)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk"
@@ -376,6 +407,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release (x86_64)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk"
@@ -409,6 +442,8 @@ jobs:
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 

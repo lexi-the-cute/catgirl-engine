@@ -29,7 +29,6 @@ jobs:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
       RUST_BACKTRACE: full
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -97,26 +96,38 @@ jobs:
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-common to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine-common --no-verify
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-macros to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine-macros --no-verify
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-utils to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine-utils --no-verify
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-client to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine-client --no-verify
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-server to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine-server --no-verify
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine to Crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: cargo publish -p catgirl-engine --no-verify --allow-dirty
   aur:
     if: ${{ success() || inputs.aur == 'yes' }}
@@ -177,14 +188,6 @@ jobs:
           sed -i "s/pkgrel = [0-9]*/pkgrel = $PKGREL/" ${{ github.workspace }}/aur/.SRCINFO
           sed -i "s|source = .*|source = $DOWNLOAD_PATH|" ${{ github.workspace }}/aur/.SRCINFO
 
-      # Upload Repo As Artifact
-      - name: Upload Repo As Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CatgirlEngine-AUR-Repo
-          path: ${{ github.workspace }}/aur/*
-          include-hidden-files: true
-
       # Setting Git Author Info
       - name: Setting Git Author Info
         run: |
@@ -199,13 +202,23 @@ jobs:
           git add PKGBUILD .SRCINFO
           git commit -m "Updating latest version"
           git push
+
+      # Remove SSH Private Key (AUR)
+      - name: Remove SSH Private Key (AUR)
+        run: rm -rf ~/.ssh/aur
+
+      # Upload Repo As Artifact
+      - name: Upload Repo As Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-AUR-Repo
+          path: ${{ github.workspace }}/aur/*
+          include-hidden-files: true
   announce:
     if: ${{ success() }}
     needs: [AUR]
     runs-on: ubuntu-latest
     environment: Linux
-    env:
-      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
     steps:
       # Check out repository code
       - name: Check out repository code
@@ -216,6 +229,8 @@ jobs:
 
       # Publish Announcement to Notification Channel
       - name: Publish Announcement to Notification Channel
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export VERSION_STRING="Catgirl Engine v$VERSION"

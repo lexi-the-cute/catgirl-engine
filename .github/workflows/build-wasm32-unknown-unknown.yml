@@ -79,12 +79,6 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
-      # Extract/Import GPG Signing Key
-      - name: Extract GPG Signing Key
-        run: |
-          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
-          gpg --import $HOME/signing.gpg
-
       # Install Wasm-Bindgen-CLI
       - name: Install Wasm-Bindgen-CLI
         run: |
@@ -149,12 +143,23 @@ jobs:
           # cp -af ${{ github.workspace }}/resources/wasm ${{ github.workspace }}/upload/wasm/resources
           cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/wasm/resources
 
+      # Extract/Import GPG Signing Key
+      - name: Extract GPG Signing Key
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
+          gpg --import $HOME/signing.gpg
+          rm -rf $HOME/signing.gpg
+
       # Sign Files
       - name: Sign Files (Client/Server)
         run: |
           cd ${{ github.workspace }}/upload/wasm
           find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
           gpg --sign checksums.sha512
+
+      # Remove GPG Signing Key
+      - name: Remove GPG Signing Key
+        run: rm -rf $HOME/.gnupg
 
       # Compress Files
       - name: Compress Files as Tar (Client/Server)
@@ -202,9 +207,6 @@ jobs:
     needs: [Build]
     runs-on: ubuntu-latest
     environment: WebAssembly
-    env:
-      BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
-      GH_TOKEN: ${{ github.token }}
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
@@ -249,6 +251,8 @@ jobs:
 
       # Create Tag and Github Release
       - name: 👩‍💻 Create Tag and Github Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           # TODO: Consider checking for -alpha and -beta to filter onto other packages
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
@@ -278,6 +282,8 @@ jobs:
 
       # Publish to Github Release
       - name: 👩‍💻 Publish to Github Release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
           export ARTIFACT_PATH="${{ github.workspace }}/artifacts/wasm-32-bit-web/CatgirlEngine-Wasm-32-bit-Web.tar.xz"
@@ -311,6 +317,8 @@ jobs:
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
         run: |
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 

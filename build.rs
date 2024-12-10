@@ -259,18 +259,15 @@ fn print_environment_vars() {
 /// Determines if string represents a secret
 fn is_likely_secret(key: &str) -> bool {
     match key.to_lowercase() {
-        // Very Likely
         s if s.contains("password") => true,
         s if s.contains("secret") => true,
         s if s.contains("token") => true,
-
-        // Kinda Iffy
         s if s.contains("ssh") => true,
         s if s.contains("webhook") => true,
+        s if s.contains("signing") => true,
+        s if s.contains("api_key") => true,
         s if s.contains("release_key") => true,
         s if s.contains("release_store") => true,
-
-        // Iffy
         s if s.contains("account") => true,
         _ => false,
     }
