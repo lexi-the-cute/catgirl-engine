@@ -19,11 +19,11 @@ repos:
     -   id: fmt
         args: ["--all", "--"]
     -   id: check
-        args: ["--workspace", "--all-targets"]
-    -   id: clippy
-        args: ["--workspace", "--all-targets"]
+        args: ["--workspace", "--all-targets", "--all-features", "--bins", "--tests", "--benches", "--examples"]
     -   id: test
-        args: ["--workspace", "--bins", "--tests", "--benches", "--examples"]
+        args: ["--workspace", "--all-targets", "--all-features", "--bins", "--tests", "--benches", "--examples"]
+    -   id: clippy
+        args: ["--workspace", "--all-targets", "--all-features"]
 -   repo: local
     hooks:
     -   id: version

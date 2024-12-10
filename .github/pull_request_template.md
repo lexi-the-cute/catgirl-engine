@@ -1,11 +1,60 @@
-## ReadMe
+<!--
+    A general pull request template to help ensure code quality and legibility
+-->
 
-If you are wanting to submit a PR, there's a couple of things for you to note:
+# What does this implement/fix?
 
-* I'm currently refactoring the entire codebase to reduce technical debt and make unit tests easier to write.
+## Types of Changes
 
-* I'm currently in the process of reviewing over all my depedencies' licenses and am determining if they are compatible with my project's current license. If they are not, I may change the license of the project, and would have to ask if you're okay with submitting a PR to a different license.
+- [ ] Bug Fix
+- [ ] New Feature
+- [ ] Refactor
+- [ ] Other
 
-* Generative AI and LLMs are not allowed at all for any submission to this repo. This includes but is not limited to, Github Copilot, ChatGPT, Midjourney, or any other generative AI. This is both because of the issues with copyrightability of code and data as well as for moral reasons. This also ensures the engine is clean so I don't have to mark the engine as using generative AI on Itch.io as per https://itch.io/docs/creators/quality-guidelines#ai-disclosure
+## Related Issue
 
-After I finish the above two tasks, I'll be editing/removing this message.
+Fixes...
+
+## Test Environments
+
+This feature/bug fix was tested on...
+
+- [ ] Linux
+- [ ] Windows
+- [ ] Mac OSX
+- [ ] Android
+- [ ] iOS
+- [ ] Browser Web Assembly
+- [ ] Other Web Assembly (Please specify)
+- [ ] Other
+
+## General Submission Checklist
+
+- [ ] Have you checked for other [pull requests][pr-tab] for the same or similar changes?
+- [ ] Have you previously signed the Contributor(s) License Agreement?
+- [ ] Does your pull request pass the dependency license checker, `cargo deny --all-features check licenses`?
+- [ ] Have you ensured relevant files are handled by git lfs?
+- [ ] Does your pull request pass cargo checks, `cargo check --workspace --all-targets --all-features --bins --tests --benches --examples`?
+- [ ] Have you written relevant unit tests and they are [organized correctly][unit-test-organization]?
+- [ ] Does your pull request pass unit tests, `cargo test --workspace --all-targets --all-features --bins --tests --benches --examples`?
+- [ ] Does your pull request pass the clippy test, `cargo clippy --workspace --all-targets --all-features`?
+- [ ] Have you ran the cargo formatter, `cargo fmt --all`
+- [ ] Have you ran the git pre-commit hooks?
+
+## Documentation Submission Checklist
+
+- [ ] If a documentation update, have you tested against, `cargo doc --no-deps --workspace --all-features --document-private-items`?
+
+## Banned/Restricted Features
+
+- Generative AI (for example, Large Language Models) are entirely banned due to both copyright and moral reasons. This includes both code and assets.
+- Regex usage is restricted and should be evaluated more closely. This is to reduce the potential misuse of regex by using it as a parser or sanitizer which can introduce security vulnerabilities. If possible, other methods of parsing and sanitization should be considered both to maintain code legibility, and to make it easier to write unit tests.
+
+## Notes
+
+- Reduce reliance on new dependencies
+- Avoid linking in external libraries where possible (prefer static code)
+- Try to focus on code legibility and future maintainability. This is subjective, but the goal is to reduce technical debt.
+
+[pr-tab]: https://github.com/foxgirl-labs/catgirl-engine/pulls
+[unit-test-organization]: https://doc.rust-lang.org/book/ch11-03-test-organization.html

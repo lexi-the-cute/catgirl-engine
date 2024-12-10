@@ -40,6 +40,7 @@ pub struct Args {
     pub uninstall_desktop_files: bool,
 
     /// Shows the AppImage help arguments
+    #[allow(clippy::doc_markdown)]
     #[cfg(feature = "appimage")]
     #[arg(long, default_value_t = false)]
     appimage_help: bool,

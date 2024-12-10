@@ -1,6 +1,6 @@
 use std::sync::OnceLock;
 
-/// To help check if [`exit()`] was already called
+/// To help check if [`set_exit()`] was already called
 static EXITING: OnceLock<bool> = OnceLock::new();
 
 /// Tells the game engine to start exiting next time it checks the exit status
