@@ -12,9 +12,17 @@ on:
         options:
         - 'no'
         - 'yes'
+      runanyway:
+        description: 'Override --norun Flag'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'no'
+        - 'yes'
 jobs:
   build:
-    if: (!endsWith(github.event.head_commit.message, '--norun'))
+    if: (!endsWith(github.event.head_commit.message, '--norun') || inputs.runanyway == 'yes')
     runs-on: ubuntu-20.04  # Intentionally set so it uses an older GLIBC
     environment: general
     env:

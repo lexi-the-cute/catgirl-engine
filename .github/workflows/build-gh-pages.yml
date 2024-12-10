@@ -8,6 +8,15 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      runanyway:
+        description: 'Override --norun Flag'
+        required: true
+        default: 'no'
+        type: choice
+        options:
+        - 'no'
+        - 'yes'
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -18,7 +27,7 @@ concurrency:
 jobs:
   # Build job
   build:
-    if: (!endsWith(github.event.head_commit.message, '--norun'))
+    if: (!endsWith(github.event.head_commit.message, '--norun') || inputs.runanyway == 'yes')
     runs-on: ubuntu-latest
     env:
       HOST: https://engine.catgirl.land/pkg
