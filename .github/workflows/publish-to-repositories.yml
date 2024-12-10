@@ -24,7 +24,7 @@ jobs:
   build:
     if: ${{ endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes' }}
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: cargo-publish
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -133,7 +133,7 @@ jobs:
     if: ${{ success() || inputs.aur == 'yes' }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: aur
     steps:
       # Check out repository code
       - name: Check out repository code
@@ -192,8 +192,8 @@ jobs:
       - name: Setting Git Author Info
         run: |
           echo Setting Git Author Info
-          git config --global user.email "${{ vars.GIT_EMAIL }}"
-          git config --global user.name "${{ vars.GIT_NAME }}"
+          git config --global user.email "${{ vars.AUR_GIT_EMAIL }}"
+          git config --global user.name "${{ vars.AUR_GIT_NAME }}"
 
       # Publish Update to Arch User Repository (AUR)
       - name: Publish Update to Arch User Repository (AUR)
@@ -214,25 +214,3 @@ jobs:
           name: CatgirlEngine-AUR-Repo
           path: ${{ github.workspace }}/aur/*
           include-hidden-files: true
-  announce:
-    if: ${{ success() }}
-    needs: [AUR]
-    runs-on: ubuntu-latest
-    environment: Linux
-    steps:
-      # Check out repository code
-      - name: Check out repository code
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-          submodules: recursive
-
-      # Publish Announcement to Notification Channel
-      - name: Publish Announcement to Notification Channel
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          export VERSION_STRING="Catgirl Engine v$VERSION"
-          export MESSAGE="[$VERSION_STRING has been published...](https://github.com/foxgirl-labs/catgirl-engine/releases/tag/v$VERSION)"
-          curl -i -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"content\": \"$MESSAGE\"}" $DISCORD_WEBHOOK_URL

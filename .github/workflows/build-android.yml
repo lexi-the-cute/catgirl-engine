@@ -16,9 +16,8 @@ jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
-    environment: Android
+    environment: android
     env:
-      ANDROID_RELEASE_KEY_PATH: ${{ vars.ANDROID_RELEASE_KEY_PATH }}
       ANDROID_HOME: /usr/local/lib/android/sdk
       CARGO_TERM_COLOR: always
     steps:
@@ -119,7 +118,7 @@ jobs:
 
       # Extract Keystore
       - name: Extract Keystore
-        run: echo "${{ secrets.RELEASE_KEY }}" | base64 -d > ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+        run: echo "${{ secrets.ANDROID_RELEASE_KEY }}" | base64 -d > /home/runner/work/release.keystore
 
       # Build Engine As APK
       - name: Build Engine APK (FAT)
@@ -215,7 +214,7 @@ jobs:
 
       # Remove Keystore
       - name: Remove Keystore
-        run: rm -rf ${{ vars.ANDROID_RELEASE_KEY_PATH }}
+        run: rm -rf /home/runner/work/release.keystore
 
       # Display Export Directory
       - name: Display Git Staging
@@ -283,11 +282,11 @@ jobs:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Android
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
       contents: write
+    environment: itch.io
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.

@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: codeberg
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.

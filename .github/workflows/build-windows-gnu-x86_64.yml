@@ -16,7 +16,7 @@ jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
-    environment: Windows
+    environment: general
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -141,19 +141,19 @@ jobs:
           # cp -a ${{ github.workspace }}/resources/windows ${{ github.workspace }}/upload/server/resources
           # cp -a ${{ github.workspace }}/resources/assets ${{ github.workspace }}/upload/server/resources
 
-      # Sign Files
-      - name: Sign Files (Client/Server)
-        run: |
-          cd ${{ github.workspace }}/upload/client-server
-          find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
-          gpg --sign checksums.sha512
-
       # Extract/Import GPG Signing Key
       - name: Extract GPG Signing Key
         run: |
           echo "${{ secrets.GPG_SIGNING_KEY }}" > $HOME/signing.gpg
           gpg --import $HOME/signing.gpg
           rm -rf $HOME/signing.gpg
+
+      # Sign Files
+      - name: Sign Files (Client/Server)
+        run: |
+          cd ${{ github.workspace }}/upload/client-server
+          find . -type f -not -name "checksums.sha512" -exec shasum -a 512 {} \; > checksums.sha512
+          gpg --sign checksums.sha512
 
       # Sign Files
       - name: Sign Files (Server)
@@ -213,11 +213,11 @@ jobs:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Windows
     permissions:
       # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
       # See https://docs.github.com/en/rest/overview/permissions-required-for-fine-grained-personal-access-tokens
       contents: write
+    environment: itch.io
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.

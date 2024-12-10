@@ -16,7 +16,7 @@ jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-20.04  # Intentionally set so it uses an older GLIBC
-    environment: Linux
+    environment: general
     env:
       CARGO_TERM_COLOR: always
       WORKSPACE: ${{ github.workspace }}
@@ -197,7 +197,7 @@ jobs:
     if: ${{ success() && (endsWith(github.event.head_commit.message, '--publish') || inputs.publish == 'yes') }}
     needs: [Build]
     runs-on: ubuntu-latest
-    environment: Linux
+    environment: itch.io
     env:
       APPIMAGE_FILENAME: catgirl-engine-x86_64.AppImage
     permissions:

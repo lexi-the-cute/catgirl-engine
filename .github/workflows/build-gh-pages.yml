@@ -20,7 +20,6 @@ jobs:
   build:
     if: (!endsWith(github.event.head_commit.message, '--norun'))
     runs-on: ubuntu-latest
-    environment: WebAssembly
     env:
       HOST: https://engine.catgirl.land/pkg
     steps:
