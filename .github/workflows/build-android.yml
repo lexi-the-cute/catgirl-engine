@@ -124,6 +124,7 @@ jobs:
       - name: Build Engine APK (FAT)
         working-directory: ${{ github.workspace }}/android
         env:
+          ANDROID_RELEASE_KEY_PATH: /home/runner/work/release.keystore
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
@@ -139,6 +140,7 @@ jobs:
       - name: Build Engine APK (arm64)
         working-directory: ${{ github.workspace }}/android
         env:
+          ANDROID_RELEASE_KEY_PATH: /home/runner/work/release.keystore
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
@@ -158,6 +160,7 @@ jobs:
       - name: Build Engine APK (armeabi-v7a)
         working-directory: ${{ github.workspace }}/android
         env:
+          ANDROID_RELEASE_KEY_PATH: /home/runner/work/release.keystore
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
@@ -177,6 +180,7 @@ jobs:
       - name: Build Engine APK (x86)
         working-directory: ${{ github.workspace }}/android
         env:
+          ANDROID_RELEASE_KEY_PATH: /home/runner/work/release.keystore
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
@@ -196,6 +200,7 @@ jobs:
       - name: Build Engine APK (x86_64)
         working-directory: ${{ github.workspace }}/android
         env:
+          ANDROID_RELEASE_KEY_PATH: /home/runner/work/release.keystore
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: |
