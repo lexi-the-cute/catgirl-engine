@@ -13,6 +13,37 @@ fn main() {
 
     // Bindings are only usable when building libs
     create_bindings();
+
+    // Generate AppImage files
+    #[cfg(feature = "appimage")]
+    generate_appimage_files();
+}
+
+#[cfg(feature = "appimage")]
+fn generate_appimage_files() {
+    let package_name: String = std::env::var("CARGO_PKG_NAME").unwrap();
+    let resources_path: std::path::PathBuf = crate_dir().join("resources");
+    let assets_path: std::path::PathBuf = resources_path.join("assets");
+    let appdir_path: std::path::PathBuf = target_dir().join(format!("{package_name}.AppDir"));
+    let applications_path: std::path::PathBuf =
+        appdir_path.join("usr").join("share").join("applications");
+    let desktop_file_path: std::path::PathBuf = appdir_path.join("land.catgirl.engine.desktop");
+
+    // Delete Old AppDir
+    let _ = std::fs::remove_dir_all(&appdir_path);
+
+    // Create New Resource Directory
+    let new_resources_path: std::path::PathBuf = appdir_path.join("resources");
+    let _ = std::fs::create_dir_all(&new_resources_path);
+
+    // Copy Assets to New Resource Directory
+    let _ = std::fs::copy(assets_path, new_resources_path);
+
+    // Symlink Desktop File to Applications Path
+    let _ = std::os::unix::fs::symlink(
+        desktop_file_path,
+        applications_path.join("land.catgirl.engine.desktop"),
+    );
 }
 
 /// Sets environment variables for building
