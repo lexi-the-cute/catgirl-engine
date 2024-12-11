@@ -28,7 +28,7 @@ sudo apt update
 sudo apt install git gcc
 
 # Install Rust
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs | sh
 
 # Run Cargo Environment Setup Script
 source "$HOME/.cargo/env"

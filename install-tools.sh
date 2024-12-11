@@ -34,7 +34,7 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Install Rust..."
     mkdir -p $PROJECT_ROOT/tools
-    wget https://sh.rustup.rs -O $PROJECT_ROOT/tools/rust.sh
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs > $PROJECT_ROOT/tools/rust.sh
     chmod +x $PROJECT_ROOT/tools/rust.sh
     $PROJECT_ROOT/tools/rust.sh -y
     source "$HOME/.cargo/env"
@@ -71,7 +71,7 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     fi
 
     echo "Install Customized Cargo AppImage Tools..."
-    wget https://github.com/lexi-the-cute/appimagetool/releases/download/continuous/appimagetool-x86_64 -O $PROJECT_ROOT/tools/appimagetool
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://github.com/lexi-the-cute/appimagetool/releases/download/continuous/appimagetool-x86_64 > $PROJECT_ROOT/tools/appimagetool
     chmod +x $PROJECT_ROOT/tools/appimagetool
     if [ $RUSTUP_PROFILE == "release" ]; then
         cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage $FORCE_FLAG
@@ -91,6 +91,6 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     # pre-commit install
 
     echo "Install Itch.io Butler"
-    wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O $PROJECT_ROOT/tools/butler-linux-amd64.zip
-    unzip $PROJECT_ROOT/tools/butler-linux-amd64.zip -d $PROJECT_ROOT/tools/butler
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > $PROJECT_ROOT/tools/butler-linux-amd64.zip
+    unzip $PROJECT_ROOT/tools/butler-linux-amd64.zip -o -d $PROJECT_ROOT/tools/butler
 fi

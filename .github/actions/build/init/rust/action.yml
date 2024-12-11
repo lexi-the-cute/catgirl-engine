@@ -24,7 +24,7 @@ runs:
 
       - name: Download Rust Installer
         shell: bash
-        run: wget https://sh.rustup.rs -O ${{ github.workspace }}/tools/rust.sh
+        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
 
       - name: Make Rust Installer Executable
         shell: bash
