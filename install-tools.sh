@@ -7,6 +7,10 @@ if [ -z "$RUSTUP_PROFILE" ]; then
     export RUSTUP_PROFILE="release"  # "debug" or "release"
 fi
 
+if [ -z "$REINSTALL_TOOLS" ]; then
+    export REINSTALL_TOOLS="false"  # "true" or "false"
+fi
+
 # Build Time Autovars
 SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
@@ -22,6 +26,11 @@ echo "This, however, will not install things from your package manager like pyth
 
 if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     cd $PROJECT_ROOT
+
+    FORCE_FLAG=""
+    if [ $REINSTALL_TOOLS == "true" ]; then
+        FORCE_FLAG="--force"
+    fi
 
     echo "Install Rust..."
     mkdir -p $PROJECT_ROOT/tools
@@ -42,39 +51,39 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Install Wasm-Bindgen Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
-        cargo +$RUSTUP_TOOLCHAIN install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION
+        cargo +$RUSTUP_TOOLCHAIN install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION $FORCE_FLAG
     else
-        cargo +$RUSTUP_TOOLCHAIN install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION --debug
+        cargo +$RUSTUP_TOOLCHAIN install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION --debug $FORCE_FLAG
     fi
 
     echo "Install Wasm Optimization Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
-        cargo +$RUSTUP_TOOLCHAIN install wasm-opt
+        cargo +$RUSTUP_TOOLCHAIN install wasm-opt $FORCE_FLAG
     else
-        cargo +$RUSTUP_TOOLCHAIN install wasm-opt --debug
+        cargo +$RUSTUP_TOOLCHAIN install wasm-opt --debug $FORCE_FLAG
     fi
 
     echo "Install Wasm Source Mapping Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
-        cargo +$RUSTUP_TOOLCHAIN install cargo-wasm2map
+        cargo +$RUSTUP_TOOLCHAIN install cargo-wasm2map $FORCE_FLAG
     else
-        cargo +$RUSTUP_TOOLCHAIN install cargo-wasm2map --debug
+        cargo +$RUSTUP_TOOLCHAIN install cargo-wasm2map --debug $FORCE_FLAG
     fi
 
     echo "Install Customized Cargo AppImage Tools..."
     wget https://github.com/lexi-the-cute/appimagetool/releases/download/continuous/appimagetool-x86_64 -O $PROJECT_ROOT/tools/appimagetool
     chmod +x $PROJECT_ROOT/tools/appimagetool
     if [ $RUSTUP_PROFILE == "release" ]; then
-        cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage
+        cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage $FORCE_FLAG
     else
-        cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage --debug
+        cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage --debug $FORCE_FLAG
     fi
 
     echo "Install Cargo NDK Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
-        cargo +$RUSTUP_TOOLCHAIN install cargo-ndk
+        cargo +$RUSTUP_TOOLCHAIN install cargo-ndk $FORCE_FLAG
     else
-        cargo +$RUSTUP_TOOLCHAIN install cargo-ndk --debug
+        cargo +$RUSTUP_TOOLCHAIN install cargo-ndk --debug $FORCE_FLAG
     fi
 
     echo "Install Pre-Commit Checks..."
