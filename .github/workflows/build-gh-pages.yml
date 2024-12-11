@@ -30,7 +30,7 @@ jobs:
     if: (!endsWith(github.event.head_commit.message, '--norun') || inputs.runanyway == 'yes')
     runs-on: ubuntu-latest
     env:
-      HOST: https://engine.catgirl.land/pkg
+      PKG_URL: https://engine.catgirl.land/pkg
     steps:
       # Setup Build Environment
       - name: 🎉 The job was automatically triggered by a ${{ github.event_name }} event.
@@ -117,18 +117,18 @@ jobs:
         run: |
           # When building for debug, add --keep-debug to wasm-bindgen to keep the DWARF debug info for the source map generator (may cause wasm-opt to segfault)
           # --debug adds extra checks in the javascript portion for debugging the wasm
-          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/catgirl-engine.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web
+          $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/docs/pkg --typescript --target web
 
       # Optimize Program
       - name: Optimize Program
         run: |
-          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.opt.wasm -Oz
-          mv ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.opt.wasm ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/docs/pkg/main_bg.wasm -o ${{ github.workspace }}/docs/pkg/main_bg.opt.wasm -Oz
+          mv ${{ github.workspace }}/docs/pkg/main_bg.opt.wasm ${{ github.workspace }}/docs/pkg/main_bg.wasm
 
       # Build Source Maps
       # - name: Build Source Maps
       #   run: |
-      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
+      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/docs/pkg/main_bg.wasm --patch --base-url $PKG_URL
 
       # Display Export Directory
       - name: Display Git Staging
