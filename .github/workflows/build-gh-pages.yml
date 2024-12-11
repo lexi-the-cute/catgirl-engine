@@ -47,6 +47,14 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      # Install Dependencies
+      - name: Install and Cache APT Packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: ruby ruby-dev bundler
+          version: 1.0
+          execute_install_scripts: true
+
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
