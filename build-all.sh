@@ -15,6 +15,7 @@ PROJECT_ROOT=$SCRIPT_DIR
 # Build Vars
 SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
 PATH="${{ github.workspace }}/tools:$PATH"
+PATH="${{ github.workspace }}/tools/butler:$PATH"
 
 echo "Building x86_64-unknown-linux-gnu as AppImage..."
 cargo +$RUSTUP_TOOLCHAIN appimage --features appimage --target=x86_64-unknown-linux-gnu --bin catgirl-engine
