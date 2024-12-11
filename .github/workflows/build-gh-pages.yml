@@ -154,13 +154,13 @@ jobs:
 
       # Generate Service Worker
       - name: Generate Service Worker
-        run: |
-          /usr/bin/sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/docs/service-worker.js
+        run: sed "s/%CACHE_VERSION%/`/usr/bin/git rev-parse HEAD`/" ${{ github.workspace }}/examples/wasm/web/service-worker.js.template > ${{ github.workspace }}/docs/service-worker.js
 
       # Build with Jekyll
       - name: Build with Jekyll
         env:
           JEKYLL_ENV: production
+          JEKYLL_GITHUB_TOKEN: ${{ github.token }}
         run: |
           cd ${{ github.workspace }}/docs
           bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" --source ${{ github.workspace }}/docs --destination ${{ github.workspace }}/_site
