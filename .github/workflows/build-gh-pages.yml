@@ -47,14 +47,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Install Dependencies
-      - name: Install and Cache APT Packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: ruby ruby-dev bundler
-          version: 1.0
-          execute_install_scripts: true
-
       # Install Rust
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
@@ -70,6 +62,19 @@ jobs:
       # Install Rust Stable Toolchains
       - name: Set Rust To The Stable Toolchains
         run: $HOME/.cargo/bin/rustup default stable
+
+      # Install Ruby
+      - name: Setup Ruby Action (For Installing and Caching Gems)
+        uses: ruby/setup-ruby@v1
+        with:
+          cache-version: "gh-pages-ruby-gems"
+          working-directory: ${{ github.workspace }}/docs
+          bundler-cache: true
+
+      # Setup Pages
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
@@ -95,21 +100,9 @@ jobs:
       - name: Install Wasm2Map
         run: $HOME/.cargo/bin/cargo install cargo-wasm2map
 
-      # Make Site Directories
-      - name: Make Site Directories
-        run: |
-          mkdir -p ${{ github.workspace }}/docs
-          mkdir -p ${{ github.workspace }}/_site
-
-      # Install Gems
-      - name: Install Gems
-        run: |
-          cd ${{ github.workspace }}/docs
-          bundle install
-
-      # Setup Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      # Make Site Directory
+      - name: Make Site Directory
+        run: mkdir -p ${{ github.workspace }}/_site
 
       # Compile Program
       - name: Build Engine (Release)
@@ -170,10 +163,9 @@ jobs:
 
       # Build with Jekyll
       - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./docs
-          destination: ./_site
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
 
       # Upload artifact
       - name: Upload artifact
