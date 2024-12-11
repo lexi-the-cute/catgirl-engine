@@ -145,6 +145,10 @@ jobs:
       - name: Display Export Directory
         run: ls -liallh ${{ github.workspace }}/target/x86_64-unknown-linux-gnu/release
 
+      # Display AppDir Directory
+      - name: Display AppDir Directory
+        run: ls -liallh ${{ github.workspace }}/target/catgirl-engine.AppDir
+
       # Display AppImage Directory
       - name: Display AppImage Directory
         run: ls -liallh ${{ github.workspace }}/target/appimage
