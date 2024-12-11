@@ -54,4 +54,5 @@ fi
 # fi
 
 echo "Build Jekyll Site"
+cd $SCRIPT_DIR
 bundle exec jekyll build --baseurl "" --source $SCRIPT_DIR --destination $PROJECT_ROOT/_site
