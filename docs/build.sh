@@ -2,17 +2,20 @@
 TOOLCHAIN="stable"  # "stable" or "nightly"
 PROFILE="debug"  # "debug" or "release"
 ENABLE_SOURCES="true"
-HOST=http://127.0.0.1:8000
+JEKYLL_ENV="production"
+HOST=http://127.0.0.1:4000
 PKG_URL=$HOST/pkg
 # RUST_LOG=info
 
 # Build Time Vars
 SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
-PROJECT_ROOT=`cd $SCRIPT_DIR/../../.. && pwd`
+PROJECT_ROOT=`cd $SCRIPT_DIR/.. && pwd`
+EXAMPLE_DIR=$PROJECT_ROOT/examples/wasm/web
 LIBRARY_PATH="$HOME/.rustup/toolchains/$TOOLCHAIN-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library"
 
-sed "s/%CACHE_VERSION%/`date +'%s'`/" $SCRIPT_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
+cp -a $EXAMPLE_DIR/manifest.json $SCRIPT_DIR/manifest.json
+sed "s/%CACHE_VERSION%/`date +'%s'`/" $EXAMPLE_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
 
 rm -r $SCRIPT_DIR/pkg
 rm -r $SCRIPT_DIR/resources
@@ -49,3 +52,6 @@ fi
 #     echo "Symlinking Rust Sources..."
 #     ln -s $LIBRARY_PATH/* $SCRIPT_DIR/pkg/
 # fi
+
+echo "Build Jekyll Site"
+bundle exec jekyll build  # --baseurl $HOST

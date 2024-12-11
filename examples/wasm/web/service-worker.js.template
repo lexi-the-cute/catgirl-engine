@@ -18,12 +18,12 @@ self.addEventListener("activate", event => {
 
 function cache_files(event) {
     // Perform install steps
-    var CACHE_NAME = 'catgirl-engine-%CACHE_VERSION%';
+    var CACHE_NAME = 'game-engine-%CACHE_VERSION%';
     var urlsToCache = [
         '/',
-        '/pkg/catgirl-engine.js',
-        '/pkg/catgirl-engine_bg.wasm',
-        // '/pkg/catgirl-engine_bg.wasm.map',
+        '/pkg/main.js',
+        '/pkg/main_bg.wasm',
+        // '/pkg/main_bg.wasm.map',
         // '/styles.css',
     ];
 

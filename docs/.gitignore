@@ -2,4 +2,14 @@
 # Gemfile.lock
 
 # Jekyll Build Cache
-.jekyll-cache
+.jekyll-cache/
+_site/
+
+# Sass Build Cache
+.sass-cache/
+
+# Build Files
+pkg/
+resources/
+service-worker.js
+manifest.json
