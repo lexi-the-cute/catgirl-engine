@@ -54,4 +54,4 @@ fi
 # fi
 
 echo "Build Jekyll Site"
-bundle exec jekyll build  # --baseurl $HOST
+bundle exec jekyll build --baseurl ""
