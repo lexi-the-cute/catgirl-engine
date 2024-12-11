@@ -50,8 +50,8 @@ pub(crate) fn create_window(window_target: &ActiveEventLoop) -> WindowState<'sta
             // WM_CLASS(STRING) = "instance", "general"
             // `qdbus org.kde.KWin /KWin queryWindowInfo`
             // https://stackoverflow.com/q/44795622
-            let general: &str = "catgirl-engine";
-            let instance: &str = "catgirl-engine";
+            let general: &str = "land.catgirl.engine";
+            let instance: &str = "land.catgirl.engine";
 
             trace!(
                 "XDG_SESSION_TYPE: {}",

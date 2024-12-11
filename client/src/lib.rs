@@ -116,8 +116,8 @@ pub fn install_desktop_files() -> Result<(), String> {
 
         // Install Paths
         let desktop_path: PathBuf =
-            PathBuf::from(&applications_directory).join("catgirl-engine.desktop");
-        let icon_path: PathBuf = PathBuf::from(&icons_directory).join("catgirl-engine.png");
+            PathBuf::from(&applications_directory).join("land.catgirl.engine.desktop");
+        let icon_path: PathBuf = PathBuf::from(&icons_directory).join("land.catgirl.engine.png");
 
         // Create folders if they don't exist
         let _ = fs::create_dir_all(&applications_directory);

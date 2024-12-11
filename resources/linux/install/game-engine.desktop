@@ -2,9 +2,9 @@
 Type=Application
 Name=Catgirl Engine
 Comment=Moddable Game Engine
-Icon=catgirl-engine
+Icon=land.catgirl.engine
 Exec=${engine_path}
 Categories=Game;
-StartupWMClass=catgirl-engine
+StartupWMClass=land.catgirl.engine
 PrefersNonDefaultGPU=true
 SingleMainWindow=true

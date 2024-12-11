@@ -77,8 +77,8 @@ struct_excessive_bools = "allow"
 [package.metadata.appimage]
 assets = ["resources/assets", "resources/appimage/usr", "target/binding"]
 icon = "resources/assets/vanilla/texture/logo/logo.svg"
-desktop_file = "catgirl-engine.desktop"
-startup_wm_class = "catgirl-engine"
+desktop_file = "land.catgirl.engine.desktop"
+startup_wm_class = "land.catgirl.engine"
 args = ["--sign"] # "-u", "gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|*.zsync"
 auto_link = true
 auto_link_exclude_list = [
