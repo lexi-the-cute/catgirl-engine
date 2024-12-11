@@ -107,22 +107,22 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --bin catgirl-engine
+          $HOME/.cargo/bin/cargo build --target wasm32-unknown-unknown --verbose --release --lib
 
       # Generate Bindings
       - name: Generate Bindings
-        run: $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/catgirl-engine.wasm --out-dir ${{ github.workspace }}/pkg --typescript --target web
+        run: $HOME/.cargo/bin/wasm-bindgen ${{ github.workspace }}/target/wasm32-unknown-unknown/release/main.wasm --out-dir ${{ github.workspace }}/pkg --typescript --target web
 
       # Optimize Program
       - name: Optimize Program
         run: |
-          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm -o ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm -Oz
-          mv ${{ github.workspace }}/pkg/catgirl-engine_bg.opt.wasm ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm
+          $HOME/.cargo/bin/wasm-opt ${{ github.workspace }}/pkg/main_bg.wasm -o ${{ github.workspace }}/pkg/main_bg.opt.wasm -Oz
+          mv ${{ github.workspace }}/pkg/main_bg.opt.wasm ${{ github.workspace }}/pkg/main_bg.wasm
 
       # Build Source Maps
       # - name: Build Source Maps
       #   run: |
-      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/catgirl-engine_bg.wasm --patch --base-url $HOST
+      #     $HOME/.cargo/bin/cargo wasm2map ${{ github.workspace }}/pkg/main_bg.wasm --patch --base-url $HOST
 
       # Display Export Directory
       - name: Display Git Staging
@@ -309,8 +309,8 @@ jobs:
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
-          wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/butler-linux-amd64.zip
-          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O ${{ github.workspace }}/tools/butler-linux-amd64.zip
+          unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
@@ -320,8 +320,8 @@ jobs:
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
-          wget https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip -O ${{ github.workspace }}/butler-linux-amd64.zip
-          unzip ${{ github.workspace }}/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          wget https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip -O ${{ github.workspace }}/tools/butler-linux-amd64.zip
+          unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
