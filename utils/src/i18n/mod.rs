@@ -34,13 +34,15 @@ impl I18N {
     /// Get available locales
     #[must_use]
     pub fn available_locales(&self) -> Vec<&str> {
-        // self.trs.keys().map(std::string::String::as_str(k)).collect();
-        self.trs.keys().map(|k| k.as_str()).collect()
+        self.trs.keys().map(std::string::String::as_str).collect()
     }
 
     /// Get translated string
     #[must_use]
     pub fn translate(&self, locale: &str, key: &str) -> Option<&str> {
-        self.trs.get(locale)?.get(key).map(|k| k.as_str())
+        self.trs
+            .get(locale)?
+            .get(key)
+            .map(std::string::String::as_str)
     }
 }
