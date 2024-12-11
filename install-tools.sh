@@ -92,5 +92,5 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Install Itch.io Butler"
     curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > $PROJECT_ROOT/tools/butler-linux-amd64.zip
-    unzip $PROJECT_ROOT/tools/butler-linux-amd64.zip -o -d $PROJECT_ROOT/tools/butler
+    unzip -o $PROJECT_ROOT/tools/butler-linux-amd64.zip -d $PROJECT_ROOT/tools/butler
 fi

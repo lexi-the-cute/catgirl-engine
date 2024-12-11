@@ -328,7 +328,7 @@ jobs:
 
           # Install Butler
           curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -o -d ${{ github.workspace }}/tools/butler
+          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
@@ -339,7 +339,7 @@ jobs:
 
           # Install Butler
           curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -o -d ${{ github.workspace }}/tools/butler
+          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
