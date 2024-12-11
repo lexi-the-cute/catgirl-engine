@@ -14,49 +14,53 @@ fn main() {
     // Bindings are only usable when building libs
     create_bindings();
 
-    // Generate AppImage files
+    // Prepare AppImage files
     #[cfg(feature = "appimage")]
-    generate_appimage_files();
+    prepare_appimage_files();
 }
 
-/// Generates necessary files for pedantic AppImage generation
+/// Prepares files for AppImage generation
 #[allow(clippy::doc_markdown)]
 #[cfg(feature = "appimage")]
-fn generate_appimage_files() {
-    let package_name: String = std::env::var("CARGO_PKG_NAME").unwrap();
+fn prepare_appimage_files() {
     let resources_path: std::path::PathBuf = crate_dir().join("resources");
     let assets_path: std::path::PathBuf = resources_path.join("assets");
-    let appdir_path: std::path::PathBuf = target_dir().join(format!("{package_name}.AppDir"));
-    let applications_path: std::path::PathBuf =
-        appdir_path.join("usr").join("share").join("applications");
+    let locales_path: std::path::PathBuf = resources_path.join("locales");
 
-    // Desktop File Paths
-    let original_desktop_file_path: std::path::PathBuf = assets_path
-        .join("linux")
-        .join("install")
-        .join("land.catgirl.engine.desktop");
-    let desktop_file_path: std::path::PathBuf = appdir_path.join("land.catgirl.engine.desktop");
-    let symlinked_desktop_file_path: std::path::PathBuf =
-        applications_path.join("land.catgirl.engine.desktop");
+    let new_resources_path = target_dir().join("resources");
+    let options: fs_extra::dir::CopyOptions = fs_extra::dir::CopyOptions::new();
 
-    // Delete Old AppDir
-    let _ = std::fs::remove_dir_all(&appdir_path);
+    // Delete New Resources Directory
+    let _ = std::fs::remove_dir_all(&new_resources_path);
 
     // Create New Resource Directory
-    let new_resources_path: std::path::PathBuf = appdir_path.join("resources");
-    let _ = std::fs::create_dir_all(&new_resources_path);
+    let create_new_resource_directory_result = std::fs::create_dir_all(&new_resources_path);
+    if let Err(error) = create_new_resource_directory_result {
+        println!(
+            "cargo:warning=failed to create new resource directory ({}): {error}",
+            new_resources_path.display()
+        );
+    }
 
     // Copy Assets to New Resource Directory
-    let _ = std::fs::copy(&assets_path, &new_resources_path);
+    let copy_assets_result = fs_extra::dir::copy(&assets_path, &new_resources_path, &options);
+    if let Err(error) = copy_assets_result {
+        println!(
+            "cargo:warning=failed to copy assets ({}) to new resource directory ({}): {error}",
+            assets_path.display(),
+            new_resources_path.display()
+        );
+    }
 
-    // Create Applications Directory
-    let _ = std::fs::create_dir_all(&applications_path);
-
-    // Copy Original Desktop File to Applications Path
-    let _ = std::fs::copy(&original_desktop_file_path, &desktop_file_path);
-
-    // Symlink Desktop File to Applications Path
-    let _ = std::os::unix::fs::symlink(&symlinked_desktop_file_path, &desktop_file_path);
+    // Copy AppImage Resources to New Resource Directory
+    let copy_locales_result = fs_extra::dir::copy(&locales_path, &new_resources_path, &options);
+    if let Err(error) = copy_locales_result {
+        println!(
+            "cargo:warning=failed to copy locales ({}) to new resource directory ({}): {error}",
+            locales_path.display(),
+            new_resources_path.display()
+        );
+    }
 }
 
 /// Sets environment variables for building
