@@ -35,3 +35,6 @@ if [ $RUSTUP_PROFILE == "release" ]; then
 else
     cargo +$RUSTUP_TOOLCHAIN clippy --workspace --all-targets --all-features
 fi
+
+echo "Running Future Compatibilities Reports..."
+cargo +$RUSTUP_TOOLCHAIN report future-incompatibilities --package catgirl-engine || true  # `|| true` ignores the exit code

@@ -20,8 +20,8 @@ PROJECT_ROOT=$SCRIPT_DIR
 WASM_BINDGEN_VERSION=`cat $PROJECT_ROOT/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
 echo "Project Root: $PROJECT_ROOT"
-echo "RUSTUP_TOOLCHAIN: $RUSTUP_TOOLCHAIN - Build RUSTUP_PROFILE: $RUSTUP_PROFILE"
-echo "This will install tools as if it's continous integration..."
+echo "Toolchain: $RUSTUP_TOOLCHAIN - Build Profile: $RUSTUP_PROFILE"
+echo "This will install tools as if it's continuous integration..."
 echo "This, however, will not install things from your package manager like python's \`pip\`..."
 
 if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
