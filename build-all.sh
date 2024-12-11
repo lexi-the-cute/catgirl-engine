@@ -38,6 +38,7 @@ echo "Building wasm32-unknown-unknown..."
 $PROJECT_ROOT/examples/wasm/web/build.sh
 
 echo "Building Android..."
+cd $PROJECT_ROOT/android
 touch $PROJECT_ROOT/android/local.properties
 if [ $RUSTUP_PROFILE == "release" ]; then
     $PROJECT_ROOT/android/gradlew assembleRelease
