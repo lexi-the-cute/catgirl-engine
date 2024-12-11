@@ -40,14 +40,14 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     source "$HOME/.cargo/env"
 
     echo "Install Rust Targets..."
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN x86_64-unknown-linux-gnu
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN x86_64-pc-windows-gnu
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN wasm32-unknown-unknown
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN x86_64-unknown-linux-musl
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN armv7-linux-androideabi
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN aarch64-linux-android
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN i686-linux-android
-    rustup target add --RUSTUP_TOOLCHAIN $RUSTUP_TOOLCHAIN x86_64-linux-android
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN x86_64-unknown-linux-gnu
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN x86_64-pc-windows-gnu
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN wasm32-unknown-unknown
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN x86_64-unknown-linux-musl
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN armv7-linux-androideabi
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN aarch64-linux-android
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN i686-linux-android
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN x86_64-linux-android
 
     echo "Install Wasm-Bindgen Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then

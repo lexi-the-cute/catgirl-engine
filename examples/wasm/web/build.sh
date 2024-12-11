@@ -16,7 +16,7 @@ PKG_URL=$HOST/pkg
 SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
 PROJECT_ROOT=`cd $SCRIPT_DIR/../../.. && pwd`
-LIBRARY_PATH="$HOME/.rustup/RUSTUP_TOOLCHAINs/$RUSTUP_TOOLCHAIN-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library"
+LIBRARY_PATH="$HOME/.rustup/toolchains/$RUSTUP_TOOLCHAIN-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library"
 
 sed "s/%CACHE_VERSION%/`date +'%s'`/" $SCRIPT_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
 

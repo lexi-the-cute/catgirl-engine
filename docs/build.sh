@@ -18,7 +18,7 @@ SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
 PROJECT_ROOT=`cd $SCRIPT_DIR/.. && pwd`
 EXAMPLE_DIR=$PROJECT_ROOT/examples/wasm/web
-LIBRARY_PATH="$HOME/.rustup/RUSTUP_TOOLCHAINs/$RUSTUP_TOOLCHAIN-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library"
+LIBRARY_PATH="$HOME/.rustup/toolchains/$RUSTUP_TOOLCHAIN-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library"
 
 cp -a $EXAMPLE_DIR/manifest.json $SCRIPT_DIR/manifest.json
 sed "s/%CACHE_VERSION%/`date +'%s'`/" $EXAMPLE_DIR/service-worker.js.template > $SCRIPT_DIR/service-worker.js
