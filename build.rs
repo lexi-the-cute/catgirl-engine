@@ -19,6 +19,8 @@ fn main() {
     generate_appimage_files();
 }
 
+/// Generates necessary files for pedantic AppImage generation
+#[allow(clippy::doc_markdown)]
 #[cfg(feature = "appimage")]
 fn generate_appimage_files() {
     let package_name: String = std::env::var("CARGO_PKG_NAME").unwrap();
@@ -27,7 +29,15 @@ fn generate_appimage_files() {
     let appdir_path: std::path::PathBuf = target_dir().join(format!("{package_name}.AppDir"));
     let applications_path: std::path::PathBuf =
         appdir_path.join("usr").join("share").join("applications");
+
+    // Desktop File Paths
+    let original_desktop_file_path: std::path::PathBuf = assets_path
+        .join("linux")
+        .join("install")
+        .join("land.catgirl.engine.desktop");
     let desktop_file_path: std::path::PathBuf = appdir_path.join("land.catgirl.engine.desktop");
+    let symlinked_desktop_file_path: std::path::PathBuf =
+        applications_path.join("land.catgirl.engine.desktop");
 
     // Delete Old AppDir
     let _ = std::fs::remove_dir_all(&appdir_path);
@@ -37,13 +47,16 @@ fn generate_appimage_files() {
     let _ = std::fs::create_dir_all(&new_resources_path);
 
     // Copy Assets to New Resource Directory
-    let _ = std::fs::copy(assets_path, new_resources_path);
+    let _ = std::fs::copy(&assets_path, &new_resources_path);
+
+    // Create Applications Directory
+    let _ = std::fs::create_dir_all(&applications_path);
+
+    // Copy Original Desktop File to Applications Path
+    let _ = std::fs::copy(&original_desktop_file_path, &desktop_file_path);
 
     // Symlink Desktop File to Applications Path
-    let _ = std::os::unix::fs::symlink(
-        desktop_file_path,
-        applications_path.join("land.catgirl.engine.desktop"),
-    );
+    let _ = std::os::unix::fs::symlink(&symlinked_desktop_file_path, &desktop_file_path);
 }
 
 /// Sets environment variables for building
