@@ -108,13 +108,13 @@ fn create_binding(
     let mut header: String = String::new() +
         "/*\n" +
         " * This file exists to help facilitate modding this catgirl game engine...\n" +
-        " * These generated bindings are either public domain or Unlicense where public domain does not exist\n" +
+        " * These generated bindings are either public domain or 0BSD where public domain does not exist\n" +
         " */";
     if language == cbindgen::Language::Cython {
         header =
             "# cython: language_level=3\n\n".to_string() +
             "# This file exists to help facilitate modding this catgirl game engine...\n" +
-            "# These generated bindings are either public domain or Unlicense where public domain does not exist";
+            "# These generated bindings are either public domain or 0BSD where public domain does not exist";
     }
 
     let defines: std::collections::HashMap<String, String> = get_bindgen_defines();

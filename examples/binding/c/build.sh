@@ -22,4 +22,8 @@ else
 fi
 
 echo Compiling C Program...
-gcc $PROJECT_ROOT/examples/binding/c/main.c -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplec.run
+if [ $RUSTUP_PROFILE == "release" ]; then
+    gcc -s -O3 $PROJECT_ROOT/examples/binding/c/main.c -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplec.run
+else
+    gcc -g3 $PROJECT_ROOT/examples/binding/c/main.c -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplec.run
+fi

@@ -45,7 +45,7 @@ cp -a ../../../target/binding/catgirl_engine.pxd .
 
 ```bash
 # Export Path to libmain.so Library (the game engine)
-export LD_LIBRARY_PATH=`realpath ../../../target/release`
+export LD_LIBRARY_PATH=`realpath ../../../target/debug`
 
 # Run Python Script
 python main.py

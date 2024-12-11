@@ -1,7 +1,4 @@
 # cython: language_level=3, c_string_encoding=utf8
-# distutils: libraries = main
-# distutils: library_dirs = ../../../target/release
-# distutils: include_dirs = ../../../target/binding
 
 from libc.stdlib cimport malloc, free
 

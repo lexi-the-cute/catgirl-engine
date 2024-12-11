@@ -22,4 +22,8 @@ else
 fi
 
 echo Compiling C++ Program...
-g++ $PROJECT_ROOT/examples/binding/cpp/main.cpp -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplecpp.run
+if [ $RUSTUP_PROFILE == "release" ]; then
+    g++ -s -O3 $PROJECT_ROOT/examples/binding/cpp/main.cpp -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplecpp.run
+else
+    g++ -g3 $PROJECT_ROOT/examples/binding/cpp/main.cpp -I$PROJECT_ROOT/target/binding -L$PROJECT_ROOT/target/$RUSTUP_PROFILE -lmain -Wl,-rpath,.,-rpath,target/$RUSTUP_PROFILE -o $PROJECT_ROOT/target/examples/examplecpp.run
+fi
