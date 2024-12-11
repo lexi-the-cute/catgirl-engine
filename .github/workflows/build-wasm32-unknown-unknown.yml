@@ -50,7 +50,7 @@ jobs:
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
         run: chmod +x ${{ github.workspace }}/tools/rust.sh
       - name: Install Rust
@@ -309,7 +309,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/tools/butler-linux-amd64.zip
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/tools/butler-linux-amd64.zip
           unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -o -d ${{ github.workspace }}/tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
@@ -320,7 +320,7 @@ jobs:
           mkdir -p ${{ github.workspace }}/tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/tools/butler-linux-amd64.zip
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/tools/butler-linux-amd64.zip
           unzip ${{ github.workspace }}/tools/butler-linux-amd64.zip -o -d ${{ github.workspace }}/tools/butler
 
       # Publish to Itch.io
