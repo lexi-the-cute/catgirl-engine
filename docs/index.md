@@ -3,17 +3,17 @@
 
 ## Wasm Test
 
-<link rel="manifest" href="./manifest.json" />
-<link rel="icon" type="image/png" href="./resources/assets/vanilla/texture/logo/logo-1024x1024-color.png" />
-<link rel="icon" type="image/svg+xml" href="./resources/assets/vanilla/texture/logo/logo.svg" />
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./resources/assets/vanilla/texture/logo/logo-1024x1024-color.png">
+<link rel="icon" type="image/svg+xml" href="./resources/assets/vanilla/texture/logo/logo.svg">
 <!-- Stop browser from looking for non-existent favicon-->
-<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
-<link rel="license" href="./pkg/LICENSE" />
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<link rel="license" href="./pkg/LICENSE">
 
 
 <canvas id="catgirl-engine-canvas"></canvas>
-<!-- <script type="text/javascript">console.clear();</script> -->
-<script type="text/javascript">
+<!-- <script>console.clear();</script> -->
+<script>
     if ('serviceWorker' in navigator) {
         if (window.performance && performance.mark) {
             performance.mark("Service-Worker: Register");
