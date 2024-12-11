@@ -34,7 +34,7 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Install Rust..."
     mkdir -p $PROJECT_ROOT/tools
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > $PROJECT_ROOT/tools/rust.sh
+    wget https://sh.rustup.rs -O $PROJECT_ROOT/tools/rust.sh
     chmod +x $PROJECT_ROOT/tools/rust.sh
     $PROJECT_ROOT/tools/rust.sh -y
     source "$HOME/.cargo/env"
@@ -86,10 +86,11 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
         cargo +$RUSTUP_TOOLCHAIN install cargo-ndk --debug $FORCE_FLAG
     fi
 
-    echo "Install Pre-Commit Checks..."
-    pip install pre-commit
-    pre-commit install
+    # echo "Install Pre-Commit Checks..."
+    # pip install pre-commit
+    # pre-commit install
 
     echo "Install Itch.io Butler"
     wget https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -O $PROJECT_ROOT/tools/butler-linux-amd64.zip
+    unzip $PROJECT_ROOT/tools/butler-linux-amd64.zip -d $PROJECT_ROOT/tools/butler
 fi

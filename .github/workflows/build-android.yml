@@ -67,7 +67,7 @@ jobs:
       - name: Make Tools Directory
         run: mkdir -p ${{ github.workspace }}/tools
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+        run: wget https://sh.rustup.rs -O ${{ github.workspace }}/tools/rust.sh
       - name: Make Rust Installer Executable
         run: chmod +x ${{ github.workspace }}/tools/rust.sh
       - name: Install Rust
