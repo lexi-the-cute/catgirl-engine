@@ -3,7 +3,17 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.2"
+gem "jekyll-remote-theme", "~> 0.4"
+gem "jekyll-seo-tag", "~> 2.8"
+# gem "jekyll-theme-midnight", "~> 0.2"
+
 
 group :jekyll_plugins do
   gem "jekyll-timeago", "~> 0.13.1"
 end
+
+# Silence Standard Library Removal Warnings
+gem "base64", "~> 0.2"
+gem "logger", "~> 1.6"
+gem "csv", "~> 3.3"
+gem "ostruct", "~> 0.6"

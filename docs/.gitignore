@@ -1,2 +1,5 @@
 # Apparently we are supposed to commit this
 # Gemfile.lock
+
+# Jekyll Build Cache
+.jekyll-cache
