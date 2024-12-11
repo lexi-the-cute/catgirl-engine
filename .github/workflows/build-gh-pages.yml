@@ -100,10 +100,6 @@ jobs:
       - name: Install Wasm2Map
         run: $HOME/.cargo/bin/cargo install cargo-wasm2map
 
-      # Make Site Directory
-      - name: Make Site Directory
-        run: mkdir -p ${{ github.workspace }}/_site
-
       # Compile Program
       - name: Build Engine (Release)
         run: |
@@ -165,9 +161,7 @@ jobs:
       - name: Build with Jekyll
         env:
           JEKYLL_ENV: production
-        run: |
-          cd ${{ github.workspace }}/docs
-          bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" --source ${{ github.workspace }}/docs --destination ${{ github.workspace }}/_site
 
       # Upload artifact
       - name: Upload artifact

@@ -7,4 +7,4 @@ PROJECT_ROOT=`cd $SCRIPT_DIR/.. && pwd`
 HOSTNAME="127.0.0.1"
 PORT="4000"
 
-bundle exec jekyll serve --host $HOSTNAME --port $PORT
+bundle exec jekyll serve --host $HOSTNAME --port $PORT --baseurl "" --source $SCRIPT_DIR --destination $PROJECT_ROOT/_site

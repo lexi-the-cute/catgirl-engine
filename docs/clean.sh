@@ -7,8 +7,6 @@ PROJECT_ROOT=`cd $SCRIPT_DIR/.. && pwd`
 
 rm $SCRIPT_DIR/manifest.json
 rm $SCRIPT_DIR/service-worker.js
+rm -r $PROJECT_ROOT/_site
 rm -r $SCRIPT_DIR/pkg
-rm -r $SCRIPT_DIR/_site
 rm -r $SCRIPT_DIR/resources
-rm -r $SCRIPT_DIR/.sass-cache
-rm -r $SCRIPT_DIR/.jekyll-cache
