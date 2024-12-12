@@ -126,7 +126,11 @@ jobs:
 
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
-        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\", \"--runtime-file\", \"${{ github.workspace }}\/tools\/runtime-x86_64\"]/" Cargo.toml
+        run: |
+          # TODO: Figure out how to auto-escape ${{ github.workspace }} or change sed delimiter
+          #   Also, clean up the code so the regex is more legible or stop using regex
+          # sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\", \"--runtime-file\", \"${{ github.workspace }}\/tools\/runtime-x86_64\"]/" Cargo.toml
+          sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"]/" Cargo.toml
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
