@@ -11,6 +11,10 @@ if [ -z "$REINSTALL_TOOLS" ]; then
     export REINSTALL_TOOLS="false"  # "true" or "false"
 fi
 
+if [ -z "$BUILD_PLATFORM" ]; then
+    export BUILD_PLATFORM="x86_64"  # "x86_64" or "i686" or "armhf" or "aarch64"
+fi
+
 # Build Time Autovars
 SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`
@@ -49,6 +53,11 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     rustup target add --toolchain $RUSTUP_TOOLCHAIN i686-linux-android
     rustup target add --toolchain $RUSTUP_TOOLCHAIN x86_64-linux-android
 
+    echo "Attempt Install Specified Rust Targets..."
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN $BUILD_PLATFORM-unknown-linux-gnu
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN $BUILD_PLATFORM-pc-windows-gnu
+    rustup target add --toolchain $RUSTUP_TOOLCHAIN $BUILD_PLATFORM-unknown-linux-musl
+
     echo "Install Wasm-Bindgen Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
         cargo +$RUSTUP_TOOLCHAIN install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION $FORCE_FLAG
@@ -71,13 +80,21 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     fi
 
     echo "Install Customized Cargo AppImage Tools..."
-    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > $PROJECT_ROOT/tools/appimagetool
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-$BUILD_PLATFORM.AppImage > $PROJECT_ROOT/tools/appimagetool
     chmod +x $PROJECT_ROOT/tools/appimagetool
     if [ $RUSTUP_PROFILE == "release" ]; then
         cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage $FORCE_FLAG
     else
         cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage --debug $FORCE_FLAG
     fi
+
+    echo "Install AppImage Runtime..."
+    if [ $RUSTUP_PROFILE == "release" ]; then
+        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM > $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
+    else
+        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM.debug > $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
+    fi
+    chmod +x $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
 
     echo "Install Cargo NDK Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then

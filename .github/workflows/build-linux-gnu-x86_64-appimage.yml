@@ -69,6 +69,17 @@ jobs:
             curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > ${{ github.workspace }}/tools/appimagetool
 
             chmod +x ${{ github.workspace }}/tools/appimagetool
+      - name: Install AppImage Runtime
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          timeout_minutes: 60
+          retry_on: error
+          command: |
+            # Install AppImage Runtime
+            curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64 > ${{ github.workspace }}/tools/runtime-x86_64
+
+            chmod +x ${{ github.workspace }}/tools/runtime-x86_64
 
       # Install Rust
       - name: Download Rust Installer
@@ -115,7 +126,7 @@ jobs:
 
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
-        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\]/" Cargo.toml
+        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\, \"--runtime-file\", \"${{ github.workspace }}/tools/runtime-x86_64\""]/" Cargo.toml
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
@@ -147,7 +158,7 @@ jobs:
 
       # Display AppDir Directory
       - name: Display AppDir Directory
-        run: ls -liallh ${{ github.workspace }}/target/catgirl-engine.AppDir
+        run: find ${{ github.workspace }}/target/catgirl-engine.AppDir -type f -exec ls -liallh {} \;
 
       # Display AppImage Directory
       - name: Display AppImage Directory
@@ -184,6 +195,13 @@ jobs:
 
           cd ${{ github.workspace }}/upload/appimage
           tar cvJf ${{ github.workspace }}/upload/CatgirlEngine-Linux-x86_64-GNU-AppImage.tar.xz .
+
+      # Upload AppDir Directory
+      - name: Upload AppDir Directory (Release)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CatgirlEngine-Linux-x86_64-GNU-AppDir-Directory
+          path: ${{ github.workspace }}/target/catgirl-engine.AppDir
 
       # Upload Engine
       - name: Upload Engine (Release)
