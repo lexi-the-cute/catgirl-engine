@@ -71,7 +71,7 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     fi
 
     echo "Install Customized Cargo AppImage Tools..."
-    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/appimagetool/releases/download/continuous/appimagetool-x86_64 > $PROJECT_ROOT/tools/appimagetool
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > $PROJECT_ROOT/tools/appimagetool
     chmod +x $PROJECT_ROOT/tools/appimagetool
     if [ $RUSTUP_PROFILE == "release" ]; then
         cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage $FORCE_FLAG
