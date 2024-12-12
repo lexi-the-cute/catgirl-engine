@@ -79,7 +79,7 @@ assets = ["target/binding", "target/resources", "resources/appimage/usr"]
 icon = "resources/assets/vanilla/texture/logo/logo.svg"
 desktop_file = "land.catgirl.engine.desktop"
 startup_wm_class = "land.catgirl.engine"
-args = ["--sign"] # "-u", "gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|*.zsync"
+args = ["--sign"] # "-u", "gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|*.zsync", "--runtime-file", "$PROJECT_ROOT/tools/runtime-x86_64"
 auto_link = true
 auto_link_exclude_list = [
     "libc.so*",

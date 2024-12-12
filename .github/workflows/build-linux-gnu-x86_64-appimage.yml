@@ -126,7 +126,7 @@ jobs:
 
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
-        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"\, \"--runtime-file\", \"${{ github.workspace }}/tools/runtime-x86_64\""]/" Cargo.toml
+        run: sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\", \"--runtime-file\", \"${{ github.workspace }}\/tools\/runtime-x86_64\"]/" Cargo.toml
 
       # Ignore Modifying Cargo.toml
       - name: Ignore Modifying ${{ github.workspace }}/Cargo.toml
