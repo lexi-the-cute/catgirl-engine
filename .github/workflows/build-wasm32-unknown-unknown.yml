@@ -87,6 +87,13 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: pre-commit run --all-files
 
+      # Install Wasm-Bindgen
+      - name: Install Wasm-Bindgen
+        run: |
+          # wasm-bindgen is currently unstable, so getting the exact version used is required
+          export WASM_BINDGEN_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
+          $HOME/.cargo/bin/cargo update -p wasm-bindgen --precise $WASM_BINDGEN_VERSION
+
       # Install Wasm-Bindgen-CLI
       - name: Install Wasm-Bindgen-CLI
         run: |

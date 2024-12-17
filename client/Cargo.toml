@@ -50,7 +50,7 @@ utils = { version = "0.14.42", package = "catgirl-engine-utils", path = "../util
 serde = { version = "~1.0", default-features = false, optional = true }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"], optional = true }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
-wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
+wasm-bindgen = { version = "0.2.99", default-features = true, features = ["serde", "serde_json"] }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 winit = { version = "~0.30", default-features = false, features = ["rwh_06", "x11", "wayland", "wayland-csd-adwaita", "serde"] }
 wgpu = { version = "~23", default-features = false, features = ["serde"] }

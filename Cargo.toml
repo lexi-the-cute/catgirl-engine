@@ -117,7 +117,7 @@ serde = { version = "~1.0", default-features = false }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }
 cfg-if = { version = "~1", default-features = false }
-wasm-bindgen = { version = "0.2.96", default-features = true, features = ["serde", "serde_json"] }
+wasm-bindgen = { version = "0.2.99", default-features = true, features = ["serde", "serde_json"] }
 pretty_env_logger = { version = "~0", default-features = false }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 clap = { version = "~4", features = ["derive"] }
