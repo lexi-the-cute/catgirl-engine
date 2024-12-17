@@ -99,7 +99,7 @@ If you want to use traces, you can setup your own tracing subscriber if importin
 * [Server][catgirl-engine-server-docs]
 * [Utils][catgirl-engine-utils-docs]
 * [Macros][catgirl-engine-macros-docs]
-* [Common][catgirl-engine-commons-docs]
+* [Common][catgirl-engine-common-docs]
 
 # GPG Keys
 
