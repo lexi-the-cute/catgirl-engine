@@ -26,6 +26,9 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
+      - name: Retrieve All Git LFS Files
+        run: git lfs fetch origin --all
+
       - name: Enable Git LFS Locking Support
         run: git config lfs.https://codeberg.org/alexis/catgirl-engine.git/info/lfs.locksverify true
 
