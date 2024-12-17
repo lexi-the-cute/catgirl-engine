@@ -5,7 +5,7 @@
 name = "catgirl-engine-utils"
 description = "Utility crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.43"
+version = "0.14.44"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/foxgirl-labs/catgirl-engine.git"
@@ -45,9 +45,9 @@ toml = { version = "~0.8", default-features = false, features = ["parse"] }
 build-info-build = { version = "~0.0.39", default-features = false, features = ["git"] }
 
 [dependencies]
-common = { version = "0.14.43", package = "catgirl-engine-common", path = "../common" }
-macros = { version = "0.14.43", package = "catgirl-engine-macros", path = "../macros" }
-serde = { version = "~1.0", default-features = false, optional = true }
+common = { version = "0.14.44", package = "catgirl-engine-common", path = "../common" }
+macros = { version = "0.14.44", package = "catgirl-engine-macros", path = "../macros" }
+serde = { version = "~1.0", default-features = false, features = ["derive"], optional = true }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"], optional = true }
 tracing = { version = "~0.1", default-features = false, features = ["log"] }
 build-info = { version = "~0.0.39", default-features = false, features = ["runtime"] }

@@ -5,7 +5,7 @@
 name = "catgirl-engine-macros"
 description = "Procedural macro crate for the catgirl-engine crate"
 license = "Zlib"
-version = "0.14.43"
+version = "0.14.44"
 keywords = ["catgirl", "engine", "gamedev", "game"]
 categories = ["game-engines"]
 repository = "https://github.com/foxgirl-labs/catgirl-engine.git"
@@ -46,8 +46,8 @@ unused_self = "allow"
 struct_excessive_bools = "allow"
 
 [dependencies]
-common = { version = "0.14.43", package = "catgirl-engine-common", path = "../common" }
+common = { version = "0.14.44", package = "catgirl-engine-common", path = "../common" }
 syn = { version = "~2" }
 quote = { version = "~1" }  # Replace with proc_macro::quote!(...) when stable
-serde = { version = "~1.0", default-features = false, optional = true }
+serde = { version = "~1.0", default-features = false, features = ["derive"], optional = true }
 serde_json = { version = "~1.0", default-features = false, features = ["alloc"], optional = true }
