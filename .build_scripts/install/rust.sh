@@ -3,30 +3,30 @@
 set -eo pipefail
 
 # Setup for Build Time Autovars
-if [ -z "$REALPATH" ]; then
-    export REALPATH=`which realpath`  # /usr/bin/realpath
+if [ -z "$REALPATH_EXE" ]; then
+    export REALPATH_EXE=`which realpath`  # /usr/bin/realpath
 fi
 
-if [ -z "$DIRNAME" ]; then
-    export DIRNAME=`which dirname`  # /usr/bin/dirname
+if [ -z "$DIRNAME_EXE" ]; then
+    export DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
 fi
 
 # Build Time Autovars
-SCRIPT=`$REALPATH "$0"`
-SCRIPT_DIR=`$DIRNAME "$SCRIPT"`
-PROJECT_ROOT=`$REALPATH $SCRIPT_DIR/../..`
+SCRIPT=`$REALPATH_EXE "$0"`
+SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
+PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
 # Shell Command Locations
-if [ -z "$MKDIR" ]; then
-    export MKDIR=`which mkdir`  # /usr/bin/mkdir
+if [ -z "$MKDIR_EXE" ]; then
+    export MKDIR_EXE=`which mkdir`  # /usr/bin/mkdir
 fi
 
-if [ -z "$CURL" ]; then
-    export CURL=`which curl`  # /usr/bin/curl
+if [ -z "$CURL_EXE" ]; then
+    export CURL_EXE=`which curl`  # /usr/bin/curl
 fi
 
-if [ -z "$CHMOD" ]; then
-    export CHMOD=`which chmod`  # /usr/bin/chmod
+if [ -z "$CHMOD_EXE" ]; then
+    export CHMOD_EXE=`which chmod`  # /usr/bin/chmod
 fi
 
 # Script Vars
@@ -49,10 +49,10 @@ fi
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
-        export ROOT_PATH=$HOME/.tools
+        export ROOT_PATH=$HOME
     else
         # Else, keep all tools local
-        export ROOT_PATH=$PROJECT_ROOT/.tools
+        export ROOT_PATH=$PROJECT_ROOT
     fi
 fi
 
@@ -65,10 +65,10 @@ echo "Toolchain: $RUSTUP_TOOLCHAIN - Build Profile: $RUSTUP_PROFILE"
 echo "Targets: $RUSTUP_TARGETS"
 
 echo "Creating Tools Directory..."
-$MKDIR -p "$TOOLS_PATH"
+$MKDIR_EXE -p "$TOOLS_PATH"
 
 echo "Downloading Rust Installer..."
-$CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location $RUST_INSTALLER_URL > "$TOOLS_PATH/rust.sh"
+$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location $RUST_INSTALLER_URL > "$TOOLS_PATH/rust.sh"
 
 CURL_EXIT_CODE=$?
 if [ $CURL_EXIT_CODE -ne 0 ]; then
@@ -77,7 +77,7 @@ if [ $CURL_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Marking Rust Installer as Executable..."
-$CHMOD +x "$TOOLS_PATH/rust.sh"
+$CHMOD_EXE +x "$TOOLS_PATH/rust.sh"
 
 echo "Installing Rust..."
 $TOOLS_PATH/rust.sh -y
@@ -85,12 +85,12 @@ $TOOLS_PATH/rust.sh -y
 echo "Load Cargo Environment Variables..."
 source "$HOME/.cargo/env"
 
-if [ -z "$RUSTUP" ]; then
-    export RUSTUP=`which rustup`  # ~/.cargo/bin/rustup
+if [ -z "$RUSTUP_EXE" ]; then
+    export RUSTUP_EXE=`which rustup`  # ~/.cargo/bin/rustup
 fi
 
 echo "Installing $RUSTUP_TOOLCHAIN toolchain as default..."
-$RUSTUP default $RUSTUP_TOOLCHAIN
+$RUSTUP_EXE default $RUSTUP_TOOLCHAIN
 
 echo "Install Rust targets..."
-$RUSTUP target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS
+$RUSTUP_EXE target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS

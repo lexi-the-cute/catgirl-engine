@@ -3,31 +3,31 @@
 set -eo pipefail
 
 # Setup for Build Time Autovars
-if [ -z "$REALPATH" ]; then
-    export REALPATH=`which realpath`  # /usr/bin/realpath
+if [ -z "$REALPATH_EXE" ]; then
+    export REALPATH_EXE=`which realpath`  # /usr/bin/realpath
 fi
 
-if [ -z "$DIRNAME" ]; then
-    export DIRNAME=`which dirname`  # /usr/bin/dirname
-fi
-
-# Shell Command Locations
-if [ -z "$MKDIR" ]; then
-    export MKDIR=`which mkdir`  # /usr/bin/mkdir
-fi
-
-if [ -z "$CURL" ]; then
-    export CURL=`which curl`  # /usr/bin/curl
-fi
-
-if [ -z "$CHMOD" ]; then
-    export CHMOD=`which chmod`  # /usr/bin/chmod
+if [ -z "$DIRNAME_EXE" ]; then
+    export DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
 fi
 
 # Build Time Autovars
-SCRIPT=`$REALPATH "$0"`
-SCRIPT_DIR=`$DIRNAME "$SCRIPT"`
-PROJECT_ROOT=`$REALPATH $SCRIPT_DIR/../../..`
+SCRIPT=`$REALPATH_EXE "$0"`
+SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
+PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
+
+# Shell Command Locations
+if [ -z "$MKDIR_EXE" ]; then
+    export MKDIR_EXE=`which mkdir`  # /usr/bin/mkdir
+fi
+
+if [ -z "$CURL_EXE" ]; then
+    export CURL_EXE=`which curl`  # /usr/bin/curl
+fi
+
+if [ -z "$CHMOD_EXE" ]; then
+    export CHMOD_EXE=`which chmod`  # /usr/bin/chmod
+fi
 
 # Script Vars
 if [ -z "$RUSTUP_TOOLCHAIN" ]; then
@@ -70,10 +70,10 @@ fi
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
-        export ROOT_PATH=$HOME/.tools
+        export ROOT_PATH=$HOME
     else
         # Else, keep all tools local
-        export ROOT_PATH=$PROJECT_ROOT/.tools
+        export ROOT_PATH=$PROJECT_ROOT
     fi
 fi
 
@@ -84,15 +84,15 @@ fi
 echo "Installing Rust..."
 "$SCRIPT_DIR/rust.sh"
 
-if [ -z "$CARGO" ]; then
-    export CARGO=`which cargo`  # ~/.cargo/bin/cargo
+if [ -z "$CARGO_EXE" ]; then
+    export CARGO_EXE=`which cargo`  # ~/.cargo/bin/cargo
 fi
 
 echo "Creating Tools Directory..."
-$MKDIR -p "$TOOLS_PATH"
+$MKDIR_EXE -p "$TOOLS_PATH"
 
 echo "Install Customized AppImage Tool..."
-$CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_TOOL_URL" > $TOOLS_PATH/appimagetool
+$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_TOOL_URL" > $TOOLS_PATH/appimagetool
 
 CURL_EXIT_CODE=$?
 if [ $CURL_EXIT_CODE -ne 0 ]; then
@@ -101,17 +101,17 @@ if [ $CURL_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Marking AppImage Tool as Executable..."
-$CHMOD +x $TOOLS_PATH/appimagetool
+$CHMOD_EXE +x $TOOLS_PATH/appimagetool
 
 echo "Install Customized Cargo AppImage Tool..."
 if [ $RUSTUP_PROFILE == "release" ]; then
-    $CARGO +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" $FORCE_FLAG
+    $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" $FORCE_FLAG
 else
-    $CARGO +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" --debug $FORCE_FLAG
+    $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" --debug $FORCE_FLAG
 fi
 
 echo "Install AppImage Runtime..."
-$CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_RUNTIME_URL" > $TOOLS_PATH/runtime-$BUILD_PLATFORM
+$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_RUNTIME_URL" > $TOOLS_PATH/runtime-$BUILD_PLATFORM
 
 CURL_EXIT_CODE=$?
 if [ $CURL_EXIT_CODE -ne 0 ]; then
@@ -120,4 +120,4 @@ if [ $CURL_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Marking AppImage Runtime as Executable..."
-$CHMOD +x $TOOLS_PATH/runtime-$BUILD_PLATFORM
+$CHMOD_EXE +x $TOOLS_PATH/runtime-$BUILD_PLATFORM

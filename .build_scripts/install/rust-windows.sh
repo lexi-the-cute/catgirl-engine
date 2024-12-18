@@ -3,18 +3,18 @@
 set -eo pipefail
 
 # Setup for Build Time Autovars
-if [ -z "$REALPATH" ]; then
-    export REALPATH=`which realpath`  # /usr/bin/realpath
+if [ -z "$REALPATH_EXE" ]; then
+    export REALPATH_EXE=`which realpath`  # /usr/bin/realpath
 fi
 
-if [ -z "$DIRNAME" ]; then
-    export DIRNAME=`which dirname`  # /usr/bin/dirname
+if [ -z "$DIRNAME_EXE" ]; then
+    export DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
 fi
 
 # Build Time Autovars
-SCRIPT=`$REALPATH "$0"`
-SCRIPT_DIR=`$DIRNAME "$SCRIPT"`
-PROJECT_ROOT=`$REALPATH $SCRIPT_DIR/../../..`
+SCRIPT=`$REALPATH_EXE "$0"`
+SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
+PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
 # Script Vars
 if [ -z "$RUSTUP_TOOLCHAIN" ]; then

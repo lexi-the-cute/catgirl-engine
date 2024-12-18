@@ -3,35 +3,40 @@
 set -eo pipefail
 
 # Setup for Build Time Autovars
-if [ -z "$REALPATH" ]; then
-    export REALPATH=`which realpath`  # /usr/bin/realpath
+if [ -z "$REALPATH_EXE" ]; then
+    export REALPATH_EXE=`which realpath`  # /usr/bin/realpath
 fi
 
-if [ -z "$DIRNAME" ]; then
-    export DIRNAME=`which dirname`  # /usr/bin/dirname
+if [ -z "$DIRNAME_EXE" ]; then
+    export DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
 fi
+
+# Build Time Autovars
+SCRIPT=`$REALPATH_EXE "$0"`
+SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
+PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
 # Shell Command Locations
-if [ -z "$MKDIR" ]; then
-    export MKDIR=`which mkdir`  # /usr/bin/mkdir
+if [ -z "$MKDIR_EXE" ]; then
+    export MKDIR_EXE=`which mkdir`  # /usr/bin/mkdir
 fi
 
-if [ -z "$CURL" ]; then
-    export CURL=`which curl`  # /usr/bin/curl
+if [ -z "$CURL_EXE" ]; then
+    export CURL_EXE=`which curl`  # /usr/bin/curl
 fi
 
-if [ -z "$UNZIP" ]; then
-    export UNZIP=`which unzip`  # /usr/bin/unzip
+if [ -z "$UNZIP_EXE" ]; then
+    export UNZIP_EXE=`which unzip`  # /usr/bin/unzip
 fi
 
 # Script Vars
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
-        export ROOT_PATH=$HOME/.tools
+        export ROOT_PATH=$HOME
     else
         # Else, keep all tools local
-        export ROOT_PATH=$PROJECT_ROOT/.tools
+        export ROOT_PATH=$PROJECT_ROOT
     fi
 fi
 
@@ -43,16 +48,11 @@ if [ -z "$BUTLER_URL" ]; then
     export BUTLER_URL="https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default"
 fi
 
-# Build Time Autovars
-SCRIPT=`$REALPATH "$0"`
-SCRIPT_DIR=`$DIRNAME "$SCRIPT"`
-PROJECT_ROOT=`$REALPATH $SCRIPT_DIR/../..`
-
 echo "Creating Tools Directory..."
-$MKDIR -p "$TOOLS_PATH"
+$MKDIR_EXE -p "$TOOLS_PATH"
 
 echo "Download Itch.io Butler"
-$CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$BUTLER_URL" > "$TOOLS_PATH/butler-linux-amd64.zip"
+$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$BUTLER_URL" > "$TOOLS_PATH/butler-linux-amd64.zip"
 
 CURL_EXIT_CODE=$?
 if [ $CURL_EXIT_CODE -ne 0 ]; then
@@ -61,4 +61,4 @@ if [ $CURL_EXIT_CODE -ne 0 ]; then
 fi
 
 echo "Unzip Itch.io Butler"
-$UNZIP -o "$TOOLS_PATH/butler-linux-amd64.zip" -d "$TOOLS_PATH/butler"
+$UNZIP_EXE -o "$TOOLS_PATH/butler-linux-amd64.zip" -d "$TOOLS_PATH/butler"
