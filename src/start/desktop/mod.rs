@@ -54,6 +54,20 @@ pub extern "C" fn start_engine(argc: c_int, argv: *const *const c_char) -> c_int
     debug!("Launched as library...");
     build::log_build_info();
 
+    // Allows handling properly shutting down with SIGINT
+    debug!("Setting SIGINT hook...");
+    ctrlc::set_handler(move || {
+        debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
+        utils::exit::set_exit();
+
+        #[cfg(feature = "client")]
+        if !setup::get_args().server {
+            #[cfg(not(target_family = "wasm"))]
+            let _ = client::game::advance_event_loop();
+        }
+    })
+    .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
+
     match setup::start() {
         Err(error) => {
             error!("{:?}", error);

@@ -16,8 +16,6 @@ SCRIPT=`$REALPATH_EXE "$0"`
 SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
 PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
-# cd $PROJECT_ROOT
-
 # Shell Command Locations
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then

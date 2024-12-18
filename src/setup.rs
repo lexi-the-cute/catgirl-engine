@@ -163,24 +163,6 @@ pub(super) fn start() -> Result<(), String> {
     debug!("Setting panic hook...");
     set_panic_hook();
 
-    // Allows handling properly shutting down with SIGINT
-    #[cfg(not(any(target_os = "android", target_os = "ios")))]
-    #[cfg(any(target_family = "unix", target_family = "windows"))]
-    {
-        debug!("Setting SIGINT hook...");
-        ctrlc::set_handler(move || {
-            debug!("SIGINT (Ctrl+C) Was Called! Stopping...");
-            utils::exit::set_exit();
-
-            #[cfg(feature = "client")]
-            if !get_args().server {
-                #[cfg(not(target_family = "wasm"))]
-                let _ = client::game::advance_event_loop();
-            }
-        })
-        .expect("Could not create Interrupt Handler (e.g. Ctrl+C)...");
-    }
-
     debug!("Starting main loop...");
 
     #[cfg(feature = "server")]
