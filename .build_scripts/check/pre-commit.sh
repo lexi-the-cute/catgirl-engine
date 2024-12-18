@@ -1,4 +1,7 @@
 #!/bin/bash
+# Setup Bash Safety Checks
+set -eo pipefail
+
 # Setup for Build Time Autovars
 if [ -z "$REALPATH" ]; then
     export REALPATH=`which realpath`  # /usr/bin/realpath

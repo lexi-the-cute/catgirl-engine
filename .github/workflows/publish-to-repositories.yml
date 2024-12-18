@@ -54,45 +54,21 @@ jobs:
           execute_install_scripts: true
 
       # Install Rust
-      - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/.tools
-      - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/.tools/rust.sh
-      - name: Make Rust Installer Executable
-        run: chmod +x ${{ github.workspace }}/.tools/rust.sh
       - name: Install Rust
-        run: ${{ github.workspace }}/.tools/rust.sh -y
-      - name: Load Cargo Environment
-        run: source "$HOME/.cargo/env"
-
-      # Install Rust Stable Toolchains
-      - name: Set Rust To The Stable Toolchains
-        run: $HOME/.cargo/bin/rustup default stable
+        run: ${{ github.workspace }}/.build_scripts/install/rust-linux.sh
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "crates-io-linux-rust-gnu-x86_64"
 
-      # Add Build Targets
-      - name: Add x86_64 GNU Build Target
-        run: $HOME/.cargo/bin/rustup target add x86_64-unknown-linux-gnu
-
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
-        run: pip install pre-commit
-
-      # Check Pre-Commit Version
-      - name: Check Pre-Commit Version
-        run: pre-commit --version
-
-      # Install Pre-Commit Hooks
-      - name: Install Pre-Commit Hooks
-        run: pre-commit install
+        run: ${{ github.workspace }}/.build_scripts/install/pre-commit.sh
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
-        run: pre-commit run --all-files
+        run: ${{ github.workspace }}/.build_scripts/check/pre-commit.sh
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-common to Crates.io

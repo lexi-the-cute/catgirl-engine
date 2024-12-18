@@ -47,67 +47,21 @@ jobs:
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
       # Install Rust
-      - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/.tools
-      - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/.tools/rust.sh
-      - name: Make Rust Installer Executable
-        run: chmod +x ${{ github.workspace }}/.tools/rust.sh
       - name: Install Rust
-        run: ${{ github.workspace }}/.tools/rust.sh -y
-      - name: Load Cargo Environment
-        run: source "$HOME/.cargo/env"
-
-      # Install Rust Stable Toolchains
-      - name: Set Rust To The Stable Toolchains
-        run: $HOME/.cargo/bin/rustup default stable
+        run: ${{ github.workspace }}/.build_scripts/install/rust-wasm.sh
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "wasm32-rust"
 
-      # Add Build Targets
-      - name: Add 32-bit Wasm Build Target
-        run: $HOME/.cargo/bin/rustup target add wasm32-unknown-unknown
-
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
-        run: pip install pre-commit
-
-      # Check Pre-Commit Version
-      - name: Check Pre-Commit Version
-        run: pre-commit --version
-
-      # Install Pre-Commit Hooks
-      - name: Install Pre-Commit Hooks
-        run: pre-commit install
+        run: ${{ github.workspace }}/.build_scripts/install/pre-commit.sh
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
-        run: pre-commit run --all-files
-
-      # Install Wasm-Bindgen
-      - name: Install Wasm-Bindgen
-        run: |
-          # wasm-bindgen is currently unstable, so getting the exact version used is required
-          export WASM_BINDGEN_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          $HOME/.cargo/bin/cargo update -p wasm-bindgen --precise $WASM_BINDGEN_VERSION
-
-      # Install Wasm-Bindgen-CLI
-      - name: Install Wasm-Bindgen-CLI
-        run: |
-          # wasm-bindgen is currently unstable, so getting the exact version used is required
-          export WASM_BINDGEN_VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
-          $HOME/.cargo/bin/cargo install wasm-bindgen-cli --version $WASM_BINDGEN_VERSION
-
-      # Install Wasm-Opt
-      - name: Install Wasm-Opt
-        run: $HOME/.cargo/bin/cargo install wasm-opt
-
-      # Install Wasm2Map
-      - name: Install Wasm2Map
-        run: $HOME/.cargo/bin/cargo install cargo-wasm2map
+        run: ${{ github.workspace }}/.build_scripts/check/pre-commit.sh
 
       # Compile Program
       - name: Build Engine (Release)
@@ -310,25 +264,15 @@ jobs:
       - name: Install Butler (Upload to Itch.io)
         id: download-butler
         continue-on-error: true
-        run: |
-          # https://itch.io/docs/butler/pushing.html#channel-names
-          # Setup For Installation
-          mkdir -p ${{ github.workspace }}/.tools/butler
-
-          # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
+        run: ${{ github.workspace }}/.build_scripts/install/butler.sh
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
         if: steps.download-butler.outcome == 'failure'
         run: |
-          # Setup For Installation
-          mkdir -p ${{ github.workspace }}/.tools/butler
+          export BUTLER_URL="https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip"
 
-          # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
+          ${{ github.workspace }}/.build_scripts/install/butler.sh
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io

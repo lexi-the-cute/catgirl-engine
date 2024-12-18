@@ -1,4 +1,7 @@
 #!/bin/bash
+# Setup Bash Safety Checks
+set -eo pipefail
+
 # Setup for Build Time Autovars
 if [ -z "$REALPATH" ]; then
     export REALPATH=`which realpath`  # /usr/bin/realpath
@@ -50,6 +53,12 @@ $MKDIR -p "$TOOLS_PATH"
 
 echo "Download Itch.io Butler"
 $CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$BUTLER_URL" > "$TOOLS_PATH/butler-linux-amd64.zip"
+
+CURL_EXIT_CODE=$?
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+    exit $CURL_EXIT_CODE
+fi
 
 echo "Unzip Itch.io Butler"
 $UNZIP -o "$TOOLS_PATH/butler-linux-amd64.zip" -d "$TOOLS_PATH/butler"

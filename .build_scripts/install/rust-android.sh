@@ -1,3 +1,7 @@
+#!/bin/bash
+# Setup Bash Safety Checks
+set -eo pipefail
+
 # Setup for Build Time Autovars
 if [ -z "$REALPATH" ]; then
     export REALPATH=`which realpath`  # /usr/bin/realpath
@@ -5,19 +9,6 @@ fi
 
 if [ -z "$DIRNAME" ]; then
     export DIRNAME=`which dirname`  # /usr/bin/dirname
-fi
-
-# Shell Command Locations
-if [ -z "$MKDIR" ]; then
-    export MKDIR=`which mkdir`  # /usr/bin/mkdir
-fi
-
-if [ -z "$CURL" ]; then
-    export CURL=`which curl`  # /usr/bin/curl
-fi
-
-if [ -z "$CHMOD" ]; then
-    export CHMOD=`which chmod`  # /usr/bin/chmod
 fi
 
 # Build Time Autovars

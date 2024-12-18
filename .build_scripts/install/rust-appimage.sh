@@ -1,3 +1,7 @@
+#!/bin/bash
+# Setup Bash Safety Checks
+set -eo pipefail
+
 # Setup for Build Time Autovars
 if [ -z "$REALPATH" ]; then
     export REALPATH=`which realpath`  # /usr/bin/realpath
@@ -90,6 +94,12 @@ $MKDIR -p "$TOOLS_PATH"
 echo "Install Customized AppImage Tool..."
 $CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_TOOL_URL" > $TOOLS_PATH/appimagetool
 
+CURL_EXIT_CODE=$?
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+    exit $CURL_EXIT_CODE
+fi
+
 echo "Marking AppImage Tool as Executable..."
 $CHMOD +x $TOOLS_PATH/appimagetool
 
@@ -102,6 +112,12 @@ fi
 
 echo "Install AppImage Runtime..."
 $CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_RUNTIME_URL" > $TOOLS_PATH/runtime-$BUILD_PLATFORM
+
+CURL_EXIT_CODE=$?
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+    exit $CURL_EXIT_CODE
+fi
 
 echo "Marking AppImage Runtime as Executable..."
 $CHMOD +x $TOOLS_PATH/runtime-$BUILD_PLATFORM

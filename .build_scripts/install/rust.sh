@@ -1,4 +1,7 @@
 #!/bin/bash
+# Setup Bash Safety Checks
+set -eo pipefail
+
 # Setup for Build Time Autovars
 if [ -z "$REALPATH" ]; then
     export REALPATH=`which realpath`  # /usr/bin/realpath
@@ -66,6 +69,12 @@ $MKDIR -p "$TOOLS_PATH"
 
 echo "Downloading Rust Installer..."
 $CURL --proto '=https' --tlsv1.2 --silent --show-error --fail --location $RUST_INSTALLER_URL > "$TOOLS_PATH/rust.sh"
+
+CURL_EXIT_CODE=$?
+if [ $CURL_EXIT_CODE -ne 0 ]; then
+    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+    exit $CURL_EXIT_CODE
+fi
 
 echo "Marking Rust Installer as Executable..."
 $CHMOD +x "$TOOLS_PATH/rust.sh"
