@@ -16,6 +16,8 @@ SCRIPT=`$REALPATH_EXE "$0"`
 SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
 PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
+cd $PROJECT_ROOT
+
 # Script Vars
 WASM_BINDGEN_VERSION=`cat $PROJECT_ROOT/Cargo.toml | grep '^wasm-bindgen' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 

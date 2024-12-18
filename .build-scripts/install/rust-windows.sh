@@ -16,6 +16,8 @@ SCRIPT=`$REALPATH_EXE "$0"`
 SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
 PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
+cd $PROJECT_ROOT
+
 # Script Vars
 if [ -z "$RUSTUP_TOOLCHAIN" ]; then
     export RUSTUP_TOOLCHAIN="stable"  # "stable" or "nightly"

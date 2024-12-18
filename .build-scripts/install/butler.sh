@@ -16,6 +16,8 @@ SCRIPT=`$REALPATH_EXE "$0"`
 SCRIPT_DIR=`$DIRNAME_EXE "$SCRIPT"`
 PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 
+cd $PROJECT_ROOT
+
 # Shell Command Locations
 if [ -z "$MKDIR_EXE" ]; then
     export MKDIR_EXE=`which mkdir`  # /usr/bin/mkdir
