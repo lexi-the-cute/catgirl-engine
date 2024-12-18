@@ -80,10 +80,6 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
-      # Export Relevant Environment Variables
-      - name: Export Relevant Environment Variables
-        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
-
       # Workaround Cargo Gradle Plugin Bug
       - name: Workaround Cargo Gradle Plugin Bug
         run: touch ${{ github.workspace }}/android/local.properties
@@ -412,15 +408,13 @@ jobs:
 
           ${{ github.workspace }}/.build-scripts/install/butler.sh
 
-      # Export Relevant Environment Variables
-      - name: Export Relevant Environment Variables
-        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
-
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
         run: |
+          source ${{ github.workspace }}/.build-scripts/exports/tools.sh
+
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App

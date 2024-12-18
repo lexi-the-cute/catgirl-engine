@@ -70,10 +70,6 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
-      # Export Relevant Environment Variables
-      - name: Export Relevant Environment Variables
-        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
-
       # Compile Program
       - name: Build Engine Server Only
         run: |

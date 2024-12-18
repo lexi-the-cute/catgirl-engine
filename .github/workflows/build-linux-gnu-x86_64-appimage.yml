@@ -71,10 +71,6 @@ jobs:
       - name: Check Files with Pre-Commit Hooks
         run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
-      # Export Relevant Environment Variables
-      - name: Export Relevant Environment Variables
-        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
-
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
         run: |
@@ -92,6 +88,8 @@ jobs:
       # Compile Program
       - name: Build Engine Client/Server
         run: |
+          source ${{ github.workspace }}/.build-scripts/exports/tools.sh
+
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
           export PATH="${{ github.workspace }}/.tools:$PATH"
@@ -301,15 +299,13 @@ jobs:
 
           ${{ github.workspace }}/.build-scripts/install/butler.sh
 
-      # Export Relevant Environment Variables
-      - name: Export Relevant Environment Variables
-        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
-
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
         env:
           BUTLER_API_KEY: ${{ secrets.ITCH_IO_API_KEY }}
         run: |
+          source ${{ github.workspace }}/.build-scripts/exports/tools.sh
+
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
