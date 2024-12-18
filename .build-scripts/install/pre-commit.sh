@@ -19,16 +19,48 @@ PROJECT_ROOT=`$REALPATH_EXE $SCRIPT_DIR/../..`
 cd $PROJECT_ROOT
 
 # Shell Command Locations
-if [ -z "$PIP_EXE" ]; then
-    export PIP_EXE=`which pip`  # /usr/bin/pip
+if [ -z "$ROOT_PATH" ]; then
+    if [ "$WORKSPACE" ]; then
+        # If workspace is specified like on CI, then stick on home directory
+        export ROOT_PATH=$HOME
+    else
+        # Else, keep all tools local
+        export ROOT_PATH=$PROJECT_ROOT
+    fi
 fi
+
+if [ -z "$TOOLS_PATH" ]; then
+    export TOOLS_PATH=$ROOT_PATH/.tools
+fi
+
+if [ -z "$SYSTEM_PYTHON_EXE" ]; then
+    export SYSTEM_PYTHON_EXE=`which python3`  # /usr/bin/pip3
+fi
+
+if [ ! -f "$TOOLS_PATH/.venv" ] || [ $REINSTALL_TOOLS == "true" ]; then
+    echo "Creating Tools Directory..."
+    $MKDIR_EXE -p "$TOOLS_PATH"
+
+    echo "Creating Python Virtual Environment..."
+    $SYSTEM_PYTHON_EXE -m venv $TOOLS_PATH/.venv
+fi
+
+echo "Activating Python Virtual Environment..."
+source $TOOLS_PATH/.venv/bin/activate.sh
+
+if [ -z "$PIP_EXE" ]; then
+    export PIP_EXE=`which pip3`  # /usr/bin/pip3
+fi
+
+echo "Updating Python Pip..."
+$PIP_EXE install --upgrade pip
+
+echo "Install Python Pre-Commit Executable..."
+$PIP_EXE install --upgrade pre-commit
 
 if [ -z "$PRE_COMMIT_EXE" ]; then
     export PRE_COMMIT_EXE=`which pre-commit`  # /usr/bin/pre-commit
 fi
-
-echo "Install Python Pre-Commit Executable..."
-$PIP_EXE install pre-commit
 
 echo "Install Pre-Commit Hook..."
 $PRE_COMMIT_EXE install
