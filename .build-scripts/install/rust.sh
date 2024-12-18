@@ -46,6 +46,10 @@ if [ -z "$RUSTUP_TARGETS" ]; then
     export RUSTUP_TARGETS="x86_64-unknown-linux-gnu x86_64-unknown-linux-musl x86_64-pc-windows-gnu wasm32-unknown-unknown armv7-linux-androideabi aarch64-linux-android i686-linux-android x86_64-linux-android"  # "x86_64-unknown-linux-gnu"
 fi
 
+if [ -z "$REINSTALL_TOOLS" ]; then
+    export REINSTALL_TOOLS="false"  # "true" or "false"
+fi
+
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
@@ -64,33 +68,35 @@ echo "Project Root: $PROJECT_ROOT"
 echo "Toolchain: $RUSTUP_TOOLCHAIN - Build Profile: $RUSTUP_PROFILE"
 echo "Targets: $RUSTUP_TARGETS"
 
-echo "Creating Tools Directory..."
-$MKDIR_EXE -p "$TOOLS_PATH"
+if [ ! -f "$TOOLS_PATH/rust.sh" ] || [ $REINSTALL_TOOLS == "true" ]; then
+    echo "Creating Tools Directory..."
+    $MKDIR_EXE -p "$TOOLS_PATH"
 
-echo "Downloading Rust Installer..."
-$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location $RUST_INSTALLER_URL > "$TOOLS_PATH/rust.sh"
+    echo "Downloading Rust Installer..."
+    $CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location $RUST_INSTALLER_URL > "$TOOLS_PATH/rust.sh"
 
-CURL_EXIT_CODE=$?
-if [ $CURL_EXIT_CODE -ne 0 ]; then
-    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
-    exit $CURL_EXIT_CODE
+    CURL_EXIT_CODE=$?
+    if [ $CURL_EXIT_CODE -ne 0 ]; then
+        echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+        exit $CURL_EXIT_CODE
+    fi
+
+    echo "Marking Rust Installer as Executable..."
+    $CHMOD_EXE +x "$TOOLS_PATH/rust.sh"
+
+    echo "Installing Rust..."
+    $TOOLS_PATH/rust.sh -y
+
+    echo "Load Cargo Environment Variables..."
+    source "$HOME/.cargo/env"
+
+    if [ -z "$RUSTUP_EXE" ]; then
+        export RUSTUP_EXE=`which rustup`  # ~/.cargo/bin/rustup
+    fi
+
+    echo "Installing $RUSTUP_TOOLCHAIN toolchain as default..."
+    $RUSTUP_EXE default $RUSTUP_TOOLCHAIN
+
+    echo "Install Rust targets..."
+    $RUSTUP_EXE target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS
 fi
-
-echo "Marking Rust Installer as Executable..."
-$CHMOD_EXE +x "$TOOLS_PATH/rust.sh"
-
-echo "Installing Rust..."
-$TOOLS_PATH/rust.sh -y
-
-echo "Load Cargo Environment Variables..."
-source "$HOME/.cargo/env"
-
-if [ -z "$RUSTUP_EXE" ]; then
-    export RUSTUP_EXE=`which rustup`  # ~/.cargo/bin/rustup
-fi
-
-echo "Installing $RUSTUP_TOOLCHAIN toolchain as default..."
-$RUSTUP_EXE default $RUSTUP_TOOLCHAIN
-
-echo "Install Rust targets..."
-$RUSTUP_EXE target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS

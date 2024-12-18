@@ -30,6 +30,10 @@ if [ -z "$UNZIP_EXE" ]; then
 fi
 
 # Script Vars
+if [ -z "$REINSTALL_TOOLS" ]; then
+    export REINSTALL_TOOLS="false"  # "true" or "false"
+fi
+
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
@@ -48,17 +52,19 @@ if [ -z "$BUTLER_URL" ]; then
     export BUTLER_URL="https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default"
 fi
 
-echo "Creating Tools Directory..."
-$MKDIR_EXE -p "$TOOLS_PATH"
+if [ ! -f "$TOOLS_PATH/butler-linux-amd64.zip" ] || [ $REINSTALL_TOOLS == "true" ]; then
+    echo "Creating Tools Directory..."
+    $MKDIR_EXE -p "$TOOLS_PATH"
 
-echo "Download Itch.io Butler"
-$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$BUTLER_URL" > "$TOOLS_PATH/butler-linux-amd64.zip"
+    echo "Download Itch.io Butler"
+    $CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$BUTLER_URL" > "$TOOLS_PATH/butler-linux-amd64.zip"
 
-CURL_EXIT_CODE=$?
-if [ $CURL_EXIT_CODE -ne 0 ]; then
-    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
-    exit $CURL_EXIT_CODE
+    CURL_EXIT_CODE=$?
+    if [ $CURL_EXIT_CODE -ne 0 ]; then
+        echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+        exit $CURL_EXIT_CODE
+    fi
+
+    echo "Unzip Itch.io Butler"
+    $UNZIP_EXE -o "$TOOLS_PATH/butler-linux-amd64.zip" -d "$TOOLS_PATH/butler"
 fi
-
-echo "Unzip Itch.io Butler"
-$UNZIP_EXE -o "$TOOLS_PATH/butler-linux-amd64.zip" -d "$TOOLS_PATH/butler"

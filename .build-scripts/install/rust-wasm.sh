@@ -33,6 +33,10 @@ fi
 
 if [ -z "$REINSTALL_TOOLS" ]; then
     export REINSTALL_TOOLS="false"  # "true" or "false"
+fi
+
+FORCE_FLAG=""
+if [ $REINSTALL_TOOLS == "true" ]; then
     FORCE_FLAG="--force"
 fi
 

@@ -44,6 +44,10 @@ fi
 
 if [ -z "$REINSTALL_TOOLS" ]; then
     export REINSTALL_TOOLS="false"  # "true" or "false"
+fi
+
+FORCE_FLAG=""
+if [ $REINSTALL_TOOLS == "true" ]; then
     FORCE_FLAG="--force"
 fi
 
@@ -88,36 +92,38 @@ if [ -z "$CARGO_EXE" ]; then
     export CARGO_EXE=`which cargo`  # ~/.cargo/bin/cargo
 fi
 
-echo "Creating Tools Directory..."
-$MKDIR_EXE -p "$TOOLS_PATH"
+if [ ! -f "$TOOLS_PATH/appimagetool" ] || [ $REINSTALL_TOOLS == "true" ]; then
+    echo "Creating Tools Directory..."
+    $MKDIR_EXE -p "$TOOLS_PATH"
 
-echo "Install Customized AppImage Tool..."
-$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_TOOL_URL" > $TOOLS_PATH/appimagetool
+    echo "Install Customized AppImage Tool..."
+    $CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_TOOL_URL" > $TOOLS_PATH/appimagetool
 
-CURL_EXIT_CODE=$?
-if [ $CURL_EXIT_CODE -ne 0 ]; then
-    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
-    exit $CURL_EXIT_CODE
+    CURL_EXIT_CODE=$?
+    if [ $CURL_EXIT_CODE -ne 0 ]; then
+        echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+        exit $CURL_EXIT_CODE
+    fi
+
+    echo "Marking AppImage Tool as Executable..."
+    $CHMOD_EXE +x $TOOLS_PATH/appimagetool
+
+    echo "Install Customized Cargo AppImage Tool..."
+    if [ $RUSTUP_PROFILE == "release" ]; then
+        $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" $FORCE_FLAG
+    else
+        $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" --debug $FORCE_FLAG
+    fi
+
+    echo "Install AppImage Runtime..."
+    $CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_RUNTIME_URL" > $TOOLS_PATH/runtime-$BUILD_PLATFORM
+
+    CURL_EXIT_CODE=$?
+    if [ $CURL_EXIT_CODE -ne 0 ]; then
+        echo "Curl command failed with exit code $CURL_EXIT_CODE..."
+        exit $CURL_EXIT_CODE
+    fi
+
+    echo "Marking AppImage Runtime as Executable..."
+    $CHMOD_EXE +x $TOOLS_PATH/runtime-$BUILD_PLATFORM
 fi
-
-echo "Marking AppImage Tool as Executable..."
-$CHMOD_EXE +x $TOOLS_PATH/appimagetool
-
-echo "Install Customized Cargo AppImage Tool..."
-if [ $RUSTUP_PROFILE == "release" ]; then
-    $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" $FORCE_FLAG
-else
-    $CARGO_EXE +$RUSTUP_TOOLCHAIN install --git "$CARGO_APPIMAGE_URL" --debug $FORCE_FLAG
-fi
-
-echo "Install AppImage Runtime..."
-$CURL_EXE --proto '=https' --tlsv1.2 --silent --show-error --fail --location "$APPIMAGE_RUNTIME_URL" > $TOOLS_PATH/runtime-$BUILD_PLATFORM
-
-CURL_EXIT_CODE=$?
-if [ $CURL_EXIT_CODE -ne 0 ]; then
-    echo "Curl command failed with exit code $CURL_EXIT_CODE..."
-    exit $CURL_EXIT_CODE
-fi
-
-echo "Marking AppImage Runtime as Executable..."
-$CHMOD_EXE +x $TOOLS_PATH/runtime-$BUILD_PLATFORM
