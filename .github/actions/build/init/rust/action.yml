@@ -20,19 +20,19 @@ runs:
       # Install Rust
       - name: Make Tools Directory
         shell: bash
-        run: mkdir -p ${{ github.workspace }}/tools
+        run: mkdir -p ${{ github.workspace }}/.tools
 
       - name: Download Rust Installer
         shell: bash
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/.tools/rust.sh
 
       - name: Make Rust Installer Executable
         shell: bash
-        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+        run: chmod +x ${{ github.workspace }}/.tools/rust.sh
 
       - name: Install Rust
         shell: bash
-        run: ${{ github.workspace }}/tools/rust.sh -y
+        run: ${{ github.workspace }}/.tools/rust.sh -y
 
       # TODO: Determine if necessary
       - name: Load Cargo Environment

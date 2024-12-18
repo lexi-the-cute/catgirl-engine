@@ -37,10 +37,10 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     fi
 
     echo "Install Rust..."
-    mkdir -p $PROJECT_ROOT/tools
-    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > $PROJECT_ROOT/tools/rust.sh
-    chmod +x $PROJECT_ROOT/tools/rust.sh
-    $PROJECT_ROOT/tools/rust.sh -y
+    mkdir -p $PROJECT_ROOT/.tools
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > $PROJECT_ROOT/.tools/rust.sh
+    chmod +x $PROJECT_ROOT/.tools/rust.sh
+    $PROJECT_ROOT/.tools/rust.sh -y
     source "$HOME/.cargo/env"
 
     echo "Install Rust Targets..."
@@ -79,9 +79,11 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
         cargo +$RUSTUP_TOOLCHAIN install cargo-wasm2map --debug $FORCE_FLAG
     fi
 
-    echo "Install Customized Cargo AppImage Tools..."
-    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-$BUILD_PLATFORM.AppImage > $PROJECT_ROOT/tools/appimagetool
-    chmod +x $PROJECT_ROOT/tools/appimagetool
+    echo "Install Customized AppImage Tool..."
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-$BUILD_PLATFORM.AppImage > $PROJECT_ROOT/.tools/appimagetool
+    chmod +x $PROJECT_ROOT/.tools/appimagetool
+
+    echo "Install Customized Cargo AppImage Tool..."
     if [ $RUSTUP_PROFILE == "release" ]; then
         cargo +$RUSTUP_TOOLCHAIN install --git https://github.com/foxgirl-labs/cargo-appimage $FORCE_FLAG
     else
@@ -90,11 +92,11 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
 
     echo "Install AppImage Runtime..."
     if [ $RUSTUP_PROFILE == "release" ]; then
-        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM > $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
+        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM > $PROJECT_ROOT/.tools/runtime-$BUILD_PLATFORM
     else
-        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM.debug > $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
+        curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-$BUILD_PLATFORM.debug > $PROJECT_ROOT/.tools/runtime-$BUILD_PLATFORM
     fi
-    chmod +x $PROJECT_ROOT/tools/runtime-$BUILD_PLATFORM
+    chmod +x $PROJECT_ROOT/.tools/runtime-$BUILD_PLATFORM
 
     echo "Install Cargo NDK Tools..."
     if [ $RUSTUP_PROFILE == "release" ]; then
@@ -108,6 +110,6 @@ if [[ "$(read -e -p 'Continue? [y/N]> '; echo $REPLY)" == [Yy]* ]]; then
     # pre-commit install
 
     echo "Install Itch.io Butler"
-    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > $PROJECT_ROOT/tools/butler-linux-amd64.zip
-    unzip -o $PROJECT_ROOT/tools/butler-linux-amd64.zip -d $PROJECT_ROOT/tools/butler
+    curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > $PROJECT_ROOT/.tools/butler-linux-amd64.zip
+    unzip -o $PROJECT_ROOT/.tools/butler-linux-amd64.zip -d $PROJECT_ROOT/.tools/butler
 fi

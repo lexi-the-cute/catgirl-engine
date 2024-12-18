@@ -65,13 +65,13 @@ jobs:
 
       # Install Rust
       - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/tools
+        run: mkdir -p ${{ github.workspace }}/.tools
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/.tools/rust.sh
       - name: Make Rust Installer Executable
-        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+        run: chmod +x ${{ github.workspace }}/.tools/rust.sh
       - name: Install Rust
-        run: ${{ github.workspace }}/tools/rust.sh -y
+        run: ${{ github.workspace }}/.tools/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
@@ -435,22 +435,22 @@ jobs:
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
-          mkdir -p ${{ github.workspace }}/tools/butler
+          mkdir -p ${{ github.workspace }}/.tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
+          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
         if: steps.download-butler.outcome == 'failure'
         run: |
           # Setup For Installation
-          mkdir -p ${{ github.workspace }}/tools/butler
+          mkdir -p ${{ github.workspace }}/.tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
+          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
@@ -460,8 +460,8 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk foxgirl-labs/catgirl-engine:android --userversion $VERSION
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk foxgirl-labs/catgirl-engine:android-arm64 --userversion $VERSION
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk foxgirl-labs/catgirl-engine:android-armeabi-v7a --userversion $VERSION
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk foxgirl-labs/catgirl-engine:android-x86 --userversion $VERSION
-          # ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk foxgirl-labs/catgirl-engine:android-x86_64 --userversion $VERSION
+          ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-fat.apk foxgirl-labs/catgirl-engine:android --userversion $VERSION
+          # ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-arm64.apk foxgirl-labs/catgirl-engine:android-arm64 --userversion $VERSION
+          # ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-armeabi-v7a.apk foxgirl-labs/catgirl-engine:android-armeabi-v7a --userversion $VERSION
+          # ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86.apk foxgirl-labs/catgirl-engine:android-x86 --userversion $VERSION
+          # ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/android/catgirl-engine-x86_64.apk foxgirl-labs/catgirl-engine:android-x86_64 --userversion $VERSION

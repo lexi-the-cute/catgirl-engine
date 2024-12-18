@@ -56,7 +56,7 @@ jobs:
 
       # Install Dependencies
       - name: Make Tools Directory
-        run: mkdir -p ${{ github.workspace }}/tools
+        run: mkdir -p ${{ github.workspace }}/.tools
       - name: Install AppImageTool
         uses: nick-fields/retry@v3
         with:
@@ -65,10 +65,10 @@ jobs:
           retry_on: error
           command: |
             # Install AppImageTool
-            #curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > ${{ github.workspace }}/tools/appimagetool
-            curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > ${{ github.workspace }}/tools/appimagetool
+            #curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > ${{ github.workspace }}/.tools/appimagetool
+            curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/foxgirl-labs/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage > ${{ github.workspace }}/.tools/appimagetool
 
-            chmod +x ${{ github.workspace }}/tools/appimagetool
+            chmod +x ${{ github.workspace }}/.tools/appimagetool
       - name: Install AppImage Runtime
         uses: nick-fields/retry@v3
         with:
@@ -77,17 +77,17 @@ jobs:
           retry_on: error
           command: |
             # Install AppImage Runtime
-            curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64 > ${{ github.workspace }}/tools/runtime-x86_64
+            curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/AppImage/type2-runtime/releases/download/continuous/runtime-x86_64 > ${{ github.workspace }}/.tools/runtime-x86_64
 
-            chmod +x ${{ github.workspace }}/tools/runtime-x86_64
+            chmod +x ${{ github.workspace }}/.tools/runtime-x86_64
 
       # Install Rust
       - name: Download Rust Installer
-        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/tools/rust.sh
+        run: curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://sh.rustup.rs > ${{ github.workspace }}/.tools/rust.sh
       - name: Make Rust Installer Executable
-        run: chmod +x ${{ github.workspace }}/tools/rust.sh
+        run: chmod +x ${{ github.workspace }}/.tools/rust.sh
       - name: Install Rust
-        run: ${{ github.workspace }}/tools/rust.sh -y
+        run: ${{ github.workspace }}/.tools/rust.sh -y
       - name: Load Cargo Environment
         run: source "$HOME/.cargo/env"
 
@@ -129,7 +129,7 @@ jobs:
         run: |
           # TODO: Figure out how to auto-escape ${{ github.workspace }} or change sed delimiter
           #   Also, clean up the code so the regex is more legible or stop using regex
-          # sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\", \"--runtime-file\", \"${{ github.workspace }}\/tools\/runtime-x86_64\"]/" Cargo.toml
+          # sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\", \"--runtime-file\", \"${{ github.workspace }}\/.tools\/runtime-x86_64\"]/" Cargo.toml
           sed -i "s/^args = \[\"--sign\"\]/args = \[\"--sign\", \"-u\", \"gh-releases-zsync|foxgirl-labs|catgirl-engine|latest|$APPIMAGE_FILENAME.zsync\"]/" Cargo.toml
 
       # Ignore Modifying Cargo.toml
@@ -143,7 +143,7 @@ jobs:
         run: |
           # Sets the build timestamp to the current commit to make builds reproducible
           export SOURCE_DATE_EPOCH="`git --no-pager log -1 --format="%at"`"
-          export PATH="${{ github.workspace }}/tools:$PATH"
+          export PATH="${{ github.workspace }}/.tools:$PATH"
 
           # Release is already specified by cargo appimage
           # https://github.com/StratusFearMe21/cargo-appimage/issues/30
@@ -343,22 +343,22 @@ jobs:
         run: |
           # https://itch.io/docs/butler/pushing.html#channel-names
           # Setup For Installation
-          mkdir -p ${{ github.workspace }}/tools/butler
+          mkdir -p ${{ github.workspace }}/.tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
+          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
         if: steps.download-butler.outcome == 'failure'
         run: |
           # Setup For Installation
-          mkdir -p ${{ github.workspace }}/tools/butler
+          mkdir -p ${{ github.workspace }}/.tools/butler
 
           # Install Butler
-          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/tools/butler-linux-amd64.zip
-          unzip -o ${{ github.workspace }}/tools/butler-linux-amd64.zip -d ${{ github.workspace }}/tools/butler
+          curl --proto '=https' --tlsv1.2 --silent --show-error --fail --location https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip > ${{ github.workspace }}/.tools/butler-linux-amd64.zip
+          unzip -o ${{ github.workspace }}/.tools/butler-linux-amd64.zip -d ${{ github.workspace }}/.tools/butler
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io
@@ -368,4 +368,4 @@ jobs:
           export VERSION=`cat ${{ github.workspace }}/Cargo.toml | grep '^version' | head -n1 | cut -d'"' -f2 | tr -d '\n'`
 
           # Upload App
-          ${{ github.workspace }}/tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME foxgirl-labs/catgirl-engine:linux-gnu-x86_64-appimage --userversion $VERSION
+          ${{ github.workspace }}/.tools/butler/butler push ${{ github.workspace }}/artifacts/linux-gnu-x86_64-appimage/$APPIMAGE_FILENAME foxgirl-labs/catgirl-engine:linux-gnu-x86_64-appimage --userversion $VERSION
