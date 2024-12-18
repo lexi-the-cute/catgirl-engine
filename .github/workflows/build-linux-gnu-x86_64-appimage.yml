@@ -56,7 +56,7 @@ jobs:
 
       # Install Rust
       - name: Install Rust
-        run: ${{ github.workspace }}/.build_scripts/install/rust-appimage.sh
+        run: ${{ github.workspace }}/.build-scripts/install/rust-appimage.sh
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
@@ -65,11 +65,11 @@ jobs:
 
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
-        run: ${{ github.workspace }}/.build_scripts/install/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/install/pre-commit.sh
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
-        run: ${{ github.workspace }}/.build_scripts/check/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
       # Modify Toml AppImageTools Args
       - name: Modify Toml AppImageTools Args
@@ -287,7 +287,7 @@ jobs:
       - name: Install Butler (Upload to Itch.io)
         id: download-butler
         continue-on-error: true
-        run: ${{ github.workspace }}/.build_scripts/install/butler.sh
+        run: ${{ github.workspace }}/.build-scripts/install/butler.sh
 
       # Fallback to deal with DDOS attack on Itch.io at the time of writing
       - name: Install Butler (Fallback)
@@ -295,7 +295,7 @@ jobs:
         run: |
           export BUTLER_URL="https://github.com/lexi-the-cute/butler/releases/download/v15.23.0/butler-linux-amd64.zip"
 
-          ${{ github.workspace }}/.build_scripts/install/butler.sh
+          ${{ github.workspace }}/.build-scripts/install/butler.sh
 
       # Publish to Itch.io
       - name: 🎮 Publish to Itch.io

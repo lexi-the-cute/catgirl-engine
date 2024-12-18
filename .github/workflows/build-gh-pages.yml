@@ -49,7 +49,7 @@ jobs:
 
       # Install Rust
       - name: Install Rust
-        run: ${{ github.workspace }}/.build_scripts/install/rust-wasm.sh
+        run: ${{ github.workspace }}/.build-scripts/install/rust-wasm.sh
 
       # Install Ruby
       - name: Setup Ruby Action (For Installing and Caching Gems)
@@ -71,11 +71,11 @@ jobs:
 
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
-        run: ${{ github.workspace }}/.build_scripts/install/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/install/pre-commit.sh
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
-        run: ${{ github.workspace }}/.build_scripts/check/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
       # Compile Program
       - name: Build Engine (Release)

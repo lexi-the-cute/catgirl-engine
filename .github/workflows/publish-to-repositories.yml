@@ -55,7 +55,7 @@ jobs:
 
       # Install Rust
       - name: Install Rust
-        run: ${{ github.workspace }}/.build_scripts/install/rust-linux.sh
+        run: ${{ github.workspace }}/.build-scripts/install/rust-linux.sh
 
       # Setup Rust Build Caching
       - uses: Swatinem/rust-cache@v2
@@ -64,11 +64,11 @@ jobs:
 
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
-        run: ${{ github.workspace }}/.build_scripts/install/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/install/pre-commit.sh
 
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
-        run: ${{ github.workspace }}/.build_scripts/check/pre-commit.sh
+        run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
 
       # Publish to Crates.io
       - name: Publish to catgirl-engine-common to Crates.io
