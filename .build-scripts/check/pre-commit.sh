@@ -34,7 +34,7 @@ if [ -z "$TOOLS_PATH" ]; then
 fi
 
 echo "Activating Python Virtual Environment..."
-source $TOOLS_PATH/.venv/bin/activate.sh
+source $TOOLS_PATH/.venv/bin/activate
 
 if [ -z "$PRE_COMMIT_EXE" ]; then
     export PRE_COMMIT_EXE=`which pre-commit`  # /usr/bin/pre-commit
