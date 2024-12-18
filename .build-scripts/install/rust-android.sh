@@ -38,7 +38,6 @@ if [ $REINSTALL_TOOLS == "true" ]; then
     FORCE_FLAG="--force"
 fi
 
-echo "Installing Rust..."
 "$SCRIPT_DIR/rust.sh"
 
 if [ -z "$CARGO_EXE" ]; then

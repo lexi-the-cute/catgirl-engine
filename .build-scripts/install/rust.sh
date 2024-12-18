@@ -86,17 +86,17 @@ if [ ! -f "$TOOLS_PATH/rust.sh" ] || [ $REINSTALL_TOOLS == "true" ]; then
 
     echo "Installing Rust..."
     $TOOLS_PATH/rust.sh -y
-
-    echo "Load Cargo Environment Variables..."
-    source "$HOME/.cargo/env"
-
-    if [ -z "$RUSTUP_EXE" ]; then
-        export RUSTUP_EXE=`which rustup`  # ~/.cargo/bin/rustup
-    fi
-
-    echo "Installing $RUSTUP_TOOLCHAIN toolchain as default..."
-    $RUSTUP_EXE default $RUSTUP_TOOLCHAIN
-
-    echo "Install Rust targets..."
-    $RUSTUP_EXE target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS
 fi
+
+echo "Load Cargo Environment Variables..."
+source "$HOME/.cargo/env"
+
+if [ -z "$RUSTUP_EXE" ]; then
+    export RUSTUP_EXE=`which rustup`  # ~/.cargo/bin/rustup
+fi
+
+echo "Installing $RUSTUP_TOOLCHAIN toolchain as default..."
+$RUSTUP_EXE default $RUSTUP_TOOLCHAIN
+
+echo "Install Rust targets..."
+$RUSTUP_EXE target add --toolchain $RUSTUP_TOOLCHAIN $RUSTUP_TARGETS

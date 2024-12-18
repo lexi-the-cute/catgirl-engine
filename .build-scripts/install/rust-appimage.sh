@@ -85,7 +85,6 @@ if [ -z "$TOOLS_PATH" ]; then
     export TOOLS_PATH=$ROOT_PATH/.tools
 fi
 
-echo "Installing Rust..."
 "$SCRIPT_DIR/rust.sh"
 
 if [ -z "$CARGO_EXE" ]; then

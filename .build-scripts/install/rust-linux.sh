@@ -29,5 +29,4 @@ if [ -z "$RUSTUP_TARGETS" ]; then
     export RUSTUP_TARGETS="x86_64-unknown-linux-gnu x86_64-unknown-linux-musl"  # "x86_64-unknown-linux-gnu"
 fi
 
-echo "Installing Rust..."
 "$SCRIPT_DIR/rust.sh"
