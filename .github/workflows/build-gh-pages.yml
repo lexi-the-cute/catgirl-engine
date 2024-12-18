@@ -47,10 +47,6 @@ jobs:
       - name: 💡 The ${{ github.repository }} repository has been cloned to the runner.
         run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
 
-      # Install Rust
-      - name: Install Rust
-        run: ${{ github.workspace }}/.build-scripts/install/rust-wasm.sh
-
       # Install Ruby
       - name: Setup Ruby Action (For Installing and Caching Gems)
         uses: ruby/setup-ruby@v1
@@ -69,6 +65,10 @@ jobs:
         with:
           shared-key: "wasm32-pages-rust"
 
+      # Install Rust
+      - name: Install Rust
+        run: ${{ github.workspace }}/.build-scripts/install/rust-wasm.sh
+
       # Install Git Pre-Commit Hooks to Enforce Hooks
       - name: Install Git Pre-Commit Hooks to Enforce Hooks
         run: ${{ github.workspace }}/.build-scripts/install/pre-commit.sh
@@ -76,6 +76,10 @@ jobs:
       # Check Files with Pre-Commit Hooks
       - name: Check Files with Pre-Commit Hooks
         run: ${{ github.workspace }}/.build-scripts/check/pre-commit.sh
+
+      # Export Relevant Environment Variables
+      - name: Export Relevant Environment Variables
+        run: source ${{ github.workspace }}/.build-scripts/exports/tools.sh
 
       # Compile Program
       - name: Build Engine (Release)

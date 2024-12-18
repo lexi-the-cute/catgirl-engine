@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 # Setup Bash Safety Checks
 set -eo pipefail
 

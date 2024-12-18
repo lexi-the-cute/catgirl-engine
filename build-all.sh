@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 if [ -z "$RUSTUP_TOOLCHAIN" ]; then
     export RUSTUP_TOOLCHAIN="stable"  # "stable" or "nightly"
 fi

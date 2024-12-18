@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 SCRIPT=`realpath "$0"`
 SCRIPT_DIR=`dirname "$SCRIPT"`

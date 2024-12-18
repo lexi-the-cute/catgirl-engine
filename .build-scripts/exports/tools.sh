@@ -4,11 +4,11 @@ set -eo pipefail
 
 # Setup for Build Time Autovars
 if [ -z "$REALPATH_EXE" ]; then
-    export REALPATH_EXE=`which realpath`  # /usr/bin/realpath
+    REALPATH_EXE=`which realpath`  # /usr/bin/realpath
 fi
 
 if [ -z "$DIRNAME_EXE" ]; then
-    export DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
+    DIRNAME_EXE=`which dirname`  # /usr/bin/dirname
 fi
 
 # Build Time Autovars
@@ -22,23 +22,26 @@ cd $PROJECT_ROOT
 if [ -z "$ROOT_PATH" ]; then
     if [ "$WORKSPACE" ]; then
         # If workspace is specified like on CI, then stick on home directory
-        export ROOT_PATH=$HOME
+        ROOT_PATH=$HOME
     else
         # Else, keep all tools local
-        export ROOT_PATH=$PROJECT_ROOT
+        ROOT_PATH=$PROJECT_ROOT
     fi
 fi
 
 if [ -z "$TOOLS_PATH" ]; then
-    export TOOLS_PATH=$ROOT_PATH/.tools
+    TOOLS_PATH=$ROOT_PATH/.tools
 fi
 
-echo "Activating Python Virtual Environment..."
-source $TOOLS_PATH/.venv/bin/activate
+case :$PATH:
+  in *:$TOOLS_PATH:*) ;;
+     *) PATH=$TOOLS_PATH:$PATH ;;
+esac
 
-if [ -z "$PRE_COMMIT_EXE" ]; then
-    export PRE_COMMIT_EXE=`which pre-commit`  # /usr/bin/pre-commit
-fi
+case :$PATH:
+  in *:$TOOLS_PATH/butler:*) ;;
+     *) PATH=$TOOLS_PATH/butler:$PATH ;;
+esac
 
-echo "Run Pre-Commit Hook..."
-$PRE_COMMIT_EXE run --all-files
+export PATH=$PATH
+set +eo pipefail

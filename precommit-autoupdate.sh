@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/env bash
 
 # Build Time Autovars
 SCRIPT=`realpath "$0"`

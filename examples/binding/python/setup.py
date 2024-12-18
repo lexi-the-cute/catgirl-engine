@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/bin/env python3
 
 # Extensions - https://stackoverflow.com/a/18032741
 # .py - Regular Python file
