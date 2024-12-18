@@ -164,6 +164,7 @@ pub(super) fn start() -> Result<(), String> {
     set_panic_hook();
 
     // Allows handling properly shutting down with SIGINT
+    #[cfg(not(any(target_os = "android", target_os = "ios")))]
     #[cfg(any(target_family = "unix", target_family = "windows"))]
     {
         debug!("Setting SIGINT hook...");
